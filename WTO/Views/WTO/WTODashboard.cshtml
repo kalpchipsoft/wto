@@ -1,0 +1,237 @@
+﻿@model BusinessObjects.Notification.Result
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- body section start -->
+<div class="container-fluid">
+    <div class="padding-bottom-40">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                <div class="row">
+                    <h4 class="blue-color"><b>Dashboard</b></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv">
+                <div class='lodingPanel @(((@Model.Discussion.PendingDoc + @Model.Discussion.PendingTrans + @Model.Discussion.ToSendToStakeholder + @Model.Discussion.PendingDiscuss) > -1) ? "hidden" : "")'>
+                    <img src="~/contents/img/Dashboard_Loading.gif" />
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                        <div class="row darkBlueblackbackground padding-10">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="white-color">Pending Discussion (@(@Model.Discussion.PendingDoc + @Model.Discussion.PendingTrans + @Model.Discussion.ToSendToStakeholder + @Model.Discussion.PendingDiscuss))</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                        <div class="row darkgraybackground padding-10">
+                            <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 full-lightskyblue-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <img src="~/contents/img/document.png" alt="document" />
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <h1>@Model.Discussion.PendingDoc</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-lightskyblue text-center fixedbottom">
+                                                <p>Pending Document</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 full-darkpupal-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <img src="~/contents/img/translation.png" alt="translation" />
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <h1>@Model.Discussion.PendingTrans</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-darkpupal text-center fixedbottom">
+                                                <p>Pending Translation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 full-lightpupal-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <img src="~/contents/img/stakeholder.png" alt="stakeholder" />
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <h1>@Model.Discussion.ToSendToStakeholder</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-lightpupal text-center fixedbottom">
+                                                <p>To send to stakeholders</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 full-darkbrown-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <img src="~/contents/img/discussion.png" alt="discussion" />
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <h1>@Model.Discussion.PendingDiscuss</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-darkbrown text-center fixedbottom">
+                                                <p>Pending To discuss</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv">
+
+                <div class='lodingPanel @(((@Model.Actions.Response.Total + @Model.Actions.BriefToReg.Total + @Model.Actions.BriefToDoc.Total) > -1) ? "hidden" : "")'>
+                    <img src="~/contents/img/Dashboard_Loading.gif" />
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                        <div class="row darkBlueblackbackground padding-10">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="white-color">Pending Action (@(@Model.Actions.Response.Total + @Model.Actions.BriefToReg.Total + @Model.Actions.BriefToDoc.Total))</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                        <div class="row darkgraybackground padding-10">
+                            <div class="col-xs-12 col-sm-4 col-md-4 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 left-lightyellow-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <p class="action">Overdue <span class="red-color">@Model.Actions.Response.OverDue</span></p>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <p class="action">Total <span class="light-gray">@Model.Actions.Response.Total</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                                    <h1>@Model.Actions.Response.OverDue/@Model.Actions.Response.Total</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-lightyellow-border text-center fixedbottom">
+                                                <p class="action">Responses</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 left-darkyellow-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <p class="action">Overdue <span class="red-color">@Model.Actions.BriefToReg.OverDue</span></p>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <p class="action">Total <span class="light-gray">@Model.Actions.BriefToReg.Total</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                                    <h1>@Model.Actions.BriefToReg.OverDue/@Model.Actions.BriefToReg.Total</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-darkyellow-border text-center fixedbottom">
+                                                <p class="action">Brief to regulatory bodies</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 sm-20-bottom">
+                                <a href="#" class="smalldiv">
+                                    <div class="col-xs-12 col-sm-12 left-darkred-border whitebackground full">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                    <p class="action">Overdue <span class="red-color">@Model.Actions.BriefToDoc.OverDue</span></p>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                    <p class="action">Total <span class="light-gray">@Model.Actions.BriefToDoc.Total</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-30">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                                    <h1>@Model.Actions.BriefToDoc.OverDue/@Model.Actions.BriefToDoc.Total</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 full-darkred-border text-center fixedbottom">
+                                                <p class="action">Policy Brief to DOC</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- body section End -->

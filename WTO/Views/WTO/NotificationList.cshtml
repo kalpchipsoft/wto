@@ -1,0 +1,362 @@
+﻿@model BusinessObjects.Notification.NotificationList_Masters
+@{
+    ViewBag.Title = "Notification List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
+<script src="~/contents/js/bootstrap-combobox.js"></script>
+@Html.Hidden("hdnPageIndex", "1")
+@Html.Hidden("hdnMaxPageIndex", "1")
+@Html.Hidden("hdnCallFrom", @Model.CallFrom)
+<!-- body section start -->
+<div class="container-fluid">
+    <div class="row bodybackground padding-bottom-40">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6 top-offset-20 bottom-offset-20">
+                <div class="row">
+                    <h4 class="blue-color"><b>Notification List (<span id="lblCount">0</span>)</b></h4>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 top-offset-20 bottom-offset-20">
+                <div class="row">
+                    <div class="dropdown">
+                        <button href="#" class="btn btn-blue pull-right dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="~/contents/img/export.png" alt="export" /> Export
+                            <span class="caret"></span>
+                        </button>
+                        <div class="dropdown-menu file-menu exportdropdown top-offset-40" aria-labelledby="dropdownMenuButton">
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="">All</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="">Overview</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 darkgraybackground padding-bottom-10 ">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <h5>Filter By:</h5>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <div class="form-group">
+                        <label>Notification no.</label>
+                        <input id="txtNotificationNumber" type="text" class="form-control textboxcontrol">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <div class="form-group">
+                        <label>Country</label>
+                        @if (@Model.CountryList != null)
+                        {
+                            @Html.DropDownListFor(m => Model.CountryList, new SelectList(Model.CountryList, "CountryId", "Name"), "All", new { Id = "ddlCountry", Class = "form-control textboxcontrol" })
+                        }
+                        else
+                        {
+                            <select id="ddlCountry" class="form-control textboxcontrol">No Country</select>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <label>Final Date of Comment</label>
+                        </div>
+
+                        @*<div class="form-group has-feedback ">
+                                <div class="col-xs-12 col-sm-6 col-md-6 bottom-offset-20">
+                                    <input id="txtfromdate" type="text" class="form-control date-picker textboxcontrol" />
+                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <div class="col-xs-12 col-sm-6 col-md-6 bottom-offset-20">
+                                    <input id="txttodate" type="text" class="form-control date-picker textboxcontrol" />
+                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                </div>
+                            </div>*@
+                        <div class="form-group has-feedback ">
+                            <div class="col-xs-12 col-sm-6 col-md-6 bottom-offset-20">
+                                <input id="txtfromdate" type="text" class="form-control date-picker textboxcontrol" placeholder="From date" />
+                                <i id="fromdateclender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                <a href="#" class="crosstofromdate"><i id="fromdatecross" class='glyphicon glyphicon-remove blue-color hidden' onclick="txtfromdateClear();"></i></a>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <div class="col-xs-12 col-sm-6 col-md-6 bottom-offset-20">
+                                <input id="txttodate" type="text" class="form-control date-picker textboxcontrol" placeholder="To date" />
+                                <i id="todateclender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                <a href="#" class="crosstofromdate"><i id="todatecross" class='glyphicon glyphicon-remove blue-color hidden' onclick="txttodateClear();"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="ddlType" class="form-control textboxcontrol">
+                            <option value="0" selected>All</option>
+                            <option value="1">SPS</option>
+                            <option value="2">TBT</option>
+                            <option value="3">Both(SPS/TBT)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <div class="form-group">
+                        <label>Stage</label>
+                        @if (@Model.StatusList != null)
+                        {
+                            @Html.DropDownListFor(m => Model.StatusList, new SelectList(Model.StatusList, "StatusId", "StatusName"), "All", new { Id = "ddlStage", Class = "form-control textboxcontrol" })
+                        }
+                        else
+                        {
+                            <select id="ddlStage" class="form-control textboxcontrol">No status</select>
+                        }
+                    </div>
+                </div>
+                <!-- <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-10"> -->
+                <!-- <a href="#" class="btn btn-link dark-blue pull-right underline"><b>More</b></a> -->
+                <!-- </div> -->
+                <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                    <a href="#" class="btn btn-red pull-right left-offset-10" onclick="return Clear();"> <span class="glyphicon glyphicon-remove"></span> Clear</a>
+                    <a href="#" class="btn btn-blue pull-right left-offset-10" onclick="return SearchNotification(1);"> <span class="glyphicon glyphicon-search"></span> Search</a>
+                    @*<a href="#" class="btn btn-light-blue pull-right"> <span class="glyphicon glyphicon-search"></span> Advance Search</a>*@
+                </div>
+            </div>
+        </div>
+        <div id="divContent">
+            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+                <div class="table-responsive notificationlist">
+                    <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                        <!-- <thead class="blackbackground"> -->
+                        <thead class="second-blackbackground">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th style="width:25%">Notification no.</th>
+                                <th>Notification Date</th>
+                                <th>Final Date of Comment</th>
+                                <th>Country</th>
+                                <th>Pending Discussion</th>
+                                <th>Stakeholder Responses</th>
+                                <th style="width:8%">Action</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="NotificationData" class="whitebackground"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="divPaginationLoadingPanel" class="col-md-12 text-center">
+                <img style="align-self:center; margin-top: -50px;" src="~/contents/img/Loading_PleaseWait.gif" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- body section End -->
+<script>
+    $(document).ready(function () {
+        $('#ddlCountry').combobox();
+        //var lastURL = document.referrer;
+        var lastURL = $('#hdnCallFrom').val();        
+        if (lastURL != null) {
+            debugger;
+            if (lastURL.indexOf('AddNotification') > -1) {
+                $('#NotificationData').empty();
+                var locStorage = localStorage.getItem("NotificationList");
+                $('#hdnPageIndex').val(localStorage.getItem("PageIndex"));
+                $('#hdnMaxPageIndex').val(localStorage.getItem("MaxPageIndex"));
+                $('#NotificationData').append(locStorage);
+                $('#divPaginationLoadingPanel').addClass('hidden');
+                $('#lblCount').text(localStorage.getItem("TotalCount"));
+
+                $('[id$=txtNotificationNumber]').val(localStorage.getItem("Noti_Num"));
+                $('[id$=ddlCountry]').val(localStorage.getItem("Noti_Country"));
+                $('[id$=txtfromdate]').val(localStorage.getItem("Noti_fromdate"));
+                $('[id$=txttodate]').val(localStorage.getItem("Noti_todate"));
+                $('[id$=ddlType]').val(localStorage.getItem("Noti_Type"));
+                $('[id$=ddlStage]').val(localStorage.getItem("Noti_Stage"));
+            }
+            else
+                Clear();
+        }
+
+        // from and to date cross button
+        $("#txtfromdate").change(function () {
+            if ($("#txtfromdate").val == "") {
+                $("#fromdateclender").removeClass("hidden");
+                $("#fromdatecross").addClass("hidden");
+            }
+            else {
+                $("#fromdateclender").addClass("hidden");
+                $("#fromdatecross").removeClass("hidden");
+            }
+        })
+
+        $("#txttodate").change(function () {
+            if ($("#txttodate").val == "") {
+                $("#todateclender").removeClass("hidden");
+                $("#todatecross").addClass("hidden");
+            }
+            else {
+                $("#todateclender").addClass("hidden");
+                $("#todatecross").removeClass("hidden");
+            }
+        })
+    });
+    //function DataBindPageIndex(value) {
+    //    SearchNotification(value);
+    //}
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            $('#divPaginationLoadingPanel').removeClass('hidden');
+            var NewVal = 0;
+            var NewVal = Number($('#hdnPageIndex').val()) + Number(1);
+            var MaxVal = parseInt($('#hdnMaxPageIndex').val());
+            if (NewVal <= MaxVal) {
+                SearchNotification(NewVal);
+            }
+            else
+                $('#divPaginationLoadingPanel').addClass('hidden');
+        }
+    });
+
+    function SearchNotification(PageIndx) {
+        $('#hdnPageIndex').val(PageIndx);
+        var FinalDateFrom = $('[id$=txtfromdate]').val();
+        var FinalDateTo = $('[id$=txttodate]').val();
+        if (FinalDateFrom != null && FinalDateFrom != '' && FinalDateTo != null && FinalDateTo != '') {
+            if (FinalDateFrom > FinalDateTo) {
+                alert('From date cannnot be greater than To date.');
+                return false;
+            }
+        }
+
+        if (PageIndx == null || PageIndx == 0)
+            PageIndx = 1;
+        var obj = {
+            PageIndex: PageIndx,
+            PageSize: 10,
+            Noti_Number: $('[id$=txtNotificationNumber]').val(),
+            Noti_Country: $('[id$=ddlCountry]').val(),
+            FinalDateOfComments_From: $('[id$=txtfromdate]').val(),
+            FinalDateOfComments_To: $('[id$=txttodate]').val(),
+            Noti_Type: $('[id$=ddlType]').val(),
+            Noti_Status: $('[id$=ddlStage]').val()
+        }
+        $.ajax({
+            url: "/api/NotificationList/GetNotificationsList",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#divPaginationLoadingPanel').addClass('hidden');
+                if (result != null) {
+                    if (PageIndx == 1) {
+                        var Total = parseInt(result.TotalCount);
+                        var tmpPages = Total / 10;
+                        var tmpArr = tmpPages.toString().split('.');
+                        var TotalPages = 0;
+                        if (parseInt(tmpArr[1]) > 0)
+                            TotalPages = parseInt(tmpArr[0]) + 1;
+                        else
+                            TotalPages = parseInt(tmpArr[0]);
+
+                        $('[id$=hdnMaxPageIndex]').val(TotalPages);
+                        $('#lblCount').text(parseInt(result.TotalCount));
+                        $('#NotificationData').empty();
+                    }
+                    var NewRow = '';
+                    if (result.ItemsList != null && result.ItemsList.length > 0) {
+                        for (var i = 0; i < result.ItemsList.length; i++) {
+                            NewRow += '<tr>';
+                            NewRow += '<td>' + result.ItemsList[i].ItemNumber + '</td>';
+                            NewRow += '<td><p class="red-color">' + result.ItemsList[i].Noti_Number + '</p><p><b>Title :</b>' + result.ItemsList[i].Title + '</p></td>';
+                            NewRow += '<td>' + result.ItemsList[i].Noti_Date + '</td>';
+                            NewRow += '<td>' + result.ItemsList[i].FinalDateOfComments + '</td>';
+                            NewRow += '<td>' + result.ItemsList[i].Noti_Country + '</td>';
+                            NewRow += '<td class="tooltiprelative"><div class="small-circle light-blue-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div><div class="small-circle light-cyan-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div></td>';
+                            NewRow += '<td>7/60</td>';
+                            NewRow += '<td class="padding-0"><div class="small-circle"></div><div class="small-circle"></div><div class="small-circle"></div><div class="small-circle"></div></td>';
+                            @*NewRow += '<td><a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = 1 })"><img src="../contents/img/bedit.png" /></a></td>';*@
+                            NewRow += '<td><a href="../AddNotification/Edit_Notification/' + result.ItemsList[i].NotificationId + '" onclick="StoreHTML();"><img src="../contents/img/bedit.png" /></a></td>';
+                            NewRow += '</tr>';
+                        }
+                    }
+                    else
+                        NewRow += '<tr><td class="text-center" colspan="9">No Record Found ...</td></tr>';
+
+                    $('#NotificationData').append(NewRow);
+                }
+            },
+            failure: function (result) {
+                alert("Something went wrong.");
+            },
+            error: function (result) {
+                alert("Something went wrong.");
+            },
+            complete: function () {
+                //HideGlobalLodingPanel();
+            }
+        });
+        //$("#divContent").load('GetNotificationsList', obj);
+    }
+
+    function StoreHTML() {
+        var html = $('#NotificationData').html();
+        localStorage.setItem("NotificationList", html);
+        localStorage.setItem("PageIndex", $('#hdnPageIndex').val());
+        localStorage.setItem("MaxPageIndex", $('#hdnMaxPageIndex').val());
+        localStorage.setItem("TotalCount", $('#lblCount').text());
+
+        localStorage.setItem("Noti_Num", $('[id$=txtNotificationNumber]').val());
+        localStorage.setItem("Noti_Country", $('[id$=ddlCountry]').val());
+        localStorage.setItem("Noti_fromdate", $('[id$=txtfromdate]').val());
+        localStorage.setItem("Noti_todate", $('[id$=txttodate]').val());
+        localStorage.setItem("Noti_Type", $('[id$=ddlType]').val());
+        localStorage.setItem("Noti_Stage", $('[id$=ddlStage]').val());
+    }
+
+    function Clear() {
+        $('[id$=txtNotificationNumber]').val('');
+        $('[id$=ddlCountry]').val('');
+        $('[id$=txtfromdate]').val('');
+        $("#fromdateclender").removeClass("hidden");
+        $("#fromdatecross").addClass("hidden");
+        $('[id$=txttodate]').val('');
+        $("#todateclender").removeClass("hidden");
+        $("#todatecross").addClass("hidden");
+        $('[id$=ddlType]').val('0');
+        $('[id$=ddlStage]').val('');
+
+
+        localStorage.setItem("NotificationList", '');
+        localStorage.setItem("PageIndex", 1);
+        localStorage.setItem("MaxPageIndex", 1);
+        localStorage.setItem("TotalCount", 0);
+
+        localStorage.setItem("Noti_Num", '');
+        localStorage.setItem("Noti_Country", '');
+        localStorage.setItem("Noti_fromdate", '');
+        localStorage.setItem("Noti_todate", '');
+        localStorage.setItem("Noti_Type", 0);
+        localStorage.setItem("Noti_Stage", '');
+
+        SearchNotification(1);
+    }
+
+    function txttodateClear() {
+        $('[id$=txttodate]').val('');
+        $("#todateclender").removeClass("hidden");
+        $("#todatecross").addClass("hidden");
+    }
+    function txtfromdateClear() {
+        $('[id$=txtfromdate]').val('');
+        $("#fromdateclender").removeClass("hidden");
+        $("#fromdatecross").addClass("hidden");
+    }
+</script>

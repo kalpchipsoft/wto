@@ -1,0 +1,51 @@
+﻿@model BusinessObjects.PagerTotalCount
+@{
+    Layout = null;
+}
+<div class="pagingBox">
+    <input id="HiddenPageSize" name="PageSize" type="hidden" />
+    <input id="HiddenPage" name="Page" type="hidden" />
+    @if (Model.Pager.TotalPages >= Model.Pager.CurrentPage)
+    {
+        <div class="pagerecord">
+            Page @(Model.Pager.TotalPages < Model.Pager.CurrentPage ? 0 : Model.Pager.CurrentPage) of @Model.Pager.TotalPages
+            <div class="pagination-container">
+                <ul class="pagination NotfListpagination">
+                    @if (Model.Pager.CurrentPage > 1)
+                    {
+                        <li onclick="return DataBindPageIndex(@(Model.Pager.StartPage))">
+                            <a data-value="1"><< First</a>
+                        </li>
+                        <li>
+                            <a onclick="return DataBindPageIndex(@(Model.Pager.CurrentPage - 1))">< Previous</a>
+                        </li>
+                    }
+                    @for (int i = Model.Pager.StartPage; i <= Model.Pager.EndPage; i++)
+                    {
+                        if (Model.Pager.CurrentPage == i)
+                        {
+                            <li class="active">
+                                <a data-value="@i" class="active" onclick="return DataBindPageIndex('@i')">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a data-value="@i" onclick="return DataBindPageIndex('@i')">@i</a>
+                            </li>
+                        }
+                    }
+                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                    {
+                        <li>
+                            <a onclick="return DataBindPageIndex(@(Model.Pager.CurrentPage + 1))">Next ></a>
+                        </li>
+                        <li>
+                            <a onclick="return DataBindPageIndex(@Model.Pager.TotalPages)">Last >></a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

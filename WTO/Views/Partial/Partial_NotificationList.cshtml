@@ -1,0 +1,95 @@
+﻿@model BusinessObjects.Notification.Notifications
+@{
+    Layout = null;
+}
+<input id="hdnCount" type="hidden" value='@Model.TotalCount' />
+<input type="hidden" id="hdnTotalItems" value="@Model.Pager.TotalItems" />
+@Html.Hidden("hdnPageIndex", "1")
+<div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+    <div class="table-responsive notificationlist">
+        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+            <!-- <thead class="blackbackground"> -->
+            <thead class="second-blackbackground">
+                <tr>
+                    <th>Sr. No.</th>
+                    <th style="width:25%">Notification no.</th>
+                    <th>Notification Date</th>
+                    <th>Final Date of Comment</th>
+                    <th>Country</th>
+                    <th>Pending Discussion</th>
+                    <th>Stakeholder Responses</th>
+                    <th style="width:8%">Action</th>
+                    <th>Edit</th>
+
+                </tr>
+            </thead>
+            <tbody id="NotificationData" class="whitebackground">
+                @if (@Model.ItemsList != null)
+                {
+                    for (int i = 0; i < @Model.ItemsList.Count(); ++i)
+                    {
+                        <tr>
+                            <td>@Model.ItemsList[i].ItemNumber</td>
+                            <td>
+                                @*<a href="~/WTO/NotificationListView"><p class="red-color">G/TBT/N/TUR/105</p></a>*@
+                                <p class="red-color">@Model.ItemsList[i].Noti_Number</p>
+                                <p>
+                                    <b>Title :</b>@Model.ItemsList[i].Title
+                                </p>
+                            </td>
+                            <td>@Model.ItemsList[i].Noti_Date</td>
+                            <td>@Model.ItemsList[i].FinalDateOfComments</td>
+                            <td>@Model.ItemsList[i].Noti_Country</td>
+                            <td class="tooltiprelative">
+                                <div class="small-circle light-blue-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div>
+                                <div class="small-circle light-cyan-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div>
+                            </td>
+                            <td>7/60</td>
+                            <td class="padding-0">
+                                <div class="small-circle"></div>
+                                <div class="small-circle"></div>
+                                <div class="small-circle"></div>
+                                <div class="small-circle"></div>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = @Model.ItemsList[i].NotificationId })"><img src="~/contents/img/bedit.png" /></a>
+                            </td>
+                        </tr>
+                        @*@Html.HiddenFor(m => m.Persons[i].PersonId)
+                            @Html.EditorFor(m => m.Persons[i].FirstName)
+                            @Html.EditorFor(m => m.Persons[i].LastName)*@
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td class="text-center" colspan="9">No Record Found ...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-12 hidden" id="divPagination">
+    @{ Html.RenderAction("Pagination", "Partial", new { TotalItems = Model.Pager.TotalItems, CurrentPage = Model.Pager.CurrentPage }); }
+</div>
+<script>
+    $(document).ready(function () {
+        var count = $('[id$=hdnCount]').val();
+        $('#lblCount').text(count);
+    });
+
+    function FetchDataFromServer() {
+        alert('New Page');
+    }
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {            
+            //This is an Ajax method which will fetch the data from server
+            var OldVal = $('#hdnPageIndex').val();
+            $('#hdnPageIndex').val(OldVal + 1);
+            SearchNotification(OldVal + 1);
+        }
+    });
+
+</script>

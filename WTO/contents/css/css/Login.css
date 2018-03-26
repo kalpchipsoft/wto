@@ -1,0 +1,126 @@
+@font-face {
+	font-family: 'Lato-Regular';
+	src: url('../fonts/Lato-Regular.ttf');
+}
+body, html {
+	height: 100%;
+	font-family: Lato-Regular;
+}
+
+.wto-background{
+	background:url(../../img/Logbg.png);
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.loginsection{
+	background:#fff;
+	margin-top:15%;
+}
+.loginfirst{
+	padding-top:10px;
+	padding-bottom:10px;
+	text-align: center;
+}
+.loginfirst img{
+	margin-bottom:10px;
+}
+
+.logintitle{
+	color: #146b7d;
+	margin-top: 0px;
+	font-family: lato-regular;
+	font-weight: bold;
+	word-spacing: 5px;
+	font-size:25px;
+	text-transform: uppercase;
+}
+.loginheading{
+	color: #e3001c;
+	margin-top: 0px;
+	font-family: lato-regular;
+	font-weight: bold;
+	font-size:25px;
+	text-transform: uppercase;
+	text-align:center;
+}
+.loginsecond{
+	margin:50px 0px;
+	border-left:2px solid #e1e1e1;
+	padding-bottom:60px;
+}
+.icon{
+	top:-25px;
+	left:5px;
+	color:#e3001c;
+}
+.textcontrol{
+	padding-left:25px;
+	color:#146b7d;
+	border-radius:0px;
+	border-left:none;
+	border-right:none;
+	border-top:none;
+	border-bottom:1px solid #146b7d;
+	background:transparent;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+}
+.textcontrol:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075),0 0 0px rgba(102,175,233,.6);
+    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0),0 0 0px rgba(102, 175, 233, 0.6);
+}
+.top-offset-50{
+	margin-top:50px;
+}
+.btn-red, .btn-red:hover, .btn-red:active, .btn-red:focus{
+	color:#fff;
+	background:#e3001c;
+	border-color:#e3001c;
+	border-radius:0px;
+	margin-top:30px;
+}
+.form-control::-webkit-input-placeholder {
+  color: #146b7d;
+}
+.form-control:-ms-input-placeholder {
+  color: #146b7d;
+}
+.form-control::-moz-placeholder {
+    color: #146b7d;
+    opacity: 1;
+}
+@media screen and (min-width : 768px) and (max-width : 1023px){
+	.logintitle {
+		color: #146b7d;
+		word-spacing: 0px;
+		font-size: 20px;
+		text-transform: uppercase;
+	}
+}
+@media screen and (min-width : 0px) and (max-width : 767px){
+	.loginfirst img{
+		margin-bottom:10px;
+		height:70px;
+	}
+	.logintitle {
+		color: #146b7d;
+		word-spacing: 0px;
+		font-size: 16px;
+		text-transform: uppercase;
+	}
+	.loginsecond{
+		margin:0px 0px;
+		border-left:none;
+		padding-bottom:40px;
+	}
+	.top-offset-50{
+		margin-top:10px;
+	}
+}
+
+
+
+

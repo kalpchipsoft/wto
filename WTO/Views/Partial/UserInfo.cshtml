@@ -1,0 +1,16 @@
+﻿@model BusinessObjects.Masters.UserInfo
+@{
+    Layout = null;
+}
+
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle ProfileName" data-toggle="dropdown">
+            <img src="~/Attachments/UserImage/@Model.Image" alt="profile" class="thumbnail profile-img" />
+            @Model.UserName <span class="glyphicon glyphicon-menu-down"></span>
+        </a>
+        <ul class="dropdown-menu profile" role="menu">
+            <li><a href="@Url.Action("LogOut", "Login")"><span class="glyphicon glyphicon-log-out"></span>LogOut</a></li>
+        </ul>
+    </li>
+</ul>
