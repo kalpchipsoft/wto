@@ -1,110 +1,538 @@
-﻿$(document).ready(function () {
-
+﻿var NotificationDoc = [], TranslatedDoc = [], NotificationAttachment = [];
+var UploadedDocument = [];
+var TempMailAttachments = [], MailAttachments = [];
+$(document).ready(function () {
     GetHSCode();
-
     $('#NotifyingCountryId').combobox();
 
     //Title Word Word validation
     $("#TitleId").on('keyup', function (e) {
-        var words = this.value.match(/\S+/g).length;
-        if (words > 100) {
-            // Split the string on first 200 words and rejoin on spaces
-            var trimmed = $(this).val().split(/\s+/, 100).join(" ");
-            // Add a space at the end to keep new typing making new words
-            $(this).val(trimmed + " ");
-            if (e.which != 8) {
-                return false;
+        if ($.trim(this.value) != '') {
+            var words = $.trim(this.value).match(/\S+/g).length;
+            if (words > 100) {
+                // Split the string on first 200 words and rejoin on spaces
+                var trimmed = $(this).val().split(/\s+/, 100).join(" ");
+                // Add a space at the end to keep new typing making new words
+                $(this).val(trimmed + " ");
+                if (e.which != 8) {
+                    return false;
+                }
             }
-        }
-        else {
-            $('#display_count').text(words);
-            $('#word_left').text(100 - words);
+            else {
+                $('#display_count').text(words);
+                $('#word_left').text(100 - words);
+            }
         }
     });
 
     //Agency Responsible Word Word validation
     $("#AgencyResponsibleId").on('keyup', function (e) {
-        var words = this.value.match(/\S+/g).length;
-        if (words > 150) {
-            // Split the string on first 150 words and rejoin on spaces
-            var trimmed = $(this).val().split(/\s+/, 150).join(" ");
-            // Add a space at the end to keep new typing making new words
-            $(this).val(trimmed + " ");
-            if (e.which != 8) {
-                return false;
+        if ($.trim(this.value) != '') {
+            var words = $.trim(this.value).match(/\S+/g).length;
+            if (words > 150) {
+                // Split the string on first 150 words and rejoin on spaces
+                var trimmed = $(this).val().split(/\s+/, 150).join(" ");
+                // Add a space at the end to keep new typing making new words
+                $(this).val(trimmed + " ");
+                if (e.which != 8) {
+                    return false;
+                }
             }
-        }
-        else {
-            $('#display_count1').text(words);
-            $('#word_left1').text(150 - words);
+            else {
+                $('#display_count1').text(words);
+                $('#word_left1').text(150 - words);
+            }
         }
     });
 
     //Agency Responsible Word Word validation
     $("#ProductsCoveredId").on('keyup', function (e) {
-        var words = this.value.match(/\S+/g).length;
-        if (words > 150) {
-            // Split the string on first 150 words and rejoin on spaces
-            var trimmed = $(this).val().split(/\s+/, 150).join(" ");
-            // Add a space at the end to keep new typing making new words
-            $(this).val(trimmed + " ");
-            if (e.which != 8) {
-                return false;
+        if ($.trim(this.value) != '') {
+            var words = $.trim(this.value).match(/\S+/g).length;
+            if (words > 150) {
+                // Split the string on first 150 words and rejoin on spaces
+                var trimmed = $(this).val().split(/\s+/, 150).join(" ");
+                // Add a space at the end to keep new typing making new words
+                $(this).val(trimmed + " ");
+                if (e.which != 8) {
+                    return false;
+                }
             }
-        }
-        else {
-            $('#display_count2').text(words);
-            $('#word_left2').text(150 - words);
+            else {
+                $('#display_count2').text(words);
+                $('#word_left2').text(150 - words);
+            }
         }
     });
 
     //Description of ContentId Word Word validation
     $("#DescriptionofContentId").on('keyup', function (e) {
-        var words = this.value.match(/\S+/g).length;
-        if (words > 300) {
-            // Split the string on first 300 words and rejoin on spaces
-            var trimmed = $(this).val().split(/\s+/, 300).join(" ");
-            // Add a space at the end to keep new typing making new words
-            $(this).val(trimmed + " ");
-            if (e.which != 8) {
+        if ($.trim(this.value) != '') {
+            var words = $.trim(this.value).match(/\S+/g).length;
+            if (words > 300) {
+                // Split the string on first 300 words and rejoin on spaces
+                var trimmed = $(this).val().split(/\s+/, 300).join(" ");
+                // Add a space at the end to keep new typing making new words
+                $(this).val(trimmed + " ");
+                if (e.which != 8) {
+                    return false;
+                }
+            }
+            else {
+                $('#display_count3').text(words);
+                $('#word_left3').text(300 - words);
+            }
+        }
+    });
+
+    $('#chkSelectAll').change(function () {
+        var IsCheckedAll = this.checked;
+        $.each($('#stackholder').find('input[type=checkbox]'), function () {
+            this.checked = IsCheckedAll;
+        });
+    });
+
+    $('#ddlLanguage').change(function () {
+        if ($(this).val() == '1' || $(this).val() == '') {
+            $('.translatDoc').addClass("hidden");
+            $('.translatedocument').addClass("hidden");
+        }
+        else {
+            $('.translatDoc').removeClass("hidden");
+            $('.translatedocument').removeClass("hidden");
+            BindTranslater($(this).val());
+
+            var FinalDateforComments = $('#FinalDateforCommentsId').val();
+            var _FinalDate = new Date(FinalDateforComments);
+            var DateofNotification = $('#DateofNotificationId').val();
+            var _DateofNotification = new Date(DateofNotification);
+
+            //Set Reminder for translation if pending  i.e, Final date for comments – 53 days 
+            var TranslationReminderOn = new Date(FinalDateforComments);
+            TranslationReminderOn.setDate(TranslationReminderOn.getDate() - 53);
+            var _TranslationReminderOn = TranslationReminderOn.getDate() + ' ' + Months[TranslationReminderOn.getMonth()] + ' ' + TranslationReminderOn.getFullYear();
+            $("#remainder").val(_TranslationReminderOn);
+
+            if (_DateofNotification > TranslationReminderOn) {
+                $("#RemainderforTranslationError").removeClass("hidden");
+            }
+            else {
+                $("#RemainderforTranslationError").addClass("hidden");
+            }
+
+            //Set Due date for translation i.e. Final date for comments – 50 days 
+            var TranslationDueOn = new Date(_FinalDate);
+            TranslationDueOn.setDate(TranslationDueOn.getDate() - 50);
+            var _TranslationDueOn = TranslationDueOn.getDate() + ' ' + Months[TranslationDueOn.getMonth()] + ' ' + TranslationDueOn.getFullYear();
+            $("#duedate").val(_TranslationDueOn);
+            if (_DateofNotification > TranslationDueOn) {
+                $("#DueDateError").removeClass("hidden");
+            }
+            else {
+                $("#DueDateError").addClass("hidden");
+            }
+        }
+    });
+
+    $('#NotificationFile').change(function (e) {
+        ShowGlobalLodingPanel();
+        var totfilesize = 0;
+        if ($(this)[0].files.length != 0) {
+            var fileToLoad = $(this)[0].files[0];
+            var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
+            $.each($(this)[0].files, function (index, value) {
+                totfilesize += value.size;
+            });
+
+            if (totfilesize > 10485760) {
+                Alert("Notification", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+                $("#Loader").hide();
+                $(this).val('');
+                $('#NotificationFileName').text('No File Choosen');
+                NotificationAttachment = [];
+                ClearNotificationForm();
                 return false;
+            }
+            else if (ext != "docx" && ext != "doc" && ext != "pdf") {
+                Alert("Notification", "You can upload only word and pdf files.<br/>", "Ok");
+                $(this).val('');
+                NotificationAttachment = [];
+                $("#Loader").hide();
+                $('#NotificationFileName').text('No File Choosen');
+                ClearNotificationForm();
+                return false;
+            }
+            else {
+                $.each($(this)[0].files, function (index, value) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        NotificationAttachment = { "FileName": value.name, "Content": e.target.result };
+                        $('#NotificationFileName').text(value.name);
+                        $.ajax({
+                            url: "/api/AddUpdateNotification/ReadNotificationDetails/",
+                            async: false,
+                            type: "POST",
+                            data: JSON.stringify(NotificationAttachment),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                ClearNotificationForm();
+                                if (result != null) {
+                                    if ($.trim(result.NotificationType) == "1")
+                                        $('#TypeSPS').attr('checked', "checked");
+                                    else if ($.trim(result.NotificationType) == "2")
+                                        $('#TypeTBT').attr('checked', "checked");
+
+                                    if ($.trim(result.NotificationNumber) != '' && $.trim(result.NotificationNumber).indexOf('/') > 0)
+                                        $('#NotificationNumberId').val(result.NotificationNumber);
+
+                                    if (!isNaN(new Date($.trim(result.DateofNotification)).valueOf()))
+                                        $('#DateofNotificationId').val($.trim(result.DateofNotification));
+
+                                    if (!isNaN(new Date($.trim(result.FinalDateOfComments)).valueOf()))
+                                        $('#FinalDateforCommentsId').val($.trim(result.FinalDateOfComments));
+
+                                    if ($.trim(result.Articles) != '')
+                                        $('#NotificationUnderArticleId').val($.trim(result.Articles).replace(/,\s*$/, ""));
+
+                                    if ($.trim(result.Country) != '') {
+                                        $("#NotifyingCountryId option").filter(function () {
+                                            return this.text.toLowerCase() == $.trim(result.Country).toLowerCase();
+                                        }).attr('selected', true);
+                                        $('.combobox-container').find('input[type=text]').val($("#NotifyingCountryId option:selected").text());
+                                    }
+
+                                    if ($.trim(result.Title) != '')
+                                        $('#TitleId').val($.trim(result.Title));
+
+                                    if ($.trim(result.ResponsibleAgency) != '')
+                                        $('#AgencyResponsibleId').val($.trim(result.ResponsibleAgency));
+
+                                    if ($.trim(result.ProductsCovered) != '')
+                                        $('#ProductsCoveredId').val($.trim(result.ProductsCovered));
+
+                                    if ($.trim(result.Description) != '')
+                                        $('#DescriptionofContentId').val($.trim(result.Description));
+
+                                    if ($.trim(result.HSCodes) != "") {
+                                        $('[id$=hdnSelectedHSCodes]').val($.trim(result.HSCodes));
+                                        var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
+                                        $('#HSCodeTree').jstree(true).select_node(numbersArray);
+                                        if ($('.jstree-anchor.jstree-clicked').length > 0)
+                                            SaveHSCode();
+                                    }
+
+                                    if ($.trim(result.EnquiryEmail) != "")
+                                        $("#EnquiryPointId").val($.trim(result.EnquiryEmail));
+
+                                    $("#FinalDateforCommentsId").trigger("change");
+                                    $("#AgencyResponsibleId").trigger('keyup');
+                                    $("#DescriptionofContentId").trigger('keyup');
+                                    $("#ProductsCoveredId").trigger('keyup');
+                                    $("#TitleId").trigger('keyup');
+                                }
+                            },
+                            failure: function (result) {
+                                Alert("Notification", "Something went wrong.<br/>", "Ok");
+                                ClearNotificationForm();
+                            },
+                            error: function (result) {
+                                Alert("Notification", "Something went wrong.<br/>", "Ok");
+                            },
+                            complete: function () {
+                                HideGlobalLodingPanel();
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(fileToLoad);
+                });
             }
         }
         else {
-            $('#display_count3').text(words);
-            $('#word_left3').text(300 - words);
+            $(this).prev().text('Upload File');
+            NotificationAttachment = [];
+            $('#NotificationFileName').text('No File Choosen');
+            ClearNotificationForm();
+        }
+        HideGlobalLodingPanel();
+    });
+
+    $(".yes").click(function () {
+        $(".yes").addClass("switch-blue active");
+        $(".yes").removeClass("switch-white");
+        $(".No").removeClass("switch-red active");
+        $(".No").addClass("switch-white");
+        $(".upload").removeClass("hidden");
+        $(".mailenquiry, .ObtainDocument").addClass("hidden");
+    });
+
+    $(".No").click(function () {
+        $(".yes").removeClass("switch-blue active");
+        $(".yes").addClass("switch-white");
+        $(".No").addClass("switch-red active");
+        $(".No").removeClass("switch-white");
+        $(".divLanguage").addClass("hidden");
+        $(".upload, .translatedocument, .translatDoc").addClass("hidden");
+        $(".mailenquiry, .ObtainDocument").removeClass("hidden");
+        $('#FUP_Notifi_Attach').val('');
+        NotificationDoc = [];
+    });
+
+    $('#UploadDocumentId').change(function (e) {
+        var totfilesize = 0;
+        if ($(this)[0].files.length != 0) {
+            var fileToLoad = $(this)[0].files[0];
+            var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
+            $.each($(this)[0].files, function (index, value) {
+                totfilesize += value.size;
+            });
+
+            if (totfilesize > 10485760) {
+                Alert("Notification", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+                $("#Loader").hide();
+                //$(".divLanguage").addClass("hidden");
+                UploadedDocument = [];
+                $('#FileUploadedId').val('');
+                return false;
+            }
+            else if (ext != "docx" && ext != "doc" && ext != "pdf") {
+                Alert("Notification", "You can upload only word and pdf files.<br/>", "Ok");
+                $(this).val('');
+                $("#Loader").hide();
+                //$(".divLanguage").addClass("hidden");
+                UploadedDocument = [];
+                $('#FileUploadedId').val('');
+                return false;
+            }
+            else {
+                $.each($(this)[0].files, function (index, value) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        UploadedDocument = { "FileName": value.name, "Content": e.target.result };
+                        $('#FileUploadedId').val(value.name);
+                    };
+                    reader.readAsDataURL(fileToLoad);
+                });
+
+            }
+        }
+        else {
+            //$(".divLanguage").addClass("hidden");
+            UploadedDocument = [];
+            $('#FileUploadedId').val('');
         }
     });
 
-    //Do You Have a Detailed Notification file upload
-    $(".fileholder1").change(function () {
-        debugger;
-        var filename = $(this).val().substring(12);
-        $("#choose1").text(filename);
-        var ext = $('#choose1').text().split('.').pop().toLowerCase();
-        if ($.inArray(ext, ['docx', 'doc', 'pdf']) == -1) {
-            $("#choose1").text('No File Choose');
-            alert('Only Doc and Pdf file is valid');
-            return false;
+    $('#AddAttachment_UploadDocumentId').change(function (e) {
+        var totfilesize = 0;
+        if ($(this)[0].files.length != 0) {
+            var fileToLoad = $(this)[0].files[0];
+            var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
+            $.each($(this)[0].files, function (index, value) {
+                totfilesize += value.size;
+            });
+
+            if (totfilesize > 10485760) {
+                Alert("Notification", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+                $("#Loader").hide();
+                return false;
+            }
+            else if (ext != "docx" && ext != "doc" && ext != "pdf") {
+                Alert("Notification", "You can upload only word and pdf files.<br/>", "Ok");
+                $(this).val('');
+                $("#Loader").hide();
+                return false;
+            }
+            else {
+                $.each($(this)[0].files, function (index, value) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var IsExist = false;
+                        $.each($('[id$=tblAttachments] input[type=checkbox]'), function () {
+                            var FileName = $.trim($(this).closest('td').next().text());
+                            if (FileName.toLowerCase() == value.name.toLowerCase())
+                                IsExist = true;
+                        });
+                        if (IsExist) {
+                            Alert("Notification", "An attachment with same name has been already added.<br/>", "Ok")
+                        }
+                        else {
+                            TempMailAttachments.push({ "FileName": value.name, "Content": e.target.result, "Selected": true, "Path": "" });
+                            var HTML = '';
+                            HTML += '<tr>';
+                            HTML += '<td style="width: 4%; width:50px;">';
+                            HTML += '<div class="checkbox radio-margin">';
+                            HTML += '<label>';
+                            HTML += '<input type="checkbox" checked="checked" val="" onchange="AddRemoveMailAttachement(this);">';
+                            HTML += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+                            HTML += '</label>';
+                            HTML += '</div>';
+                            HTML += '</td>';
+                            HTML += '<td style="width: 96%">' + value.name + '</td>';
+                            HTML += '</tr>';
+                            $('[id$=tblAttachments]').append(HTML);
+                        }
+                    }
+                    reader.readAsDataURL(fileToLoad);
+                });
+            }
         }
     });
 
+    $('#UploadDocumentModal').on('hidden.bs.modal', function () {
+        var CallFor = $.trim($("[id$=hdnDocumentFor]").val());
+        if (UploadedDocument.FileName == null && CallFor.toLowerCase() == "notificationdoc") {
+            NotificationDoc = [];
+            $('#Notifi_Attach_Name').text('');
+            $("#btntxtNotificationDoc").text("Upload File");
+        }
+        else if (UploadedDocument.FileName == null && CallFor.toLowerCase() == "translateddoc") {
+            TranslatedDoc = [];
+            $('#Notifi_Attach_Name_Translated').text('');
+            $("#btntxtTranslatedDoc").text("Upload File");
+        }
+
+        $('[id$=UploadDocumentId]').val('');
+        $('#FileUploadedId').val('');
+        $('[id$=DocumentDisplayNameId]').val('');
+    });
+
+    $('#EnquiryPointId').change(function () {
+        Email = $.trim($(this).val());
+        if (Email != '') {
+            if (validateEmail(Email))
+                $('[id$=EnquiryMailDeskId]').val($(this).val());
+            else {
+                $(this).val('');
+                $('[id$=EnquiryMailDeskId]').val('');
+                Alert("Documents", "Please enter valid email id.<br/>", "Ok");
+            }
+        }
+    });
+
+    if ($('[id$=hdnLanguageId]').val() > 0) {
+        BindLanguages();
+    }
+
+    if ($('[id$=hdnNotificationId]').val() > 0) {
+        $("#FinalDateforCommentsId").trigger("change");
+
+        if ($('[id$=hdnLanguageId]').val() > 0)
+            $('#ddlLanguage').trigger("change");
+
+        $("#AgencyResponsibleId").trigger('keyup');
+        $("#DescriptionofContentId").trigger('keyup');
+        $("#ProductsCoveredId").trigger('keyup');
+        $("#TitleId").trigger('keyup');
+    }
 });
+
+function ClearNotificationForm() {
+    $('#TypeTBT').removeAttr('checked');
+    $('#TypeSPS').removeAttr('checked');
+    $('#NotificationNumberId').val('');
+    $('#DateofNotificationId').val('');
+    $("#FinalDateforCommentsId").val('');
+    $("#EnquiryPointId").val("");
+
+    $("#NotifyingCountryId").val('');
+    $('.combobox-container').find('input[type=text]').val('');
+
+    $(".hs-code-table").addClass("hidden");
+    $("#hdnSelectedHSCodes").val('');
+
+    $('#TitleId').val('');
+    $('#AgencyResponsibleId').val('');
+    $('#ProductsCoveredId').val('');
+    $('#DescriptionofContentId').val('');
+    $('#NotificationUnderArticleId').val('');
+
+    $("#FinalDateforCommentsId").trigger("change");
+    $("#AgencyResponsibleId").trigger('keyup');
+    $("#DescriptionofContentId").trigger('keyup');
+    $("#ProductsCoveredId").trigger('keyup');
+    $("#TitleId").trigger('keyup');
+}
+
+function BindLanguages() {
+    $.ajax({
+        url: "/api/Masters/GetLanguages",
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if ($('[Id$=ddlLanguage]').length > 0) {
+                $('[Id$=ddlLanguage]').empty();
+                if (result.length > 0) {
+                    $('[Id$=ddlLanguage]').append('<option value="0"> --Select Language-- </option>');
+                    $.each(result, function (i, v) {
+                        $('[Id$=ddlLanguage]').append('<option value="' + v.LanguageId + '"> ' + v.LanguageName + ' </option>');
+                    });
+
+                    $('[id$=ddlLanguage]').val($('[id$=hdnLanguageId]').val());
+                    var SentOn = $('[id$=ddlLanguage]').attr("data-SearchFor");
+                    if ($.trim(SentOn) != "") {
+                        $('[id$=ddlLanguage]').attr("disabled", "disabled");
+                    }
+                }
+            }
+        },
+        failure: function (result) {
+            Alert("Notification", "Something went wrong.<br\>", "Ok");
+        },
+        error: function (result) {
+            Alert("Notification", "Something went wrong.<br\>", "Ok");
+        }
+    });
+}
+
+function BindTranslater(LanguageId) {
+    $.ajax({
+        url: "/api/Masters/GetTranslaters/" + LanguageId,
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            $('#ddlTranslater').empty();
+            if (result.length > 0) {
+                $('#ddlTranslater').append('<option value="">--Select Translator--</option>');
+                $.each(result, function (i, v) {
+                    $('#ddlTranslater').append('<option value="' + v.TranslatorId + '"> ' + v.TranslatorName + ' </option>');
+                });
+
+                var TranslaterId = $('#ddlTranslater').attr('data-selectFor');
+                $('#ddlTranslater').val(TranslaterId);
+            }
+            else {
+                $('#ddlTranslater').append('<option value="">No Translater available for selected language.</option>');
+            }
+        },
+        failure: function (result) {
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
+        },
+        complete: function () {
+            //HideGlobalLodingPanel();
+            if ($('#ddlTranslater').val() == null)
+                $('#ddlTranslater').val('');
+        }
+    });
+}
 
 //validate Notification section
 
 function Validate() {
     var MSG = "";
-
     //Notification Type Id validation
     if ($('#NotificationTypeId').find('input[type=checkbox]:checked').length == 0) {
-        MSG += 'Please select atleast one Notification Type \n';
+        MSG += 'Please select notification type.<br/>';
     }
 
     //Notification Number id Validation
     if ($('[id$=NotificationNumberId]').val().trim().length == 0) {
         $('[id$=NotificationNumberId]').addClass("error");
-        MSG += "Notification Number Not be Empty \n";
+        MSG += "Please enter notification number.<br/>";
     }
     else {
         $('[id$=NotificationNumberId]').removeClass("error");
@@ -113,7 +541,7 @@ function Validate() {
     //Notification status Validation
     if ($('[id$=NotificationStatusId]').val() == '') {
         $('[id$=NotificationStatusId]').addClass("error");
-        MSG += "Please select one status \n";
+        MSG += "Please select notification status.<br/>";
     }
     else {
         $('[id$=NotificationStatusId]').removeClass("error");
@@ -122,7 +550,7 @@ function Validate() {
     //Date of Notification id Validation
     if ($('[id$=DateofNotificationId]').val().trim().length == 0) {
         $('[id$=DateofNotificationId]').addClass("error");
-        MSG += "Please select Date of Notification \n";
+        MSG += "Please select date of notification.<br/>";
     }
     else {
         $('[id$=DateofNotificationId]').removeClass("error");
@@ -131,7 +559,7 @@ function Validate() {
     //Final Date for Comments id Validation
     if ($('[id$=FinalDateforCommentsId]').val().trim().length == 0) {
         $('[id$=FinalDateforCommentsId]').addClass("error");
-        MSG += "Please select Final Date OF Comments \n";
+        MSG += "Please select final date of comments.<br/>";
     }
     else {
         $('[id$=FinalDateforCommentsId]').removeClass("error");
@@ -140,17 +568,17 @@ function Validate() {
     //Send Response By id Validation
     if ($('[id$=SendResponseById]').val().trim().length == 0) {
         $('[id$=SendResponseById]').addClass("error");
-        MSG += "Please Select Send Responce By Date \n";
+        MSG += "Please select date for send responce by.<br/>";
     }
     else {
         $('[id$=SendResponseById]').removeClass("error");
     }
 
     //Notifying Country validation
-    if ($('.combobox-container input').val() == 0) {
+    if ($.trim($('[id$=NotifyingCountryId]').val()).length == 0) {
         $('.combobox-container input').addClass("error");
         $('.combobox-container .input-group .input-group-addon').addClass("error");
-        MSG += "Please select one Country \n";
+        MSG += "Please select notifying country.<br/>";
     }
     else {
         $('.combobox-container input').removeClass("error");
@@ -160,7 +588,7 @@ function Validate() {
     //Title Id Validation
     if ($('[id$=TitleId]').val().trim().length == 0) {
         $('[id$=TitleId]').addClass("error");
-        MSG += "Provide Suitable Title \n";
+        MSG += "Please enter title of notification.<br/>";
     }
     else {
         $('[id$=TitleId]').removeClass("error");
@@ -169,7 +597,7 @@ function Validate() {
     //Agency Responsible Id Validation
     if ($('[id$=AgencyResponsibleId]').val().trim().length == 0) {
         $('[id$=AgencyResponsibleId]').addClass("error");
-        MSG += "Provide Agency Responsible Details \n";
+        MSG += "Please enter responsible agency details.<br/>";
     }
     else {
         $('[id$=AgencyResponsibleId]').removeClass("error");
@@ -178,7 +606,7 @@ function Validate() {
     //Notification under Artical validation
     if ($('[id$=NotificationUnderArticleId]').val().trim().length == 0) {
         $('[id$=NotificationUnderArticleId]').addClass("error");
-        MSG += "Provide Notification Artical Code \n";
+        MSG += "Please enter notification under article.<br/>";
     }
     else {
         $('[id$=NotificationUnderArticleId]').removeClass("error");
@@ -187,7 +615,7 @@ function Validate() {
     //Products Covered Id validation
     if ($('[id$=ProductsCoveredId]').val().trim().length == 0) {
         $('[id$=ProductsCoveredId]').addClass("error");
-        MSG += "Product Cover Details \n";
+        MSG += "Please enter product covered.<br/>";
     }
     else {
         $('[id$=ProductsCoveredId]').removeClass("error");
@@ -196,74 +624,78 @@ function Validate() {
     //Hs code table validation
     var rowCount = $('#HSCodesId>tbody>tr').length;
     if ($('#HSCodesId>tbody>tr').length == 0) {
-        MSG += "HSCodes not be Empty \n";
+        MSG += "Please select HS Codes.<br/>";
     }
 
     //Description of Content Id validation
     if ($('[id$=DescriptionofContentId]').val().trim().length == 0) {
         $('[id$=DescriptionofContentId]').addClass("error");
-        MSG += "Provide Discription \n";
+        MSG += "Please enter description.<br/>";
     }
     else {
         $('[id$=DescriptionofContentId]').removeClass("error");
     }
 
-    //Document Accordian Validation    
-    if ($('input[name=Documents]:checked').length <= 0) {
-        alert("No radio checked")
+    if ($('[id$=hdnNotificationId]').val() > 0) {
+        //Document Accordian Validation    
+        if ($("input[name='Documents']:checked").length == 0) {
+            MSG += "Please specify whether you have detailed notification or not.<br/>";
+        }
+        else if ($.trim($("input[name='Documents']:checked").val()) == "0") {
+            if ($.trim($('[id$=EnquiryPointId]').val()) == "") {
+                MSG += "Please enter enquiry desk email-id.<br/>";
+                $('[id$=EnquiryPointId]').addClass('error');
+            }
+            else
+                $('[id$=EnquiryPointId]').removeClass('error');
+
+            var DocumentObtainedOn = $.trim($("#Obtaindate").val());
+            if (DocumentObtainedOn == '') {
+                $("#Obtaindate").addClass("error");
+                MSG += "Please specify the date by when the document will be obtained by you.<br/>";
+            }
+            else
+                $("#Obtaindate").removeClass("error");
+        }
+        else {
+            //upload file validation (for document section)
+            if (NotificationDoc.FileName == null && $('#Notifi_Attach_Name').attr('href') == null) {
+                $('[id$=choose1]').addClass("error");
+                MSG += "Provide a document for upload.<br/>";
+            }
+            else {
+                $('[id$=choose1]').removeClass("error");
+            }
+
+            if ($.trim($('#ddlLanguage').val()) == "") {
+                $('#ddlLanguage').addClass("error");
+                MSG += "Please select the language of the document.<br/>";
+            }
+            else {
+                $('#ddlLanguage').removeClass("error");
+                if ($.trim($('#ddlLanguage').val()) != "1") {
+                    if ($.trim($('#ddlTranslater').val()) == "") {
+                        $('#ddlTranslater').addClass("error");
+                        MSG += "Select a translater for the document.<br/>";
+                    }
+                    else {
+                        $('#ddlTranslater').removeClass("error");
+                    }
+                }
+            }
+
+            if ($('#Notifi_Attach_Name').text() != '' && !$('[id$=chkSkipToDiscussion]').is(':checked') && $.trim($("#txtStakeholderResponseDueBy").val()) == '') {
+                MSG += "Please specify the date by when the stakeholders will send response.<br/>";
+                $("#txtStakeholderResponseDueBy").addClass('error');
+            }
+            else
+                $("#txtStakeholderResponseDueBy").removeClass('error');
+        }
     }
-    else
-        alert($('input[name=Documents]:checked').val());
-
-    //upload file validation (for document section)
-    if ($('[id$=choose1]').text().trim() == "No File Choose") {
-        $('[id$=choose1]').removeClass("error");
-        MSG += "Please Select atleast one File \n";
-    }
-    else {
-            $('[id$=choose1]').removeClass("error");
-    }
-
-    //select Language Validation
-    //if ($('[id$=SelectLanguageId]').val() == -1) {
-    //    $('[id$=SelectLanguageId]').addClass("error");
-    //    MSG += "Please select Language \n";
-    //}
-    //else{
-    //    $('[id$=SelectLanguageId]').removeClass("error");
-    //}
-
-    //select Translator Validation
-    //if ($('[id$=transletorDrop]').text() == "-- Select Translator --") {
-    //    $('[id$=transletorDrop]').addClass("error");
-    //    MSG += "Please select Translator \n";
-    //}
-    //else{
-    //    $('[id$=transletorDrop]').removeClass("error");
-    //}
-
-    //remainder for translation id Validation
-
-    //if ($('[id$=remainder]').val().trim().length == 0) {
-    //    $('[id$=remainder]').addClass("error");
-    //    MSG += "Please select Date of Remainder \n";
-    //}
-    //else{
-    //    $('[id$=remainder]').removeClass("error");
-    //}
-
-    //Duedate of Translation id Validation
-
-    //if ($('[id$=duedate]').val().trim().length == 0) {
-    //    $('[id$=duedate]').addClass("error");
-    //    MSG += "Please select duedate Date of Translation \n";
-    //}
-    //else{
-    //    $('[id$=duedate]').removeClass("error");
-    //}
 
     if (MSG.length > 0) {
-        alert(MSG);
+        Alert("Notification", MSG, "Ok");
+        $($('.error')).eq(0).focus();
     }
     else
         SaveUpdateNotification();
@@ -271,27 +703,78 @@ function Validate() {
 
 //Save Notification Section
 function SaveUpdateNotification() {
-    var NotType = '';
-    $.each($('#NotificationTypeId').find('input[type=checkbox]:checked'), function () {
-        NotType += $(this).val() + ',';
-    });
-    var obj = {
-        UserId: 1,
-        NotificationId: $('[id$=hdnNotificationId]').val(),
-        Noti_Number: $('[id$=NotificationNumberId]').val().trim(),
-        Noti_Type: NotType,
-        Noti_Status: $('[id$=NotificationStatusId]').val(),
-        Noti_Date: $('[id$=DateofNotificationId]').val().trim(),
-        FinalDateOfComments: $('[id$=FinalDateforCommentsId]').val().trim(),
-        SendResponseBy: $('[id$=SendResponseById]').val().trim(),
-        Noti_Country: $('[id$=NotifyingCountryId]').val(),
-        Title: $('[id$=TitleId]').val().trim(),
-        ResponsibleAgency: $('[id$=AgencyResponsibleId]').val().trim(),
-        Noti_UnderArticle: $('[id$=NotificationUnderArticleId]').val(),
-        ProductsCovered: $('[id$=ProductsCoveredId]').val().trim(),
-        HSCodes: $('[id$=HiddenHSCode]').val().trim(),
-        Description: $('[id$=DescriptionofContentId]').val()
-    };
+    ShowGlobalLodingPanel();
+    var NotficationType = '';
+    var obj;
+
+    var Id = $('[id$=hdnNotificationId]').val();
+
+    if ($('#NotificationTypeId').find('input[type=checkbox]:checked').length > 0) {
+        if ($('#NotificationTypeId').find('input[type=checkbox]:checked').length > 1)
+            NotficationType = '3';
+        else
+            NotficationType = $('#NotificationTypeId').find('input[type=checkbox]:checked').val();
+    }
+
+    if ($.trim(Id) == 0) {
+        obj = {
+            UserId: myWTOAPP.UserId,
+            Role: myWTOAPP.UserRole,
+            NotificationId: Id,
+            NotificationNumber: $('[id$=NotificationNumberId]').val().trim(),
+            NotificationType: NotficationType,
+            NotificationStatus: $('[id$=NotificationStatusId]').val(),
+            DateofNotification: $('[id$=DateofNotificationId]').val().trim(),
+            FinalDateOfComments: $('[id$=FinalDateforCommentsId]').val().trim(),
+            SendResponseBy: $('[id$=SendResponseById]').val().trim(),
+            CountryId: $('[id$=NotifyingCountryId]').val(),
+            Title: $('[id$=TitleId]').val().trim(),
+            ResponsibleAgency: $('[id$=AgencyResponsibleId]').val().trim(),
+            UnderArticle: $('[id$=NotificationUnderArticleId]').val(),
+            ProductsCovered: $('[id$=ProductsCoveredId]').val().trim(),
+            HSCodes: $('[id$=hdnSelectedHSCodes]').val().trim(),
+            Description: $('[id$=DescriptionofContentId]').val(),
+            NotificationAttachment: NotificationAttachment,
+            EnquiryEmail: $.trim($('[id$=hdnEnquiryEmailId]').val())
+        };
+    }
+    else {
+        var IsDetailedNotifi = false;
+        if ($("input[name='Documents']:checked").length != 0) {
+            IsDetailedNotifi = $("input[name='Documents']:checked").val() == "0" ? false : true;
+        }
+
+        obj = {
+            UserId: myWTOAPP.UserId,
+            Role: myWTOAPP.UserRole,
+            NotificationId: Id,
+            NotificationNumber: $('[id$=NotificationNumberId]').val().trim(),
+            NotificationType: NotficationType,
+            NotificationStatus: $('[id$=NotificationStatusId]').val(),
+            DateofNotification: $('[id$=DateofNotificationId]').val().trim(),
+            FinalDateOfComments: $('[id$=FinalDateforCommentsId]').val().trim(),
+            SendResponseBy: $('[id$=SendResponseById]').val().trim(),
+            CountryId: $('[id$=NotifyingCountryId]').val(),
+            Title: $('[id$=TitleId]').val().trim(),
+            ResponsibleAgency: $('[id$=AgencyResponsibleId]').val().trim(),
+            UnderArticle: $('[id$=NotificationUnderArticleId]').val(),
+            ProductsCovered: $('[id$=ProductsCoveredId]').val().trim(),
+            HSCodes: $('[id$=hdnSelectedHSCodes]').val().trim(),
+            Description: $('[id$=DescriptionofContentId]').val(),
+            NotificationAttachment: NotificationAttachment,
+            EnquiryEmail: $.trim($('[id$=EnquiryPointId]').val()),
+            DoesHaveDetails: IsDetailedNotifi,
+            NotificationDoc: (NotificationDoc.length == 0 && $('#Notifi_Attach_Name').attr('href') != null) ? { "FileName": $('#Notifi_Attach_Name').text(), "Content": "" } : NotificationDoc,
+            LanguageId: $("#ddlLanguage").val() == '' ? 0 : $("#ddlLanguage").val(),
+            TranslatorId: $("#ddlTranslater").val() == '' ? 0 : $("#ddlTranslater").val(),
+            ObtainDocBy: $("#Obtaindate").val(),
+            TranslatedDoc: (TranslatedDoc.length == 0 && $('#Notifi_Attach_Name_Translated').attr('href') != null) ? { "FileName": $('#Notifi_Attach_Name_Translated').text(), "Content": "" } : TranslatedDoc,
+            StakeholderResponseDueBy: $("#txtStakeholderResponseDueBy").val(),
+            Role: myWTOAPP.UserRole,
+            SkippedToDiscussion: $('[id$=chkSkipToDiscussion]').is(':checked')
+        };
+        debugger;
+    }
     $.ajax({
         url: "/api/AddUpdateNotification/InsertUpdate_Notification",
         async: false,
@@ -299,19 +782,24 @@ function SaveUpdateNotification() {
         data: JSON.stringify(obj),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result.Status == 'success')
-                alert('Notification has been saved successfully.');
+            if (result.NotificationId > 0) {
+                if ($.trim(Id) == 0)
+                    Alert("Notification", "Notification has been saved successfully.<br/>", "Ok");
+                else
+                    Alert("Notification", "Notification has been updated successfully.<br/>", "Ok");
+                if (result.NotificationId != 0)
+                    location.href = window.location.origin + "/AddNotification/Edit_Notification/" + result.NotificationId;
+                else
+                    window.reload();
+            }
             else if (result.Status == 'failure')
-                alert('Something went wrong. Please try again');
-
-            var url = $("#RedirectTo").val();
-            location.href = url;
+                Alert("Notification", "Something went wrong. Please try again.<br/>", "Ok");
         },
         failure: function (result) {
-            alert("Something went wrong.");
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-            alert("Something went wrong.");
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
             //HideGlobalLodingPanel();
@@ -332,15 +820,14 @@ function SaveHSCode() {
     var i, j, r = [];
     var row = '';
     if ($('.jstree-anchor.jstree-clicked').length == 0) {
-        alert('Please select atleast one HSCode');
+        Alert("Notification", "Please select atleast one HSCode.<br/>", "Ok");
         $("#HSCodesId tbody > tr").remove();
         var rowCount = $('#HSCodesId>tbody>tr').length;
         if ($('#HSCodesId>tbody>tr').length == 0) {
             $(".hs-code-table").addClass("hidden");
-            $("#HiddenHSCode").val('');
+            $("#hdnSelectedHSCodes").val('');
             return false;
         }
-
         return false;
     }
     else {
@@ -402,11 +889,11 @@ function SaveHSCode() {
             row += "<tr class='" + nodeId + "'><td>" + nodeId + "</td><td>" + text + "</td><td><a href='#" + nodeId + "' id='" + nodeId + "' onclick='return RemoveHSCodeRow(this.id);' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
         });
 
-        $("#HiddenHSCode").val(items);
+        $("#hdnSelectedHSCodes").val(items);
 
         $("#HSCodesId tbody").append(row);
     }
-    //$("#HiddenHSCode").val(id);
+
     console.log(HSCodeId);
     console.log(TotalIdArray);
 
@@ -421,7 +908,6 @@ function SaveHSCode() {
     $('#selecthr').modal('hide');
 }
 
-
 //Remove HSCode table tr
 function RemoveHSCodeRow(ClassName) {
 
@@ -434,9 +920,9 @@ function RemoveHSCodeRow(ClassName) {
             Yes: function () {
                 $('#HSCodeTree').jstree("uncheck_node", ClassName);
                 $('.' + ClassName).remove();
-                var UpdateHSCodeId = $("#HiddenHSCode").val().replace(ClassName, "").replace(",,", ",");
-                $("#HiddenHSCode").val('');
-                $("#HiddenHSCode").val(UpdateHSCodeId);
+                var UpdateHSCodeId = $("#hdnSelectedHSCodes").val().replace(ClassName, "").replace(",,", ",");
+                $("#hdnSelectedHSCodes").val('');
+                $("#hdnSelectedHSCodes").val(UpdateHSCodeId);
                 $(this).dialog("close");
                 var rowCount = $('#HSCodesId>tbody>tr').length;
                 if ($('#HSCodesId>tbody>tr').length == 0) {
@@ -457,7 +943,6 @@ function RemoveHSCodeRow(ClassName) {
 
 //Bind HSCode Api Below
 function GetHSCode() {
-    debugger;
     $.ajax({
         url: "/api/Masters/GetHSCode",
         async: false,
@@ -477,10 +962,10 @@ function GetHSCode() {
             });
         },
         failure: function (result) {
-            alert("Something went wrong.");
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-            alert("Something went wrong.");
+            Alert("Notification", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
             //HideGlobalLodingPanel();
@@ -488,17 +973,15 @@ function GetHSCode() {
     });
 }
 
-
 //Bind HSCode on Edit Mode
 function bindhscodeUId() {
     document.getElementById('HSCodeSearchTxt').value = '';
-    var numbersArray = $('[id$=HiddenHSCode]').val().trim().split(',');
+    var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
     $('#HSCodeTree').jstree(true).select_node(numbersArray);
 }
 
 //JSTree Search function
 function SearchHSCode() {
-    debugger;
     var searchString = $("#HSCodeSearchTxt").val();
     $('#HSCodeTree').jstree('search', searchString);
 }
@@ -507,4 +990,498 @@ function SearchHSCode() {
 function clearSearchtxt() {
     document.getElementById('HSCodeSearchTxt').value = '';
     $('#searchhscodebtn').click();
+}
+
+//Yes No Radio Button Function
+function HaveDetaillNotifi(callfor) {
+    if (callfor == 'Y') {
+        $("#radioYesNo").val("1");
+    }
+    else if (callfor == 'N') {
+        $("#radioYesNo").val("0");
+    }
+    else
+        $("#radioYesNo").val("");
+}
+
+//clear stakeholder checkbox 
+function clearStakhCheckbox() {
+    $("#txtSearchStakeHolder").val('');
+    $(".checked").prop("checked", false);
+    if ($("#hdnSelectedStakeHolders").val() != null && $("#hdnSelectedStakeHolders").val() != '') {
+        var hdnId = $("#hdnSelectedStakeHolders").val().split(',');
+        var str = '';
+        for (var i = 0; hdnId.length > i; i++) {
+            str = hdnId[i];
+            $("#" + str).prop("checked", true);
+        }
+    }
+}
+
+//Add Stakeholder Popup
+function SaveStakeholder() {
+    var Id = $('[id$=hdnNotificationId]').val();
+    var stakeholderId = [];
+    if ($('#stackholder').find('input[type=checkbox]:checked').length == 0) {
+        Alert("Notification", "Please select atleast one stakeholder.<br/>", "Ok");
+    }
+    else {
+        $.each($('#stackholder').find('input[type=checkbox]:checked'), function () {
+            if (this.id.toLowerCase() != 'chkselectall')
+                stakeholderId.push($(this).val());
+        });
+        $("#hdnSelectedStakeHolders").val(stakeholderId);
+        $.ajax({
+            url: "/api/AddUpdateNotification/AddRelatedStackholders/" + Id + "/?Stakeholders=" + stakeholderId.toString(),
+            async: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.Status == "success") {
+                    Alert("Notification", "Stakeholders have been added successfully.<br/>", "Ok");
+                    $('#btnSendMailStakeHolder').show();
+                    $('#btnRemoveStakeholder').show();
+                }
+                else
+                    Alert("Notification", "Something went wrong. Please try again.<br/>", "Ok");
+
+                $('#stackholder').modal('toggle');
+                $("#RelatedStakeholderList").load('/AddNotification/GetNotificationStakeholders/' + Id);
+            },
+            failure: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                HideGlobalLodingPanel();
+            }
+        });
+    }
+}
+
+//Remove Stakeholder button click function
+function RemoveStakeholder() {
+    var Id = $('[id$=hdnNotificationId]').val();
+    var stakeholderId = [];
+    var ToRemove = [];
+    if ($('#notificationlist tbody').find('input[type=checkbox]:checked').length == 0) {
+        Alert("Notification", "Please select stakeholders to remove.<br/>", "Ok");
+    }
+    else {
+        if (confirm('Do you want to remove selected stakholders?')) {
+            $.each($('#notificationlist').find('input[type=checkbox]:checked'), function () {
+                stakeholderId.push($(this).val());
+            });
+            $.each($('#notificationlist').find('input:checkbox:not(:checked)'), function () {
+                ToRemove.push($(this).val());
+            })
+            $("#hdnSelectedStakeHolders").val(ToRemove);
+            $.ajax({
+                url: "/api/AddUpdateNotification/RemoveRelatedStackholders/" + Id + "/?Stakeholders=" + stakeholderId.toString() + ',',
+                async: false,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result)
+                        Alert("Notification", "Selected Stakeholders have been removed successfully.<br/>", "Ok");
+                    else
+                        Alert("Notification", "Something went wrong. Please try again.<br/>", "Ok");
+
+                    $("#RelatedStakeholderList").load('/AddNotification/GetNotificationStakeholders/' + Id);
+                },
+                failure: function (result) {
+                    Alert("Notification", "Something went wrong.<br/>", "Ok");
+                },
+                error: function (result) {
+                    Alert("Notification", "Something went wrong.<br/>", "Ok");
+                },
+                complete: function () {
+                    HideGlobalLodingPanel();
+                }
+            });
+        }
+    }
+}
+
+//Send Mail to tranlator 
+function SendToTranslater() {
+    var ErrorMsg = "";
+    if (NotificationDoc.length == 0 && $('#Notifi_Attach_Name').attr('href') == null) {
+        ErrorMsg += 'Please upload document for translation.<br/>';
+    }
+
+    if ($.trim($('#ddlLanguage').val()) == "") {
+        ErrorMsg += 'Please select language of document.<br/>';
+    }
+
+    if ($.trim($('#ddlTranslater').val()) == "") {
+        ErrorMsg += 'Please select translater.<br/>';
+    }
+
+    if (ErrorMsg.length > 0) {
+        Alert("Notification", ErrorMsg, "Ok");
+        return false;
+    }
+    else {
+        ShowGlobalLodingPanel();
+        if (NotificationDoc.length == 0)
+            NotificationDoc = { "FilenName": $('#Notifi_Attach_Name').text(), "Content": "" };
+
+        var Obj = {
+            UserId: myWTOAPP.UserId,
+            NotificationId: $.trim($('#hdnNotificationId').val()),
+            DoesHaveDetails: $.trim($("input[name='Documents']:checked").val()) == "0" ? false : true,
+            NotificationDoc: NotificationDoc,
+            LanguageId: $.trim($('#ddlLanguage').val()),
+            TranslaterId: $.trim($('#ddlTranslater').val()),
+            TranslationDueOn: $.trim($('#duedate').val()),
+            TranslationReminderOn: $.trim($('#remainder').val()),
+            Role: myWTOAPP.UserRole
+        }
+
+        $.ajax({
+            url: "/api/AddUpdateNotification/SendToTranslater",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(Obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                Alert("Notification", "The document has been sent successfully for translation.<br/>", "Ok");
+                window.location.reload();
+            },
+            failure: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                HideGlobalLodingPanel();
+            }
+        });
+    }
+}
+
+//Open model for send mail to stakeholders
+function OpenSendMailModel() {
+    //if ($("input[name='Documents']:checked").length != 0 && $("input[name='Documents']:checked").val() == '0') {
+    //    Alert("Notification", "Notification document has not been uploaded yet.<br/>", "Ok");
+    //    return false;
+    //}
+    //else {
+    $('#ddlAttachments').find('input[type=checkbox]').prop('checked', false);
+    var stakeholderId = [];
+    if ($('#notificationlist tbody').find('input[type=checkbox]:checked').length == 0) {
+        Alert("Notification", "Please select stakeholders to send mail.<br/>", "Ok");
+    }
+    else {
+        $.each($('#notificationlist tbody').find('input[type=checkbox]:checked'), function () {
+            if (this.id.toLowerCase() != 'chkselectall')
+                stakeholderId.push($(this).val());
+        });
+        $("#SelectedStackholdersCount").text(stakeholderId.length);
+        $('#txtAttachments').addClass("hidden");
+        $('#txtAttachmentCount').val('0 file(s) selected');
+        MailAttachments = [];
+        $.each($('[id$=tblAttachments] input[type=checkbox]'), function () {
+            this.checked = false;
+        });
+        $('#sentmail').modal('show');
+    }
+    // }
+}
+
+//Send Mail to stakeholders
+function SendmailToStakeholders() {
+    ShowGlobalLodingPanel();
+    var NotificationId = $('[id$=hdnNotificationId]').val();
+    var StackHolders = '';
+    $.each($('#notificationlist tbody').find('input[type=checkbox]:checked'), function () {
+        if (this.id.toLowerCase() != 'chkselectall')
+            StackHolders += $(this).val() + ',';
+    });
+
+    var Subject = $.trim($('#txtSubject').val());
+    var Message = $.trim($('#txtMessage').val());
+
+    var ErrorMsg = '';
+    if (Subject == '') {
+        ErrorMsg += 'Subject cannot be blank.<br/>';
+    }
+    if (Message == '') {
+        ErrorMsg += 'Message cannot be blank.<br/>';
+    }
+    if (MailAttachments.length <= 0) {
+        ErrorMsg += 'Please select attachment.<br/>';
+    }
+
+    if (ErrorMsg.length > 0) {
+        HideGlobalLodingPanel();
+        Alert("Notification", ErrorMsg, "Ok");
+        return false;
+    }
+    else {
+        var obj = {
+            NotificationId: NotificationId,
+            UserId: myWTOAPP.UserId,
+            Role: myWTOAPP.UserRole,
+            Stakeholders: StackHolders,
+            Attachments: MailAttachments,
+            Subject: Subject,
+            Message: Message
+        }
+        $.ajax({
+            url: "/api/AddUpdateNotification/SendMailToStakeholders",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                Alert("Notification", "Mails have been sent successfully to selected stakeholders.<br/>", "Ok");
+                window.location.reload();
+            },
+            failure: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                //HideGlobalLodingPanel();
+            }
+        });
+    }
+    HideGlobalLodingPanel();
+}
+
+//Open Modal for Upload document
+function OpenModelForUploadDocument(CallFor) {
+    $("[id$=hdnDocumentFor]").val(CallFor);
+    $('[id$=UploadDocumentModal').modal('show');
+    if (CallFor.toLowerCase() == "notificationdoc" && NotificationDoc.FileName != null) {
+        $("[id$=DocumentDisplayNameId]").val(NotificationDoc.DisplayName);
+        $('[id$=FileUploadedId]').val(NotificationDoc.FileName);
+    }
+    else if (CallFor.toLowerCase() == "translateddoc" && TranslatedDoc.FileName != null) {
+        $("[id$=DocumentDisplayNameId]").val(TranslatedDoc.DisplayName);
+        $('[id$=FileUploadedId]').val(TranslatedDoc.FileName);
+    }
+}
+
+//Function for finalize document
+function UploadDocumentOk() {
+    var ErrorMsg = '';
+    if (UploadedDocument.length == 0)
+        ErrorMsg += 'Please provide attachment.<br/>';
+
+    if ($.trim($('[id$=DocumentDisplayNameId]').val()) == "")
+        ErrorMsg += "Please provide attachment name. <br/>";
+
+    if (ErrorMsg.length > 0) {
+        Alert("Notification", ErrorMsg, "Ok");
+        return false;
+    }
+    else {
+        var CallFor = $.trim($("[id$=hdnDocumentFor]").val());
+        var DisplayName = $.trim($("[id$=DocumentDisplayNameId]").val());
+        if (CallFor.toLowerCase() == "notificationdoc") {
+            NotificationDoc = { "DisplayName": DisplayName, "FileName": UploadedDocument.FileName, "Content": UploadedDocument.Content };
+            $('#Notifi_Attach_Name').text(DisplayName);
+            BindLanguages();
+            $(".divLanguage").removeClass("hidden");
+            $("#btntxtNotificationDoc").text("Change File");
+        }
+        else if (CallFor.toLowerCase() == "translateddoc") {
+            TranslatedDoc = { "DisplayName": DisplayName, "FileName": UploadedDocument.FileName, "Content": UploadedDocument.Content };
+            $('#Notifi_Attach_Name_Translated').text(DisplayName);
+            $("#btntxtTranslatedDoc").text("Change File");
+            $('#divSkipToDiscussion').addClass('hidden');
+        }
+
+        $('[id$=UploadDocumentModal]').modal('hide');
+    }
+}
+
+//Open Modal for send mail to enquiry desk
+function OpenMailToEnquiryDeskModel() {
+    if ($.trim($('#EnquiryPointId').val()) == '') {
+        Alert("Documents", "Please enter enquiry desk email id.<br/>", "Ok");
+        return false;
+    }
+    else {
+        $('#EnquiryMailDeskId').val($.trim($('#EnquiryPointId').val()));
+        var obj = {
+            TemplateType: "Mail",
+            TemplateFor: "EnquiryDesk"
+        }
+        $.ajax({
+            url: "/api/AddUpdateNotification/GetMailSMSTemplate/" + myWTOAPP.id,
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('[id$=txtMailToEnqSubject]').val(result.Subject);
+                $('[id$=txtMailToEnqMailBody]').val(result.Message);
+            },
+            failure: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                $('#mailtoenquirydesk').modal('show');
+            }
+        });
+    }
+}
+
+//Send Mail to enquiry desk
+function SendMailToEnquiryDesk() {
+    ShowGlobalLodingPanel();
+    var NotificationId = $('[id$=hdnNotificationId]').val();
+    var Subject = $.trim($('#txtMailToEnqSubject').val());
+    var Message = $.trim($('#txtMailToEnqMailBody').val());
+    var EnquiryEmail = $.trim($('#EnquiryMailDeskId').val());
+
+    var ErrorMsg = '';
+
+    if (EnquiryEmail == '') {
+        ErrorMsg += 'Please enter enquiry desk email-id.<br/>';
+    } else if (!validateEmail(EnquiryEmail)) {
+        ErrorMsg += 'Please enter valid enquiry desk email-id.<br/>';
+    }
+
+    if (Subject == '') {
+        ErrorMsg += 'Please enter subject.<br/>';
+    }
+    if (Message == '') {
+        ErrorMsg += 'Please enter message.<br/>';
+    }
+
+    if (ErrorMsg.length > 0) {
+        HideGlobalLodingPanel();
+        Alert("Notification", ErrorMsg, "Ok");
+        return false;
+    }
+    else {
+        var obj = {
+            UserId: myWTOAPP.UserId,
+            Role: myWTOAPP.UserRole,
+            EnquiryEmailId: EnquiryEmail,
+            MailDetails: { MailId: 0, Subject: Subject, Body: Message }
+        }
+        $.ajax({
+            url: "/api/AddUpdateNotification/SendMailToEnquiryDesk/" + myWTOAPP.id,
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                Alert("Notification", "Mails have been sent successfully to enquiry desk.<br/>", "Ok");
+                window.location.reload();
+            },
+            failure: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Notification", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                //HideGlobalLodingPanel();
+            }
+        });
+    }
+    HideGlobalLodingPanel();
+}
+
+//Open popup of add other attachments in Stakholders mail popup
+function AddAttachment() {
+    var Row = '';
+    var $tableRows = [];
+    $.each($('[id$=tblAttachments] input[type=checkbox]'), function () {
+        var FileName = $.trim($(this).closest('td').next().text());
+        var Row = $(this).closest('tr')[0];
+        $.each(MailAttachments, function (i, v) {
+            if (v.FileName == FileName)
+                $tableRows.push(Row);
+        });
+
+        if ($.trim($(this).val()) != "" && $.trim($(this).val()).toLowerCase() != "on")
+            $tableRows.push(Row);
+    });
+    $.each(MailAttachments, function (i, v) {
+        TempMailAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path });
+    });
+    $('[id$=tblAttachments]').empty().append($tableRows);
+    $('[id$=divAddAttachmentOverlay]').show();
+    $('[id$=divAddAttachment]').show();
+}
+
+//close popup of add other attachments in Stakholders mail popup
+function CloseAddAttachment() {
+    TempMailAttachments = [];
+    $('[id$=divAddAttachmentOverlay]').hide();
+    $('[id$=divAddAttachment]').hide();
+}
+
+//ok function of add other attachments in Stakholders mail popup
+function AddAttachmentOk() {
+    var IsAttachmentSelected = false;
+    $.each(TempMailAttachments, function (i, v) {
+        if (v.Selected)
+            IsAttachmentSelected = true;
+    });
+
+    if (TempMailAttachments.length == 0 || !IsAttachmentSelected) {
+        Alert("Notification", "Please choose attachment.<br/>", "Ok");
+        return false;
+    }
+    else {
+        MailAttachments = [];
+        var Files = "";
+        var FileCount = 0;
+        $.each(TempMailAttachments, function (i, v) {
+            if (v.Selected) {
+                MailAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path });
+                Files += "<p class='Attachmentfilename'>" + v.FileName + "</p>";
+                FileCount++;
+            }
+        });
+        $('#txtAttachments').append(Files);
+        $('#txtAttachments').removeClass("hidden");
+        $('#txtAttachmentCount').val(FileCount + ' file(s) selected');
+
+        CloseAddAttachment();
+    }
+}
+
+//select/Unselect other attachments in Stakholders mail popup
+function AddRemoveMailAttachement(ctrl) {
+    var FileName = $.trim($(ctrl).closest('td').next().text());
+    var FileContent = $(ctrl).val();
+    if (ctrl.checked) {
+        var IsChanged = false;
+        $.each(TempMailAttachments, function (index, value) {
+            if (value.FileName == FileName) {
+                value.Selected = true;
+                IsChanged = true;
+            }
+        });
+        if (!IsChanged) {
+            if (FileContent == "")
+                TempMailAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": "" });
+            else
+                TempMailAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": FileContent });
+        }
+    }
+    else {
+        $.each(TempMailAttachments, function (index, value) {
+            if (value.FileName == FileName)
+                value.Selected = false;
+        });
+    }
 }

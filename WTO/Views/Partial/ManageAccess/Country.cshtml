@@ -5,13 +5,14 @@
 <input id="hdnCountryId" type="hidden" value="0" />
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <label class="btn-light-blue btn-padding">Countries (@Model.TotalCount)</label>
-        <a href="#" class="btn btn-light-blue btn-padding pull-right" data-target="#AddCountry" data-toggle="modal">Add Country</a>
+        <label class="table-heading">Countries (@Model.TotalCount)</label>
+        <a href="#" class="btn btn-light-blue btn-padding pull-right" data-target="#AddCountry" onclick="AddCountryPopup();" data-toggle="modal">Add Country</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
             <table class="table table-bordered">
                 <thead class="second-blackbackground">
                     <tr>
                         <th>S.No</th>
+                        <th>Country Code</th>
                         <th>Country Name</th>
                         <th>Status</th>
                         <th class="text-center">Edit</th>
@@ -25,6 +26,7 @@
                         {
                             <tr>
                                 <td>@item.ItemNumber</td>
+                                <td>@item.CountryCode</td>
                                 <td>@item.CountryName</td>
                                 @if (@item.Status == 1)
                                 {
@@ -35,14 +37,14 @@
                                     <td>Inactive</td>
                                 }
                                 <td class="text-center"><a href="#" onclick="EditCountryData(@item.CountryId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="DeleteCountry(@item.CountryId);"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.CountryName ?','Yes', 'No', 'DeleteCountry(@item.CountryId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td class="text-center" colspan="5">No Record Found ...</td>
+                            <td colspan="5">No Record Found ...</td>
                         </tr>
                     }
                 </tbody>

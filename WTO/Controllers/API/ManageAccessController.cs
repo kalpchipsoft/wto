@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using BusinessObjects.ManageAccess;
 using BusinessService.ManageAccess;
+using WTO.Handler;
 
 namespace WTO.Controllers.API
 {
@@ -20,10 +17,10 @@ namespace WTO.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddUser(UserInfo obj)
+        public IHttpActionResult AddUser(Int64 Id, AddUser obj)
         {
             UserBusinessService objUBS = new UserBusinessService();
-            return Ok(objUBS.AddUser(obj));
+            return Ok(objUBS.AddUser(Id, obj));
         }
 
         [HttpPost]
@@ -43,10 +40,10 @@ namespace WTO.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddCountry(Country obj)
+        public IHttpActionResult AddCountry(Int64 Id, AddCountry obj)
         {
             CountryBusinessService objCBS = new CountryBusinessService();
-            return Ok(objCBS.AddCountry(obj));
+            return Ok(objCBS.AddCountry(Id, obj));
         }
 
         [HttpPost]
@@ -66,10 +63,10 @@ namespace WTO.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddStakeHolder(StakeHolderInfo obj)
+        public IHttpActionResult AddStakeHolder(Int64 Id, AddStakeHolder obj)
         {
             StakeHolderBusinessService objSHBS = new StakeHolderBusinessService();
-            return Ok(objSHBS.AddStakeHolder(obj));
+            return Ok(objSHBS.AddStakeHolder(Id, obj));
         }
 
         [HttpPost]
@@ -89,10 +86,10 @@ namespace WTO.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddTranslator(TranslatorInfo obj)
+        public IHttpActionResult AddTranslator(Int64 Id, AddTranslator obj)
         {
             TranslatorBusinessService objTBS = new TranslatorBusinessService();
-            return Ok(objTBS.AddTranslator(obj));
+            return Ok(objTBS.AddTranslator(Id, obj));
         }
 
         [HttpPost]
@@ -100,6 +97,56 @@ namespace WTO.Controllers.API
         {
             TranslatorBusinessService objTBS = new TranslatorBusinessService();
             return Ok(objTBS.DeleteTranslator(Id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult SendWelcomeMailToTranslator(Int32 Id)
+        {
+            TranslatorBusinessService objTBS = new TranslatorBusinessService();
+
+            if (Id > 0)
+            {
+                TranslatorDetails objT = new TranslatorDetails();
+                objT = objTBS.SendWelcomeMail(Id);
+                if (objT != null)
+                {
+                    SendMail objMail = new SendMail();
+                    string MailBody = objTBS.MailbodyForTranslator(objT);
+                    objMail.SendAsyncEMail("Ashvini.chipsoft@gmail.com", "", "", "", "WTO - World Trade Organization", "Welcome to WTO", MailBody, null);
+                }
+            }
+
+            return Ok();
+        }
+        #endregion
+
+        #region "Templates"
+        [HttpPost]
+        public IHttpActionResult GetTemplateDetails(Int32 Id)
+        {
+            TemplateBussinessService objTBS = new TemplateBussinessService();
+            return Ok(objTBS.TemplateDetails(Id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddUpdateTemplate(Int32 Id, AddTemplate obj)
+        {
+            TemplateBussinessService objTBS = new TemplateBussinessService();
+            return Ok(objTBS.InsertUpdateTemplate(Id, obj));
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteTemplate(Int32 Id)
+        {
+            TemplateBussinessService objTBS = new TemplateBussinessService();
+            return Ok(objTBS.DeleteTemplate(Id));
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetTemplateFields()
+        {
+            TemplateBussinessService objTBS = new TemplateBussinessService();
+            return Ok(objTBS.GetTemplateFields());
         }
         #endregion
     }

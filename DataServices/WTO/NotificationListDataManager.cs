@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using BusinessObjects;
 using BusinessObjects.Notification;
@@ -13,17 +8,26 @@ namespace DataServices.WTO
 {
     public class NotificationListDataManager
     {
-        public DataSet Masters()
+        public DataSet GetPageLoad_NotificationsList(Search_Notification obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.GetNotificationListMaters;
+                sqlCommand.CommandText = Procedures.GetNotificationList_PageLoadData;
+                sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
+                sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
+                sqlCommand.Parameters.AddWithValue("@NotificationNumber", obj.NotificationNumber);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@FinalDateOfComment_From", obj.FinalDateOfComments_From);
+                sqlCommand.Parameters.AddWithValue("@FinalDateOfComment_To", obj.FinalDateOfComments_To);
+                sqlCommand.Parameters.AddWithValue("@NotificationType", obj.NotificationType);
+                sqlCommand.Parameters.AddWithValue("@Status", obj.StatusId);
+                sqlCommand.Parameters.AddWithValue("@StatusFor", obj.StatusFor);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
 
-        public DataSet Notifications(GetNotificationList obj)
+        public DataSet Notifications(Search_Notification obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
@@ -31,12 +35,13 @@ namespace DataServices.WTO
                 sqlCommand.CommandText = Procedures.GetNotificationsList;
                 sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
                 sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
-                sqlCommand.Parameters.AddWithValue("@Noti_Number", obj.Noti_Number);
-                sqlCommand.Parameters.AddWithValue("@Noti_Country", obj.Noti_Country);
-                sqlCommand.Parameters.AddWithValue("@Noti_FinalDate_From", obj.FinalDateOfComments_From);
-                sqlCommand.Parameters.AddWithValue("@Noti_FinalDate_To", obj.FinalDateOfComments_To);
-                sqlCommand.Parameters.AddWithValue("@Noti_Type", obj.Noti_Type);
-                sqlCommand.Parameters.AddWithValue("@Noti_Stage", obj.Noti_Status);
+                sqlCommand.Parameters.AddWithValue("@NotificationNumber", obj.NotificationNumber);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@FinalDateOfComment_From", obj.FinalDateOfComments_From);
+                sqlCommand.Parameters.AddWithValue("@FinalDateOfComment_To", obj.FinalDateOfComments_To);
+                sqlCommand.Parameters.AddWithValue("@NotificationType", obj.NotificationType);
+                sqlCommand.Parameters.AddWithValue("@Status", obj.StatusId);
+                sqlCommand.Parameters.AddWithValue("@StatusFor", obj.StatusFor);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

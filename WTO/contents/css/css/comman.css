@@ -1,6 +1,6 @@
 body, html {
     height: 100%;
-    color #000;
+    color: #000;
 }
 
 @font-face {
@@ -21,13 +21,13 @@ a, a:hover, a:focus, a:active {
 }
 
 #ui-datepicker-div {
-    z-index: 2 !important;
+    z-index: 9999 !important;
 }
-.AlertPopup
-{
-width: 500px;
-margin: 0 auto;
-margin-top: 5%;
+
+.AlertPopup {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 5%;
 }
 /* Loader css Start */
 
@@ -37,7 +37,7 @@ margin-top: 5%;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 1200;
     background: rgba(82, 82, 82, 0.6);
 }
 
@@ -167,8 +167,8 @@ margin-top: 5%;
 /* Loader css End */
 /* menu css start */
 .wto-menu {
-    background-color: #fff;
-    border-color: #e7e7e7;
+    background-color: #e53472;
+    border-color: #e53472;
     border-radius: 0px;
     box-shadow: 0 5px 5px -5px #333;
     border: none;
@@ -221,12 +221,20 @@ margin-top: 5%;
 
         #wrapper.toggled #sidebar-wrapper {
             width: 250px;
+			 
         }
 
-
+.topbg
+{
+	background: url(http://localhost:27298/contents/img/topbg.png) no-repeat;
+    width: 100%;
+    background-size: cover;
+	background-position: center;
+	background-attachment:fixed;
+}
 #sidebar-wrapper {
-    background: #fff;
-    box-shadow: 5px 0px 5px 0px #959595;
+   background: url(http://localhost:27298/contents/img/sidebg.png) no-repeat;
+    box-shadow: 3px 0px 5px 0px #959595;
     height: 100%;
     left: 250px;
     margin-left: -250px;
@@ -239,6 +247,8 @@ margin-top: 5%;
     transition: all 0.5s ease;*/
     width: 0;
     z-index: 1000;
+	background-size: cover;
+    background-position: center;
 }
 
     #sidebar-wrapper::-webkit-scrollbar {
@@ -282,7 +292,7 @@ margin-top: 5%;
     }
 
     .sidebar-nav li.active {
-        background-color: #000 !important;
+        background-color: #e91e63 !important;
     }
 
         .sidebar-nav li.active a {
@@ -292,11 +302,11 @@ margin-top: 5%;
         }
 
     .sidebar-nav .list:hover, .sidebar-nav .list:focus, .sidebar-nav .list:active {
-        background-color: #000 !important;
+        background-color: #e91e63 !important;
     }
 
     .sidebar-nav .list {
-        background: #f6f6f6;
+        background: transparent;
     }
 
     .sidebar-nav li:hover:before {
@@ -309,7 +319,7 @@ margin-top: 5%;
     }
 
     .sidebar-nav li a {
-        color: #000;
+        color: #fff;
         display: block;
         padding: 10px 15px 10px 30px;
         text-decoration: none;
@@ -548,7 +558,7 @@ margin-top: 5%;
 }
 
 .ProfileName {
-    color: #813f89 !important;
+    color: #fff !important;
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {
@@ -562,7 +572,7 @@ margin-top: 5%;
 /* menu heding start */
 
 .MenuHeading {
-    color: #180464 !important;
+    color: #fff !important;
     margin-left: 30px !important;
     margin-top: 10px;
     font-weight: 700;
@@ -574,6 +584,12 @@ margin-top: 5%;
 }
 
 @media screen and (min-width : 0px) and (max-width : 767px) {
+    .AlertPopup {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 5%;
+    }
+
     .hamburger {
         margin-left: 0px;
     }
@@ -597,6 +613,10 @@ margin-top: 5%;
         width: 52px;
         right: 0;
         top: 0px;
+    }
+
+    .P-left-4p {
+        padding-left: 2% !important;
     }
 
     .hamburger {
@@ -659,6 +679,8 @@ margin-top: 5%;
 
 .Accordian-panel {
     margin-bottom: 20px !important;
+    border-radius: 0px !important;
+    border: none;
 }
 /* bottom offset start */
 
@@ -754,7 +776,7 @@ margin-top: 5%;
 /* background css start */
 
 .bodybackground {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
     min-height: 88vh;
 }
 
@@ -767,11 +789,11 @@ margin-top: 5%;
 }
 
 .second-blackbackground {
-    background: #009aff;
+    background: #ef4438;
 }
 
 .darkBlueblackbackground {
-    background: #180465;
+    background: #e53472;
 }
 
 .whitebackground {
@@ -840,16 +862,16 @@ margin-top: 5%;
 /* button css atart */
 
 .btn-blue, .btn-blue:hover, .btn-blue:focus, .btn-blue:active {
-    background: #180464;
+    background: #4598c1;
     color: #fff;
-    border-color: #180464;
+    border-color: #4598c1;
     border-radius: 0px;
 }
 
 .btn-red, .btn-red:hover, .btn-red:focus, .btn-red:active {
-    background: #ed1621;
+    background: #f8981d;
     color: #fff;
-    border-color: #ed1621;
+    border-color: #f8981d;
     border-radius: 0px;
 }
 
@@ -861,16 +883,16 @@ margin-top: 5%;
 }
 
 .btn-dark-green, .btn-dark-green:hover, .btn-dark-green:focus, .btn-dark-green:active {
-    background: #015a12;
+    background: #49a54b;
     color: #fff;
-    border-color: #015a12;
+    border-color: #49a54b;
     border-radius: 0px;
 }
 
 .btn-gray, .btn-gray:hover, .btn-gray:focus, .btn-gray:active {
-    background: #d6d6d6;
-    color: #000;
-    border-color: #d6d6d6;
+    background: #7d7d7d;
+    color: #fff;
+    border-color: #7d7d7d;
     border-radius: 0px;
 }
 
@@ -944,12 +966,40 @@ margin-top: 5%;
     color: #000;
 }
 
-.dark-pink {
-    background: #ed8203 !important;
+.light-sky-blue {
+    background: #009ee3 !important;
+}
+
+.dark-purpal {
+    background: #7966ab !important;
+}
+
+.light-purpal {
+    background: #9e6a9f !important;
+}
+
+.dark-brown {
+    background: #c9628f !important;
+}
+
+.light-green {
+    background: #92d050 !important;
+}
+
+.light-yellow {
+    background: #ffff00 !important;
+}
+
+.light-orange {
+    background: #ff0000 !important;
 }
 
 .dark-red {
-    background: #d30101 !important;
+    background: #c0504d !important;
+}
+
+.dark-pink {
+    background: #ed8203 !important;
 }
 
 .light-pink {
@@ -1106,7 +1156,7 @@ margin-top: 5%;
 
 .Accordian-panel-title {
     font-size: 18px;
-    background: #000f79;
+    background: #e53472;
     color: #fff;
 }
 
@@ -1123,10 +1173,11 @@ margin-top: 5%;
 
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #EEEEEE;
+	background: #eeedee;
 }
 
 .Accordian-body {
-    padding: 0px 15px 0px 15px !important;
+    padding: 15px !important;
 }
 
 .glyphicon-chevron-right::before {
@@ -1153,17 +1204,16 @@ margin-top: 5%;
 }
 
 .span-badge {
-    background: #89003d;
+    background: #d94f47;
     padding: 0px 8px 2px 8px;
     color: #fff;
     width: 40px;
     text-align: center;
-    margin: 0 auto;
 }
 
 .sentmail table thead tr th,
 .sentmail table tbody tr td {
-    text-align: center;
+    text-align: left;
 }
 
 
@@ -1172,7 +1222,20 @@ margin-top: 5%;
 
 .remove-icon, .remove-icon:hover, .remove-icon:active, .remove-icon:focus {
     padding: 2px 4px 2px 4px;
-    border: 2px solid #ff0000;
+    border: 2px solid #d7534f;
     border-radius: 25px;
-    color: #ff0000;
+    color: #d7534f;
+}
+
+.table-heading {
+    font-size: 20px;
+    color: #000;
+}
+
+.P-left-4p {
+    padding-left: 4% !important;
+}
+
+.dark-green-color {
+    color: #015a12 !important;
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using BusinessObjects.ManageAccess;
 using BusinessService.ManageAccess;
 
 namespace WTO.Controllers.WTO
@@ -60,6 +56,17 @@ namespace WTO.Controllers.WTO
             {
                 TranslatorBusinessService obj = new TranslatorBusinessService();
                 return View("~/Views/Partial/ManageAccess/Translator.cshtml", obj.TranslatorsList());
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult GetTemplateList()
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                TemplateBussinessService obj = new TemplateBussinessService();
+                return View("~/Views/Partial/ManageAccess/Template.cshtml", obj.TemplateList());
             }
             else
                 return RedirectToAction("Index", "Login");

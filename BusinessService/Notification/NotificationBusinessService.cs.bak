@@ -1,0 +1,385 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using BusinessObjects;
+using BusinessObjects.Masters;
+using BusinessObjects.Notification;
+using BusinessService.Notification;
+using DataServices.WTO;
+using System.IO;
+using System.Web;
+
+namespace BusinessService.Notification
+{
+    public class NotificationBusinessService
+    {
+        public AddNoti_Result InsertUpdateNotification(AddNotification obj)
+        {
+            AddNoti_Result objR = new AddNoti_Result();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataSet ds = objDM.InsertUpdate_Notification(obj);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                objR.StatusType = StatusType.SUCCESS;
+                objR.MessageType = MessageType.NO_MESSAGE;
+
+                if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objR.NotificationId = Convert.ToInt64(ds.Tables[0].Rows[0]["NotificationId"]);
+                    if (obj.NotificationAttachment != null && obj.NotificationAttachment.Content != "")
+                    {
+                        try
+                        {
+                            byte[] bytes = null;
+                            if (obj.NotificationAttachment.Content.IndexOf(',') >= 0)
+                            {
+                                var myString = obj.NotificationAttachment.Content.Split(new char[] { ',' });
+                                bytes = Convert.FromBase64String(myString[1]);
+                            }
+                            else
+                                bytes = Convert.FromBase64String(obj.NotificationAttachment.Content);
+
+                            if (obj.NotificationAttachment.FileName.Length > 0 && bytes.Length > 0)
+                            {
+                                string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationAttachment/" + objR.NotificationId + "_" + obj.NotificationAttachment.FileName);
+                                File.WriteAllBytes(filePath, bytes);
+                            }
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+            }
+            else
+            {
+                objR.StatusType = StatusType.FAILURE;
+                objR.MessageType = MessageType.TRY_AGAIN;
+            }
+
+            return objR;
+        }
+
+        public EditNotification PageLoad_EditNotification(Int64 Id)
+        {
+            EditNotification objR = new EditNotification();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataSet ds = objDM.Edit_Notification(Id);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndx = -1;
+
+                #region "Country Master"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<Country> CountryList = new List<Country>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        Country objCountry = new Country();
+                        objCountry.CountryId = Convert.ToInt64(dr["CountryId"]);
+                        objCountry.CountryCode = Convert.ToString(dr["CountryCode"]);
+                        objCountry.Name = Convert.ToString(dr["Country"]);
+                        CountryList.Add(objCountry);
+                    }
+                    objR.CountryList = CountryList;
+                }
+                #endregion
+
+                #region "Stakeholders Master"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    int i = 1;
+                    List<StakeHolderMaster> StakeHolderList = new List<StakeHolderMaster>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        StakeHolderMaster objStakeHolder = new StakeHolderMaster();
+                        objStakeHolder.ItemNumber = i;
+                        objStakeHolder.StakeHolderId = Convert.ToInt64(dr["StakeholderId"]);
+                        objStakeHolder.FirstName = Convert.ToString(dr["FirstName"]);
+                        objStakeHolder.LastName = Convert.ToString(dr["LastName"]);
+                        objStakeHolder.HSCodes = Convert.ToString(dr["HSCodes"]);
+                        i++;
+                        StakeHolderList.Add(objStakeHolder);
+                    }
+                    objR.StakeHoldersList = StakeHolderList;
+                }
+                #endregion
+
+                #region "Notification Details"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        EditAttachment objF = new EditAttachment();
+                        objR.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objR.NotificationType = Convert.ToString(dr["NotificationType"]);
+                        objR.NotificationStatus = Convert.ToInt16(dr["NotificationStatus"]);
+                        objR.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objR.DateofNotification = Convert.ToString(dr["DateOfNotification"]);
+                        objR.FinalDateOfComments = Convert.ToString(dr["FinalDateOfComment"]);
+                        objR.SendResponseBy = Convert.ToString(dr["SendResponseBy"]);
+                        objR.CountryId = Convert.ToInt32(dr["CountryId"]);
+                        objR.Title = Convert.ToString(dr["Title"]);
+                        objR.ResponsibleAgency = Convert.ToString(dr["AgencyResponsible"]);
+                        objR.Articles = Convert.ToString(dr["UnderArticle"]);
+                        objR.ProductsCovered = Convert.ToString(dr["ProductCovered"]);
+                        objR.Description = Convert.ToString(dr["Description"]);
+                        objR.HSCodes = Convert.ToString(dr["HSCode"]);
+                        objR.EnquiryEmail= Convert.ToString(dr["EnquiryEmailId"]);
+
+                        if (Convert.ToString(dr["NotificationAttachment"]) != "")
+                        {
+                            objF.FileName = Convert.ToString(dr["NotificationAttachment"]);
+                            objF.Path = "/Attachments/NotificationAttachment/" + Id + "_" + Convert.ToString(dr["NotificationAttachment"]);
+                            objR.NotificationAttachment = objF;
+                        }
+
+                        objR.DoesHaveDetails = dr["DoesHaveDetails"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["DoesHaveDetails"]);
+
+                        objF = new EditAttachment();
+                        if (Convert.ToString(dr["NotificationDocument"]) != "")
+                        {
+                            objF.FileName = Convert.ToString(dr["NotificationDocumentName"]);
+                            objF.Path = "/Attachments/NotificationDocument/" + Id + "_" + Convert.ToString(dr["NotificationDocument"]);
+                            objR.NotificationDoc = objF;
+                        }
+                        objR.NotificationDocName = Convert.ToString(dr["NotificationDocumentName"]);
+                        objR.ObtainDocBy = Convert.ToString(dr["ObtainDocumentBy"]);
+                        objR.LanguageId = Convert.ToInt32(dr["LanguageId"]);
+                        objR.TranslaterId = Convert.ToInt32(dr["TranslatorId"]);
+                        objR.RemainderToTranslaterOn = Convert.ToString(dr["TranslationReminder"]);
+                        objR.TranslationDueOn = Convert.ToString(dr["TranslationDueBy"]);
+
+                        if (Convert.ToString(dr["TranslatedDocument"]) != "")
+                        {
+                            objF = new EditAttachment();
+                            objF.FileName = Convert.ToString(dr["TranslatedDocumentName"]);
+                            objF.Path = "/Attachments/NotificationDocument_Translated/" + Id + "_" + Convert.ToString(dr["TranslatedDocument"]);
+                            objR.TranslatedDoc = objF;
+                        }
+                        objR.TranslatedDocName = Convert.ToString(dr["TranslatedDocumentName"]);
+                        objR.SentToTranslaterOn = Convert.ToString(dr["SendToTranslaterOn"]);
+                        objR.TranslatedDocUploadedOn = Convert.ToString(dr["TranslatedDocUploadedOn"]);
+                        objR.Stakeholders = Convert.ToString(dr["SelectedStakeholders"]);
+                        objR.StakeholderResponseDueBy = Convert.ToString(dr["StakeholderResponseDueBy"]);
+                        objR.NotificationDiscussedOn = Convert.ToString(dr["NotificationDiscussedOn"]);
+                    }
+                }
+                #endregion
+
+                #region "HSCodes Master"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<HSCodes> SelectedHSCodesList = new List<HSCodes>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        HSCodes objHSCodes = new HSCodes();
+                        objHSCodes.HSCode = Convert.ToString(dr["HSCode"]);
+                        objHSCodes.Text = Convert.ToString(dr["Description"]);
+                        SelectedHSCodesList.Add(objHSCodes);
+                    }
+                    objR.SelectedHSCodes = SelectedHSCodesList;
+                }
+                #endregion
+
+                #region "Notification Status"
+                List<NotificationStatus> NotificationStatusList = new List<NotificationStatus>();
+                NotificationStatus objNotificationStatus = new NotificationStatus();
+                objNotificationStatus.Id = 1;
+                objNotificationStatus.Type = "Draft";
+                NotificationStatusList.Add(objNotificationStatus);
+                objNotificationStatus = new NotificationStatus();
+                objNotificationStatus.Id = 2;
+                objNotificationStatus.Type = "Final";
+                NotificationStatusList.Add(objNotificationStatus);
+                objR.NotificationStatusList = NotificationStatusList;
+                #endregion
+
+                #region "Languages Master"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<Language> LanguageList = new List<Language>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        Language objLanguage = new Language();
+                        objLanguage.LanguageId = Convert.ToInt32(dr["LanguageId"]);
+                        objLanguage.LanguageName = Convert.ToString(dr["Language"]);
+                        LanguageList.Add(objLanguage);
+                    }
+                    objR.LanguageList = LanguageList;
+                }
+                #endregion
+
+                #region "Mails"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<StackholderMail> StackholderMailList = new List<StackholderMail>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        StackholderMail objStackholderMail = new StackholderMail();
+                        objStackholderMail.MailId = Convert.ToInt32(dr["MailId"]);
+                        objStackholderMail.Subject = Convert.ToString(dr["Subject"]);
+                        objStackholderMail.Message = Convert.ToString(dr["Message"]);
+                        objStackholderMail.StakeholderCount = Convert.ToInt32(dr["StakeholderCount"]);
+                        objStackholderMail.MailSentOn = Convert.ToString(dr["MailSentOn"]);
+                        StackholderMailList.Add(objStackholderMail);
+                    }
+                    objR.Mails = StackholderMailList;
+                }
+                #endregion
+            }
+            return objR;
+        }
+
+        public List<RelatedStakeHolders> GetNotificationStakeholders(Int64 Id)
+        {
+            List<RelatedStakeHolders> RelatedStakeHoldersList = new List<RelatedStakeHolders>();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataTable dt = objDM.RelatedStakeholders(Id);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                int i = 1;
+                string hdnRelatedStakeHolder = string.Empty;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    RelatedStakeHolders objStakeHolder = new RelatedStakeHolders();
+                    objStakeHolder.ItemNumber = i;
+                    objStakeHolder.StakeHolderId = Convert.ToInt64(dr["StakeholderId"]);
+                    objStakeHolder.FirstName = Convert.ToString(dr["FirstName"]);
+                    objStakeHolder.LastName = Convert.ToString(dr["LastName"]);
+                    objStakeHolder.HSCodes = Convert.ToString(dr["HSCodes"]);
+                    objStakeHolder.MailCount = Convert.ToInt32(dr["MailCount"]);
+                    objStakeHolder.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
+                    hdnRelatedStakeHolder += ',' + Convert.ToString(dr["StakeholderId"]);
+                    i++;
+                    RelatedStakeHoldersList.Add(objStakeHolder);
+                }
+            }
+            return RelatedStakeHoldersList;
+        }
+
+        public AddNoti_Result InsertDeleteRelatedStakeholders(Int64 Id, string SelectedStakeHolder, bool IsDelete)
+        {
+            AddNoti_Result objR = new AddNoti_Result();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataTable dt = objDM.InsertDelete_RelatedStakeholders(Id, SelectedStakeHolder, IsDelete);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                objR.StatusType = StatusType.SUCCESS;
+                objR.MessageType = MessageType.NO_MESSAGE;
+            }
+            else
+            {
+                objR.StatusType = StatusType.FAILURE;
+                objR.MessageType = MessageType.TRY_AGAIN;
+            }
+
+            return objR;
+        }
+
+        public SendToTranslater_Output SendDocumentToTranslater(SendToTranslater obj)
+        {
+            SendToTranslater_Output objOutput = new SendToTranslater_Output();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataTable dt = objDM.SendDocumentToTranslater(obj);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    objOutput.FirstName = Convert.ToString(dr["FirstName"]);
+                    objOutput.LastName = Convert.ToString(dr["LastName"]);
+                    objOutput.TranslaterEmailId = Convert.ToString(dr["EmailId"]);
+                    objOutput.Language = Convert.ToString(dr["Language"]);
+                    objOutput.CreatedBy = Convert.ToString(dr["CreatedBy"]);
+                    objOutput.CreatorEmailId = Convert.ToString(dr["CreaterEmailId"]);
+                    objOutput.TranslationDueOn = Convert.ToString(dr["TranslationDueOn"]);
+                }
+            }
+            return objOutput;
+        }
+
+        public string MailbodyForTranslater(SendToTranslater_Output obj)
+        {
+            StringBuilder strMailbody = new StringBuilder();
+            //Send Mail to Creator
+            strMailbody.Append("<table style='text-align : left;font-family : Arial; font-size : 10pt;'>");
+            strMailbody.Append("<tr><td>Dear " + obj.TranslatorName + ",<br/><br/></td></tr>");
+            strMailbody.Append("<tr><td>" + obj.CreatedBy + " has been send a document in " + obj.Language.Trim() + " language for translation .</td></tr>");
+            strMailbody.Append("<tr><td>Please Translate and send the translated document till date " + obj.TranslationDueOn + " at " + obj.CreatorEmailId + "</td></tr>");
+            strMailbody.Append("<tr><td><br/>Regards,<br/>WTO Team</td></tr></table>");
+            return strMailbody.ToString();
+        }
+
+        public SendMailStakeholders_Output SaveAndSendMailToStakeholders(SendMailStakeholders obj)
+        {
+            SendMailStakeholders_Output objOutput = new SendMailStakeholders_Output();
+            AddNotificationDataManager objDM = new AddNotificationDataManager();
+            DataSet ds = objDM.SendMailToStakeHolders(obj);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndex = -1;
+
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex)
+                {
+                    using (DataTable dt = ds.Tables[tblIndex])
+                    {
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dt.Rows)
+                            {
+                                StackholderMail objM = new StackholderMail();
+                                objM.MailId = Convert.ToInt32(dr["MailId"]);
+                                objM.StakeholderCount = Convert.ToInt32(dr["StakeholderCount"]);
+                                objM.Subject = Convert.ToString(dr["Subject"]);
+                                objM.Message = Convert.ToString(dr["Message"]);
+                                objOutput.MailDetails = objM;
+                            }
+                        }
+                    }
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex)
+                {
+                    using (DataTable dt = ds.Tables[tblIndex])
+                    {
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            List<BusinessObjects.ManageAccess.StakeHolder> StakeholderList = new List<BusinessObjects.ManageAccess.StakeHolder>();
+                            foreach (DataRow dr in dt.Rows)
+                            {
+                                BusinessObjects.ManageAccess.StakeHolder objS = new BusinessObjects.ManageAccess.StakeHolder();
+                                objS.StakeHolderId = Convert.ToInt32(dr["StakeholderId"]);
+                                objS.FirstName = Convert.ToString(dr["FirstName"]);
+                                objS.LastName = Convert.ToString(dr["LastName"]);
+                                objS.Email = Convert.ToString(dr["EmailId"]);
+                                StakeholderList.Add(objS);
+                            }
+
+                            objOutput.StakeHolders = StakeholderList;
+                        }
+                    }
+                }
+
+            }
+            return objOutput;
+        }
+
+        public string MailbodyForStakeholders(StackholderMail obj)
+        {
+            StringBuilder strMailbody = new StringBuilder();
+            strMailbody.Append("<table style='text-align : left;font-family : Arial; font-size : 10pt;'>");
+            strMailbody.Append("<tr><td>Dear #Name#,<br/><br/></td></tr>");
+            strMailbody.Append("<tr><td>" + obj.Message + ".</td></tr>");
+            strMailbody.Append("<tr><td><br/>Regards,<br/>WTO Team</td></tr></table>");
+            return strMailbody.ToString();
+        }
+    }
+}

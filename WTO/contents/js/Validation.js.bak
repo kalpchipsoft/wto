@@ -1,0 +1,65 @@
+
+//Alpha character only
+function isAlpha(evt) {
+    var keyCode = (evt.which) ? evt.which : event.keyCode;
+    if (!((keyCode >= 65 && keyCode <= 90) || (keyCode == 8) || (keyCode == 9) || (keyCode >= 97 && keyCode <= 122) || (keyCode == 32)))
+    { Alert("","Only alphabets are allowed.<br/>","Ok"); return false; }
+}
+
+//Mobile no validation
+function IsMobileNumberReg(mobileno) {
+    var mob = /^[5-9]{1}[0-9]{9}$/;
+    if (mob.test(mobileno) == false)
+    { return false; }
+    return true;
+}
+
+//email validation
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+//Ailpha numeric validation
+function IsAlphaNumber(evt) {
+    var keyCode = (evt.which) ? evt.which : event.keyCode;
+    if (!((keyCode >= 65 && keyCode <= 90) || (keyCode == 8) || (keyCode == 9) || (keyCode >= 97 && keyCode <= 122) || (keyCode == 32) || (keyCode == 45) || (keyCode >= 48 && keyCode <= 57))) {
+        Alert("", "Only alphabets and numbers are allowed.<br/>", "Ok");
+        return false;
+    }
+}
+
+//Numeric Validation
+function isNumeric(evt) {
+    //if the letter is not digit then display error and don't type anything
+    if (evt.which != 8 && evt.which != 0 && (evt.which < 48 || evt.which > 57)) {
+        Alert("", "Only numbers are allowed.<br/>", "Ok");
+        return false;
+    }
+};
+
+//Add HSCode Save button validation
+function HSCodeValidation() {
+    var msg = "";
+
+    if ($('[id$=HSCodetextbox]').val().trim().length == 0) {
+        msg += "Please enter HSCode.<br/>";
+    }
+
+    if ($('[id$=HSCodeProductName]').val().trim().length == 0) {
+        msg += "Please enter product name.<br/>";
+    }
+
+    if ($('[id$=HSCodeStatus]').val() == -1) {
+        msg += "Please select status.<br/>"
+    }
+
+    if ($('[id$=HSCodeDescription]').val().trim().length == 0) {
+        msg += "Please enter product description.<br/>";
+    }
+
+    if (msg.length > 0) {
+        Alert("HS Codes", msg, "Ok");
+        return false;
+    }
+}

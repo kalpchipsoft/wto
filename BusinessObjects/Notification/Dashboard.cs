@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObjects.Notification
@@ -14,37 +11,24 @@ namespace BusinessObjects.Notification
         public Int64 UserId { get; set; }
     }
 
-    public class Result_DiscussionCounts : CommonResponseModel
+    public class Count_Discussion: StatusMaster
     {
-        public long PendingDoc { get; set; }
-
-        public long PendingTrans { get; set; }
-
-        public long ToSendToStakeholder { get; set; }
-
-        public long PendingDiscuss { get; set; }
+        public int Total { get; set; }
+        public string CssColor { get; set; }
+        public string Icon { get; set; }
     }
 
-    public class Result_ActionsCounts : CommonResponseModel
+    public class Count_Action: ActionMaster
     {
-        public ActionCountsType Response { get; set; }
-
-        public ActionCountsType BriefToReg { get; set; }
-
-        public ActionCountsType BriefToDoc { get; set; }
+        public int Total { get; set; }
+        public int OverDue { get; set; }
+        public string CssColor { get; set; }
     }
 
-    public class Result
+    public class Dashboard_PendingCounts
     {
-        public Result_DiscussionCounts Discussion { get; set; }
+        public List<Count_Discussion> PendingDiscussions { get; set; }
 
-        public Result_ActionsCounts Actions { get; set; }
-    }
-
-    public class ActionCountsType
-    {
-        public long OverDue { get; set; }
-
-        public long Total { get; set; }
+        public List<Count_Action> PendingActions { get; set; }
     }
 }

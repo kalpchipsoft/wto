@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Masters
 {
@@ -28,5 +22,7 @@ namespace BusinessObjects.Masters
                 return Convert.ToString(UserId) + "_" + ImageName;
             }
         }
+
+        public string Role { get; set; }
     }
 }

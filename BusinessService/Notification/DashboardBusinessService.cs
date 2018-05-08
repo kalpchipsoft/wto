@@ -13,80 +13,50 @@ namespace BusinessService.Notification
 {
     public class DashboardBusinessService
     {
-        public Result GetPageLoadCount(Dashboard obj)
+        public Dashboard_PendingCounts GetDashboard_PendingCounts(Dashboard obj)
         {
-            Result objR = new Result();
-            objR.Discussion = GetDiscussionCounts(obj);
-            objR.Actions = GetActionsCounts(obj);
-            return objR;
-        }
-        public Result_DiscussionCounts GetDiscussionCounts(Dashboard obj)
-        {
-            Result_DiscussionCounts objR = new Result_DiscussionCounts();
+            Dashboard_PendingCounts objR = new Dashboard_PendingCounts();
             DashboardDataManager objDDM = new DashboardDataManager();
-            DataTable dt = objDDM.GetDashboard_DiscussionCounts(obj);
-            if (dt != null && dt.Rows.Count > 0)
+            DataSet ds = objDDM.GetDashboard_PendingCounts(obj);
+            if (ds != null)
             {
-                objR.PendingDoc = Convert.ToInt64(dt.Rows[0]["PendingDoc"]);
-                objR.PendingTrans = Convert.ToInt64(dt.Rows[0]["PendingTrans"]);
-                objR.ToSendToStakeholder = Convert.ToInt64(dt.Rows[0]["ToSendToStakeholder"]);
-                objR.PendingDiscuss = Convert.ToInt64(dt.Rows[0]["PendingDiscuss"]);
+                int tblIndex = -1;
 
-                objR.StatusType = StatusType.SUCCESS;
-                objR.MessageType = MessageType.NO_MESSAGE;
-            }
-            else
-            {
-                objR.StatusType = StatusType.FAILURE;
-                objR.MessageType = MessageType.TRY_AGAIN;
-            }
-
-            return objR;
-        }
-
-        public Result_ActionsCounts GetActionsCounts(Dashboard obj)
-        {
-            Result_ActionsCounts objR = new Result_ActionsCounts();
-            DashboardDataManager objDDM = new DashboardDataManager();
-            ActionCountsType objType;
-            DataSet ds = objDDM.GetDashboard_ActionsCounts(obj);
-            if (ds != null && ds.Tables.Count > 0)
-            {
-                int tblIndx = -1;
-                tblIndx++;
-                if(ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                tblIndex++;
+                if(ds.Tables.Count>tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
                 {
-                    objType = new ActionCountsType();
-                    objType.OverDue = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["OverDue_Response"]);
-                    objType.Total = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["Total_Response"]);
-                    objR.Response = objType;
-                }
-                tblIndx++;
-                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
-                {
-                    objType = new ActionCountsType();
-                    objType.OverDue = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["OverDue_BriefToReg"]);
-                    objType.Total = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["Total_BriefToReg"]);
-                    objR.BriefToReg = objType;
-                }
-                tblIndx++;
-                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
-                {
-                    objType = new ActionCountsType();
-                    objType.OverDue = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["OverDue_BriefToDoc"]);
-                    objType.Total = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["Total_BriefToDoc"]);
-                    objR.BriefToDoc = objType;
+                    List<Count_Discussion> Count_DiscussionList = new List<Count_Discussion>();
+                    foreach(DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Count_Discussion objD = new Count_Discussion();
+                        objD.StatusId = Convert.ToInt32(dr["StatusId"]);
+                        objD.Status = Convert.ToString(dr["Status"]);
+                        objD.Total = Convert.ToInt32(dr["TotalCount"]);
+                        objD.CssColor = Convert.ToString(dr["CssColor"]);
+                        objD.Icon = Convert.ToString(dr["IconImage"]);
+                        Count_DiscussionList.Add(objD);
+                    }
+                    objR.PendingDiscussions = Count_DiscussionList;
                 }
 
-                objR.StatusType = StatusType.SUCCESS;
-                objR.MessageType = MessageType.NO_MESSAGE;
-            }
-            else
-            {
-                objR.StatusType = StatusType.FAILURE;
-                objR.MessageType = MessageType.TRY_AGAIN;
-            }
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<Count_Action> Count_ActionList = new List<Count_Action>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Count_Action objD = new Count_Action();
+                        objD.ActionId = Convert.ToInt32(dr["ActionId"]);
+                        objD.Action = Convert.ToString(dr["Action"]);
+                        objD.Total = Convert.ToInt32(dr["TotalCount"]);
+                        objD.OverDue = Convert.ToInt32(dr["DueCount"]);
+                        objD.CssColor = Convert.ToString(dr["CssColor"]);
+                        Count_ActionList.Add(objD);
+                    }
+                    objR.PendingActions = Count_ActionList;
+                }
 
+            }
             return objR;
         }
     }

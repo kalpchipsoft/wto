@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using BusinessObjects;
@@ -34,15 +30,17 @@ namespace DataServices.ManageAccess
             }
         }
 
-        public bool AddCountry(Country obj)
+        public bool AddCountry(Int64 Id, AddCountry obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.AddCountry;
+                sqlCommand.Parameters.AddWithValue("@UserId", Id);
                 sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
                 sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryName);
                 sqlCommand.Parameters.AddWithValue("@IsActive", obj.Status);
+                sqlCommand.Parameters.AddWithValue("@CountryCode", obj.CountryCode);
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }
         }

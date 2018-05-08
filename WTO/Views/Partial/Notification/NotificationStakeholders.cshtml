@@ -1,0 +1,68 @@
+﻿@model List<BusinessObjects.Notification.RelatedStakeHolders>
+@{
+    Layout = null;
+}
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="table-responsive nopaging adnotificationtable sentmail">
+        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+            <thead class="second-blackbackground">
+                <tr>
+                    <th></th>
+                    <th>Sr. No.</th>
+                    <th>Stakeholder</th>
+                    <th>HS Code</th>
+                    <th>Stakeholder’s <br /> Mail Count</th>
+                    @*<th>Response <br /> Received on</th>*@
+                    <th>Response count</th>
+                    <th>View mail</th>
+                </tr>
+            </thead>
+            <tbody class="whitebackground">
+                @if (@Model != null && @Model.Count > 0)
+                {
+                    foreach (var item in @Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@item.StakeHolderId">
+                            </td>
+                            <td>@item.ItemNumber</td>
+                            <td>@item.FullName</td>
+                            <td>
+                                @item.HSCodes
+                            </td>
+                            <td>@item.MailCount</td>
+                            <td>@item.ResponseCount</td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#mailcount">
+                                    <span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">No Record Found ...</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if(@Model.Count == 0){
+            $('#btnSendMailStakeHolder').hide();
+            $('#btnRemoveStakeholder').hide();
+        }
+        else
+        {
+            $('#btnSendMailStakeHolder').show();
+            $('#btnRemoveStakeholder').show();
+        }
+        $('#lblSatkeHolderCount').text(@Model.Count);       
+    });
+</script>

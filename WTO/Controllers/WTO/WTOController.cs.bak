@@ -1,0 +1,67 @@
+﻿using System;
+using System.Web.Mvc;
+using BusinessObjects.Notification;
+using BusinessService.Notification;
+using BusinessObjects.MOM;
+using BusinessService.MOM;
+
+namespace WTO.Controllers
+{
+    public class WTOController : Controller
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult AddNotification()
+        {
+            return View();
+        }
+        public ActionResult NotificationList()
+        {
+            return View();
+        }
+        public ActionResult NotificationListView()
+        {
+            return View();
+        }
+        public ActionResult WTODashboard()
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                Dashboard objModel = new Dashboard();
+                objModel.UserId = Convert.ToInt64(Session["UserId"]);
+                DashboardBusinessService obj = new DashboardBusinessService();
+                return View(obj.GetPageLoadCount(objModel));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult MOMList()
+        {
+            AddMomBusinessService objAddMomBusinessService = new AddMomBusinessService();
+            return View(objAddMomBusinessService.GetMOMListData());
+        }
+
+        public ActionResult AddMOM(string date = null)
+        {
+            AddMomBusinessService objAddMomBusinessService = new AddMomBusinessService();
+            MOMSearch obj = new MOMSearch();
+            if (date != null)
+            {
+                ViewBag.MeetingDate = date;
+                obj.MeetingDate = date;
+            }
+            else
+                ViewBag.MeetingDate = string.Empty;
+            return View(objAddMomBusinessService.GetNotificationListForMom(obj));
+        }
+
+        public ActionResult ManageAccess()
+        {
+            return View();
+        }
+    }
+}

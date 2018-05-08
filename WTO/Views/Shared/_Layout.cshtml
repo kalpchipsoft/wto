@@ -10,21 +10,20 @@
     <link href="~/contents/css/css/jquery-ui.css" rel="stylesheet" />
     <link href="~/contents/css/css/comman.css" rel="stylesheet" />
     <link href="~/contents/css/css/wto.css" rel="stylesheet" />
+    <link href="~/contents/css/css/CustomAlert.css" rel="stylesheet" />
     <script src="~/contents/js/jquery.min.js"></script>
     <script src="~/contents/js/bootstrap.js"></script>
     <script src="~/contents/js/jstree.min.js"></script>
     <script src="~/contents/js/jquery-ui.js"></script>
     <script src="~/contents/js/WTOHTMLJS.js?v=1"></script>
     <script src="~/contents/js/Validation.js"></script>
+    <script src="~/contents/js/CustomAlert.js"></script>
     <script src="~/JQuery/master.js"></script>
-    @* @Scripts.Render("~/bundles/modernizr")*@
 </head>
 <body>
     <div id="wrapper" class="">
         <div id="page-content-wrapper">
-
             <!-- menu section start -->
-
             <nav class="navbar navbar-default wto-menu">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -39,10 +38,8 @@
                             <span class="hamb-bottom"></span>
                         </button>
                         <a class="navbar-brand MenuHeading" href="#">SPS/ TBT Notification Management System</a>
-
                     </div>
                     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-
                         <ul class="nav sidebar-nav">
                             <button type="button" class="hamburger small-hamburger animated fadeInLeft is-closed visible-xs" data-toggle="offcanvas">
                                 <span class="hamb-top"></span>
@@ -56,32 +53,32 @@
                             </li>
                             <li class="top-offset-50 list dashboard">
                                 <a href="~/WTO/WTODashboard">
-                                    <img src="~/contents/img/dashboard.png" alt="dashboard" /><span class="submenulist">Dashboard</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                    <img src="~/contents/img/dashboard1.png" alt="dashboard" /><span class="submenulist">Dashboard</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                             <li class="list notification">
-                                <a href="@Url.Action("GetNotificationsMasters", "NotificationList", new { CallFrom = "" })">
-                                    <img src="~/contents/img/notification1.png" alt="notification" /><span class="submenulist">Notification List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15 })">
+                                <img src="~/contents/img/notification.png" alt="notification" /><span class="submenulist">Notification List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                             <li class="list Addnotification">
                                 <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = 0 })">
-                                    <img src="~/contents/img/Addnotification.png" alt="Addnotification" /><span class="submenulist">Add Notification</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                    <img src="~/contents/img/Addnotification1.png" alt="Addnotification" /><span class="submenulist">Add Notification</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                             <li class="list AddMOMList">
-                                <a href="@Url.Action("Index","MOMList")">
-                                    <img src="~/contents/img/AddMOMB.png" alt="Addnotification" /><span class="submenulist">MOM List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                <a href="@Url.Action("Index","MoM")">
+                                    <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">MOM List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                             <li class="list AddMOM">
-                                <a href="@Url.Action("Index","AddMOM")">
-                                    <img src="~/contents/img/AddMOMB.png" alt="Addnotification" /><span class="submenulist">Add MOM</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                <a href="@Url.Action("Add", "MoM", new { Id = 0 })">
+                                    <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">Add MOM</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                             <li class="list ManageAccess">
                                 <a href="@Url.Action("Index", "ManageAccess")">
-                                    <img src="~/contents/img/manageB.png" alt="Addnotification" /><span class="submenulist">Manage Access</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                    <img src="~/contents/img/manageW.png" alt="Addnotification" /><span class="submenulist">Manage</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
                                 </a>
                             </li>
                         </ul>
@@ -95,10 +92,11 @@
             @RenderBody()
         </div>
     </div>
-    @*  @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/contents/js")*@
+    <script>
+        myWTOAPP.init('@ViewContext.RouteData.Values["id"]', '@Session["UserId"]', '@Session["UserRole"]');
+    </script>
     @RenderSection("scripts", required: false)
-    
+
     <input id="hdnNoProgress" type="hidden" value="0" />
     <div id="loader-wrapper">
         <div id="loader"></div>

@@ -24,7 +24,7 @@ namespace BusinessService.ManageAccess
                 tblIndx++;
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
                 {
-                    List<Country> objStakeHolderList = new List<Country>();
+                    List<Country> CountryList = new List<Country>();
                     Country objC = new Country();
                     foreach (DataRow dr in ds.Tables[tblIndx].Rows)
                     {
@@ -32,11 +32,12 @@ namespace BusinessService.ManageAccess
                         objC.ItemNumber = Convert.ToInt64(dr["ItemNumber"]);
                         objC.CountryId = Convert.ToInt64(dr["CountryId"]);
                         objC.CountryName = Convert.ToString(dr["CountryName"]);
-                        objC.Status = Convert.ToInt16(dr["Active"]);
+                        objC.Status = Convert.ToInt16(dr["IsActive"]);
                         objC.IsInUse = Convert.ToBoolean(dr["IsInUse"]);
-                        objStakeHolderList.Add(objC);
+                        objC.CountryCode= Convert.ToString(dr["CountryCode"]);
+                        CountryList.Add(objC);
                     }
-                    obj.CountryList = objStakeHolderList;
+                    obj.CountryList = CountryList;
                 }
                 tblIndx++;
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
@@ -60,15 +61,16 @@ namespace BusinessService.ManageAccess
                 {
                     obj.CountryId = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["CountryId"]);
                     obj.CountryName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["CountryName"]);
-                    obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["Active"]);
+                    obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["IsActive"]);
+                    obj.CountryCode = Convert.ToString(ds.Tables[tblIndx].Rows[0]["CountryCode"]);
                 }
             }
             return obj;
         }
 
-        public bool AddCountry(Country obj)
+        public bool AddCountry(Int64 Id, AddCountry obj)
         {
-            return objCDS.AddCountry(obj);
+            return objCDS.AddCountry(Id,obj);
         }
 
         public bool DeleteCountry(Int64 Id)

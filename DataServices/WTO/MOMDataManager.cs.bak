@@ -1,0 +1,49 @@
+﻿using System;
+using System.Data;
+using BusinessObjects.MOM;
+using System.Data.SqlClient;
+using BusinessObjects;
+using UtilitiesManagers;
+
+namespace DataServices.WTO
+{
+    public class MOMDataManager
+    {
+        public DataSet GetNotificationListForMom(MOMSearch objMOMSearch)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetNotificationListForMom;
+                if (objMOMSearch.MeetingDate != null)
+                    sqlCommand.Parameters.AddWithValue("@MeetingDate", objMOMSearch.MeetingDate);         
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public Int32 InsertUpdateMomData(AddMOM objAddMOM)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.InsertUpdateMomData;
+                if (objAddMOM.MeetingDate != null)
+                    sqlCommand.Parameters.AddWithValue("@MeetingDate", objAddMOM.MeetingDate);
+                if (objAddMOM.NotificationXML != null)
+                    sqlCommand.Parameters.AddWithValue("@NotificationXML", objAddMOM.NotificationXML);
+                if (objAddMOM.CreatedBy != 0)
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", objAddMOM.CreatedBy);
+                return DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+            }
+
+        }
+        public DataTable GetMOMListData()
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetMOMListData;
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+    }
+}

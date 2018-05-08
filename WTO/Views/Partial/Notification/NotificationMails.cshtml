@@ -1,0 +1,63 @@
+﻿@model List<BusinessObjects.Notification.StackholderMail>
+@{
+    Layout = null;
+}
+
+<div class="panel-heading" role="tab" id="headingfour">
+    <h4 class="panel-title Accordian-panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+            <i class="more-less glyphicon glyphicon-chevron-down"></i>
+            Mails Sent (@(Model == null ? 0 : Model.Count))
+        </a>
+    </h4>
+</div>
+<div id="collapsefour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfour">
+    <div class="panel-body Accordian-body">
+        @*<div class="row">*@
+        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="table-responsive nopaging notificationlist sentmail">
+                        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                            <thead class="second-blackbackground">
+                                <tr>
+                                    <th class="col-sm-1">Sr. No.</th>
+                                    <th class="col-sm-2">Date</th>
+                                    <th class="col-sm-8">Subject</th>
+                                    <th class="col-sm-1">Sent To</th>
+                                </tr>
+                            </thead>
+                            <tbody class="whitebackground">
+                                @if (Model != null)
+                                {
+                                    int i = 0;
+                                    foreach (var obj in @Model)
+                                    {
+                                        i++;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@obj.MailSentDate</td>
+                                            <td>
+                                                <p>
+                                                    @obj.Subject
+                                                </p>
+                                            </td>
+                                            <td><div class="span-badge">@obj.StakeholderCount</div></td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5">No record found..</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,187 @@
+﻿using System;
+using System.Collections.Generic;
+using BusinessObjects.Masters;
+using System.ComponentModel.DataAnnotations;
+using BusinessObjects.ManageAccess;
+
+namespace BusinessObjects.Notification
+{
+
+    public class AddNotification
+    {
+        [Required]
+        public long UserId { get; set; }
+        [Required]
+        public long NotificationId { get; set; }
+        [Required]
+        public string NotificationType { get; set; }
+        [Required]
+        public string NotificationNumber { get; set; }
+        [Required]
+        public Int32 NotificationStatus { get; set; }
+        [Required]
+        public DateTime DateofNotification { get; set; }
+        [Required]
+        public DateTime FinalDateOfComments { get; set; }
+        [Required]
+        public DateTime SendResponseBy { get; set; }
+        [Required]
+        public Int32 CountryId { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string ResponsibleAgency { get; set; }
+        [Required]
+        public string UnderArticle { get; set; }
+        [Required]
+        public string ProductsCovered { get; set; }
+        [Required]
+        public string HSCodes { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public Attachment NotificationAttachment { get; set; }
+        public Nullable<bool> DoesHaveDetails { get; set; }
+        public Attachment NotificationDoc { get; set; }
+        public Int32 LanguageId { get; set; }
+        public Attachment TranslatedDoc { get; set; }
+        public Nullable<DateTime> ObtainDocBy { get; set; }
+        public Nullable<DateTime> StakeholderResponseDueBy { get; set; }
+        public string EnquiryEmail { get; set; }
+        public string Role { get; set; }
+    }
+
+    public class NotificationDetails
+    {
+        public long NotificationId { get; set; }
+        public string NotificationType { get; set; }
+        public string NotificationNumber { get; set; }
+        public Int32 NotificationStatus { get; set; }
+        public string DateofNotification { get; set; }
+        public string FinalDateOfComments { get; set; }
+        public string SendResponseBy { get; set; }
+        public string Country { get; set; }
+        public Int32 CountryId { get; set; }
+        public string Title { get; set; }
+        public string ResponsibleAgency { get; set; }
+        public string Articles { get; set; }
+        public string ProductsCovered { get; set; }
+        public string HSCodes { get; set; }
+        public string Description { get; set; }
+        public string EnquiryEmail { get; set; }
+        public EditAttachment NotificationAttachment { get; set; }
+        public Nullable<bool> DoesHaveDetails { get; set; }
+        public EditAttachment NotificationDoc { get; set; }
+        public string NotificationDocName { get; set; }
+        public Int32 LanguageId { get; set; }
+        public Int32 TranslaterId { get; set; }
+        public string RemainderToTranslaterOn { get; set; }
+        public string TranslationDueOn { get; set; }
+        public string SentToTranslaterOn { get; set; }
+        public EditAttachment TranslatedDoc { get; set; }
+        public string TranslatedDocName { get; set; }
+        public string TranslatedDocUploadedOn { get; set; }
+        public string ObtainDocBy { get; set; }
+        public string Stakeholders { get; set; }
+        public string StakeholderResponseDueBy { get; set; }
+        public string NotificationDiscussedOn { get; set; }
+
+    }
+
+    public class AddNoti_Result : CommonResponseModel
+    {
+        public long NotificationId { get; set; }
+    }
+
+    public class EditNotification : NotificationDetails
+    {
+        public List<NotificationStatus> NotificationStatusList { get; set; }
+        public List<Masters.Country> CountryList { get; set; }
+        public List<StakeHolderMaster> StakeHoldersList { get; set; }
+        public List<HSCodes> SelectedHSCodes { get; set; }
+        public List<Language> LanguageList { get; set; }
+        public List<StackholderMail> Mails { get; set; }
+    }
+
+    public class RelatedStakeHolders
+    {
+        public long ItemNumber { get; set; }
+        public long StakeHolderId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+        public string HSCodes { get; set; }
+        public int MailCount { get; set; }
+        public int ResponseCount { get; set; }
+    }
+
+    public class SendToTranslater
+    {
+        [Required]
+        public int NotificationId { get; set; }
+
+        [Required]
+        public bool DoesHaveDetails { get; set; }
+
+        public Attachment NotificationDoc { get; set; }
+        public int LanguageId { get; set; }
+        public int TranslaterId { get; set; }
+        public DateTime TranslationDueOn { get; set; }
+
+        public DateTime TranslationReminderOn { get; set; }
+    }
+
+    public class SendToTranslater_Output : TranslatorInfo
+    {
+        public string CreatedBy { get; set; }
+        public string CreatorEmailId { get; set; }
+
+        public string TranslaterEmailId { get; set; }
+        public string Language { get; set; }
+
+        public string TranslationDueOn { get; set; }
+    }
+
+    public class Attachment
+    {
+        public string DisplayName { get; set; }
+        public string FileName { get; set; }
+        public string Content { get; set; }
+    }
+
+    public class EditAttachment
+    {
+        public string FileName { get; set; }
+        public string Path { get; set; }
+    }
+
+    public class StackholderMail
+    {
+        public long StakeholderMailId { get; set; }
+        public long MailId { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
+        public long StakeholderCount { get; set; }
+        public string MailSentOn { get; set; }
+    }
+
+    public class SendMailStakeholders : StackholderMail
+    {
+        public long NotificationId { get; set; }
+        public string UserId { get; set; }
+        public string Stakeholders { get; set; }
+        public List<string> Attachments { get; set; }
+    }
+
+    public class SendMailStakeholders_Output
+    {
+        public StackholderMail MailDetails { get; set; }
+
+        public List<StakeHolder> StakeHolders { get; set; }
+    }
+}

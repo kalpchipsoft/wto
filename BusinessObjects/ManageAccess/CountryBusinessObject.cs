@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObjects.ManageAccess
 {
@@ -17,6 +14,18 @@ namespace BusinessObjects.ManageAccess
         public string CountryName { get; set; }
         public int Status { get; set; }
         public bool IsInUse { get; set; }
+        public string CountryCode { get; set; }
+    }
+
+    public class AddCountry
+    {
+        public long CountryId { get; set; }
+        [Required]
+        public string CountryName { get; set; }
+        [Required]
+        public int Status { get; set; }
+        [Required]
+        public string CountryCode { get; set; }
     }
 
     public class PageLoad_CountryList

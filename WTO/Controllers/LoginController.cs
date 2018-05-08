@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BusinessServices;
 using BusinessObjects;
 
@@ -14,7 +10,7 @@ namespace WTO.Controllers
         {
             return View();
         }
-        
+
         public ActionResult Validate(LoginModel model)
         {
             if (ModelState.IsValid)
@@ -24,6 +20,7 @@ namespace WTO.Controllers
                 if (objR.StatusType == StatusType.SUCCESS)
                 {
                     Session["UserId"] = objR.UserId;
+                    Session["UserRole"] = "Admin";
                     return RedirectToAction("WTODashboard", "WTO");
                 }
                 else

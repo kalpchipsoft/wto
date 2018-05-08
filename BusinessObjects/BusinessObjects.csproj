@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.1.3\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -45,19 +57,29 @@
     <Compile Include="LoginModel.cs" />
     <Compile Include="ManageAccess\CountryBusinessObject.cs" />
     <Compile Include="ManageAccess\StakeHolderBusinessObject.cs" />
+    <Compile Include="ManageAccess\TemplateBusinessObject.cs" />
     <Compile Include="ManageAccess\TranslatorBusinessObject.cs" />
     <Compile Include="ManageAccess\UserBusinessObject.cs" />
     <Compile Include="Masters\MastersBussinessObject.cs" />
     <Compile Include="Masters\UserInfo.cs" />
+    <Compile Include="MOM\MoM.cs" />
+    <Compile Include="Notification\Action_Notification.cs" />
     <Compile Include="Notification\AddNotification.cs" />
     <Compile Include="Notification\Dashboard.cs" />
+    <Compile Include="Notification\Document_Notification.cs" />
     <Compile Include="Notification\NotificationList.cs" />
+    <Compile Include="Notification\Stakeholder_Notification.cs" />
+    <Compile Include="Notification\Template_Notification.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Procedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusModel.cs" />
+    <Compile Include="Translator\Login.cs" />
+    <Compile Include="Translator\TranslatorModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessObjects.Masters
+﻿namespace BusinessObjects.Masters
 {
     public class MastersBussinessObject
     {
+    }
+
+    public class StakeHolderMaster
+    {
+        public long ItemNumber { get; set; }
+        public long StakeHolderId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+        public string HSCodes { get; set; }
+    }
+
+    public class HSCodes
+    {
+        public string HSCode { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class Country
+    {
+        public long CountryId { get; set; }
+        public string CountryCode { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class NotificationStatus
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+    }
+
+    public class Language
+    {
+        public int LanguageId { get; set; }
+        public string LanguageName { get; set; }
+    }
+
+    public class Role
+    {
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+    }
+
+    public class Result
+    {
+        public string Status { get; set; }
+        public string Message { get; set; }
+        public long Id { get; set; }
     }
 }

@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using BusinessObjects.Notification;
 using BusinessService.Notification;
+using WTO.Handler;
+using System.IO;
+using System.Web;
+using BusinessObjects.ManageAccess;
+using System.Text.RegularExpressions;
+using Microsoft.Office.Interop.Word;
+using iTextSharp.text;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace WTO.Controllers.API.WTO
 {
@@ -15,7 +23,759 @@ namespace WTO.Controllers.API.WTO
         public IHttpActionResult InsertUpdate_Notification(AddNotification obj)
         {
             NotificationBusinessService objAN = new NotificationBusinessService();
-            return Ok(objAN.InsertUpdateNotification(obj));
+            AddNoti_Result objOutput = objAN.InsertUpdateNotification(obj);
+            if (objOutput.Status.ToLower() == "success")
+            {
+                #region "Attachments"
+                if (obj.NotificationDoc != null && obj.NotificationDoc.Content != "")
+                {
+                    try
+                    {
+                        byte[] bytes = null;
+                        if (obj.NotificationDoc.Content.IndexOf(',') >= 0)
+                        {
+                            var myString = obj.NotificationDoc.Content.Split(new char[] { ',' });
+                            bytes = Convert.FromBase64String(myString[1]);
+                        }
+                        else
+                            bytes = Convert.FromBase64String(obj.NotificationDoc.Content);
+
+                        if (obj.NotificationDoc.FileName.Length > 0 && bytes.Length > 0)
+                        {
+                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument/" + obj.NotificationId + "_" + obj.NotificationDoc.FileName);
+                            File.WriteAllBytes(filePath, bytes);
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+
+                if (obj.TranslatedDoc != null && obj.TranslatedDoc.Content != "")
+                {
+                    try
+                    {
+                        byte[] bytes = null;
+                        if (obj.TranslatedDoc.Content.IndexOf(',') >= 0)
+                        {
+                            var myString = obj.TranslatedDoc.Content.Split(new char[] { ',' });
+                            bytes = Convert.FromBase64String(myString[1]);
+                        }
+                        else
+                            bytes = Convert.FromBase64String(obj.TranslatedDoc.Content);
+
+                        if (obj.TranslatedDoc.FileName.Length > 0 && bytes.Length > 0)
+                        {
+                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument_Translated/" + obj.NotificationId + "_" + obj.TranslatedDoc.FileName);
+                            File.WriteAllBytes(filePath, bytes);
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+                #endregion
+            }
+            return Ok(objOutput);
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddRelatedStackholders(Int64 Id, string Stakeholders)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            return Ok(objAN.InsertDeleteRelatedStakeholders(Id, Stakeholders, false));
+        }
+
+        [HttpPost]
+        public IHttpActionResult RemoveRelatedStackholders(Int64 Id, string Stakeholders)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            return Ok(objAN.InsertDeleteRelatedStakeholders(Id, Stakeholders, true));
+        }
+
+        [HttpPost]
+        public IHttpActionResult SendToTranslater(SendToTranslater obj)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            SendToTranslater_Output objOutput = objAN.SendDocumentToTranslater(obj);
+
+            if (objOutput != null && objOutput.TranslatorId > 0)
+            {
+
+                #region "Attachments"
+                if (obj.NotificationDoc != null && obj.NotificationDoc.Content != "")
+                {
+                    try
+                    {
+                        byte[] bytes = null;
+                        if (obj.NotificationDoc.Content.IndexOf(',') >= 0)
+                        {
+                            var myString = obj.NotificationDoc.Content.Split(new char[] { ',' });
+                            bytes = Convert.FromBase64String(myString[1]);
+                        }
+                        else
+                            bytes = Convert.FromBase64String(obj.NotificationDoc.Content);
+
+                        if (obj.NotificationDoc.FileName.Length > 0 && bytes.Length > 0)
+                        {
+                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument/" + obj.NotificationId + "_" + obj.NotificationDoc.FileName);
+                            File.WriteAllBytes(filePath, bytes);
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+                #endregion
+
+                SendMail objMail = new SendMail();
+                string MailBody = objAN.MailbodyForTranslater(objOutput);
+                List<string> Attachment = new List<string>();
+                Attachment.Add(HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument/" + obj.NotificationId + "_" + obj.NotificationDoc.FileName));
+                //objMail.SendAsyncEMail(objOutput.TranslaterEmailId, "", "", "", "Ashvini Mishra", "WTO Notifications : Document for Translation", MailBody, Attachment.ToArray());
+                objMail.SendAsyncEMail("Ashvini.chipsoft@gmail.com", "", "", "", "Ashvini Mishra", "WTO Notifications : Document for Translation", MailBody, Attachment.ToArray());
+                return Ok();
+            }
+            else
+                return Content(HttpStatusCode.BadRequest, "Something Went wrong");
+        }
+
+        [HttpPost]
+        public IHttpActionResult SendMailToStakeholders(SendMailStakeholders obj)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            SendMailStakeholders_Output objOutput = objAN.SaveAndSendMailToStakeholders(obj);
+
+            if (objOutput != null)
+            {
+                #region "Attachments"
+                if (obj.Attachments != null)
+                {
+                    foreach (MailAttachment objA in obj.Attachments)
+                    {
+                        try
+                        {
+                            byte[] bytes = null;
+                            if (objA.Content.IndexOf(',') >= 0)
+                            {
+                                var myString = objA.Content.Split(new char[] { ',' });
+                                bytes = Convert.FromBase64String(myString[1]);
+                            }
+                            else
+                                bytes = Convert.FromBase64String(objA.Content);
+
+                            if (objA.FileName.Length > 0 && bytes.Length > 0)
+                            {
+                                string filePath = HttpContext.Current.Server.MapPath("/Attachments/MailAttachment/" + objOutput.MailDetails.MailId + "_" + objA.FileName);
+                                File.WriteAllBytes(filePath, bytes);
+                            }
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+                #endregion
+                SendMail objMail = new SendMail();
+                foreach (StakeHolder s in objOutput.StakeHolders)
+                {
+                    string MailBody = objAN.MailbodyForStakeholders(objOutput.MailDetails);
+                    MailBody = MailBody.Replace("#Name#", s.StakeHolderName);
+                    List<string> Attachment = new List<string>();
+                    foreach (MailAttachment att in obj.Attachments)
+                    {
+                        if (att.Path != "")
+                            Attachment.Add(HttpContext.Current.Server.MapPath(att.Path));
+                        else
+                            Attachment.Add(HttpContext.Current.Server.MapPath("/Attachments/MailAttachment/" + objOutput.MailDetails.MailId + "_" + att.FileName));
+                    }
+                    //objMail.SendAsyncEMail(objOutput.TranslaterEmailId, "", "", "", "Ashvini Mishra", "WTO Notifications : Document for Translation", MailBody, Attachment.ToArray());
+                    objMail.SendAsyncEMail("Ashvini.chipsoft@gmail.com", "", "", "", "WTO Notifications", objOutput.MailDetails.Subject, MailBody, Attachment.ToArray());
+                }
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult ReadNotificationDetails(BusinessObjects.Notification.Attachment file)
+        {
+            NotificationDetails objE = new NotificationDetails();
+            try
+            {
+                if (file != null && file.Content.Length > 0)
+                {
+                    #region "Get & save Document"
+                    byte[] bytes = null;
+                    if (file.Content.IndexOf(',') >= 0)
+                    {
+                        var myString = file.Content.Split(new char[] { ',' });
+                        bytes = Convert.FromBase64String(myString[1]);
+                    }
+                    else
+                        bytes = Convert.FromBase64String(file.Content);
+
+                    string filePath = HttpContext.Current.Server.MapPath("/Attachments/Temp/" + file.FileName);
+
+                    if (file.FileName.Length > 0 && bytes.Length > 0)
+                    {
+                        if (File.Exists(filePath))
+                            File.Delete(filePath);
+
+                        File.WriteAllBytes(filePath, bytes);
+                    }
+
+                    //Stream st = new MemoryStream(bytes);
+                    string _fileName = System.IO.Path.GetFileName(file.FileName);
+                    string fileExtension = System.IO.Path.GetExtension(_fileName);
+                    #endregion
+
+                    #region "Pdf File"
+                    if (fileExtension.ToLower() == ".pdf")
+                    {
+                        #region "REad PDF"
+                        //PdfReader reader = new PdfReader(filePath);
+                        //int intPageNum = reader.NumberOfPages;
+                        //string[] words;
+                        //string line;
+
+                        //for (int i = 1; i <= intPageNum; i++)
+                        //{
+
+                        //    string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                        //    List<string> Data = new List<string>();
+                        //    if (text.Trim().Contains("\a"))
+                        //    {
+                        //        foreach (string str in text.Trim().Replace("\a", "#").Split('#'))
+                        //        {
+                        //            if (str.Trim() != "")
+                        //                Data.Add(str);
+                        //        }
+                        //    }
+                        //    else if (text.Trim().Contains("\n"))
+                        //    {
+                        //        foreach (string str in text.Trim().Replace("\n", "").Replace("\r", "#").Split('#'))
+                        //        {
+                        //            if (str.Trim() != "")
+                        //                Data.Add(str);
+                        //        }
+                        //    }
+
+                        //    words = text.Split('\n');
+                        //    for (int j = 0, len = words.Length; j < len; j++)
+                        //    {
+                        //        line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[j]));
+                        //    }
+
+                        //    #region "Loop start"
+                        //    foreach (string str in Data)
+                        //    {
+                        //        string Header = str;
+                        //        Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
+                        //        Header = Regex.Replace(Header, @"\r\r+", ",");
+                        //        if (Header.Split(',').Length > 1)
+                        //        {
+                        //            foreach (string hdrstr in Header.Split(','))
+                        //            {
+                        //                string Ctext = hdrstr;
+
+                        //                if (Ctext.Contains("G/TBT/N/"))
+                        //                {
+                        //                    objE.NotificationNumber = Ctext;
+                        //                    objE.Type = "2";
+                        //                }
+                        //                else if (Ctext.Contains("G/SPS/N/"))
+                        //                {
+                        //                    objE.NotificationNumber = Ctext;
+                        //                    objE.Type = "1";
+                        //                }
+
+                        //                DateTime Temp;
+                        //                if (DateTime.TryParse(Ctext, out Temp) == true)
+                        //                {
+                        //                    DateTime d = Convert.ToDateTime(DateTime.Parse(Ctext.Trim()).ToString("dd MM yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                        //                    objE.NotificationDate = d.ToString("dd MMM yyyy");
+                        //                }
+                        //            }
+                        //        }
+
+                        //        if (str.Contains("/SPS/") || str.Contains("/TBT/"))
+                        //        {
+                        //            objE.NotificationNumber = Regex.Replace(str, @"[^\w\s.,!/@#$%^&*()=+~`]", "#").Replace("\r", "").Split('#')[0];
+
+                        //            if (objE.NotificationNumber.Length > 15)
+                        //            {
+                        //                objE.NotificationNumber = objE.NotificationNumber.Substring(0, 15);
+                        //                objE.NotificationDate = objE.NotificationNumber.Substring(15, 13);
+                        //            }
+
+                        //            if (objE.NotificationNumber.Contains("/SPS/"))
+                        //                objE.Type = "1";
+                        //            else if (objE.NotificationNumber.Contains("/TBT/"))
+                        //                objE.Type = "2";
+
+                        //        }
+
+                        //        if (str.Contains("Notified under Article"))
+                        //        {
+                        //            objE.Articles = "";
+                        //            foreach (string ar in str.Replace("Notified under Article ", "").Split(','))
+                        //            {
+                        //                if (ar.Contains("["))
+                        //                {
+                        //                    if ((ar.Split('[')[1]).Contains("X"))
+                        //                        objE.Articles += ar.Split('[')[0].Trim() + ",";
+                        //                }
+                        //            }
+                        //        }
+
+
+                        //        if (str.Contains("Notifying Member"))
+                        //        {
+                        //            string NotifyingMember = str.Replace("Notifying Member:", "");
+                        //            objE.Country = Regex.Replace(NotifyingMember, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Agency responsible"))
+                        //        {
+                        //            string AgencyResponsible = str.Replace("Agency responsible:", "");
+                        //            objE.ResponsibleAgency = Regex.Replace(AgencyResponsible, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Products covered"))
+                        //        {
+                        //            string ProductsCovered = str.Split(':')[str.Split(':').Length - 1];
+                        //            objE.ProductsCovered = Regex.Replace(ProductsCovered, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Title"))
+                        //        {
+                        //            if (str.Contains("Title of the notified document"))
+                        //            {
+                        //                string Title = str.Replace("Title of the notified document:", "");
+                        //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //            }
+                        //            else
+                        //            {
+                        //                string Title = str.Split(':')[str.Split(':').Length - 1];
+                        //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //            }
+                        //        }
+
+                        //        if (str.Contains("Description of content"))
+                        //        {
+                        //            string Description = str.Replace("Description of content:", "");
+                        //            objE.Description = Regex.Replace(Description, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Final date for comments"))
+                        //        {
+                        //            string FinalDateForComments = str.Split('\r')[0].Split(':')[str.Split('\r')[0].Split(':').Length - 1];
+                        //            objE.FinalDateOfComments = Regex.Replace(FinalDateForComments, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+                        //    }
+                        //    #endregion
+                        //}
+                        #endregion
+                    }
+                    #endregion
+
+                    #region "Word File"
+                    if (fileExtension.ToLower() == ".doc" || fileExtension.ToLower() == ".docx")
+                    {
+                        #region "Read file using Interop"
+                        Application word = new Application();
+                        Microsoft.Office.Interop.Word.Document wordfile = new Microsoft.Office.Interop.Word.Document();
+
+                        object path = filePath;
+                        // Define an object to pass to the API for missing parameters
+                        object missing = System.Type.Missing;
+                        wordfile = word.Documents.Open(ref path,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing);
+                        try
+                        {
+                            String read = string.Empty;
+                            List<string> data = new List<string>();
+                            List<string> headers = new List<string>();
+
+                            #region "Read File Header"
+                            foreach (Microsoft.Office.Interop.Word.Section aSection in word.ActiveDocument.Sections)
+                            {
+                                foreach (HeaderFooter aHeader in aSection.Headers)
+                                {
+                                    headers.Add(aHeader.Range.Text);
+                                    string Header = aHeader.Range.Text;
+                                    Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
+                                    Header = Regex.Replace(Header, @"\r\r+", ",");
+                                    if (Header.Split(',').Length > 1)
+                                    {
+                                        foreach (string hdrstr in Header.Split(','))
+                                        {
+                                            string Ctext = hdrstr;
+
+                                            if (Ctext.Contains("G/TBT/N/"))
+                                            {
+                                                objE.NotificationNumber = Ctext;
+                                                objE.NotificationType = "2";
+                                            }
+                                            else if (Ctext.Contains("G/SPS/N/"))
+                                            {
+                                                objE.NotificationNumber = Ctext;
+                                                objE.NotificationType = "1";
+                                            }
+
+                                            DateTime Temp;
+                                            if (DateTime.TryParse(Ctext, out Temp) == true)
+                                            {
+                                                DateTime d = Convert.ToDateTime(DateTime.Parse(Ctext.Trim()).ToString("dd MM yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                                                objE.DateofNotification = d.ToString("dd MMM yyyy");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            #region "File Body"
+                            bool IsEnquiryPoint = false;
+                            int i = 0, DescIndex = 0;
+                            foreach (Microsoft.Office.Interop.Word.Paragraph objParagraph in wordfile.Paragraphs)
+                            {
+                                data.Add(objParagraph.Range.Text.Trim());
+                                string str = objParagraph.Range.Text.Trim();
+                                if (str.Contains("Notifying Member"))
+                                {
+                                    string NotifyingMember = str.Replace("Notifying Member:", "");
+                                    objE.Country = Regex.Replace(NotifyingMember, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                }
+
+                                if (str.Contains("Agency responsible"))
+                                {
+                                    string AgencyResponsible = str.Replace("Agency responsible:", "");
+                                    objE.ResponsibleAgency = Regex.Replace(AgencyResponsible, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                }
+
+                                if (str.Contains("Products covered"))
+                                {
+                                    string ProductsCovered = "";
+                                    foreach (string pc in str.Split(':'))
+                                    {
+                                        if (!pc.Contains("Products covered"))
+                                            ProductsCovered += Regex.Replace(pc, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    }
+
+                                    string hs = "";
+                                    if (ProductsCovered.Contains("(HS "))
+                                    {
+                                        hs = ProductsCovered.Remove(0, ProductsCovered.IndexOf("(HS"));
+                                        hs = hs.Substring(0, hs.IndexOf(')'));
+                                        hs = hs.Replace("(HS", "").Trim();
+                                        objE.HSCodes = hs;
+                                    }
+
+                                    objE.ProductsCovered = ProductsCovered;
+                                }
+
+                                if (str.Contains("Title"))
+                                {
+                                    if (objE.NotificationNumber.Contains("SPS"))
+                                    {
+                                        string Title = str.Replace("Title of the notified document:", "");
+                                        objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    }
+                                    else
+                                    {
+                                        string Title = str.Split(':')[str.Split(':').Length - 1];
+                                        objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    }
+                                }
+
+                                #region "If Description Contains For than 1 Paragraph"
+                                if (objE.Description != "" && DescIndex > 0)
+                                {
+                                    if (Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Replace(".\r", "").Trim().All(char.IsDigit))
+                                        DescIndex = 0;
+                                }
+                                #endregion
+
+
+                                if (str.Contains("Description of content"))
+                                {
+                                    if (Regex.Replace(data[i - 1], @"[^\w\s.,!@#$%^&*()=+~`-]", "").Replace(".\r", "").Trim().All(char.IsDigit))
+                                        DescIndex = Convert.ToInt32(Regex.Replace(data[i - 1], @"[^\w\s\r.,!@#$%^&*()=+~`-]", "").Replace(".\r", "").Trim());
+                                    string Description = str.Replace("Description of content:", "");
+                                    objE.Description = Regex.Replace(Description, @"[^\w\s.,!;@#$%^&*()=+~`-]", "").Trim();
+                                }
+                                else if (DescIndex > 0)
+                                {
+                                    objE.Description += Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                }
+
+
+                                if (str.Contains("Final date for comments"))
+                                {
+                                    if (objE.NotificationNumber.Contains("SPS"))
+                                    {
+                                        string FinalDateForComments = str.Split('\r')[0].Split(':')[str.Split('\r')[0].Split(':').Length - 1];
+                                        FinalDateForComments = Regex.Replace(FinalDateForComments, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                                        DateTime Temp;
+                                        if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
+                                            objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                    }
+                                }
+
+                                if (objE.NotificationNumber.Contains("TBT"))
+                                {
+                                    if (str.Contains("Notified under Article "))
+                                    {
+                                        objE.Articles = "";
+                                        foreach (string ar in str.Replace("Notified under Article ", "").Split(','))
+                                        {
+                                            if (ar.Contains("["))
+                                            {
+                                                if ((ar.Split('[')[1]).Contains("X"))
+                                                    objE.Articles += ar.Split('[')[0].Trim() + ",";
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (i > 0 && data[i - 1].Contains("Texts available from"))
+                                    IsEnquiryPoint = true;
+
+                                if (IsEnquiryPoint)
+                                {
+                                    if (str.Contains("E-mail:") || str.Contains("Email:"))
+                                    {
+                                        string Estr = "";
+
+                                        if (str.Contains("E-mail:"))
+                                            Estr = str.Remove(0, str.IndexOf("E-mail:")).Replace("E-mail:", "").Trim();
+                                        else if (str.Contains("Email:"))
+                                            Estr = str.Remove(0, str.IndexOf("Email:")).Replace("Email:", "").Trim();
+
+                                        Estr = Estr.Substring(0, Estr.IndexOf("Website:")).Replace("\v", "");
+                                        objE.EnquiryEmailId = Regex.Replace(Estr, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    }
+                                    IsEnquiryPoint = false;
+                                }
+                                i++;
+                            }
+                            #endregion
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                        finally
+                        {
+                            ((_Document)wordfile).Close();
+                            if (word.Documents.Count > 0)
+                                word.Documents.Close();
+
+                            ((_Application)word.Application).Quit();
+                            word.Quit();
+
+                            if (File.Exists(filePath))
+                                File.Delete(filePath);
+                        }
+                        #endregion
+
+                        #region "Using Aspose Word"
+                        //Aspose.Words.Document doc = new Aspose.Words.Document(st);
+                        //string text = doc.GetText();
+                        //List<string> Data = new List<string>();
+
+                        //if (text.Trim().Contains("\a"))
+                        //{
+                        //    foreach (string str in text.Trim().Replace("\a", "#").Split('#'))
+                        //    {
+                        //        if (str.Trim() != "")
+                        //            Data.Add(str);
+                        //    }
+                        //}
+                        //else if (text.Trim().Contains("\n"))
+                        //{
+                        //    foreach (string str in text.Trim().Replace("\n", "").Replace("\r", "#").Split('#'))
+                        //    {
+                        //        if (str.Trim() != "")
+                        //            Data.Add(str);
+                        //    }
+                        //}
+
+                        //objE.NotificationDate = Data[2];
+
+                        //foreach (string str in Data)
+                        //{
+                        //    if (str.Contains("/SPS/") || str.Contains("/TBT/"))
+                        //    {
+                        //        objE.NotificationNumber = Regex.Replace(str, @"[^\w\s.,!/@#$%^&*()=+~`]", "#").Replace("\r", "").Split('#')[0];
+
+                        //        if (objE.NotificationNumber.Length > 15)
+                        //        {
+                        //            objE.NotificationNumber = objE.NotificationNumber.Substring(0, 15);
+                        //            objE.NotificationDate = objE.NotificationNumber.Substring(15, 13);
+                        //        }
+
+                        //        if (objE.NotificationNumber.Contains("/SPS/"))
+                        //            objE.Type = "1";
+                        //        else if (objE.NotificationNumber.Contains("/TBT/"))
+                        //            objE.Type = "2";
+
+                        //    }
+
+                        //    if (str.Contains("Notified under Article"))
+                        //    {
+                        //        objE.Articles = "";
+                        //        foreach (string ar in str.Replace("Notified under Article ", "").Split(','))
+                        //        {
+                        //            if (ar.Contains("["))
+                        //            {
+                        //                if ((ar.Split('[')[1]).Contains("X"))
+                        //                    objE.Articles += ar.Split('[')[0].Trim() + ",";
+                        //            }
+                        //        }
+                        //    }
+
+
+                        //    if (str.Contains("Notifying Member"))
+                        //    {
+                        //        string NotifyingMember = str.Replace("Notifying Member:", "");
+                        //        objE.Country = Regex.Replace(NotifyingMember, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //    }
+
+                        //    if (str.Contains("Agency responsible"))
+                        //    {
+                        //        string AgencyResponsible = str.Replace("Agency responsible:", "");
+                        //        objE.ResponsibleAgency = Regex.Replace(AgencyResponsible, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //    }
+
+                        //    if (str.Contains("Products covered"))
+                        //    {
+                        //        string ProductsCovered = str.Split(':')[str.Split(':').Length - 1];
+                        //        objE.ProductsCovered = Regex.Replace(ProductsCovered, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //    }
+
+                        //    if (str.Contains("Title"))
+                        //    {
+                        //        if (str.Contains("Title of the notified document"))
+                        //        {
+                        //            string Title = str.Replace("Title of the notified document:", "");
+                        //            objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+                        //        else
+                        //        {
+                        //            string Title = str.Split(':')[str.Split(':').Length - 1];
+                        //            objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+                        //    }
+
+                        //    if (str.Contains("Description of content"))
+                        //    {
+                        //        string Description = str.Replace("Description of content:", "");
+                        //        objE.Description = Regex.Replace(Description, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //    }
+
+                        //    if (str.Contains("Final date for comments"))
+                        //    {
+                        //        string FinalDateForComments = str.Split('\r')[0].Split(':')[str.Split('\r')[0].Split(':').Length - 1];
+                        //        objE.FinalDateOfComments = Regex.Replace(FinalDateForComments, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //    }
+                        //}
+                        #endregion
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return Ok(objE);
+        }
+
+        [HttpPost]
+        public IHttpActionResult SendMailToEnquiryDesk(long Id, SendMailToEnquiryDesk MailDetails)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            SendMail_Output objOutput = objAN.SaveAndSendMailToEnquiryDesk(Id, MailDetails);
+
+            if (objOutput != null)
+            {
+                SendMail objMail = new SendMail();
+                objOutput.MailDetails.Body = objOutput.MailDetails.Body.Replace("\n", "<br/>");
+                objMail.SendAsyncEMail(objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.MailDetails.Subject, objOutput.MailDetails.Body, null);
+            }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [ActionName("Download")]
+        public HttpResponseMessage DownloadNotification(Int64 Id)
+        {
+            NotificationBusinessService objBS = new NotificationBusinessService();
+            MemoryStream mStream = null;
+            objBS.GenerateNotificationZip(Id, out mStream);
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(mStream.GetBuffer())
+            };
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "NotificationDetails.zip"
+            };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentLength = mStream.Length;
+
+            if (mStream != null)
+            {
+                mStream.Close();
+                mStream.Dispose();
+            }
+
+            return result;
+        }
+
+        [HttpPost]
+        public IHttpActionResult InsertUpdateAction(Int64 Id, AddNotificationAction obj)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            AddNotificationAction_Output objOutput = new AddNotificationAction_Output();
+            objOutput = objAN.InsertUpdateActions(Id, obj);
+            if (objOutput != null && objOutput.NotificationId > 0 && objOutput.ActionId > 0)
+            {
+
+                #region "Attachments"
+                if (obj.Attachment != null && obj.Attachment.Content != "")
+                {
+                    try
+                    {
+                        byte[] bytes = null;
+                        if (obj.Attachment.Content.IndexOf(',') >= 0)
+                        {
+                            var myString = obj.Attachment.Content.Split(new char[] { ',' });
+                            bytes = Convert.FromBase64String(myString[1]);
+                        }
+                        else
+                            bytes = Convert.FromBase64String(obj.Attachment.Content);
+
+                        if (obj.Attachment.FileName.Length > 0 && bytes.Length > 0)
+                        {
+                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/ActionAttachment/" + objOutput.NotificationId + "_" + objOutput.ActionId + "_" + obj.Attachment.FileName);
+                            File.WriteAllBytes(filePath, bytes);
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+                #endregion
+
+                return Ok();
+            }
+            else
+                return Content(HttpStatusCode.BadRequest, "Something Went wrong");
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetMailSMSTemplate(Int64 Id, Notification_Template_Search obj)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            return Ok(objAN.GetNotificationSMSMailTemplate(Id, obj));
         }
     }
 }

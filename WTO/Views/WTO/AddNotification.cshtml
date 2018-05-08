@@ -5,939 +5,601 @@
 }
 <link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-combobox.js"></script>
-<script src="~/JQuery/AddUpdateNotification.js?v=2"></script>
+<script src="~/JQuery/AddUpdateNotification.js?v=4"></script>
 <!-- body section start -->
-@{
-    bool IsSPS = false;
-    bool IsTBT = false;
-    if (@Model.Noti_Type != null && Convert.ToString(@Model.Noti_Type).IndexOf("1") > -1)
-    {
-        IsSPS = true;
-    }
-    if (@Model.Noti_Type != null && Convert.ToString(@Model.Noti_Type).IndexOf("2") > -1)
-    {
-        IsTBT = true;
-    }
-}
-<input type="hidden" name="HiddenHSCode" id="HiddenHSCode" value='@Model.HSCodes'>
-<input type="hidden" name="HiddenHSCode" id="hdnNotificationId" value='@Model.NotificationId'>
-@Html.Hidden("RedirectTo", Url.Action("GetNotificationsMasters", "NotificationList"))
-<div class="container-fluid bodybackground">
-    <div class="padding-bottom-40">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
-                <div class="row">
-                    <h4 class="blue-color"><b>Add Notification</b></h4>
+@Html.Hidden("hdnUserId", "1")
+@Html.Hidden("hdnSelectedHSCodes", @Model.HSCodes)
+@Html.Hidden("hdnNotificationId", @Model.NotificationId)
+@Html.Hidden("hdnSelectedStakeHolders", @Model.Stakeholders)
+@Html.Hidden("hdnEnquiryEmailId", @Model.EnquiryEmailId)
+@Html.Hidden("RedirectTo", Url.Action("Edit_Notification", "AddNotification", new { Id = Model.NotificationId }))
+@Html.Hidden("hdnDocumentFor", "")
+<div class="topbg">
+    <div class="container-fluid bodybackground">
+        <div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                    <h4 class="white-color"><b>Add Notification</b></h4>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
-                <div class="row">
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-                        <!-- First Accordian part start -->
-                        <div class="panel panel-default Accordian-panel">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title Accordian-panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <i class="more-less glyphicon glyphicon-chevron-right"></i>
-                                        Notification
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div class="panel-body Accordian-body">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border top-border-none">
-                                            <div class="row top-offset-20">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="fileinput fileinput-new upload pull-right" data-provides="fileinput">
-                                                        <span class="btn btn-light-blue btn-padding btn-file"><span class="glyphicon glyphicon-open"></span> <span class="puttext">Upload File</span><input type="file" class="fileholder uploadfile" id="filename"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Notification Type<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-bold" id="NotificationTypeId">
-                                                        <b>
-                                                            @if (IsSPS)
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                            <div class="row">
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <!-- First Accordian part start -->
+                                    <div class="panel panel-default Accordian-panel">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title Accordian-panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    <i class="more-less glyphicon glyphicon-chevron-right"></i>
+                                                    Notification
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body Accordian-body">
+                                                @*<div class="row">*@
+                                                <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
+                                                    <div class="row top-offset-20">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            @if (Model.NotificationAttachment == null)
                                                             {
-                                                            <label class="checkbox-inline"><input type="checkbox" value="1" id="TypeSPS" checked="checked">SPS</label>
+                                                                <div class="fileinput fileinput-new pull-right" data-provides="fileinput">
+                                                                    <span class="btn btn-blue btn-padding btn-file">
+                                                                        <span class="glyphicon glyphicon-open"></span>
+                                                                        <span class="puttext">Upload File</span>
+                                                                        <input type="file" class="fileholder uploadfile" id="NotificationFile">
+                                                                    </span>
+                                                                </div>
+                                                                <span class="fileinput-new dark-blue underline pull-right" id="NotificationFileName" style="padding-top: 10px;margin-right: 10px;">No File Choosen</span>
+                                                                <br /><br />
+                                                                <span class="text-danger pull-right">You can upload pdf and word File only.</span>
                                                             }
                                                             else
                                                             {
-                                                            <label class="checkbox-inline"><input type="checkbox" value="1" id="TypeSPS">SPS</label>
+                                                                <span class="fileinput-new dark-blue pull-right">
+                                                                    <a href="@Model.NotificationAttachment.Path" download="@Model.NotificationAttachment.FileName">
+                                                                        <div class="fileinput fileinput-new pull-right">
+                                                                            <span class="btn btn-blue btn-padding btn-file">
+                                                                                <span class="glyphicon glyphicon-save"></span>
+                                                                                <span class="puttext">@Model.NotificationAttachment.FileName</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </a>
+                                                                </span>
                                                             }
-                                                            @if (IsTBT)
-                                                            {
-                                                            <label class="checkbox-inline"><input type="checkbox" value="2" id="TypeTBT" checked="checked">TBT</label>
-                                                            }
-                                                            else
-                                                            {
-                                                            <label class="checkbox-inline"><input type="checkbox" value="2" id="TypeTBT">TBT</label>
-                                                            }
-                                                        </b>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Notification Number<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">
-                                                        @if (@Model.Noti_Number != null)
-                                                        {
-                                                        <input type="text" id="NotificationNumberId" class="form-control textboxcontrol" value='@Model.Noti_Number' />
-                                                        }
-                                                        else
-                                                        {
-                                                        <input type="text" id="NotificationNumberId" class="form-control textboxcontrol" />
-                                                        }
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Notification Status<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @Html.DropDownListFor(m => Model.Noti_Status, new SelectList(Model.Noti_TypeList, "Id", "Type"), "Select status", new { Id = "NotificationStatusId", Class = "form-control textboxcontrol" })
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Date of Notification<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.NotificationId > 0)
-                                                        {
-                                                        <input type="text" id="DateofNotificationId" class="form-control date-picker textboxcontrol" value='@Convert.ToDateTime(@Model.Noti_Date).ToLongDateString()' />
-                                                        }
-                                                        else
-                                                        {
-                                                        <input type="text" id="DateofNotificationId" class="form-control date-picker textboxcontrol" value="" />
-                                                        }
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Final Date for Comments<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.NotificationId > 0)
-                                                        {
-                                                        <input type="text" id="FinalDateforCommentsId" class="form-control date-picker textboxcontrol" value='@Convert.ToDateTime(@Model.FinalDateOfComments).ToLongDateString()' />
-                                                        }
-                                                        else
-                                                        {
-                                                        <input type="text" id="FinalDateforCommentsId" class="form-control date-picker textboxcontrol" value="" />
-                                                        }
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Send Response By<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.NotificationId > 0)
-                                                        {
-                                                        <input type="text" id="SendResponseById" class="form-control date-picker textboxcontrol" value='@Convert.ToDateTime(@Model.SendResponseBy).ToLongDateString()' />
-                                                        }
-                                                        else
-                                                        {
-                                                        <input type="text" id="SendResponseById" class="form-control date-picker textboxcontrol" value="" />
-                                                        }
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
-                                                    <p class="text-danger hidden" id="SendResponseError" style="font-size:12px;">Send Response By date is lesser than date of notificaton please check !</p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Notifying Country<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.CountryList != null)
-                                                        {
-                                                        @Html.DropDownListFor(m => Model.Noti_Country, new SelectList(Model.CountryList, "CountryId", "Name"), "Select country", new { Id = "NotifyingCountryId", Class = "form-control textboxcontrol" })
-                                                        }
-                                                        else
-                                                        {
-                                                        <select id="NotifyingCountryId" class="form-control textboxcontrol">No Country</select>
-                                                        }
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Title<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.Title != null)
-                                                        {
-                                                        <textarea class="form-control textboxcontrol" cols="30" rows="2" id="TitleId">@Model.Title</textarea>
-                                                        }
-                                                        else
-                                                        {
-                                                        <textarea class="form-control textboxcontrol" cols="30" rows="2" id="TitleId"></textarea>
-                                                        }
-                                                        <span class="pull-right label label-default" id="count_message"><span id="display_count">0</span>/<span id="word_left">100</span></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Agency Responsible<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.ResponsibleAgency != null)
-                                                        {
-                                                        <textarea class="form-control textboxcontrol" cols="30" rows="3" id="AgencyResponsibleId">@Model.ResponsibleAgency</textarea>
-                                                        }
-                                                        else
-                                                        {
-                                                        <textarea class="form-control textboxcontrol" cols="30" rows="3" id="AgencyResponsibleId"></textarea>
-                                                        }
-                                                        <span class="pull-right label label-default" id="count_message"><span id="display_count1">0</span>/<span id="word_left1">150</span></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Notification Under Article<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.Noti_UnderArticle != null)
-                                                        {
-                                                        <input type="text" id="NotificationUnderArticleId" maxlength="30" class="form-control textboxcontrol" value='@Model.Noti_UnderArticle' />
-                                                        }
-                                                        else
-                                                        {
-                                                        <input type="text" id="NotificationUnderArticleId" maxlength="30" class="form-control textboxcontrol" />
-                                                        }
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Products Covered<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.ProductsCovered != null)
-                                                        {
-                                                        <textarea id="ProductsCoveredId" class="form-control textboxcontrol" cols="30" rows="3">@Model.ProductsCovered</textarea>
-                                                        }
-                                                        else
-                                                        {
-                                                        <textarea id="ProductsCoveredId" class="form-control textboxcontrol" cols="30" rows="3"></textarea>
-                                                        }
-                                                        <span class="pull-right label label-default" id="count_message"><span id="display_count2">0</span>/<span id="word_left2">150</span></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">HS Codes<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        <a href="#" class="btn sky-blue" data-toggle="modal" data-target="#selecthr" onclick="bindhscodeUId();">Select HS Code</a>
-                                                    </p>
-                                                    <div class='table-responsive hs-code-table @(@Model.SelectedHSCodes != null ? "" : "hidden")'>
-                                                        <table class="table table-bordered top-offset-10" id="HSCodesId">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="col-md-2"><b>HS Code</b></th>
-                                                                    <th class="col-md-9"><b>Name</b></th>
-                                                                    <th class="col-md-1"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @if (@Model.SelectedHSCodes != null)
-                                                                {
-                                                                    foreach (var Item in @Model.SelectedHSCodes)
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Notification Type<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-bold" id="NotificationTypeId">
+                                                                <b>
+                                                                    @if (@Model.NotificationType != null && (Convert.ToString(@Model.NotificationType) == "1" || Convert.ToString(@Model.NotificationType) == "3"))
                                                                     {
-                                                                <tr class='@Item.HSCode'>
-                                                                    <td>@Item.HSCode</td>
-                                                                    <td>@Item.Text</td>
-                                                                    <td>
-                                                                        <a href='#@Item.HSCode' id='@Item.HSCode' onclick='return RemoveHSCodeRow(this.id);' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a>
-                                                                    </td>
-                                                                </tr>
+                                                                        <label class="checkbox-inline"><input type="checkbox" value="1" id="TypeSPS" checked="checked">SPS</label>
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        <label class="checkbox-inline"><input type="checkbox" value="1" id="TypeSPS">SPS</label>
+                                                                    }
+                                                                    @if (@Model.NotificationType != null && (Convert.ToString(@Model.NotificationType) == "2" || Convert.ToString(@Model.NotificationType) == "3"))
+                                                                    {
+                                                                        <label class="checkbox-inline"><input type="checkbox" value="2" id="TypeTBT" checked="checked">TBT</label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label class="checkbox-inline"><input type="checkbox" value="2" id="TypeTBT">TBT</label>
+                                                                    }
+                                                                </b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Notification Number<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">
+                                                                <input type="text" id="NotificationNumberId" class="form-control textboxcontrol" value='@(Model.NotificationNumber != null?Model.NotificationNumber : "")' />
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Notification Status<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                @Html.DropDownListFor(m => Model.NotificationStatus, new SelectList(Model.NotificationStatusList, "Id", "Type"), "Select status", new { Id = "NotificationStatusId", Class = "form-control textboxcontrol" })
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Date of Notification<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                <input type="text" id="DateofNotificationId" class="form-control date-picker textboxcontrol" value='@(Model.NotificationId > 0?@Model.DateofNotification:"")' />
+                                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Final Date for Comments<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                <input type="text" id="FinalDateforCommentsId" class="form-control date-picker textboxcontrol" value='@(Model.NotificationId > 0?@Model.FinalDateOfComments:"")' />
+                                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                            <p class="text-danger hidden" id="FinalDateforCommentsError" style="font-size:12px;">Final Date for Comments should be 60 days greater then date of notification. Please check !</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Send Response By<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                <input type="text" id="SendResponseById" class="form-control date-picker textboxcontrol" value='@(Model.NotificationId > 0?@Model.SendResponseBy:"")' />
+                                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                            <p class="text-danger hidden" id="SendResponseError" style="font-size:12px;">Due date for send response is smaller than date of notificaton. Please check !</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Notifying Country<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                @if (@Model.CountryList != null)
+                                                                {
+                                                                    @Html.DropDownListFor(m => Model.CountryId, new SelectList(Model.CountryList, "CountryId", "Name"), "Select country", new { Id = "NotifyingCountryId", Class = "form-control textboxcontrol" })
                                                                 }
-                                                            </tbody>
-                                                        </table>
+                                                                else
+                                                                {
+                                                                    <select id="NotifyingCountryId" class="form-control textboxcontrol">No Country</select>
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Title<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-normal">
+                                                                <textarea class="form-control textboxcontrol" cols="30" rows="2" id="TitleId">@(Model.Title == null ? "" : Model.Title)</textarea>
+                                                                <span class="pull-right label label-default" id="count_message"><span id="display_count">0</span>/<span id="word_left">100</span></span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Agency Responsible<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-normal">
+                                                                <textarea class="form-control textboxcontrol" cols="30" rows="3" id="AgencyResponsibleId">@(Model.ResponsibleAgency == null ? "" : @Model.ResponsibleAgency)</textarea>
+                                                                <span class="pull-right label label-default" id="count_message"><span id="display_count1">0</span>/<span id="word_left1">150</span></span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Notification Under Article<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-normal">
+                                                                <input type="text" id="NotificationUnderArticleId" maxlength="30" class="form-control textboxcontrol" value='@(Model.Articles==null?"":@Model.Articles)' />
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Products Covered<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-normal">
+                                                                <textarea id="ProductsCoveredId" class="form-control textboxcontrol" cols="30" rows="3">@(Model.ProductsCovered == null ? "" : @Model.ProductsCovered)</textarea>
+                                                                <span class="pull-right label label-default" id="count_message"><span id="display_count2">0</span>/<span id="word_left2">150</span></span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">HS Codes<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-normal">
+                                                                <a class="btn btn-blue" data-toggle="modal" data-target="#selecthr" onclick="bindhscodeUId();">Select HS Code</a>
+                                                            </p>
+                                                            <div class='table-responsive hs-code-table @(@Model.SelectedHSCodes != null ? "" : "hidden")'>
+                                                                <table class="table table-bordered top-offset-10" id="HSCodesId">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="col-md-2"><b>HS Code</b></th>
+                                                                            <th class="col-md-9"><b>Name</b></th>
+                                                                            <th class="col-md-1"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @if (@Model.SelectedHSCodes != null)
+                                                                        {
+                                                                            foreach (var Item in @Model.SelectedHSCodes)
+                                                                            {
+                                                                                <tr class='@Item.HSCode'>
+                                                                                    <td>@Item.HSCode</td>
+                                                                                    <td>@Item.Text</td>
+                                                                                    <td>
+                                                                                        <a href='#@Item.HSCode' id='@Item.HSCode' onclick='return RemoveHSCodeRow(this.id);' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row top-offset-10">
+                                                        <div class="col-xs-12 col-sm-4 col-md-3">
+                                                            <p class="wto-label-bold">Description of Content<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-9">
+                                                            <p class="wto-label-normal">
+                                                                <textarea id="DescriptionofContentId" class="form-control textboxcontrol" cols="30" rows="4">@(Model.Description == null ? "" : @Model.Description)</textarea>
+                                                                <span class="pull-right label label-default" id="count_message"><span id="display_count3">0</span>/<span id="word_left3">300</span></span>
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Description of Content<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        @if (@Model.Description != null)
-                                                        {
-                                                        <textarea id="DescriptionofContentId" class="form-control textboxcontrol" cols="30" rows="4">@Model.Description</textarea>
-                                                        }
-                                                        else
-                                                        {
-                                                        <textarea id="DescriptionofContentId" class="form-control textboxcontrol" cols="30" rows="4"></textarea>
-                                                        }
-                                                        <span class="pull-right label label-default" id="count_message"><span id="display_count3">0</span>/<span id="word_left3">300</span></span>
-                                                    </p>
-                                                </div>
+                                                @* </div>*@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Second Accordian part start -->
-                        <div class='panel panel-default Accordian-panel @(@Model.NotificationId <= 0 ? "hidden" : "")'>
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <h4 class="panel-title Accordian-panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <i class="more-less glyphicon glyphicon-chevron-right"></i>
-                                        Documents
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="panel-body Accordian-body">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border top-border-none">
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Do You Have a Detailed Notification?<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal top-offset-20">
-                                                        <div class="btn-group btn-toggle" data-toggle="buttons">
-                                                            <label class="btn switch-white yes">
-                                                                <input type="radio" name="Documents" value="1"> Yes
-                                                            </label>
-                                                            <label class="btn switch-white No">
-                                                                <input type="radio" name="Documents" value="0"> No
-                                                            </label>
-                                                        </div>&nbsp;
-                                                        <a href="#" class="btn sky-blue mailenquiry">Mail to Enquiry Desk</a>
-                                                        <div class="fileinput fileinput-new hidden upload" data-provides="fileinput">
-                                                            <span class="btn sky-blue btn-file"><span>Upload File</span><input type="file" class="fileholder1" id="filename" /></span>
-                                                            <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline" id="choose1">No File Choose</span>
+                                    @if (@Model.NotificationId > 0)
+                                    {
+                            <!-- Second Accordian part start -->
+                                        <div class='panel panel-default Accordian-panel'>
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                <h4 class="panel-title Accordian-panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        <i class="more-less glyphicon glyphicon-chevron-down"></i>
+                                                        Documents
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div class="panel-body Accordian-body">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
+                                                        <div class="row top-offset-10">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Do You Have a Detailed Notification?<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-8 col-md-9">
+                                                                <p class="wto-label-normal top-offset-20">
+                                                                    <div class="btn-group btn-toggle" data-toggle="buttons">
+                                                                        @if (@Model.DoesHaveDetails == null)
+                                                                        {
+                                                                            <label class="btn switch-white yes">
+                                                                                <input type="radio" name="Documents" value="1"> Yes
+                                                                            </label>
+                                                                            <label class="btn switch-white No">
+                                                                                <input type="radio" name="Documents" value="0"> No
+                                                                            </label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (Convert.ToBoolean(@Model.DoesHaveDetails))
+                                                                            {
+                                                                                <label class="btn yes switch-blue active @(Model.NotificationDoc.FileName==""?"":"disabled")">
+                                                                                    <input type="radio" name="Documents" value="1" checked="checked"> Yes
+                                                                                </label>
+                                                                                <label class="btn switch-white No @(Model.NotificationDoc.FileName==""?"":"disabled")">
+                                                                                    <input type="radio" name="Documents" value="0"> No
+                                                                                </label>
+                                                                            }
+                                                                            else if (!Convert.ToBoolean(@Model.DoesHaveDetails))
+                                                                            {
+                                                                                <label class="btn switch-white yes">
+                                                                                    <input type="radio" name="Documents" value="1"> Yes
+                                                                                </label>
+                                                                                <label class="btn No switch-red active">
+                                                                                    <input type="radio" name="Documents" value="0" checked="checked"> No
+                                                                                </label>
+                                                                            }
+                                                                        }
+
+                                                                    </div>&nbsp;
+                                                                    <div class="fileinput fileinput-new upload @((Model.DoesHaveDetails!=null && Convert.ToBoolean(Model.DoesHaveDetails))?"":"hidden")" data-provides="fileinput">
+                                                                        <span onclick="OpenModelForUploadDocument('NotificationDoc');" class="btn btn-blue btn-file @(Model.NotificationDoc==null?"":"hidden")">
+                                                                            <span id="btntxtNotificationDoc">Upload File</span>
+                                                                        </span>
+                                                                        @if (Model.NotificationDoc == null)
+                                                                        {
+                                                                            <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline" id="Notifi_Attach_Name"></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline"><a id="Notifi_Attach_Name" href="@Model.NotificationDoc.Path" download="@Model.NotificationDoc.FileName">@Model.NotificationDoc.FileName</a></span>
+                                                                        }
+                                                                    </div>
+
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 selectlangusge">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Select Language<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-3 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <select class="form-control textboxcontrol" id="sel1">
-                                                            <option value="-1">--Select Language--</option>
-                                                            <option value="0">Chinese, Roman</option>
-                                                            <option value="1" selected>Chinese</option>
-                                                            <option value="3">Chinese, English</option>
-                                                        </select>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 selectlangusge">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Select Translator<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <div class="wto-label-normal">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn col-sm-5 transletorDrop col-md-4 dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="value pull-left">-- Select Translator --</span> <span class="caret dropcaret"></span></a>
-                                                            <div class="dropdown-menu notify-drop">
-                                                                <div class="drop-content">
-                                                                    <div class="element">
-                                                                        <div class="col-xs-12 col-sm-12 col-md-12 translatename">
-                                                                            <p class="wto-label-bold blue-color name">Aman Ahuja</p>
-                                                                            <p>Proficient in Language - <b>Chinese, Roman</b></p>
-                                                                            <hr>
-                                                                            <p>File Pending for Translation -  5</p>
-                                                                        </div>
+                                                        <div class='row top-offset-10 divLanguage @(Model.LanguageId>0?"":"hidden")'>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Language<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <select id="ddlLanguage" data-SearchFor="@Model.SentToTranslaterOn" Class="form-control textboxcontrol"></select>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10 translatDoc @(Model.TranslaterId>0?"":"hidden")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Translator<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-8 col-md-9">
+                                                                <div class="wto-label-normal">
+                                                                    <div class="dropdown">
+                                                                        @if (Model.SentToTranslaterOn == "")
+                                                                        {
+                                                                            <select id="ddlTranslater" data-selectFor="@Model.TranslaterId" class="form-control textboxcontrol col-sm-5 transletorDrop col-md-4 "></select>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <select id="ddlTranslater" disabled="disabled" data-selectFor="@Model.TranslaterId" class="form-control textboxcontrol col-sm-5 transletorDrop col-md-4 "></select>
+                                                                        }
                                                                     </div>
-                                                                    <div class="element">
-                                                                        <div class="col-xs-12 col-sm-12 col-md-12 translatename">
-                                                                            <p class="wto-label-bold blue-color name">Jyoti Gupta</p>
-                                                                            <p>Proficient in Language - <b>Chinese</b></p>
-                                                                            <hr>
-                                                                            <p>File Pending for Translation -  0</p>
-                                                                        </div>
+                                                                </div>
+                                                                <br />
+                                                                <p class="wto-label-normal top-offset-10 divSentForTranslation @(Model.SentToTranslaterOn==""?"hidden":"")"> Document has been sent for translation on <span class="wto-label-bold" id="lblSendForTRanslationOn">@Model.SentToTranslaterOn</span></p>
+                                                                <a style="margin-top: 5px;" class="btn sky-blue @(Model.SentToTranslaterOn==""?"":"hidden")" onclick="SendToTranslater();">Send to Translator</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10 translatDoc divSentForTranslation @(Model.RemainderToTranslaterOn==""?"hidden": "")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Remainder for Translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <input id="remainder" type="text" class="form-control date-picker textboxcontrol" value="@Model.RemainderToTranslaterOn" />
+                                                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row translatDoc">
+                                                            <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                                <p class="text-danger hidden" id="RemainderforTranslationError" style="font-size:12px;">Date of Remainder to translator is smaller than date of notificaton.Please check !</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row translatDoc @(Model.DoesHaveDetails==null || Model.RemainderToTranslaterOn==""?"hidden":"")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3"></div>
+                                                            <div class="col-xs-12 col-sm-8 col-md-9">
+                                                                <p class="wto-label-normal">
+                                                                    Translation remainder due in <span class="wto-label-bold">3 Days</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10 translatDoc duedate @(Model.TranslationDueOn==""?"hidden":"")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Due Date for Translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <input type="text" class="form-control date-picker textboxcontrol" id="duedate" value="@Model.TranslationDueOn" />
+                                                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row translatDoc">
+                                                            <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                                <p class="wto-label-normal text-danger hidden" id="DueDateError" style="font-size:12px;">Due Date for Translation date is smaller than date of notificaton. please check !</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10 ObtainDocument @((Model.DoesHaveDetails!=null && !Convert.ToBoolean(Model.DoesHaveDetails)) ? "" : "hidden")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Enquiry Desk Email<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <input type="text" id="EnquiryPointId" maxlength="30" class="form-control textboxcontrol" value="@Model.EnquiryEmailId" @(Model.EnquiryEmailSentOn != "" ? "readonly" : "") />
+                                                                </p>
+                                                            </div>
+                                                            @if (Model.EnquiryEmailSentOn == "")
+                                                            {
+                                                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                    <p class="wto-label-normal">
+                                                                        <a data-toggle="modal" onclick="OpenMailToEnquiryDeskModel();" class="btn sky-blue mailenquiry @(Convert.ToBoolean(Model.DoesHaveDetails) ? "hidden" : "")">Mail to Enquiry Desk</a>
+                                                                    </p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        @if (Model.EnquiryEmailSentOn != "" && Model.DoesHaveDetails != null && !Convert.ToBoolean(Model.DoesHaveDetails))
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                                    <p class="wto-label-normal top-offset-10"> Mail has been sent to enquiry desk on <span class="wto-label-bold" id="lblEnquiryEmailSentOn">@Model.EnquiryEmailSentOn</span></p>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        <div class="row top-offset-10 ObtainDocument @((Model.DoesHaveDetails!=null && !Convert.ToBoolean(Model.DoesHaveDetails)) ? "" : "hidden")">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Obtain Document By<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <input type="text" class="form-control date-picker textboxcontrol" id="Obtaindate" value="@Model.ObtainDocBy" />
+                                                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row translatDoc">
+                                                            <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
+                                                                <p class="text-danger hidden" id="ObtainDateError" style="font-size:12px;">Date of Obtain Document by is smaller than date of notificaton.Please check !</p>
+                                                            </div>
+                                                        </div>
+                                                        @if (Model.SentToTranslaterOn != "")
+                                                        {
+                                                            <div class="row top-offset-10 translatedocument">
+                                                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                    <p class="wto-label-bold">Translated Document<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                    <div class="fileinput fileinput-new upload">
+                                                                        <span id="btnUploadTranslatedDoc" onclick="OpenModelForUploadDocument('TranslatedDoc');" class="btn sky-blue btn-file @(Model.TranslatedDocUploadedOn == "" ? "" : "hidden")">
+                                                                            <span id="btntxtTranslatedDoc">Upload File</span>
+                                                                        </span>
+                                                                        @if (Model.TranslatedDoc == null)
+                                                                        {
+                                                                            <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline" id="Notifi_Attach_Name_Translated"></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline"><a id="Notifi_Attach_Name_Translated" href="@Model.TranslatedDoc.Path" download="@Model.TranslatedDoc.FileName">@Model.TranslatedDoc.FileName</a></span>
+                                                                        }
                                                                     </div>
-                                                                    <div class="element">
-                                                                        <div class="col-xs-12 col-sm-12 col-md-12 translatename">
-                                                                            <p class="wto-label-bold blue-color name">Goutam Sen</p>
-                                                                            <p>Proficient in Language - <b>Chinese, English</b></p>
-                                                                            <hr>
-                                                                            <p>File Pending for Translation -  5</p>
-                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                        <div class="row top-offset-10 @((Model.NotificationDocName == "")?"hidden":"")" i id="divSkipToDiscussion">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">&nbsp;</p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <div>
+                                                                    <div class="checkbox col-xs-12 col-sm-2 col-md-2 radio-margin" style="margin-top:10px;">
+                                                                        <label class="no-padding">
+                                                                            @if (Convert.ToBoolean(Model.SkippedToDiscussion) == false)
+                                                                            {
+                                                                                <input id="chkSkipToDiscussion" type="checkbox" style="left:5px;" />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input id="chkSkipToDiscussion" checked="checked" disabled="disabled" type="checkbox" style="left:5px;" />
+                                                                            }
+                                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                                        </label>
                                                                     </div>
-                                                                    <div class="element">
-                                                                        <div class="col-xs-12 col-sm-12 col-md-12 translatename">
-                                                                            <p class="wto-label-bold blue-color name">Shally Ahuja</p>
-                                                                            <p>Proficient in Language - <b>Chinese, Roman</b></p>
-                                                                            <hr>
-                                                                            <p>File Pending for Translation -  3</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="element">
-                                                                        <div class="col-xs-12 col-sm-12 col-md-12 translatename">
-                                                                            <p class="wto-label-bold blue-color name">Goutam Ahuja</p>
-                                                                            <p>Proficient in Language - <b>Chinese, Roman</b></p>
-                                                                            <hr>
-                                                                            <p>File Pending for Translation -  0</p>
-                                                                        </div>
+                                                                    <div class="checkbox col-xs-12 col-sm-10 col-md-10" style="margin-top: 8px;">
+                                                                        Skip to Discussion
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
-                                                    <br />
-                                                    <p class="wto-label-normal top-offset-10"> Sent document for translation on <span class="wto-label-bold">29-December-2017</span></p>
-                                                    <a href="#" class="btn sky-blue">Send to Translator</a>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 selectlangusge">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Remainder for Translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <input type="text" class="form-control date-picker textboxcontrol" id="remainder" />
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row selectlangusge">
-                                                <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
-                                                    <p class="text-danger hidden" id="RemainderforTranslationError" style="font-size:12px;">Remainder for Translation date is lesser than date of notificaton please check !</p>
-                                                </div>
-                                            </div>
-                                            <div class="row selectlangusge">
-                                                <div class="col-xs-12 col-sm-4 col-md-3"></div>
-                                                <div class="col-xs-12 col-sm-8 col-md-9">
-                                                    <p class="wto-label-normal">
-                                                        Translation remainder due in<span class="wto-label-bold">3 Days</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 selectlangusge duedate">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Due Date for Translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <input type="text" class="form-control date-picker textboxcontrol" id="duedate" />
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row selectlangusge">
-                                                <div class="col-xs-12 col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-9">
-                                                    <p class="wto-label-normal text-danger hidden" id="DueDateError" style="font-size:12px;">Due Date for Translation date is lesser than date of notificaton please check !</p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 ObtainDocument">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Obtain Document By<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <input type="text" class="form-control date-picker textboxcontrol" id="Obtaindate" />
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10 translatedocument">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Translated Document<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal dark-blue">
-                                                        <img src="~/contents/img/translated.png" alt="translated" />&nbsp; Translated File 1
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- third Accordian part start -->
-                        <div class='panel panel-default Accordian-panel @(@Model.NotificationId <= 0 ? "hidden" : "")'>
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title Accordian-panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        <i class="more-less glyphicon glyphicon-chevron-right"></i>
-                                        Stakeholders(40/100)
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="panel-body Accordian-body">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border top-border-none">
-                                            <div class="row top-offset-20">
-                                                <div class="col-xs-12 col-sm-6 col-md-6">
-                                                    <!-- <p class="wto-label-bold blue-color">Stakeholder Comments : (40\100) </p> -->
-                                                </div>
-                                                <div class="col-xs-12 col-sm-6 col-md-6">
-                                                    <p class="wto-label-normal">
-                                                        <a href="#" class="btn btn-light-blue addstackholder" data-toggle="modal" data-target="#stackholder">Add Stakeholders</a>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="table-responsive nopaging adnotificationtable sentmail">
-                                                        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-                                                            <thead class="second-blackbackground">
-                                                                <tr>
-                                                                    <th></th>
-                                                                    <th>Sr. No.</th>
-                                                                    <th>Stakeholder</th>
-                                                                    <th>HS Code</th>
-                                                                    <th>Stakeholder’s <br /> Mail Count</th>
-                                                                    <th>Response <br /> Received on</th>
-                                                                    <th>View mail</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="whitebackground">
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>1</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td>---</td>
-                                                                    <td>---</td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>2</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td><div class="span-badge">5</div></td>
-                                                                    <td>
-                                                                        5-October, 2017
-                                                                    </td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>3</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td>---</td>
-                                                                    <td>---</td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>4</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td><div class="span-badge">2</div></td>
-                                                                    <td>
-                                                                        5-October, 2017
-                                                                    </td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>5</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td><div class="span-badge">1</div></td>
-                                                                    <td>
-                                                                        3-October, 2017
-                                                                    </td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>6</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td>---</td>
-                                                                    <td>---</td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>7</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td><div class="span-badge">5</div></td>
-                                                                    <td>
-                                                                        9-October, 2017
-                                                                    </td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>8</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td><div class="span-badge">3</div></td>
-                                                                    <td>
-                                                                        8-October, 2017
-                                                                    </td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>9</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td>---</td>
-                                                                    <td>---</td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="">
-                                                                    </td>
-                                                                    <td>9</td>
-                                                                    <td>Stakeholder Name</td>
-                                                                    <td>
-                                                                        S 7904 , IS 14246
-                                                                    </td>
-                                                                    <td>---</td>
-                                                                    <td>---</td>
-                                                                    <td><a href="#" data-toggle="modal" data-target="#mailcount"><span><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></span></a></td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-20">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <a href="#" class="btn btn-blue pull-right btn-padding btn-padding left-offset-20" data-target="#sentmail" data-toggle="modal">Send Mail</a>
-                                                    <button class="btn btn-red pull-right btn-padding addsavenotification">Remove Stakeholder</button>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-10">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Send Response by<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <input type="text" class="form-control date-picker textboxcontrol" id="discussed" />
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
+                                                    @*</div>*@
                                                 </div>
                                             </div>
                                         </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- forth Accordian part start -->
-                        <div class='panel panel-default Accordian-panel @(@Model.NotificationId <= 0 ? "hidden" : "")'>
-                            <div class="panel-heading" role="tab" id="headingfour">
-                                <h4 class="panel-title Accordian-panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                                        <i class="more-less glyphicon glyphicon-chevron-right"></i>
-                                        Mails Sent (75)
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapsefour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfour">
-                                <div class="panel-body Accordian-body">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border top-border-none">
-                                            <div class="row top-offset-20 translatedocument">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="table-responsive nopaging notificationlist sentmail">
-                                                        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-                                                            <thead class="second-blackbackground">
-                                                                <tr>
-                                                                    <th>Sr. No.</th>
-                                                                    <th>Date</th>
-                                                                    <th>Subject</th>
-                                                                    <th>Sent To</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="whitebackground">
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>10-October, 2017</td>
-                                                                    <td>
-                                                                        <p>
-                                                                            Draft Plant Quarantine (Regulation of Import into India)
-                                                                            (Fifth Amendment) Order, 2017
-                                                                        </p>
-                                                                    </td>
-                                                                    <td><div class="span-badge">15</div></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>12-October, 2017</td>
-                                                                    <td>
-                                                                        <p>
-                                                                            Draft Plant Quarantine (Regulation of Import into India)
-                                                                            (Fifth Amendment) Order, 2017
-                                                                        </p>
-                                                                    </td>
-                                                                    <td><div class="span-badge">25</div></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>15-October, 2017</td>
-                                                                    <td>
-                                                                        Draft Plant Quarantine (Regulation of Import into India)
-                                                                        (Fifth Amendment) Order, 2017
-                                                                    </td>
-                                                                    <td><div class="span-badge">30</div></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>18-October, 2017</td>
-                                                                    <td>
-                                                                        Draft Plant Quarantine (Regulation of Import into India)
-                                                                        (Fifth Amendment) Order, 2017
-                                                                    </td>
-                                                                    <td><div class="span-badge">5</div></td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                            <!-- third Accordian part start -->
+                                        <div class='panel panel-default Accordian-panel '>
+                                            <div class="panel-heading" role="tab" id="headingThree">
+                                                <h4 class="panel-title Accordian-panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                        <i class="more-less glyphicon glyphicon-chevron-down"></i>
+                                                        Stakeholders(@Html.Label("", Convert.ToString((Model.Stakeholders == null || Model.Stakeholders == "") ? 0 : Model.Stakeholders.Split(',').Count()), new { id = "lblSatkeHolderCount", style = "font-weight:400;" })/@(Model.StakeHoldersList == null ? 0 : Model.StakeHoldersList.Count))
+                                                    </a>
+                                                </h4>
                                             </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- fifth Accordian part start -->
-                        <div class='panel panel-default Accordian-panel @(@Model.NotificationId <= 0 ? "hidden" : "")'>
-                            <div class="panel-heading" role="tab" id="headingfive">
-                                <h4 class="panel-title Accordian-panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
-                                        <i class="more-less glyphicon glyphicon-chevron-right"></i>
-                                        Actions
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapsefive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
-                                <div class="panel-body Accordian-body">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border top-border-none">
-                                            <div class="row top-offset-30 translatedocument">
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-bold">Discussed in Meeting on<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-3">
-                                                    <p class="wto-label-normal">
-                                                        <input type="text" class="form-control date-picker textboxcontrol" id="Action" />
-                                                        <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="row top-offset-20 translatedocument">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="table-responsive nopaging notificationlist sentmail">
-                                                        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-                                                            <thead class="second-blackbackground">
-                                                                <tr>
-                                                                    <th>Required</th>
-                                                                    <th>Action</th>
-                                                                    <th>Entered on</th>
-                                                                    <th class="col-sm-5 col-md-4">Document</th>
-                                                                    <th>Edit</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="whitebackground">
-                                                                <tr>
-                                                                    <td><input type="checkbox" /></td>
-                                                                    <td>Policy brief to DoC</td>
-                                                                    <td>20-October, 2017</td>
-                                                                    <td class="col-sm-5 col-md-4">
-                                                                        <div class="col-sm-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <a href="#" class="light-blue">Document1 </a>
-                                                                                </div>
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <div class="MED">
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/message.png" alt="message" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/show.png" alt="show" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/download.png" alt="download" /></a></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td><span class="editimage"><a href="#" data-toggle="modal" data-target="#actionneededId"><img src="~/contents/img/edit.png" alt="edit" /></a></span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><input type="checkbox" /></td>
-                                                                    <td>Brief to regulators</td>
-                                                                    <td>20-October, 2017</td>
-                                                                    <td class="col-sm-5 col-md-4">
-                                                                        <div class="col-sm-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <a href="#" class="light-blue">Document1 </a>
-                                                                                </div>
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <div class="MED">
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/message.png" alt="message" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/show.png" alt="show" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/download.png" alt="download" /></a></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td><span class="editimage"><a href="#" data-toggle="modal" data-target="#actionneededId"><img src="~/contents/img/edit.png" alt="edit" /></a></span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><input type="checkbox" /></td>
-                                                                    <td>Response</td>
-                                                                    <td>20-October, 2017</td>
-                                                                    <td class="col-sm-5 col-md-4">
-                                                                        <div class="col-sm-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <a href="#" class="light-blue">Document1 </a>
-                                                                                </div>
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <div class="MED">
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/message.png" alt="message" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/show.png" alt="show" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/download.png" alt="download" /></a></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td><span class="editimage"><a href="#" data-toggle="modal" data-target="#actionneededId"><img src="~/contents/img/edit.png" alt="edit" /></a></span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><input type="checkbox" /></td>
-                                                                    <td>No Response Needed</td>
-                                                                    <td>20-October, 2017</td>
-                                                                    <td class="col-sm-5 col-md-4">
-                                                                        <div class="col-sm-12 col-md-12">
-                                                                            <div class="row">
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <a href="#" class="light-blue">Document1 </a>
-                                                                                </div>
-                                                                                <div class="col-sm-6 col-md-6">
-                                                                                    <div class="MED">
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/message.png" alt="message" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/show.png" alt="show" /></a></div>
-                                                                                        <div class="MED-image"><a href="#"><img src="~/contents/img/download.png" alt="download" /></a></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td><span class="editimage"><a href="#" data-toggle="modal" data-target="#actionneededId"><img src="~/contents/img/edit.png" alt="edit" /></a></span></td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
+                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                <div class="panel-body Accordian-body">
+                                                    @*<div class="row">*@
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
+                                                        <div class="row top-offset-20">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                                                <p class="wto-label-normal">
+                                                                    <a class="btn btn-blue addstackholder" data-toggle="modal" data-target="#stackholder" onclick="clearStakhCheckbox();">Add Stakeholders</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10" id="RelatedStakeholderList">
+                                                            @{ Html.RenderAction("GetNotificationStakeholders", "AddNotification", new { Id = @Model.NotificationId }); }
+                                                        </div>
+                                                        <div class="row top-offset-20">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                @if (Model.Stakeholders != null && Model.Stakeholders != "")
+                                                                {
+                                                                    <a id="btnSendMailStakeHolder" class="btn btn-blue pull-right btn-padding btn-padding left-offset-20" onclick="OpenSendMailModel()" data-toggle="modal">Send Mail</a>
+                                                                    <button id="btnRemoveStakeholder" class="btn btn-red pull-right btn-padding addsavenotification" onclick="RemoveStakeholder();">Remove Stakeholder</button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a id="btnSendMailStakeHolder" class="btn btn-blue pull-right btn-padding btn-padding left-offset-20 hidden" onclick="OpenSendMailModel()" data-toggle="modal">Send Mail</a>
+                                                                    <button id="btnRemoveStakeholder" class="btn btn-red pull-right btn-padding addsavenotification hidden" onclick="RemoveStakeholder();">Remove Stakeholder</button>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="row top-offset-10">
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-bold">Send Response by<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                                                <p class="wto-label-normal">
+                                                                    <input type="text" id="txtStakeholderResponseDueBy" class="form-control date-picker textboxcontrol" value="@Model.StakeholderResponseDueBy" />
+                                                                    <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    @*</div>*@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                            <!-- forth Accordian part start -->
+                                                                <div class='panel panel-default Accordian-panel'>
+                                                                    @{ Html.RenderAction("GetNotificationMails", "AddNotification", new { Id = @Model.NotificationId }); }
+                                                                </div>
+
+                            <!-- fifth Accordian part start -->
+                                                                        <div class='panel panel-default Accordian-panel'>
+                                                                            @{ Html.RenderAction("GetNotificationActions", "AddNotification", new { Id = @Model.NotificationId }); }
+                                                                        </div>
+                                                                                }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                    <!-- external part -->
 
-            <!-- external part -->
-
-            <div class="row top-offset-50 bottom-offset-40">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <a href="@Url.Action("GetNotificationsMasters", "NotificationList", new { CallFrom = "AddNotification" })" class='btn btn-gray pull-right btn-padding left-offset-20 @(@Model.NotificationId <= 0 ? "hidden" : "")'><b>Back To List</b></a>
-                    <button class="btn btn-dark-green pull-right btn-padding addsavenotification" onclick="return Validate();"><img src="~/contents/img/save.png" /> Save</button>
+                    <div class="row top-offset-50 bottom-offset-40">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <a href="@Url.Action("GetNotificationsMasters", "NotificationList", new { CallFrom = "AddNoti" })" class='btn btn-gray pull-right btn-padding left-offset-20 @(@Model.NotificationId <= 0 ? "hidden" : "")'><b>Back To List</b></a>
+                            <button class="btn btn-dark-green pull-right btn-padding addsavenotification" onclick="return Validate();"><img src="~/contents/img/save.png" /> Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- body section End -->
-<!-- select hr modal popup start -->
+<!-- select HSCodes modal popup start -->
 <!-- Modal -->
 <div class="modal fade selecthrmodal" id="selecthr" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg selecthrdialog">
@@ -959,7 +621,7 @@
                                             <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">@Model.Noti_Number</p>
+                                            <p class="wto-label-normal dark-blue">@Model.NotificationNumber</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -985,15 +647,15 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-2 col-md-2">
-                                <a href="#" class="btn btn-red" onclick="clearSearchtxt();">Clear</a>
+                                <a class="btn btn-red" onclick="clearSearchtxt();">Clear</a>
                             </div>
                             <div class="col-xs-12 col-sm-4 col-md-4 ">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                        <a href="#" class="btn btn-light-blue btn-block" onclick="SaveHSCode();">Save</a>
+                                        <a class="btn btn-light-blue btn-block" onclick="SaveHSCode();">Save</a>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6">
-                                        <a href="#" class="btn btn-red btn-block" data-dismiss="modal">Close</a>
+                                        <a class="btn btn-red btn-block" data-dismiss="modal">Close</a>
                                     </div>
                                 </div>
                             </div>
@@ -1015,10 +677,10 @@
     </div>
 </div>
 
-<!-- select hr modal popup start -->
+<!-- select HSCodes modal popup start -->
 <!-- Add stackholder popup start -->
 
-<div class="modal fade selecthrmodal" id="stackholder" role="dialog">
+<div class="modal fade selecthrmodal" id="stackholder" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog selecthrdialog addstackholderdialog">
         <!-- Modal content-->
         <div class="modal-content selecthrcontent">
@@ -1031,14 +693,14 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
-                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30">
+                            <div class='col-xs-12 col-sm-12 col-md-12 top-offset-30 @(@Model.NotificationId <= 0 ? "hidden" : "")'>
                                 <div class="notificationnumber padding-bottom-10">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
                                             <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">G/TBT/N/TUR/105</p>
+                                            <p class="wto-label-normal dark-blue">@Model.NotificationNumber</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1046,7 +708,7 @@
                                             <p class="wto-label-bold dark-blue">Title <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">Draft Plant Quarantine (Regulation of Import into India) (Fifth Amendment) Order, 2017</p>
+                                            <p class="wto-label-normal dark-blue">@Model.Title</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1057,7 +719,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control selecthrsearchtextbox" placeholder="Search Stakeholder by Name or HS Code" ng-model="search">
+                                    <input id="txtSearchStakeHolder" type="text" class="form-control selecthrsearchtextbox" placeholder="Search Stakeholder by Name or HS Code" ng-model="search">
                                     <span class="input-group-btn">
                                         <button class="btn btn-blue" type="button" ng-click="searchstakeholder()">Search</button>
                                     </span>
@@ -1078,73 +740,32 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 stackholderlist">
                                             <div class="row">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">S.NO</div>
+                                                <div class="col-sm-1 pdright"><input type="checkbox" id="chkSelectAll" /></div>
+                                                <div class="col-sm-2">S.No.</div>
                                                 <div class="col-sm-5">Stakeholder</div>
                                                 <div class="col-sm-4">HS Code</div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground scrollheight">
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">1</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">2</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">3</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">4</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">5</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">6</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">7</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">8</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">9</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
-                                            <div class="row seprater">
-                                                <div class="col-sm-1 pdright"><input type="checkbox" /></div>
-                                                <div class="col-sm-2">10</div>
-                                                <div class="col-sm-5"><b>Stakeholder Name</b></div>
-                                                <div class="col-sm-4">IS 7904 , IS 14246</div>
-                                            </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground scrollheight" id="divStakholder">
+                                            @if (@Model.StakeHoldersList != null)
+                                            {
+                                                foreach (var item in @Model.StakeHoldersList)
+                                                {
+                                                    <div class="row seprater">
+                                                        @if (@Model.Stakeholders != null)
+                                                        {
+                                                            <div class="col-sm-1 pdright"><input id="@item.StakeHolderId" type="checkbox" class="checked" value="@item.StakeHolderId" /></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-1 pdright"><input id="@item.StakeHolderId" type="checkbox" class="checked" value="@item.StakeHolderId" /></div>
+                                                        }
+                                                        <div class="col-sm-2">@item.ItemNumber</div>
+                                                        <div class="col-sm-5"><b>@item.FullName</b></div>
+                                                        <div class="col-sm-4">@item.HSCodes</div>
+                                                    </div>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -1154,8 +775,8 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <a href="#" class="btn btn-red  pull-right">Close</a>
-                                        <a href="#" class="btn btn-light-blue pull-right" style="margin-right:15px;">Save</a>
+                                        <a class="btn btn-red  pull-right" data-dismiss="modal">Close</a>
+                                        <a class="btn btn-light-blue pull-right" style="margin-right:15px;" onclick="SaveStakeholder()">Save</a>
                                     </div>
                                 </div>
                             </div>
@@ -1175,6 +796,7 @@
 <div class="modal fade selecthrmodal" id="sentmail" role="dialog">
     <div class="modal-dialog modal-lg selecthrdialog">
         <div class="modal-content selecthrcontent">
+
             <div class="modal-header selecthrheader">
                 <button type="button" class="close selecthrclose" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
@@ -1184,27 +806,19 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
-                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30">
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
                                 <div class="notificationnumber padding-bottom-10">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
-                                            <h4 class="selecthrheading">Send Mail</h4>
+                                            <h4 class="selecthrheading">Send mail to stakeholders</h4>
                                         </div>
                                     </div>
-                                    <!-- <div class="row"> -->
-                                    <!-- <div class="col-xs-12 col-sm-4 col-md-4"> -->
-                                    <!-- <p class="wto-label-bold dark-blue">Stakeholder’s Name<span class="pull-right">:</span></p> -->
-                                    <!-- </div> -->
-                                    <!-- <div class="col-xs-12 col-sm-8 col-md-8"> -->
-                                    <!-- <p class="wto-label-normal dark-blue">Aswini Arya</p> -->
-                                    <!-- </div> -->
-                                    <!-- </div> -->
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
                                             <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">G/TBT/N/TUR/105</p>
+                                            <p class="wto-label-normal dark-blue">@Model.NotificationNumber</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1212,7 +826,7 @@
                                             <p class="wto-label-bold dark-blue">Date <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">21-October,2017</p>
+                                            <p class="wto-label-normal dark-blue">@Model.DateofNotification</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1220,61 +834,120 @@
                                             <p class="wto-label-bold dark-blue">Send Notification To<span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">25 Stakeholders</p>
+                                            <p class="wto-label-normal dark-blue"><span id="SelectedStackholdersCount">0</span> Stakeholders</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-xs-6 col-sm-6 col-md-6 top-offset-20"> -->
-                            <!-- <p class="wto-label-bold">Comment :</p> -->
-                            <!-- </div> -->
-                            <!-- <div class="col-xs-6 col-sm-6 col-md-6 top-offset-20"> -->
-                            <!-- <div class="fileinput fileinput-new hidden upload pull-right" data-provides="fileinput"> -->
-                            <!-- <span class="btn btn-blue btn-file"><span>Upload File</span><input type="file" class="fileholder uploadfile" id="filename" /></span> -->
-                            <!-- </div> -->
-                            <!-- </div> -->
-                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
-                                <div class="col-xs-12 col-sm-2 col-md-2">
-                                    <p class="wto-label-bold dark-blue">Subject<span class="pull-right">:</span></p>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Subject<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
                                 </div>
-                                <div class="col-xs-12 col-sm-10 col-md-10">
-                                    <textarea class="form-control  whitebackground" cols="30" rows="2">Draft Plant Quarantine (Regulation of Import into India) (Fifth Amendment) Order, 2017.</textarea>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <textarea id="txtSubject" class="form-control  whitebackground" cols="30" rows="2" placeholder="">@Model.Title</textarea>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
-                                <div class="col-xs-12 col-sm-2 col-md-2">
-                                    <p class="wto-label-bold dark-blue">Message<span class="pull-right">:</span></p>
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Message<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
                                 </div>
-                                <div class="col-xs-12 col-sm-10 col-md-10">
-                                    <textarea class="form-control  whitebackground" cols="30" rows="5">This Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and Sheet.This Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and SheetThis Order seeks to ensure conformity to Steel and Steel togetherimports. The Order Metallic Coated Steel Strip and Sheet.</textarea>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <textarea id="txtMessage" class="form-control  whitebackground" cols="30" rows="5" placeholder="">@Model.Description</textarea>
                                 </div>
                             </div>
-
-
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Attachment<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <div class="form-group">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control whitebackground z-index-0" id="txtAttachmentCount" disabled placeholder="0 file(s) selected">
+                                            <span class="input-group-btn">
+                                                <button class="browse btn btn-primary z-index-0" type="button" onclick="AddAttachment();"> Browse</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="txtAttachments" class="Attachmentdiv hidden" readonly></div>
+                                </div>
+                            </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-light-blue btn-padding">Attachment</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="padding: 6px 10px 8px 10px ">
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu Attachment" role="menu">
-                                                <li><label class="checkbox-inline"><input type="checkbox">Uploaded 1</label></li>
-                                                <li><label class="checkbox-inline"><input type="checkbox">Uploaded 2</label></li>
-                                                <li><a href="#" class="btn btn-primary Attachmentbtn" style="padding:4px 10px;">Add Other</a></label></li>
-                                            </ul>
-                                            <!-- <a href="#" class="btn btn-primary Attachmentbtn">Add Other</a> -->
-                                        </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <a href="#" class="btn btn-red btn-padding pull-right left-offset-10">Close</a>
-                                        <a href="#" class="btn btn-light-blue btn-padding pull-right">Send</a>
+                                        <a data-dismiss="modal" class="btn btn-red btn-padding pull-right left-offset-10">Close</a>
+                                        <a class="btn btn-light-blue btn-padding pull-right" onclick="SendmailToStakeholders();">Send</a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div id="divAddAttachmentOverlay" class="attachment-modal overlay ">
+                <div id="divAddAttachment" class="attachment-modal body">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="creatediv1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-primary filterable no-margin-bottom">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add Attachament</h3>
+                                            </div>
+                                            <table class="span12">
+                                                <table>
+                                                    <tr class="filters"></tr>
+                                                </table>
+                                                <div class="bg tablescroll">
+                                                    <table class="table no-margin-bottom margin-15" id="tblAttachments">
+                                                        @if (Model.NotificationDoc != null)
+                                                        {
+                                                            <tr>
+                                                                <td style="width: 4%; width:50px;">
+                                                                    <div class="checkbox radio-margin">
+                                                                        <label>
+                                                                            <input type="checkbox" onchange="AddRemoveMailAttachement(this);" value="@(Model.NotificationDoc == null ? "" : Model.NotificationDoc.Path)">
+                                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 96%">@Model.NotificationDoc.FileName</td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.TranslatedDoc != null)
+                                                        {
+                                                            <tr>
+                                                                <td style="width: 4%; width:50px;">
+                                                                    <div class="checkbox radio-margin">
+                                                                        <label>
+                                                                            <input type="checkbox" onchange="AddRemoveMailAttachement(this);" value="@Model.TranslatedDoc.Path">
+                                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 96%">@Model.TranslatedDoc.FileName</td>
+                                                            </tr>
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </table>
+                                            <div class="modal-footer">
+                                                <div class="fileinput fileinput-new pull-left">
+                                                    <span class="btn btn-light-blue btn-padding btn-file">
+                                                        <span class="puttext">Add more</span>
+                                                        <input type="file" id="AddAttachment_UploadDocumentId" class="fileholder uploadfile ActionUploadbtn" multiple />
+                                                    </span>
+                                                </div>
+                                                <input type="button" class="btn btn-primary btn-padding " value="Ok" onclick="AddAttachmentOk();" />
+                                                <input type="submit" class="btn btn-danger btn-padding " value="Cancel" onclick="CloseAddAttachment();" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1305,20 +978,12 @@
                                             <h4 class="selecthrheading">Mail Count</h4>
                                         </div>
                                     </div>
-                                    <!-- <div class="row"> -->
-                                    <!-- <div class="col-xs-12 col-sm-4 col-md-4"> -->
-                                    <!-- <p class="wto-label-bold dark-blue">Stakeholder’s Name<span class="pull-right">:</span></p> -->
-                                    <!-- </div> -->
-                                    <!-- <div class="col-xs-12 col-sm-8 col-md-8"> -->
-                                    <!-- <p class="wto-label-normal dark-blue">Aswini Arya</p> -->
-                                    <!-- </div> -->
-                                    <!-- </div> -->
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
                                             <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">G/TBT/N/TUR/105</p>
+                                            <p class="wto-label-normal dark-blue">@Model.NotificationNumber</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1326,7 +991,7 @@
                                             <p class="wto-label-bold dark-blue">Title <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">Draft Plant Quarantine (Regulation of Import into India) (Fifth Amendment) Order, 2017.</p>
+                                            <p class="wto-label-normal dark-blue">@Model.Title</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1334,7 +999,7 @@
                                             <p class="wto-label-bold dark-blue">Stakeholder Name<span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue">Stakeholder Name</p>
+                                            <p class="wto-label-normal dark-blue" id="lblStakeholderName">Stakeholder Name</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1358,9 +1023,9 @@
                                                 </div>
                                                 <div id="collapsemailcountOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mailcountOne">
                                                     <div class="panel-body">
-                                                        <a href="#" class="forwardmail"><span class="glyphicon glyphicon-share-alt"></span></a>
+                                                        <a class="forwardmail "><span class="glyphicon glyphicon-share-alt"></span></a>
                                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elementum augue eget elit consectetur, bibendum aliquam urna placerat. Sed eu lacus ac velit ultricies consectetur non eleifend felis. In malesuada condimentum consequat. Sed laoreet risus a turpis rutrum, vel sollicitudin nisi porttitor. Fusce ultrices venenatis est ac pulvinar. Curabitur hendrerit magna at venenatis accumsan. Integer vel ex diam.
-                                                        <p class="top-offset-10 bottom-offset-10"><span><a href="#">Document1 </a></span> <span class="left-offset-20"><a href="#"> Document2</a></span></p>
+                                                        <p class="top-offset-10 bottom-offset-10"><span><a>Document1 </a></span> <span class="left-offset-20"><a> Document2</a></span></p>
                                                         <p><b>Thanks</b></p>
                                                         <p><b>Avinash</b></p>
                                                     </div>
@@ -1380,9 +1045,9 @@
                                                 </div>
                                                 <div id="collapsemailcountTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mailcountTwo">
                                                     <div class="panel-body">
-                                                        <a href="#" class="forwardmail"><span class="glyphicon glyphicon-share-alt"></span></a>
+                                                        <a class="forwardmail cursor-pointer"><span class="glyphicon glyphicon-share-alt"></span></a>
                                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elementum augue eget elit consectetur, bibendum aliquam urna placerat. Sed eu lacus ac velit ultricies consectetur non eleifend felis. In malesuada condimentum consequat. Sed laoreet risus a turpis rutrum, vel sollicitudin nisi porttitor. Fusce ultrices venenatis est ac pulvinar. Curabitur hendrerit magna at venenatis accumsan. Integer vel ex diam.
-                                                        <p class="top-offset-10 bottom-offset-10"><span><a href="#">Document1 </a></span> <span class="left-offset-20"><a href="#"> Document2</a></span></p>
+                                                        <p class="top-offset-10 bottom-offset-10"><span><a>Document1 </a></span> <span class="left-offset-20"><a> Document2</a></span></p>
                                                         <p><b>Thanks</b></p>
                                                         <p><b>Avinash</b></p>
                                                     </div>
@@ -1402,9 +1067,9 @@
                                                 </div>
                                                 <div id="collapsemailcountThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mailcountThree">
                                                     <div class="panel-body">
-                                                        <a href="#" class="forwardmail"><span class="glyphicon glyphicon-share-alt"></span></a>
+                                                        <a class="forwardmail"><span class="glyphicon glyphicon-share-alt"></span></a>
                                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elementum augue eget elit consectetur, bibendum aliquam urna placerat. Sed eu lacus ac velit ultricies consectetur non eleifend felis. In malesuada condimentum consequat. Sed laoreet risus a turpis rutrum, vel sollicitudin nisi porttitor. Fusce ultrices venenatis est ac pulvinar. Curabitur hendrerit magna at venenatis accumsan. Integer vel ex diam.
-                                                        <p class="top-offset-10 bottom-offset-10"><span><a href="#">Document1 </a></span> <span class="left-offset-20"><a href="#"> Document2</a></span></p>
+                                                        <p class="top-offset-10 bottom-offset-10"><span><a>Document1 </a></span> <span class="left-offset-20"><a> Document2</a></span></p>
                                                         <p><b>Thanks</b></p>
                                                         <p><b>Avinash</b></p>
                                                     </div>
@@ -1423,11 +1088,9 @@
 </div>
 
 <!--mail Count Pop-Up End -->
-<!-- Action Needed Popup start -->
-
-<div class="modal fade selecthrmodal" id="actionneededId" role="dialog">
+<!-- Mail to enqirydesk Popup start -->
+<div class="modal fade selecthrmodal" id="mailtoenquirydesk" role="dialog">
     <div class="modal-dialog modal-lg selecthrdialog">
-
         <div class="modal-content selecthrcontent">
             <div class="modal-header selecthrheader">
                 <button type="button" class="close selecthrclose" data-dismiss="modal">
@@ -1442,72 +1105,42 @@
                                 <div class="notificationnumber padding-bottom-10">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <h4 class="selecthrheading2">Update Notification Status for (Policy Brief to DoC) :</h4>
+                                            <h4 class="selecthrheading2">Mail to Enquiry Desk</h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="top-offset-10">
                                     <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Notification Number</b> <span class="pull-right">:</span></p>
+                                        <div class="col-xs-12 col-sm-4 col-md-2">
+                                            <p class="wto-label-normal"><b>Mail To</b> <span class="pull-right">:</span></p>
                                         </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal">G/TBT/N/TUR/105</p>
-                                        </div>
-                                    </div>
-                                    <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Title</b> <span class="pull-right">:</span></p>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal">Draft Plant Quarantine (Regulation of Import into India) (Fifth Amendment) Order, 2017</p>
+                                        <div class="col-xs-12 col-sm-8 col-md-10">
+                                            <input type="text" id="EnquiryMailDeskId" class="form-control whitebackground" value="@Model.EnquiryEmailId">
                                         </div>
                                     </div>
                                     <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Date</b><span class="pull-right">:</span></p>
+                                        <div class="col-xs-12 col-sm-4 col-md-2">
+                                            <p class="wto-label-normal"><b>Subject</b> <span class="pull-right">:</span></p>
                                         </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal">20-October,2017</p>
-                                        </div>
-                                    </div>
-                                    <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Action Closed to</b><span class="pull-right">:</span></p>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal"><b>Policy brief to DoC</b></p>
+                                        <div class="col-xs-12 col-sm-8 col-md-10">
+                                            <input type="text" id="txtMailToEnqSubject" class="form-control whitebackground" value="">
                                         </div>
                                     </div>
                                     <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Remarks</b><span class="pull-right">:</span></p>
+                                        <div class="col-xs-12 col-sm-4 col-md-2">
+                                            <p class="wto-label-normal"><b>Body</b> <span class="pull-right">:</span></p>
                                         </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <textarea class="form-control  whitebackground" cols="30" rows="4">Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy. Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy. Lorem Ipsum is simply </textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row top-offset-10">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-normal"><b>Attachment</b><span class="pull-right">:</span></p>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-
-                                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                <span class="btn btn-blue btn-file"><span>Choose file</span><input type="file" class="fileholder2" id="filename" /></span>
-                                                <span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline" id="choose">No File Choose</span>
-                                            </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-10">
+                                            <textarea class="form-control whitebackground" id="txtMailToEnqMailBody" cols="30" rows="6"></textarea>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <a href="#" class="btn btn-red btn-padding pull-right left-offset-10">Close</a>
-                                        <a href="#" class="btn btn-light-blue btn-padding pull-right left-offset-10">Close Action</a>
-                                        <a href="#" class="btn btn-blue btn-padding pull-right">Update Status</a>
+                                        <a class="btn btn-red btn-padding pull-right left-offset-10" data-dismiss="modal">Close</a>
+                                        <a class="btn btn-light-blue btn-padding pull-right left-offset-10" onclick="SendMailToEnquiryDesk();">Send</a>
                                     </div>
                                 </div>
                             </div>
@@ -1520,4 +1153,34 @@
     </div>
 </div>
 
-<!-- Action Needed Popup start -->
+<!-- Mail to enqirydesk Popup End -->
+<!-- Upload Modal HTML -->
+<div id="UploadDocumentModal" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload document</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary browse">
+                                Browse&hellip; <input type="file" style="display: none;" id="UploadDocumentId">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" style="height:34px;" id="FileUploadedId" readonly>
+                    </div>
+                    <span class="warning">You can upload only word and pdf files.</span>
+                    <br />
+                    <input type="text" id="DocumentDisplayNameId" class="form-control alphanumericonly" placeholder="Attachment name" style="margin-top: 15px;">
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-primary" value="Ok" onclick="UploadDocumentOk();" />
+                    <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

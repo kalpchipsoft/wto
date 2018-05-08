@@ -36,7 +36,7 @@ namespace BusinessService.ManageAccess
                         objSHI.LastName = Convert.ToString(dr["LastName"]);
                         objSHI.Email = Convert.ToString(dr["EmailId"]);
                         objSHI.Mobile = Convert.ToString(dr["Mobile"]);
-                        objSHI.Status = Convert.ToInt16(dr["Active"]);
+                        objSHI.Status = Convert.ToInt16(dr["IsActive"]);
                         objSHI.IsInUse = Convert.ToBoolean(dr["IsInUse"]);
                         objStakeHolderList.Add(objSHI);
                     }
@@ -67,20 +67,21 @@ namespace BusinessService.ManageAccess
                     obj.LastName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["LastName"]);
                     obj.Email = Convert.ToString(ds.Tables[tblIndx].Rows[0]["EmailId"]);
                     obj.Mobile = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Mobile"]);
-                    obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["Active"]);
+                    obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["IsActive"]);
                     obj.OrgName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["OrgName"]);
                     obj.Address = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Address"]);
                     obj.City = Convert.ToString(ds.Tables[tblIndx].Rows[0]["City"]);
                     obj.State = Convert.ToString(ds.Tables[tblIndx].Rows[0]["State"]);
                     obj.PIN = Convert.ToString(ds.Tables[tblIndx].Rows[0]["PIN"]);
+                    obj.HSCodes = Convert.ToString(ds.Tables[tblIndx].Rows[0]["SelectedHSCodes"]);
                 }
             }
             return obj;
         }
 
-        public bool AddStakeHolder(StakeHolderInfo obj)
+        public bool AddStakeHolder(Int64 Id,AddStakeHolder obj)
         {
-            return objSDS.AddStakeHolder(obj);
+            return objSDS.AddStakeHolder(Id,obj);
         }
 
         public bool DeleteStakeHolder(Int64 Id)

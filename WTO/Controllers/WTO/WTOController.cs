@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using BusinessObjects.Notification;
 using BusinessService.Notification;
+using BusinessObjects.MOM;
+using BusinessService.MOM;
 
 namespace WTO.Controllers
 {
@@ -14,7 +13,6 @@ namespace WTO.Controllers
         {
             return View();
         }
-
         public ActionResult AddNotification()
         {
             return View();
@@ -34,18 +32,10 @@ namespace WTO.Controllers
                 Dashboard objModel = new Dashboard();
                 objModel.UserId = Convert.ToInt64(Session["UserId"]);
                 DashboardBusinessService obj = new DashboardBusinessService();
-                return View(obj.GetPageLoadCount(objModel));
+                return View(obj.GetDashboard_PendingCounts(objModel));
             }
             else
                 return RedirectToAction("Index", "Login");
-        }
-        public ActionResult AddMOMList()
-        {
-            return View();
-        }
-        public ActionResult AddMOM()
-        {
-            return View();
         }
         public ActionResult ManageAccess()
         {

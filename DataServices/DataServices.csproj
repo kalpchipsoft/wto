@@ -30,8 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.1.3\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="BusinessObjects">
       <HintPath>..\BusinessObjects\bin\Debug\BusinessObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,15 +62,20 @@
     <Compile Include="LoginDataManger.cs" />
     <Compile Include="ManageAccess\CountryDataService.cs" />
     <Compile Include="ManageAccess\StakeHolderDataService.cs" />
+    <Compile Include="ManageAccess\TemplateDataService.cs" />
     <Compile Include="ManageAccess\TranslatorDataService.cs" />
     <Compile Include="ManageAccess\UserDataService.cs" />
     <Compile Include="Masters\MatersDataManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WTO\AddNotificationDataManager.cs" />
+    <Compile Include="Translator\TranslatorDataService.cs" />
     <Compile Include="WTO\DashboardDataManager.cs" />
+    <Compile Include="WTO\MOMDataManager.cs" />
+    <Compile Include="WTO\NotificationDataManager.cs" />
     <Compile Include="WTO\NotificationListDataManager.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,7 +5,7 @@
 <input id="hdnStakeHolderId" type="hidden" value="0" />
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <label class="btn-light-blue btn-padding">Stakeholders (@Model.TotalCount)</label>
+        <label class="table-heading">Stakeholders (@Model.TotalCount)</label>
         <a href="#" class="btn btn-light-blue btn-padding pull-right" data-target="#AddStakeholder" onclick="AddStakeHolderPopup()" data-toggle="modal">Add Stakeholder</a>
         <div class="table-responsive nopaging notificationlist top-offset-20">
             <table class="table table-bordered">
@@ -14,7 +14,7 @@
                         <th>S.No</th>
                         <th>Stakeholder Name</th>
                         <th>Email Id</th>
-                        <th>Contact</th>
+                        <th>Phone</th>
                         <th>Status</th>
                         <th class="text-center">Edit</th>
                         <th class="text-center">Delete</th>
@@ -27,7 +27,7 @@
                         {
                             <tr>
                                 <td>@item.ItemNumber</td>
-                                <td>@item.UserName</td>
+                                <td>@item.StakeHolderName</td>
                                 <td>@item.Email</td>
                                 <td>@item.Mobile</td>
                                 @if (@item.Status == 1)
@@ -39,14 +39,14 @@
                                     <td>Inactive</td>
                                 }
                                 <td class="text-center"><a href="#" onclick="EditStakeHolderData(@item.StakeHolderId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse ? "hidden" : "")' onclick="DeleteStakeHolder(@item.StakeHolderId);"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center"><a href="#" class='@(@item.IsInUse ? "hidden" : "")' onclick="Confirm('Delete','Do you want to delete the @item.StakeHolderName ?','Yes', 'No', 'DeleteStakeHolder(@item.StakeHolderId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td class="text-center" colspan="7">No Record Found ...</td>
+                            <td colspan="7">No Record Found ...</td>
                         </tr>
                     }
                 </tbody>
@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-3">Contact<sup class="mandetory">*</sup>:</label>
+                                    <label class="control-label col-sm-3">Phone<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="stackholderMobileNo" maxlength="10" onkeypress="return isNumeric(event);">
                                     </div>
@@ -127,25 +127,34 @@
                                         <input type="text" class="form-control" id="stackholderState" maxlength="20" onkeypress="return isAlpha(event);">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">City<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="stackholderCity" maxlength="20" onkeypress="return isAlpha(event);">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5 padding-0">City<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="stackholderCity" maxlength="20" onkeypress="return isAlpha(event);" style="margin-left:12px;">
+                                        </div>
                                     </div>
                                 </div>
-                                 <div class="form-group">
-                                    <label class="control-label col-sm-3">PIN<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="stackholderPIN" maxlength="6" onkeypress="return isNumeric(event);">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5">PIN<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="stackholderPIN" maxlength="6" onkeypress="return isNumeric(event);" style="margin-left:12px;">
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-4">
                                         <a href="#" class="btn sky-blue" onclick="selectstakeholderHscode();">Select HS Code</a>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-offset-3 col-sm-9 " style="color:#000;text-align:left;">Selected HSCode<sup class="mandetory">*</sup>:</label>
+                                    <label class="control-label col-sm-offset-3 col-sm-9 " style="color: #000; text-align: left;">Selected HSCode<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-offset-3 col-sm-9">
-                                        <p id="SelectedHscode" style="color:#000; margin-top:5PX;"></p>
+                                        <p id="SelectedHscode" style="color: #000; margin-top: 5PX;"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">

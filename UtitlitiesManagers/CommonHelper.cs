@@ -17,5 +17,16 @@ namespace UtilitiesManagers
         {
             return EncryptionUtility.DecryptData(Convert.ToString(DataforEcryption).Trim());
         }
+
+        //Function to get random number
+        //private static readonly Random getrandom = new Random();
+        public long GetRandomNumber(int min, int max)
+        {
+            Random getrandom = new Random();
+            lock (getrandom) // synchronize
+            {
+                return getrandom.Next(min, max);
+            }
+        }
     }
 }

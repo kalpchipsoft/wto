@@ -1,0 +1,51 @@
+﻿@model BusinessObjects.Translator.Login
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/contents/css/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/contents/css/css/main.css" rel="stylesheet" />
+
+    <script src="~/contents/js/jquery.min.js"></script>
+    <script src="~/contents/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('/contents/img/bg-01.jpg');">
+            <div class="wrap-login100">
+                @using (Html.BeginForm("Validate", "Translator", FormMethod.Post, new { @class = "login100-form" }))
+                {
+                    <span class="login100-form-logo">
+                        <img src="~/contents/img/login.png" alt="login" />
+                    </span>
+                    <span class="login100-form-title p-b-34 p-t-27">
+                        Translator Log in
+                    </span>
+                    <div class="wrap-input100 validate-input" data-validate="Enter username">
+                        @Html.TextBoxFor(u => u.UserName, new { @class = "input100", @placeholder = "Username" })
+                        <span class="focus-input100 email"></span>
+                    </div>
+                        @Html.ValidationMessageFor(u => u.UserName)
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            @Html.PasswordFor(u => u.Password, new { @class = "input100", @placeholder = "Password" })
+                            <span class="focus-input100 password"></span>
+                        </div>
+                        @Html.ValidationMessageFor(u => u.Password)
+                        <div class="container-login100-form-btn">
+                            <button type="submit" class="login100-form-btn">
+                                Login
+                            </button>
+                        </div>
+                        @Html.ValidationSummary(true)
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

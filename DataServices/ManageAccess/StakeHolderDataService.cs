@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using BusinessObjects;
@@ -34,12 +30,13 @@ namespace DataServices.ManageAccess
             }
         }
 
-        public bool AddStakeHolder(StakeHolderInfo obj)
+        public bool AddStakeHolder(Int64 Id, AddStakeHolder obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.AddStakeHolder;
+                sqlCommand.Parameters.AddWithValue("@UserId", Id);
                 sqlCommand.Parameters.AddWithValue("@StakeHolderId", obj.StakeHolderId);
                 sqlCommand.Parameters.AddWithValue("@FirstName", obj.FirstName);
                 sqlCommand.Parameters.AddWithValue("@LastName", obj.LastName);
@@ -51,6 +48,7 @@ namespace DataServices.ManageAccess
                 sqlCommand.Parameters.AddWithValue("@City", obj.City);
                 sqlCommand.Parameters.AddWithValue("@State", obj.State);
                 sqlCommand.Parameters.AddWithValue("@PIN", obj.PIN);
+                sqlCommand.Parameters.AddWithValue("@HSCodes", obj.HSCodes);
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }
         }

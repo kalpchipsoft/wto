@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace BusinessObjects
@@ -41,11 +37,11 @@ namespace BusinessObjects
     {
         [Display(Name = "")]
         NO_MESSAGE,
-        [Display(Name = "Wrong user-id.")]
+        [Display(Name = "The user id provided by you is invalid.")]
         WRONG_USERID,
-        [Display(Name = "Please enter correct user id")]
+        [Display(Name = "The username provided by you is invalid.")]
         WRONG_USERNAME,
-        [Display(Name = "Please enter correct password")]
+        [Display(Name = "The password you've entered is incorrect.")]
         WRONG_PASSWORD,
         [Display(Name = "Record has been deleted successfully")]
         RECORD_DELETED,

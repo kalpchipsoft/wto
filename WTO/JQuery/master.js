@@ -1,11 +1,13 @@
 ﻿var myWTOAPP = {
     id: null,
-    UserId: null
+    UserId: null,
+    UserRole:null
 };
 (function (myWTOAPP) {
-    myWTOAPP.init = function (id, uid) {
+    myWTOAPP.init = function (id, uid,role) {
         myWTOAPP.id = (id == "" ? null : id);
         myWTOAPP.UserId = (uid == "" ? null : uid);
+        myWTOAPP.UserRole = (role == "" ? null : role);
     }
 })(myWTOAPP);
 
@@ -21,27 +23,13 @@ $(window).bind("load", function () {
     HideGlobalLodingPanel();
 });
 
-//Loading panel starts
-//window.onbeforeunload = function () {
-//    if ($('[id$=hdnNoProgress]').val() == '0') {
-//        ShowGlobalLodingPanel();
-//    }
-//    else
-//        $('[id$=hdnNoProgress]').val('0');
-//}
-//function pageLoaded() {
-//    HideGlobalLodingPanel();
-//}
 function ShowGlobalLodingPanel() {
     $("#loader-wrapper").css("display", "block");
 }
+
 function HideGlobalLodingPanel() {
     $("#loader-wrapper").css("display", "none");
 }
-//function SetHiddenFieldValue() {
-//    $('[id$=hdnNoProgress]').val('1');
-//}
-//Loading panel
 
 function ShowAlert() {
     var Alert = '';
@@ -56,13 +44,13 @@ function ShowAlert() {
     Alert += "<div class='col-xs-12 col-sm-12 col-md-12'>";
     Alert += "<div class='col-xs-12 col-sm-12 col-md-12 selecthrbodyinner'>";
     Alert += "<div class='col-xs-12 col-sm-12 col-md-12'>"
-    Alert += "<h4 id='AlertBodyheading'></h4>";
+    Alert += "<h4 id='AlertBodyheading'>Mandatory Field</h4>";
     Alert += "</div>";
     Alert += "<div id='AlertBody' style='color:red;'></div>";
     Alert += "<a href='#' class='btn btn-blue btn-padding pull-right top-offset-20 bottom-offset-20' data-dismiss='modal' onclick='EmptyAlertBody();'>OK</a>";
-    Alert += "</div>";                       
-    Alert += "</div>";                       
-    Alert += "</div>"; 
+    Alert += "</div>";
+    Alert += "</div>";
+    Alert += "</div>";
     Alert += "</div>";
     Alert += "</div>";
     Alert += "</div>";
@@ -73,4 +61,29 @@ function ShowAlert() {
 
 function EmptyAlertBody() {
     $("#AlertBody").empty();
+}
+
+//Added by Ashvini
+function IsEmailExists(Email, CallFor) {
+    var IsExists = false;
+    $.ajax({
+        url: "/api/Masters/IsEmailExists?Email=" + Email + "&callFor=" + CallFor,
+        async: false,
+        type: "GET",
+        data: JSON,
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            IsExists = result;
+        },
+        failure: function (result) {
+            Alert("", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+            Alert("", "Something went wrong.<br/>", "Ok");
+        },
+        complete: function () {
+            HideGlobalLodingPanel();
+        }
+    });
+    return IsExists;
 }

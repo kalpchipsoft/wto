@@ -1,0 +1,87 @@
+﻿@model BusinessObjects.MOM.MoMs
+@{
+    ViewBag.Title = "MoM List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- body section start -->
+<div class="container-fluid">
+    <div class="row bodybackground padding-bottom-40">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-10">
+                <div class="row">
+                    <button href="#" class="btn btn-blue pull-right left-offset-10 @(Model.MoMList.Count>0?"":"hidden")"><img src="/contents/img/export.png" alt="export"> Export </button>
+                    <a href="@Url.Action("Add", "MoM", new { Id = 0 })" class="btn btn-dark-green pull-right"> Add MOM </a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10 bottom-offset-10">
+                <div class="row darkBlueblackbackground padding-10">
+                    <h4 class="white-color"><b>Minutes of Meeting</b></h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+            <div class="table-responsive notificationlist">
+                <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                    <thead class="second-blackbackground">
+                        <tr style="border-bottom: 1px solid transparent !important;">
+                            <th rowspan="2">Sr. No.</th>
+                            <th class="col-md-3" rowspan="2">Meeting Date</th>
+                            <th rowspan="2">Notifications</th>
+                            <th class="col-md-5 text-center" colspan="3">Action</th>
+                        </tr>
+                        <tr class="no-border">
+                            @if (Model.Actions != null)
+                            {
+                                foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                {
+                                    <th class="text-center">@item.ActionName</th>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="whitebackground">
+                        @if (Model.MoMList != null && Model.MoMList.Count > 0)
+                        {
+                            foreach (BusinessObjects.MOM.MoM obj in Model.MoMList)
+                            {
+                                <tr>
+                                    <td>@obj.ItemNumber</td>
+                                    <td>
+                                        @obj.MeetingDate
+                                    </td>
+                                    <td style="padding-left:2%;"><a href="@Url.Action("Add", "MoM", new { Id = obj.MoMId })"><div class="span-badge">@obj.NotificationCount</div></a></td>
+                                    @foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                    {
+                                        if (Model.MoMActionList != null && Model.MoMActionList.Count > 0)
+                                        {
+                                            var _Action = Model.MoMActionList.FirstOrDefault(x => x.MoMId == obj.MoMId && x.ActionId == item.ActionId);
+                                            if (_Action == null)
+                                            {
+                                                <td class="text-center">0</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">@_Action.Count</td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">0</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">No Record found..</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- body section End -->

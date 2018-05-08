@@ -8,19 +8,17 @@
 <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
     <div class="table-responsive notificationlist">
         <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-            <!-- <thead class="blackbackground"> -->
             <thead class="second-blackbackground">
                 <tr>
-                    <th>Sr. No.</th>
-                    <th style="width:25%">Notification no.</th>
-                    <th>Notification Date</th>
-                    <th>Final Date of Comment</th>
-                    <th>Country</th>
-                    <th>Pending Discussion</th>
-                    <th>Stakeholder Responses</th>
-                    <th style="width:8%">Action</th>
-                    <th>Edit</th>
-
+                    <th style="width:5%;">Sr. No.</th>
+                    <th style="width:30%">Notification no.</th>
+                    <th style="width:12%;" class="text-center">Notification Date</th>
+                    <th style="width:12%;" class="text-center">Final Date of Comment</th>
+                    <th style="width:10%;" class="text-center">Country</th>
+                    <th style="width:8%;">Pending Discussion</th>
+                    <th style="width:8%; padding-right:2%;" class="text-center">Stakeholder Responses</th>
+                    <th style="width:8%">Pending Action</th>
+                    <th style="width:5%">Edit</th>
                 </tr>
             </thead>
             <tbody id="NotificationData" class="whitebackground">
@@ -31,39 +29,37 @@
                         <tr>
                             <td>@Model.ItemsList[i].ItemNumber</td>
                             <td>
-                                @*<a href="~/WTO/NotificationListView"><p class="red-color">G/TBT/N/TUR/105</p></a>*@
-                                <p class="red-color">@Model.ItemsList[i].Noti_Number</p>
+                                <p class="red-color">@Model.ItemsList[i].NotificationNumber</p>
                                 <p>
                                     <b>Title :</b>@Model.ItemsList[i].Title
                                 </p>
                             </td>
-                            <td>@Model.ItemsList[i].Noti_Date</td>
-                            <td>@Model.ItemsList[i].FinalDateOfComments</td>
-                            <td>@Model.ItemsList[i].Noti_Country</td>
-                            <td class="tooltiprelative">
-                                <div class="small-circle light-blue-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div>
-                                <div class="small-circle light-cyan-background" data-toggle="tooltip" data-placement="bottom" title="Circulate to regulatory"></div>
-                            </td>
-                            <td>7/60</td>
+                            <td class="text-center">@Model.ItemsList[i].NotificationDate</td>
+                            <td class="text-center">@Model.ItemsList[i].FinalDateOfComments</td>
+                            <td class="text-center">@Model.ItemsList[i].Country</td>
                             <td class="padding-0">
-                                <div class="small-circle"></div>
-                                <div class="small-circle"></div>
-                                <div class="small-circle"></div>
-                                <div class="small-circle"></div>
+                                <div class="small-circle @(Model.ItemsList[i].DiscussionStatus>0?"light-sky-blue":"")" data-toggle="tooltip" data-placement="bottom" title="Pending Document"></div>
+                                <div class="small-circle @(Model.ItemsList[i].DiscussionStatus>1?"dark-purpal":"")" da data-toggle="tooltip" data-placement="bottom" title="Pending Translation"></div>
+                                <div class="small-circle @(Model.ItemsList[i].DiscussionStatus>2?"light-purpal":"")" d data-toggle="tooltip" data-placement="bottom" title="To Send to stakeholders"></div>
+                                <div class="small-circle @(Model.ItemsList[i].DiscussionStatus>3?"dark-brown":"")" dat data-toggle="tooltip" data-placement="bottom" title="To Discuss"></div>
+                            </td>
+                            <td class="text-center">7/60</td>
+                            <td class="tooltiprelative">
+                                <div class="small-circle @(Model.ItemsList[i].Actions.Contains("1")?"dark-red":"")" data-toggle="tooltip" data-placement="bottom" title="Brief to regulators"></div>
+                                <div class="small-circle @(Model.ItemsList[i].Actions.Contains("2")?"light-orange":"")" data-toggle="tooltip" data-placement="bottom" title="Policy brief to DOC"></div>
+                                <div class="small-circle @(Model.ItemsList[i].Actions.Contains("3")?"light-yellow":"")" data-toggle="tooltip" data-placement="bottom" title="Response"></div>
+                                <div class="small-circle @(Model.ItemsList[i].Actions.Contains("4")?"light-green":"")" data-toggle="tooltip" data-placement="bottom" title="No Response Needed"></div>
                             </td>
                             <td>
                                 <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = @Model.ItemsList[i].NotificationId })"><img src="~/contents/img/bedit.png" /></a>
                             </td>
                         </tr>
-                        @*@Html.HiddenFor(m => m.Persons[i].PersonId)
-                            @Html.EditorFor(m => m.Persons[i].FirstName)
-                            @Html.EditorFor(m => m.Persons[i].LastName)*@
                     }
                 }
                 else
                 {
                     <tr>
-                        <td class="text-center" colspan="9">No Record Found ...</td>
+                        <td colspan="9">No Record Found ...</td>
                     </tr>
                 }
             </tbody>
@@ -84,7 +80,7 @@
     }
 
     $(window).scroll(function () {
-        if ($(window).scrollTop() == $(document).height() - $(window).height()) {            
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
             //This is an Ajax method which will fetch the data from server
             var OldVal = $('#hdnPageIndex').val();
             $('#hdnPageIndex').val(OldVal + 1);
