@@ -229,7 +229,9 @@
     <Content Include="contents\img\save.png" />
     <Content Include="contents\img\shareback.png" />
     <Content Include="contents\img\show.png" />
+    <Content Include="contents\img\sidebg.png" />
     <Content Include="contents\img\stakeholder.png" />
+    <Content Include="contents\img\topbg.png" />
     <Content Include="contents\img\translated.png" />
     <Content Include="contents\img\translation.png" />
     <Content Include="contents\img\updatestatus.png" />
@@ -397,6 +399,10 @@
     <Content Include="Views\MoM\Index.cshtml" />
     <Content Include="Views\Partial\Notification\NotificationActions.cshtml" />
     <Content Include="Views\Partial\Notification\NotificationStakeholders.cshtml" />
+    <Content Include="Views\Partial\ManageAccess\Template.cshtml" />
+    <Content Include="Views\Partial\Notification\NotificationMails.cshtml" />
+    <Content Include="Views\Partial\NotificationStakeholders.cshtml" />
+    <Content Include="Views\Partial\StakeHolderConversation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

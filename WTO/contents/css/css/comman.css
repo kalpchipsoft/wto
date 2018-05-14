@@ -777,7 +777,7 @@ a, a:hover, a:focus, a:active {
 
 .bodybackground {
     /*background: #f6f6f6;*/
-    min-height: 88vh;
+    min-height: 88.6vh;
 }
 
 .darkgraybackground {
@@ -865,42 +865,49 @@ a, a:hover, a:focus, a:active {
     background: #4598c1;
     color: #fff;
     border-color: #4598c1;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .btn-red, .btn-red:hover, .btn-red:focus, .btn-red:active {
     background: #f8981d;
     color: #fff;
     border-color: #f8981d;
-    border-radius: 0px;
+    border-radius: 5px;
+}
+
+.btn-dark-red, .btn-dark-red:hover, .btn-dark-red:focus, .btn-dark-red:active {
+    background: #d94f47;
+    color: #fff;
+    border-color: #d94f47;
+   border-radius: 5px;
 }
 
 .btn-light-blue, .btn-light-blue:hover, .btn-light-blue:focus, .btn-light-blue:active {
     background: #009aff;
     color: #fff;
     border-color: #009aff;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .btn-dark-green, .btn-dark-green:hover, .btn-dark-green:focus, .btn-dark-green:active {
     background: #49a54b;
     color: #fff;
     border-color: #49a54b;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .btn-gray, .btn-gray:hover, .btn-gray:focus, .btn-gray:active {
     background: #7d7d7d;
     color: #fff;
     border-color: #7d7d7d;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .sky-blue, .sky-blue:hover, .sky-blue:focus, .sky-blue:active {
     background: #015998;
     color: #fff;
     border-color: #015998;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .btn-padding {

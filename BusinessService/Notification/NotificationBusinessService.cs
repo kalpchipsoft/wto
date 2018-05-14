@@ -1342,6 +1342,31 @@ namespace BusinessService.Notification
             }
         }
 
+        public StakeHolderConversationPopUp GetConversation(Int64 NotificationId, Int64 StakeholderId)
+        {
+            StakeHolderConversationPopUp objR = new StakeHolderConversationPopUp();
+            NotificationDataManager objDM = new NotificationDataManager();
+            DataTable dt = objDM.StakeHolderConversation(NotificationId, StakeholderId);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                StakeHolderConversation objMail;
+                List<StakeHolderConversation> objConversation = new List<StakeHolderConversation>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    objMail = new StakeHolderConversation();
+                    objMail.MailDate = Convert.ToString(dr["MailDate"]);
+                    objMail.MailTime = Convert.ToString(dr["MailTime"]);
+                    objMail.MailSubject = Convert.ToString(dr["Subject"]);
+                    objMail.MailMessage = Convert.ToString(dr["Message"]);
+                    objMail.MailType = Convert.ToBoolean(dr["MailType"]);
+                    objMail.Attachments = Convert.ToString(dr["Attachments"]);
+                    objConversation.Add(objMail);
+                }
+                objR.Conversation = objConversation;
+            }
+            return objR;
+        }
+
         public NotificationActions GetNotificationActions(Int64 Id)
         {
             NotificationActions objNA = new NotificationActions();

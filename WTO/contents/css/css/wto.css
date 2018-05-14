@@ -111,6 +111,10 @@
 
 
 /* Add notification css start */
+.adduploadbutton
+{
+	float:right;
+}
 .combobox-container .input-group .input-group-addon {
     border-color: black;
     border-top-right-radius: 0px;
@@ -311,9 +315,10 @@ textarea {
 /* select hr modal popup css start */
 
 .selecthrcontent {
-    border-radius: 0px;
-    border: 4px solid #cccccc;
+    border-radius: 12px;
+    /* border: 4px solid #cccccc; */
     overflow: auto;
+    background: #e53472;
 }
 
 .selecthrheader {
@@ -324,12 +329,13 @@ textarea {
 .selecthrclose, .selecthrclose:hover, .selecthrclose:active, .selecthrclose:focus {
     font-size: 12px;
     font-weight: normal;
-    border: 2px solid #000 !important;
+    border: 2px solid #fff !important;
     border-radius: 12px;
     margin-top: 4px !important;
     margin-right: 4px;
     padding: 4px !important;
     opacity: 1;
+	color:#fff;
 }
 
 .selecthrbody {
@@ -337,7 +343,7 @@ textarea {
 }
 
 .selecthrbodyinner {
-    background: #e1e8ed;
+    background: #fff;
 }
 
 .selecthrheading {
@@ -371,7 +377,10 @@ a:hover, a:focus {
     outline: none;
     text-decoration: none;
 }
-
+#accordionmailcount
+{
+	border:2px solid #e53472;
+}
 #accordionmailcount .panel {
     border: 0px none;
     border-radius: 0px;
@@ -386,33 +395,33 @@ a:hover, a:focus {
 #accordionmailcount .panel-heading {
     padding: 0;
     border-radius: 0px;
-    border: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
 }
 
 #accordionmailcount .panel-title > a {
     display: block;
     padding: 15px 50px 15px 15px;
     position: relative;
-    background: #4ab6fe;
+    background: #fff;
     transition: 0.4s ease;
-    color: #fff;
+    color: #000;
 }
 
     #accordionmailcount .panel-title > a.collapsed {
-        background: #4ab6fe;
-        color: #fff;
+        background: #fff;
+        color: #000;
     }
 
     #accordionmailcount .panel-title > a:hover {
-        background: #4ab6fe;
-        color: #fff;
+        background: #fff;
+        color: #000;
     }
 
     #accordionmailcount .panel-title > a:after,
     #accordionmailcount .panel-title > a.collapsed:after {
         content: "\f068";
         font-family: FontAwesome;
-        color: #fff;
+        color: #ea8b23;
         font-size: 18px;
         position: absolute;
         top: 0;
@@ -423,13 +432,13 @@ a:hover, a:focus {
 
     #accordionmailcount .panel-title > a.collapsed:after {
         content: "\f067";
-        color: #fff;
+        color: #ea8b23;
         font-size: 18px;
         transition: 0.4s ease;
     }
 
     #accordionmailcount .panel-title > a.collapsed:hover:after {
-        color: #fff;
+        color: #ea8b23;
     }
 
 #accordionmailcount .panel-body {
@@ -456,17 +465,46 @@ a:hover, a:focus {
     position: absolute;
     top: 16px;
     right: 20%;
+	color:#e38271;
 }
 
 .shareback {
     position: absolute;
     top: 14px;
     right: 10%;
+	color:#0473bb;
 }
-
+.rotate {
+    transform: rotateY(180deg);
+}
 .mail-count-height {
     height: 300px;
     overflow: auto;
+}
+
+.mail-count-height::-webkit-scrollbar {
+    width: 0.5em;
+}
+ 
+.mail-count-height::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.mail-count-height::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 10px;
+}
+
+.mail-count-height::-webkit-scrollbar{
+    height: 10px;
+    width: 10px;
+    background: gray;
+}
+.mail-count-height::-webkit-scrollbar-thumb:horizontal{
+    background: darkgrey;
+    border-radius: 10px;
+	outline: 1px solid slategrey;
 }
 /* mailcount popup */
 
@@ -481,8 +519,11 @@ a:hover, a:focus {
     line-height: 30px !important;
     height: 30px !important;
     background: #fff;
-    border: 1px solid #959595;
+    border: 1px solid #ef4438;
     margin-bottom: 5px !important;
+	-webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+	-moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+	box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
 }
 
 .jstree-icon:empty {
@@ -491,7 +532,7 @@ a:hover, a:focus {
 
 .jstree-default .jstree-checkbox {
     background-position: -164px 0px !important;
-    border-right: 1px solid #959595;
+    border-right: 1px solid #ef4438;
     margin-top: -5px !important;
     margin-right: 5px !important;
     width: 30px !important;
@@ -502,83 +543,40 @@ a:hover, a:focus {
 
 #HSCodeTab .jstree-default .jstree-closed > .jstree-ocl {
     background-position: -102px -4px !important;
-    border: 1px solid #959595;
+    border: 1px solid #ef4438;
     border-right: none;
 }
 
 #HSCodeTab .jstree-default .jstree-open > .jstree-ocl {
     background-position: -134px -4px !important;
-    border: 1px solid #959595;
+    border: 1px solid #ef4438;
     border-right: none;
 }
 
 #HSCodeTab .jstree-default .jstree-leaf > .jstree-ocl {
     background-position: -102px -4px !important;
-    border: 1px solid #959595;
+    border: 1px solid #ef4438;
     border-right: none;
 }
 
 .jstree-default .jstree-closed > .jstree-ocl {
     background-position: -102px -4px !important;
-    border: 2px solid #fff;
+    border: 1px solid #ef4438;
     border-right: none;
 }
 
 .jstree-default .jstree-open > .jstree-ocl {
     background-position: -134px -4px !important;
-    border: 2px solid #fff;
+    border: 1px solid #ef4438;
     border-right: none;
 }
 
 .jstree-default .jstree-leaf > .jstree-ocl {
     background-position: -102px -4px !important;
-    border: 2px solid #fff;
+    border: 1px solid #ef4438;
     border-right: none;
 }
-/* .jstree-closed .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\002b"; */
-/* } */
-/* .jstree-open .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-closed .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\002b"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-open .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-closed .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\002b"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-open .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-children .jstree-closed .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\002b"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-children .jstree-open .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-children .jstree-children .jstree-closed .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\002b"; */
-/* } */
-/* .jstree-children .jstree-children .jstree-children .jstree-children .jstree-children .jstree-open .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
-/* .jstree-children .jstree-leaf .jstree-ocl:after { */
-/* font-family: "Glyphicons Halflings"; */
-/* content: "\2212"; */
-/* } */
+
 .jstree-default .jstree-icon:empty {
     width: 30px !important;
     height: 30px !important;
@@ -592,11 +590,10 @@ a:hover, a:focus {
 .jstree-default.jstree-checkbox-no-clicked .jstree-clicked {
     background: #fff !important;
     box-shadow: none;
+	-webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+	-moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+	box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
 }
-/* .jstree-default .jstree-node, .jstree-default .jstree-icon { */
-/* background-image: url(32px.png) !important; */
-/* background-repeat:no-repeat !important; */
-/* } */
 /* tree view css start */
 
 
@@ -655,7 +652,7 @@ a:hover, a:focus {
 /* select stackholder css */
 .stackholderlist {
     padding: 10px 15px !important;
-    background: #180464;
+    background: #ef4538;
     color: #fff;
 }
 
@@ -808,15 +805,50 @@ a:hover, a:focus {
 
 
 /* dashboard css start */
+
+.dashbaorddiscussionicon
+{
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    right: 0;
+    width: 40%;
+    padding: 15px;
+    border-radius: 10px;
+	height:50%;
+}
+
+.YBG
+{
+	background:#f7921e;
+}
+.KBG
+{
+	background:#e02a6c;
+}
+.GBG
+{
+	background:#54ad57;
+}
+.PBG
+{
+	background:#11b5ca;
+}
+
+.rightbottom{
+	box-shadow: 6px 3px 8px #d4d4d4;
+}
+
 .full {
     height: 150px;
+	border-radius:12px;
 }
 
-.full-lightskyblue-border {
+/*.full-lightskyblue-border {
     border: 1px solid #009ee3;
-}
+}*/
 
-.full-darkpupal-border {
+/*.full-darkpupal-border {
     border: 1px solid #7966ab;
 }
 
@@ -826,22 +858,30 @@ a:hover, a:focus {
 
 .full-darkbrown-border {
     border: 1px solid #c9628f;
+}*/
+
+.full-YBG {
+    /*background: #009ee3;*/
+	color: #f7921e;
+    border-top: 1px solid #f7921e;
 }
 
-.full-lightskyblue {
-    background: #009ee3;
+.full-KBG {
+    /*background: #7966ab;*/
+	color: #e02a6c;
+    border-top: 1px solid #e02a6c;
 }
 
-.full-darkpupal {
-    background: #7966ab;
+.full-GBG {
+    /*background: #9e6a9f;*/
+	color: #54ad57;
+    border-top: 1px solid #54ad57;
 }
 
-.full-lightpupal {
-    background: #9e6a9f;
-}
-
-.full-darkbrown {
-    background: #c9628f;
+.full-PBG {
+    /*background: #c9628f;*/
+	color: #11b5ca;
+    border-top: 1px solid #11b5ca;
 }
 
 .smalldiv, .smalldiv:hover, .smalldiv:active, .smalldiv:focus {
@@ -856,22 +896,26 @@ a:hover, a:focus {
     .smalldiv p {
         margin-top: 10px;
         margin-bottom: 10px;
-        color: #fff;
+		font-weight:700;
+        /*color: #fff;*/
     }
 
 .fixedbottom {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 5%;
+    /* right: 0; */
+    width: 90%;
 }
+
+
 
 .left-lightyellow-border {
     border-left: 15px solid #fec02b;
 }
 
 .left-darkyellow-border {
-    border-left: 15px solid #eb8b03;
+    border-left: 15px solid #f15c22;
 }
 
 .left-darkred-border {
@@ -879,15 +923,15 @@ a:hover, a:focus {
 }
 
 .full-lightyellow-border {
-    border: 1px solid #fec02b;
+    border-top: 1px solid #fec02b;
 }
 
 .full-darkyellow-border {
-    border: 1px solid #eb8b03;
+    border-top: 1px solid #f15c22;
 }
 
 .full-darkred-border {
-    border: 1px solid #d30101;
+    border-top: 1px solid #d30101;
 }
 
 .action {
@@ -923,8 +967,8 @@ a:hover, a:focus {
 /* Add MOM List css */
 
 .tab .nav-tabs {
-    border: 1px solid #1fc1dd;
-    background: #000f79;
+    border: 1px solid #e53472;
+    background: #e53472;
     color: #fff;
 }
 
@@ -954,16 +998,17 @@ a:hover, a:focus {
 
         .tab .nav-tabs li.active a,
         .tab .nav-tabs li.active a:hover {
-            color: #fff;
-            border: none;
-            background: #009aff;
+            color: #e53472;
+			border: none;
+			background: #fff;
+			font-weight: 700;
         }
 
             .tab .nav-tabs li.active a:before {
                 content: "";
                 width: 58%;
                 height: 4px;
-                background: #fff;
+				background: #e53472;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -973,7 +1018,7 @@ a:hover, a:focus {
 
             .tab .nav-tabs li.active a:after {
                 content: "";
-                border-top: 10px solid #009aff;
+                border-top: 10px solid #e53472;
                 border-left: 10px solid transparent;
                 border-right: 10px solid transparent;
                 position: absolute;
@@ -1039,6 +1084,11 @@ a:hover, a:focus {
     .v-center {
         min-height: 230px;
     }
+	.insertfielddiv
+	{
+		width: 95% !important;
+		 margin-bottom: 10px;
+	}
 }
 
 .disabled {
@@ -1339,4 +1389,15 @@ h3.panel-title {
 
 .no-padding {
     padding: 0 !important;
+}
+.insertfielddiv
+{
+	width: 42%;
+	font-size:14px;
+	float: left;
+	margin-top: -2px;
+}
+.insertcheckbox
+{
+	margin-top:4px;
 }

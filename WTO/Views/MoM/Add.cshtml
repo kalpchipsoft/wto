@@ -7,23 +7,23 @@
 <!-- body section start -->
 <input type="hidden" id="hdnMoMId" value="@Model.MoMId" />
 <input type="hidden" id="hdnIsEdit" value="@(Model.MoMId>0?"1":"0")" />
-
+<div class="topbg">
 <div class="container-fluid">
-    <div class="row bodybackground padding-bottom-40">
-        <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row bodybackground">
+        @*<div class="col-xs-12 col-sm-12 col-md-12">*@
             <div class="col-xs-12 col-sm-6 col-md-6 top-offset-20 bottom-offset-20">
-                <div class="row">
-                    <h4 class="blue-color"><b>Add MOM</b></h4>
-                </div>
+                @*<div class="row">*@
+                    <h4 class="white-color"><b>Add MOM</b></h4>
+               @* </div>*@
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 darkgraybackground">
+            <div class="col-xs-12 col-sm-12 col-md-12 darkBlueblackbackground">
                 <div class="row top-offset-20">
                     <div class="col-xs-12 col-sm-5 col-md-2">
-                        <label>Meeting Date </label><span class="pull-right">:</span>
+                        <label class="white-color">Meeting Date </label><span class="pull-right white-color">:</span>
                     </div>
                     <div class="form-group has-feedback ">
                         <div class="col-xs-12 col-sm-4 col-md-3 bottom-offset-20">
-                            <input type="text" class="form-control date-picker textboxcontrol @(Model.MoMId > 0?"disabled":"")" style="cursor:pointer" value="@Model.MeetingDate" id="txtmeetingdate" />
+                            <input type="text" class="form-control date-picker  @(Model.MoMId > 0?"disabled":"")" style="cursor:pointer" value="@Model.MeetingDate" id="txtmeetingdate" />
                             <i class="glyphicon glyphicon-calendar form-control-feedback blue-color @(Model.MoMId > 0?"disabled":"")"></i>
                         </div>
                         <div class="col-md-7 col-sm-5">
@@ -33,124 +33,128 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
-            <div class="table-responsive notificationlist">
-                <table class="table table-bordered display" id="tblNotificationMoM" cellspacing="0" width="100%">
-                    <thead class="second-blackbackground">
-                        <tr style="border-bottom: 1px solid transparent !important;">
-                            @if (Model.MoMId == 0)
-                            {
-                                <th style="width:5%;" rowspan="2"></th>
-                            }
-                            <th rowspan="2" style="width:5%;">S. No.</th>
-                            <th class="col-md-3" rowspan="2" style="width:30%;">Notification No.</th>
-                            <th class="col-md-1" rowspan="2" style="width:10%;">Country</th>
-                            <th class="col-md-5 text-center" colspan="4">Action</th>
-                            @if (Model.MoMId > 0)
-                            {
-                                <th class="text-center" rowspan="2"></th>
-                            }
-                        </tr>
-                        <tr class="no-border">
-                            @if (Model.Actions != null)
-                            {
-                                foreach (BusinessObjects.MOM.Action item in Model.Actions)
-                                {
-                                    <th class="text-center">@item.ActionName</th>
-                                }
-                            }
-                        </tr>
-                    </thead>
-                    <tbody class="whitebackground">
-                        @if (Model.NotificationList != null && Model.NotificationList.Count > 0)
-                        {
-                            foreach (BusinessObjects.MOM.Notification_Mom objMOM in Model.NotificationList)
-                            {
-                                <tr>
+        @*</div>*@
+        
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="row" style="background:#fff;min-height: 65.6vh;">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="table-responsive notificationlist top-offset-20">
+                        <table class="table display" id="tblNotificationMoM" cellspacing="0" style="border:1px solid #ccc; width:99.9%;">
+                            <thead class="second-blackbackground">
+                                <tr style="border-bottom: 1px solid transparent !important;">
                                     @if (Model.MoMId == 0)
                                     {
-                                        <td class="text-center">
-                                            <div class="checkbox radio-margin">
-                                                <label>
-                                                    <input type="checkbox" name="Action" id="chkNotification_@objMOM.ItemNumber" />
-                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
-                                                </label>
-                                            </div>
-                                            <input type="hidden" id="hdnNotificationId_@objMOM.ItemNumber" value="@objMOM.NotificationId" />
-                                        </td>
+                                        <th style="width:5%;" rowspan="2"></th>
                                     }
-                                    <td>@objMOM.ItemNumber</td>
-                                    <td>
-                                        <p class="red-color NotiNumber">@objMOM.NotificationNumber</p>
-                                        <p>
-                                            <b>Title :</b>@objMOM.Title
-                                        </p>
-                                    </td>
-                                    <td>@objMOM.Country</td>
-
-                                    @foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                    <th rowspan="2" style="width:5%;">S. No.</th>
+                                    <th class="col-md-3" rowspan="2" style="width:30%;">Notification No.</th>
+                                    <th class="col-md-1" rowspan="2" style="width:10%;">Country</th>
+                                    <th class="col-md-5 text-center" colspan="4">Action</th>
+                                    @if (Model.MoMId > 0)
                                     {
-                                        bool IsUpdated = false;
-                                        if (Model.NotificationActions != null && Model.NotificationActions.Where(x => x.NotificationId == objMOM.NotificationId).Count() > 0)
-                                        {
-                                            var Action = Model.NotificationActions.FirstOrDefault(x => x.NotificationId == objMOM.NotificationId && x.ActionId == item.ActionId);
-                                            IsUpdated = Action.ActionId == 4 ? true : false;
-                                            if (Action == null)
-                                            {
-                                                <td class="text-center">
-                                                    <div class="checkbox radio-margin hidden">
-                                                        <label>
-                                                            <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" />
-                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
-                                                        </label>
-                                                    </div>
-                                                    <span class="glyphicon glyphicon-ok dark-green-color hidden" id="span_@objMOM.ItemNumber"></span>
-                                                </td>
-                                            }
-                                            else
-                                            {
-                                                <td class="text-center">
-                                                    <div class="checkbox radio-margin hidden">
-                                                        <label>
-                                                            <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" checked="checked" />
-                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
-                                                        </label>
-                                                    </div>
-                                                    <span class="glyphicon glyphicon-ok dark-green-color" id="span_@objMOM.ItemNumber"></span>
-                                                </td>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <td class="text-center">
-                                                <div class="checkbox radio-margin">
-                                                    <label>
-                                                        <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" />
-                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        }
-                                    }
-
-                                    @if (Model.NotificationActions != null)
-                                    {
-                                        <td class="text-center"><a onclick="EditNotification(this);"><img src="~/contents/img/bedit.png" /></a></td>
+                                        <th class="text-center" rowspan="2"></th>
                                     }
                                 </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="9"> No record found</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                <tr class="no-border">
+                                    @if (Model.Actions != null)
+                                    {
+                                        foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                        {
+                                            <th class="text-center">@item.ActionName</th>
+                                        }
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="whitebackground">
+                                @if (Model.NotificationList != null && Model.NotificationList.Count > 0)
+                                {
+                                    foreach (BusinessObjects.MOM.Notification_Mom objMOM in Model.NotificationList)
+                                    {
+                                        <tr>
+                                            @if (Model.MoMId == 0)
+                                            {
+                                                <td class="text-center">
+                                                    <div class="checkbox radio-margin">
+                                                        <label>
+                                                            <input type="checkbox" name="Action" id="chkNotification_@objMOM.ItemNumber" />
+                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" id="hdnNotificationId_@objMOM.ItemNumber" value="@objMOM.NotificationId" />
+                                                </td>
+                                            }
+                                            <td>@objMOM.ItemNumber</td>
+                                            <td>
+                                                <p class="red-color NotiNumber">@objMOM.NotificationNumber</p>
+                                                <p>
+                                                    <b>Title :</b>@objMOM.Title
+                                                </p>
+                                            </td>
+                                            <td>@objMOM.Country</td>
+
+                                            @foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                            {
+                                                if (Model.NotificationActions != null && Model.NotificationActions.Where(x => x.NotificationId == objMOM.NotificationId).Count() > 0)
+                                                {
+                                                    var Action = Model.NotificationActions.FirstOrDefault(x => x.NotificationId == objMOM.NotificationId && x.ActionId == item.ActionId);
+                                                    if (Action == null)
+                                                    {
+                                                        <td class="text-center">
+                                                            <div class="checkbox radio-margin hidden">
+                                                                <label>
+                                                                    <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" />
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                                </label>
+                                                            </div>
+                                                            <span class="glyphicon glyphicon-ok dark-green-color hidden" id="span_@objMOM.ItemNumber"></span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center">
+                                                            <div class="checkbox radio-margin hidden">
+                                                                <label>
+                                                                    <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" checked="checked" />
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                                </label>
+                                                            </div>
+                                                            <span class="glyphicon glyphicon-ok dark-green-color" id="span_@objMOM.ItemNumber"></span>
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center">
+                                                        <div class="checkbox radio-margin">
+                                                            <label>
+                                                                <input type="checkbox" name="Action" onchange="AddRemoveActions(this);" value="@item.ActionId" />
+                                                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                }
+                                            }
+
+                                            @if (Model.NotificationActions != null)
+                                            {
+                                                <td class="text-center"><a onclick="EditNotification(this);"><img src="~/contents/img/bedit.png" /></a></td>
+                                            }
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="9"> No record found</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- body section End -->

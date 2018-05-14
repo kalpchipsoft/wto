@@ -28,6 +28,8 @@
         public const string Notification_InsertUpdateAction = "proc_InsertUpdateNotificationAction";
         public const string Notification_GetTemplate = "proc_GetTemplates_Notification";
         public const string Notification_Mails = "proc_GetMails_Notification";
+
+        public const string Notification_GetStakeHolderConversation = "proc_GetStakeHolderConversation";
         #endregion
 
         #region "Notification List"

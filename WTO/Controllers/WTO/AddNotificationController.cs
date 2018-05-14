@@ -36,6 +36,17 @@ namespace WTO.Controllers.WTO
                 return RedirectToAction("Index", "Login");
         }
 
+        public ActionResult GetStakeholderConversation(Int64 NotificationId, Int64 StakeholderId)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                NotificationBusinessService obj = new NotificationBusinessService();
+                return View("~/Views/Partial/StakeHolderConversation.cshtml", obj.GetConversation(NotificationId, StakeholderId));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
         public ActionResult GetNotificationActions(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)

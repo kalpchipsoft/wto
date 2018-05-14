@@ -76,6 +76,18 @@ namespace DataServices.WTO
             }
         }
 
+        public DataTable StakeHolderConversation(Int64 NotificationId, Int64 StakeholderId)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_GetStakeHolderConversation;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", NotificationId);
+                sqlCommand.Parameters.AddWithValue("@StakeholderId", StakeholderId);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+
         public DataTable InsertDelete_RelatedStakeholders(Int64 Id, string SelectedStakeHolder, bool IsDelete)
         {
             using (SqlCommand sqlCommand = new SqlCommand())

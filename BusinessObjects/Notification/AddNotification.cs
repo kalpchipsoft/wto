@@ -159,4 +159,23 @@ namespace BusinessObjects.Notification
         public List<StackholderMail> StackholderMails { get; set; }
         public List<EditAttachment> Documents { get; set; }
     }
+
+    public class StakeHolderConversationPopUp
+    {
+        public long NotificationNumber { get; set; }
+        public string Title { get; set; }
+        public string StakeHolderName { get; set; }
+        public List<StakeHolderConversation> Conversation { get; set; }
+    }
+
+    public class StakeHolderConversation
+    {
+        public string MailDate { get; set; }
+        public string MailTime { get; set; }
+        public string MailSubject { get; set; }
+        public string MailMessage { get; set; }
+        public bool MailType { get; set; }
+        public string Attachments { get; set; }
+    }
+
 }

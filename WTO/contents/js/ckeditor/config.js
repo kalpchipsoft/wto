@@ -36,15 +36,5 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
-    // Referencing the new plugin
-	config.extraPlugins = 'CustomPlugin';
-
-    // Define the toolbar buttons you want to have available
-	config.toolbar = 'MyToolbar';
-	config.toolbar_MyToolbar =
-       [
-         ['customplugin', 'Preview'],
-         ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Scayt'],
-         ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat']
-       ];
+    
 };
