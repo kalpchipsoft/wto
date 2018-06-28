@@ -1,0 +1,745 @@
+﻿@model BusinessObjects.Notification.ViewNotification
+@{
+    ViewBag.Title = "View Notification ";
+    Layout = "";
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>@ViewBag.Title</title>
+<link href="~/contents/css/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/contents/css/css/style.min.css" rel="stylesheet" />
+<link href="~/contents/css/css/jquery-ui.css" rel="stylesheet" />
+<link href="~/contents/css/css/comman.css" rel="stylesheet" />
+<link href="~/contents/css/css/wto.css" rel="stylesheet" />
+<link href="~/contents/css/css/CustomAlert.css" rel="stylesheet" />
+<script src="~/contents/js/jquery.min.js"></script>
+<script src="~/contents/js/bootstrap.js"></script>
+<script src="~/contents/js/jstree.min.js"></script>
+<script src="~/contents/js/jquery-ui.js"></script>
+<script src="~/contents/js/WTOHTMLJS.js?v=1"></script>
+<script src="~/contents/js/Validation.js"></script>
+<script src="~/contents/js/CustomAlert.js"></script>
+<script src="~/contents/js/autosize.min.js"></script>
+<link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/contents/js/bootstrap-multiselect.js"></script>
+
+<script src="~/JQuery/master.js"></script>
+<script src="~/JQuery/Notification_PartialPages.js?v=7"></script>
+<script src="~/JQuery/NotificationView.js"></script>
+<script src="~/contents/js/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+@if (Model != null && Model.NotificationId > 0)
+{
+    @Html.Hidden("hdnNotificationId", @Model.NotificationId)
+    <!-- body section start -->
+    <div class="container-fluid">
+        <div class="row bodybackground padding-bottom-40">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row topbg">
+                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-10">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="black-color" style="margin-top:0px;"><img src="~/contents/img/summary.png" alt="" style="margin-right:15px;"><b>Notification Summary</b></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+                    <div class="row darkBlueblackbackground padding-10">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <h4 class="white-color">Notification Summary</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 " style="box-shadow: 0 0px 0 #fff, 0 1px 6px rgba(0,0,0, 0.1);">
+                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                        <div class="row">
+                            <a href="/API/AddUpdateNotification/Download/@Model.NotificationId" class="btn btn-blue pull-right">
+                                <img src="~/contents/img/export.png" alt="export" />
+                                Export
+                            </a>
+                        </div>
+                    </div>
+
+                    @*Notification basic details Start*@
+                    <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow padding-top-bottom" style="border-radius:10px;">
+                        @if (Model.NotificationStage != null && Model.NotificationStage != "")
+                        {
+                            <div class="row top-offset-20">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Notification stage</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="red-color wto-label-bold">@Model.NotificationStage</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.NotificationType != null && Model.NotificationType != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Type</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.NotificationType</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.NotificationNumber != null && Model.NotificationNumber != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Notification no.</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.NotificationNumber</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Notifica_Document != null && Model.Notifica_Document != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Notification</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">
+                                        <a onclick="return OpenAttachementViewer('~/Attachments/NotificationAttachment/@Model.Notifica_Document_path','@Model.Notifica_Document');">@Model.Notifica_Document</a>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.NotificationStatus != null && Model.NotificationStatus != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Notification Status</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.NotificationStatus</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.DateofNotification != null && Model.DateofNotification != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Date of Notification</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.DateofNotification</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.FinalDateOfComments != null && Model.FinalDateOfComments != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Final date of comments</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.FinalDateOfComments</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.SendResponseBy != null && Model.SendResponseBy != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Send response by</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.SendResponseBy</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Country != null && Model.Country != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Notifying Country</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.Country</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.EnquiryPoint != null && Model.EnquiryPoint != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Enquiry Point</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.EnquiryPoint</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Title != null && Model.Title != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Title</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.Title</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ResponsibleAgency != null && Model.ResponsibleAgency != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Agency responsible</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.ResponsibleAgency</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.UnderArticle != null && Model.UnderArticle != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2" style="padding-right: 0px;">
+                                    <p class="wto-label-bold">Notification under Article</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.UnderArticle</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ProductsCovered != null && Model.ProductsCovered != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Products Covered</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.ProductsCovered</p>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.HSCodes != null && Model.HSCodes.Count > 0)
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">HS Codes</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <div class='table-responsive notificationlist'>
+                                        <table class="table">
+                                            <thead class="second-blackbackground @(Model.HSCodes.FirstOrDefault(x=>x.HSCode=="-1")==null? "" : "hidden")">
+                                                <tr>
+                                                    <th class="col-md-2"><b>HS Code</b></th>
+                                                    <th class="col-md-10"><b>Name</b></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.HSCodes)
+                                                {
+                                                    if (item.HSCode == "-1")
+                                                    {
+                                                        <tr>
+                                                            <td colspan="2" style="border-top: 1px solid #ddd !important;">No HS Code</td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td>@item.HSCode</td>
+                                                            <td>@item.Text</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Description != null && Model.Description != "")
+                        {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold">Description of Content</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal">@Model.Description</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @*Notification basic details End*@
+
+                    @*Notification full text(s) of regulation Start*@
+                    @if (Model.RegulationFlag > 0 || Model.MailSentToEnquiryDeskOn != "")
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow top-offset-20 padding-top-bottom" style="border-radius:10px;">
+                            @if (Model.MailSentToEnquiryDeskOn != null && Model.MailSentToEnquiryDeskOn != "")
+                            {
+                                if (!(Model.Regulations != null && Model.Regulations.Count > 0))
+                                {
+                                    <div class="row top-offset-10">
+                                        <div class="col-xs-12 col-sm-4 col-md-2">
+                                            <p class="wto-label-bold">Mail to enquiry desk</p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-10">
+                                            <p class="wto-label-normal">Request for full text(s) of regulation has been sent to enquiry desk on @Model.MailSentToEnquiryDeskOn</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                            @if (Model.Regulations != null && Model.Regulations.Count > 0)
+                            {
+                                <div class="row top-offset-10">
+                                    @if (Model.RemainderToTranslaterOn != null && Model.RemainderToTranslaterOn != "")
+                                    {
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <p class="wto-label-bold pull-right"><span>Reminder For Translation</span>&nbsp;&nbsp;&nbsp;<span>@Model.RemainderToTranslaterOn</span></p>
+                                        </div>
+                                    }
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <p class="wto-label-bold">Full text(s) of Regulation</p>
+                                    </div>
+                                    @if (Model.TranslationDueOn != null && Model.TranslationDueOn != "")
+                                    {
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
+                                            <p class="wto-label-bold pull-right"><span>Due Date for Translation</span>&nbsp;&nbsp;&nbsp;<span>@Model.TranslationDueOn</span></p>
+                                        </div>
+                                    }
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class='table-responsive notificationlist'>
+                                            <table class="table">
+                                                <thead class="second-blackbackground">
+                                                    <tr>
+                                                        <th><b>Full text(s) of Regulation</b></th>
+                                                        <th><b>Language</b></th>
+                                                        <th class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0) != null ? "" : "hidden")"><b>Translator</b></th>
+                                                        <th class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.SentForTranslation!="") != null ? "" : "hidden")"><b>Sent to translator on</b></th>
+                                                        <th class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.ReceivedOn != "") != null ? "" : "hidden")"><b>Translated full text(s) of regulation</b></th>
+                                                        <th class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.ReceivedOn != "") != null ? "" : "hidden")"><b>Received on</b></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Regulations)
+                                                    {
+                                                        <tr>
+                                                            <td><a onclick="return OpenAttachementViewer('~/Attachments/NotificationDocument/@item.Document.Path','@item.Document.FileName');">@item.DocumentName</a></td>
+                                                            <td>@item.Language</td>
+                                                            <td class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0) != null ? "" : "hidden")">@item.Translator</td>
+                                                            <td class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.SentForTranslation!="") != null ? "" : "hidden")">@item.SentForTranslation</td>
+                                                            <td class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.ReceivedOn != "") != null ? "" : "hidden")">
+                                                                <a onclick="return OpenAttachementViewer('~/Attachments/NotificationDocument_Translated/@item.TranslatedDoc.Path','@item.TranslatedDoc.FileName');">@item.TranslatedDocName</a>
+                                                            </td>
+                                                            <td class="@(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatorId > 0 && x.ReceivedOn != "") != null ? "" : "hidden")">@item.ReceivedOn</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    @*Notification full text(s) of regulation End*@
+
+                    @*Notification Stakeholder Start*@
+                    @if (Model.StakeHolders != null && Model.StakeHolders.Count > 0)
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow top-offset-20 top-offset-20 padding-top-bottom" style="border-radius:10px;">
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <p class="wto-label-bold">Stakeholder</p>
+                                </div>
+                                @if (Model.StakeholderResponseDueBy != null && Model.StakeholderResponseDueBy != "")
+                                {
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <p class="wto-label-bold pull-right"><span>Stakeholder response by </span>&nbsp;&nbsp;&nbsp;<span>@Model.StakeholderResponseDueBy</span></p>
+                                </div>
+                                }
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class='table-responsive notificationlist'>
+                                        <table class="table">
+                                            <thead class="second-blackbackground">
+                                                <tr>
+                                                    <th>S. No.</th>
+                                                    <th>Organization</th>
+                                                    <th>Contact</th>
+                                                    <th class="text-center">HS Code</th>
+                                                    <th class="text-center">Stakeholder’s <br /> Mail Count</th>
+                                                    <th class="text-center">Response count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (Int32 i = 0; i < Model.StakeHolders.Count; i++)
+                                                {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@Model.StakeHolders[i].OrgName</td>
+                                                    <td>@Model.StakeHolders[i].Name</td>
+                                                    <td class="text-center">@Model.StakeHolders[i].HSCodes</td>
+                                                    <td class="text-center">@Model.StakeHolders[i].MailsCount</td>
+                                                    <td class="text-center">@Model.StakeHolders[i].ResponseCount</td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (Model.MailSent != null && Model.MailSent.Count > 0)
+                            {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <p class="wto-label-bold">Mail Sent</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="table-responsive notificationlist">
+                                        <table class="table">
+                                            <thead class="second-blackbackground">
+                                                <tr>
+                                                    <th class="col-sm-1" style="width:5%;">S.No.</th>
+                                                    <th class="col-sm-2" style="width:10%;">Sent on</th>
+                                                    <th class="col-sm-7">Subject</th>
+                                                    <th class="text-center col-sm-2" style="width:10%;">Stakeholder Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (Int32 i = 0; i < Model.MailSent.Count; i++)
+                                                    {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@Model.MailSent[i].SentOn</td>
+                                                    <td>
+                                                        <div class='wto-label-normal bottom-offset-10'>
+                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.MailSent[i].Subject))
+                                                        </div>
+                                                        <p class="wto-label-normal Attachmentbadge">
+                                                            @if (Model.MailSentAttachment != null && Model.MailSentAttachment.Count > 0)
+                                                                    {
+                                                                        for (Int32 k = 0; k < Model.MailSentAttachment.Count; k++)
+                                                                        {
+                                                                            if (Model.MailSent[i].MailId == Model.MailSentAttachment[k].MailId)
+                                                                            {
+                                                                                if (Model.MailSentAttachment[k].FileName != "")
+                                                                                {
+                                                            <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b> @Model.MailSentAttachment[k].FileName</b></a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                            <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b>Attachment</b></a>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                        </p>
+                                                    </td>
+                                                    <td class="text-center">@Model.MailSent[i].StakholdersCount</td>
+                                                </tr>
+                                                    }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            @if (Model.MailReceived != null && Model.MailReceived.Count > 0)
+                            {
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <p class="wto-label-bold">Response received</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="table-responsive notificationlist">
+                                        <table class="table">
+                                            <thead class="second-blackbackground">
+                                                <tr>
+                                                    <th class="col-sm-1" style="width:5%;">S.No.</th>
+                                                    <th class="col-sm-2" style="width:10%;">Received on</th>
+                                                    <th class="col-sm-3" style="width:15%;">Organization</th>
+                                                    <th class="col-sm-2" style="width:10%;">Contact</th>
+                                                    <th class="col-sm-4">Message</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (Int32 i = 0; i < Model.MailReceived.Count; i++)
+                                                    {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@Model.MailReceived[i].SentOn</td>
+                                                    <td>@Model.MailReceived[i].OrgName</td>
+                                                    <td>@Model.MailReceived[i].Name</td>
+                                                    <td>
+                                                        <div class='wto-label-normal bottom-offset-10'>
+                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.MailReceived[i].Subject))
+                                                        </div>
+                                                        <p class="wto-label-normal Attachmentbadge">
+                                                            @if (Model.MailReceivedAttachment != null && Model.MailReceivedAttachment.Count > 0)
+                                                                    {
+                                                                        for (Int32 k = 0; k < Model.MailReceivedAttachment.Count; k++)
+                                                                        {
+                                                                            if (Model.MailReceived[i].StakeholderResponseId == Model.MailReceivedAttachment[k].StakeholderResponseId)
+                                                                            {
+                                                                                if (@Model.MailReceivedAttachment[k].FileName != "")
+                                                                                {
+                                                            <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> @Model.MailReceivedAttachment[k].FileName</b></a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                            <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> Attachment</b></a>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                    }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    }
+                    @*Notification Stakeholder End*@
+
+                    @*Notification Related Material Start*@
+                    @if (Model.RelatedMaterialList != null && Model.RelatedMaterialList.Count > 0)
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow top-offset-20 padding-top-bottom" style="border-radius:10px;">
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <p class="wto-label-bold">Addendum/Corrigendum/Revision</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class='table-responsive notificationlist'>
+                                        <table class="table">
+                                            <thead class="second-blackbackground">
+                                                <tr>
+                                                    <th style="width:5%;">S.No.</th>
+                                                    <th style="width:10%;">Type</th>
+                                                    <th style="width:10%;">Date</th>
+                                                    <th style="width:15%;" class="text-center">Number</th>
+                                                    <th class="text-center">Description</th>
+                                                    <th style="width:15%;" class="text-center">Attachment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (Int32 i = 0; i < Model.RelatedMaterialList.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.RelatedMaterialList[i].MaterialType</td>
+                                                        <td>@Model.RelatedMaterialList[i].DateOfMaterial</td>
+                                                        <td class="text-center">@Model.RelatedMaterialList[i].MaterialNumber</td>
+                                                        <td class="text-center">@Model.RelatedMaterialList[i].MaterialDescription</td>
+                                                        <td class="text-center">
+                                                            @if (Model.RelatedMaterialList[i].Attachment != null && Model.RelatedMaterialList[i].Attachment.FileName != "")
+                                                            {
+                                                                <a onclick="return OpenAttachementViewer('@Model.RelatedMaterialList[i].Attachment.Path','@Model.RelatedMaterialList[i].Attachment.FileName');"><b> @Model.RelatedMaterialList[i].Attachment.FileName</b></a>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*Notification Related Material End*@
+
+                    @*Notification Actions Start*@
+                    @if ((Model.StakholderMailFlag > 0 && Model.TranslationFlag > 1 && Model.RegulationFlag > 1) || Model.MeetingFlag > 0)
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow top-offset-20 padding-top-bottom" style="border-radius:10px;">
+                            <div class="row top-offset-10">
+                                <div class="col-xs-12 col-sm-4 col-md-2">
+                                    <p class="wto-label-bold"><a onclick="OpenAddNote()">Note</a></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 col-md-10">
+                                    <p class="wto-label-normal" id="MeetingNoteId">@(Model.MeetingNotes.Length > 40 ? Model.MeetingNotes.Substring(0, 39) + ".." : Model.MeetingNotes)</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8 col-md-8" style="padding-top: 10px;">
+                                    <p class="wto-label-bold @((Model.Actions != null && Model.Actions.Count > 0)?"":"hidden") ">Action</p>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <a class="btn btn-dark-green pull-right @(((Model.Actions != null && Model.Actions.FirstOrDefault(x => ((x.ActionId <4 && x.MailId <=0))) != null)|| Model.Actions==null) ? "" : "hidden")" data-SearchFor="@Model.NotificationId" style="margin-right:15px;" id="btnplanAction" onclick="return EditNotificationActions(this);">Plan action</a>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    @if (Model.Actions != null && Model.Actions.Count > 0)
+                                    {
+                                        foreach (var item in @Model.Actions)
+                                        {
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                    <p class="wto-label-normal">
+                                                        <div class="small-circle" style="background: @item.ColorCode;" data-toggle="tooltip" data-placement="bottom" title="@item.TooltipText"></div>
+                                                        &nbsp; <b>@item.Action</b>
+                                                    </p>
+                                                    @if (item.ActionId < 4)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-6 col-md-3 padding-left-44">
+                                                                <p class="wto-label-normal"><b>Required by</b>&nbsp; &nbsp;@item.RequiredBy</p>
+                                                            </div>
+
+                                                            @if (item.TakenOn != "")
+                                                            {
+                                                                <div class="col-xs-12 col-sm-6 col-md-3">
+                                                                    <p class="wto-label-normal"><b>Taken on</b>&nbsp;&nbsp; @item.TakenOn</p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+
+                                                    @if (item.ActionId == 4)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-6 col-md-4 padding-left-44">
+                                                                <p class="wto-label-normal"><b>Taken on</b>&nbsp;&nbsp;@item.TakenOn</p>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    @if (item.MailId > 0)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 padding-left-44">
+                                                                <p class="wto-label-normal"><b>@item.Subject</b></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 padding-left-44">
+                                                                <div class='wto-label-normal'>
+                                                                    @Html.Raw(HttpUtility.HtmlDecode(item.Message))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 padding-left-44">
+                                                                <p class="wto-label-normal Attachmentbadge">
+                                                                    @if (@Model.ActionAttachment != null && @Model.ActionAttachment.Count > 0)
+                                                                    {
+                                                                        for (Int32 k = 0; k < Model.ActionAttachment.Count; k++)
+                                                                        {
+                                                                            if (item.ActionId == Model.ActionAttachment[k].ActionId)
+                                                                            {
+                                                                                if (@Model.ActionAttachment[k].FileName != "")
+                                                                                {
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.ActionAttachment[k].Path','@Model.ActionAttachment[k].FileName');"><b> @Model.ActionAttachment[k].FileName</b></a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.ActionAttachment[k].Path','@Model.ActionAttachment[k].FileName');"><b> Attachment</b></a>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*Notification Actions End*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Attachment Popup Start -->
+    <div class="modal fade selecthrmodal" id="AttachmentViewer" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg selecthrdialog">
+            <!-- Modal content-->
+            <div class="modal-content selecthrcontent">
+                <div class="modal-header selecthrheader">
+                    <button type="button" class="close selecthrclose" onclick="return CloseAttachmentViewer();">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <div class="modal-body selecthrbody">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <h4> <center> <label id="lblFileName"></label></center></h4>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <iframe id="iFrame" width="100%" height="450"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Attachment Popup End -->
+
+    <!-- Edit Meeting Note Popup Start -->
+    <div class="modal fade selecthrmodal" id="AddNote" role="dialog" data-backdrop="static" data-keyboard="false">
+        @{ Html.RenderAction("GetNotificatioNote", "AddNotification"); }
+    </div>
+    <!-- Edit Meeting Note Popup End-->
+            <div id="Social-plugin" class="hidden-xs">
+                <input type="hidden" id="hdnRowNum" value="@Model.RowNum" />
+                <input type="hidden" id="hdnTotalRow" value="@Request.Params["Total"]" />
+                <a id="lnlNext" class="btn btn-labeled btn-default right" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='N',Total= Convert.ToInt32(@Request.Params["Total"]) })">
+                    Next<span class="btn-label">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </span>
+                </a>
+            </div>
+            <div id="Social-plugin1" class="hidden-xs">
+                <a id="lnkPrevoius" class="btn btn-labeled btn-default left" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='P',Total= Convert.ToInt32(@Request.Params["Total"]) })">
+                    <span class="btn-label">
+                        <i class="glyphicon glyphicon-menu-left"></i>
+                    </span>Previous
+                </a>
+            </div>
+            }
+@{ Html.RenderAction("GetNotificationPlanTakeAction", "AddNotification", new { Id = Model.NotificationId }); }
+
+<script>
+    myWTOAPP.init('@ViewContext.RouteData.Values["id"]', '@Session["UserId"]', '@Session["UserRole"]');
+</script>
+
+<style>
+    .selecthrdialog {
+        width: 80% !important;
+    }
+
+    #Social-plugin {
+        height: 102px;
+        width: 125px;
+        position: fixed;
+        z-index: 999999999;
+        right: 0;
+        top: 30%;
+        padding-top: 128px;
+    }
+
+    #Social-plugin1 {
+        height: 102px;
+        width: 125px;
+        position: fixed;
+        z-index: 999999999;
+        left: 0;
+        top: 30%;
+        padding-top: 128px;
+    }
+</style>
+<!-- body section End -->

@@ -37,7 +37,8 @@ body, html {
 	text-transform: uppercase;
 }
 .loginheading{
-	color: #e3001c;
+	/*color: #e3001c;*/
+    color:#1edec5;
 	margin-top: 0px;
 	font-family: lato-regular;
 	font-weight: bold;
@@ -53,8 +54,10 @@ body, html {
 .icon{
 	top:-25px;
 	left:5px;
-	color:#e3001c;
+    color:#1edec5;
+	/*color:#e3001c;*/
 }
+
 .textcontrol{
 	padding-left:25px;
 	color:#146b7d;
@@ -128,4 +131,11 @@ input:-webkit-autofill:active {
    transition: background-color 5000s ease-in-out 0s;
    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
 -webkit-text-fill-color: #333 !important;
+}
+.btn-green, .btn-green:hover, .btn-green:active, .btn-green:focus{
+	color:#fff;
+	background:#1edec5;
+	border-color:#1edec5;
+	border-radius:0px;
+	margin-top:30px;
 }

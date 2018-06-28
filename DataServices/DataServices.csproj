@@ -61,6 +61,9 @@
     <Compile Include="DAL.cs" />
     <Compile Include="LoginDataManger.cs" />
     <Compile Include="ManageAccess\CountryDataService.cs" />
+    <Compile Include="ManageAccess\InternalStackHolderDataService.cs" />
+    <Compile Include="ManageAccess\LanguageDataServices.cs" />
+    <Compile Include="ManageAccess\RegulatoryBodiesDataService.cs" />
     <Compile Include="ManageAccess\StakeHolderDataService.cs" />
     <Compile Include="ManageAccess\TemplateDataService.cs" />
     <Compile Include="ManageAccess\TranslatorDataService.cs" />

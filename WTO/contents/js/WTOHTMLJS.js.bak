@@ -15,12 +15,7 @@ $(document).ready(function () {
     // <!-- js tree js End-->	
 
     $(".date-picker").keydown(function (e) {
-        //if (e.which == 8) {
-        //    return false;
-        //}
-        //else{
         return false;
-        //}
     });
 
     $(".date-picker").datepicker({
@@ -44,7 +39,7 @@ $(document).ready(function () {
             ResponseOn.setDate(ResponseOn.getDate() - 20);
             var _ResponseOn = ResponseOn.getDate() + ' ' + Months[ResponseOn.getMonth()] + ' ' + ResponseOn.getFullYear();
             $("#SendResponseById").val(_ResponseOn);
-
+            $('#txtStakeholderResponseDueBy').val(_ResponseOn);
             if (_DateofNotification > ResponseOn) {
                 $("#SendResponseError").removeClass("hidden");
                 return false;
@@ -57,6 +52,7 @@ $(document).ready(function () {
         else {
             $("#SendResponseById").val('');
         }
+
     });
 
     $("#SendResponseById").change(function () {
@@ -85,6 +81,7 @@ $(document).ready(function () {
         var DateofNotification = $('#DateofNotificationId').val();
         DateofNotification = new Date(DateofNotification);
 
+        debugger;
         var FinalDateforComments = new Date($('#FinalDateforCommentsId').val());
         FinalDateforComments = new Date(FinalDateforComments);
         FinalDateforComments.setDate(ResponseOn.getDate() - 60);
@@ -177,111 +174,111 @@ $(document).ready(function () {
 
     if (location.indexOf("WTODashboard") >= 1) {
         $('.dashboard').addClass("active");
-        if ($('.dashboard img').attr('src') == dashboardwhite) {
-            $('.dashboard img').attr('src', dashboardblack);
-        } else {
-            $('.dashboard img').attr('src', dashboardwhite);
-        }
+        //if ($('.dashboard img').attr('src') == dashboardwhite) {
+        //    $('.dashboard img').attr('src', dashboardblack);
+        //} else {
+        //    $('.dashboard img').attr('src', dashboardwhite);
+        //}
     }
     else {
         $('.dashboard').removeClass("active");
-        $('.dashboard').on('mouseenter mouseleave', function () {
-            if ($('.dashboard img').attr('src') == dashboardwhite) {
-                $('.dashboard img').attr('src', dashboardblack);
-            } else {
-                $('.dashboard img').attr('src', dashboardwhite);
-            }
-        });
+        //$('.dashboard').on('mouseenter mouseleave', function () {
+        //    if ($('.dashboard img').attr('src') == dashboardwhite) {
+        //        $('.dashboard img').attr('src', dashboardblack);
+        //    } else {
+        //        $('.dashboard img').attr('src', dashboardwhite);
+        //    }
+        //});
     }
     if (location.indexOf("NotificationList") > -1) {
         $('.notification').addClass("active");
-        if ($('.notification img').attr('src') == notificationwhite) {
-            $('.notification img').attr('src', notificationblack);
-        } else {
-            $('.notification img').attr('src', notificationwhite);
-        }
+        //if ($('.notification img').attr('src') == notificationwhite) {
+        //    $('.notification img').attr('src', notificationblack);
+        //} else {
+        //    $('.notification img').attr('src', notificationwhite);
+        //}
     }
     else {
         $('.notification').removeClass("active");
-        $('.notification').on('mouseenter mouseleave', function () {
-            if ($('.notification img').attr('src') == notificationwhite) {
-                $('.notification img').attr('src', notificationblack);
-            } else {
-                $('.notification img').attr('src', notificationwhite);
-            }
-        });
+        //$('.notification').on('mouseenter mouseleave', function () {
+        //    if ($('.notification img').attr('src') == notificationwhite) {
+        //        $('.notification img').attr('src', notificationblack);
+        //    } else {
+        //        $('.notification img').attr('src', notificationwhite);
+        //    }
+        //});
     }
     if (location.indexOf("AddNotification") > -1) {
         $('.Addnotification').addClass("active");
-        if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
-            $('.Addnotification img').attr('src', Addnotificationblack);
-        } else {
-            $('.Addnotification img').attr('src', Addnotificationwhite);
-        }
+        //if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
+        //    $('.Addnotification img').attr('src', Addnotificationblack);
+        //} else {
+        //    $('.Addnotification img').attr('src', Addnotificationwhite);
+        //}
     }
     else {
         $('.Addnotification').removeClass("active");
-        $('.Addnotification').on('mouseenter mouseleave', function () {
-            if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
-                $('.Addnotification img').attr('src', Addnotificationblack);
-            } else {
-                $('.Addnotification img').attr('src', Addnotificationwhite);
-            }
-        });
+        //$('.Addnotification').on('mouseenter mouseleave', function () {
+        //    if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
+        //        $('.Addnotification img').attr('src', Addnotificationblack);
+        //    } else {
+        //        $('.Addnotification img').attr('src', Addnotificationwhite);
+        //    }
+        //});
     }
     if (location.indexOf("MOMList") > -1) {
         $('.AddMOMList').addClass("active");
-        if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
-            $('.AddMOMList img').attr('src', AddMOMListBlack);
-        } else {
-            $('.AddMOMList img').attr('src', AddMOMListWhite);
-        }
+        //if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
+        //    $('.AddMOMList img').attr('src', AddMOMListBlack);
+        //} else {
+        //    $('.AddMOMList img').attr('src', AddMOMListWhite);
+        //}
     }
     else {
         $('.AddMOMList').removeClass("active");
-        $('.AddMOMList').on('mouseenter mouseleave', function () {
-            if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
-                $('.AddMOMList img').attr('src', AddMOMListBlack);
-            } else {
-                $('.AddMOMList img').attr('src', AddMOMListWhite);
-            }
-        });
+        //$('.AddMOMList').on('mouseenter mouseleave', function () {
+        //    if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
+        //        $('.AddMOMList img').attr('src', AddMOMListBlack);
+        //    } else {
+        //        $('.AddMOMList img').attr('src', AddMOMListWhite);
+        //    }
+        //});
     }
     if (location.indexOf("AddMOM") > -1) {
         $('.AddMOM').addClass("active");
-        if ($('.AddMOM img').attr('src') == AddMOMWhite) {
-            $('.AddMOM img').attr('src', AddMOMBlack);
-        } else {
-            $('.AddMOM img').attr('src', AddMOMWhite);
-        }
+        //if ($('.AddMOM img').attr('src') == AddMOMWhite) {
+        //    $('.AddMOM img').attr('src', AddMOMBlack);
+        //} else {
+        //    $('.AddMOM img').attr('src', AddMOMWhite);
+        //}
     }
     else {
         $('.AddMOM').removeClass("active");
-        $('.AddMOM').on('mouseenter mouseleave', function () {
-            if ($('.AddMOM img').attr('src') == AddMOMWhite) {
-                $('.AddMOM img').attr('src', AddMOMBlack);
-            } else {
-                $('.AddMOM img').attr('src', AddMOMWhite);
-            }
-        });
+        //$('.AddMOM').on('mouseenter mouseleave', function () {
+        //    if ($('.AddMOM img').attr('src') == AddMOMWhite) {
+        //        $('.AddMOM img').attr('src', AddMOMBlack);
+        //    } else {
+        //        $('.AddMOM img').attr('src', AddMOMWhite);
+        //    }
+        //});
     }
     if (location.indexOf("ManageAccess") > -1) {
         $('.ManageAccess').addClass("active");
-        if ($('.ManageAccess img').attr('src') == ManageAccessW) {
-            $('.ManageAccess img').attr('src', ManageAccessB);
-        } else {
-            $('.ManageAccess img').attr('src', ManageAccessW);
-        }
+        //if ($('.ManageAccess img').attr('src') == ManageAccessW) {
+        //    $('.ManageAccess img').attr('src', ManageAccessB);
+        //} else {
+        //    $('.ManageAccess img').attr('src', ManageAccessW);
+        //}
     }
     else {
         $('.ManageAccess').removeClass("active");
-        $('.ManageAccess').on('mouseenter mouseleave', function () {
-            if ($('.ManageAccess img').attr('src') == ManageAccessW) {
-                $('.ManageAccess img').attr('src', ManageAccessB);
-            } else {
-                $('.ManageAccess img').attr('src', ManageAccessW);
-            }
-        });
+        //$('.ManageAccess').on('mouseenter mouseleave', function () {
+        //    if ($('.ManageAccess img').attr('src') == ManageAccessW) {
+        //        $('.ManageAccess img').attr('src', ManageAccessB);
+        //    } else {
+        //        $('.ManageAccess img').attr('src', ManageAccessW);
+        //    }
+        //});
     }
     // <!-- image swaping End-->
 

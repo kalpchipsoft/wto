@@ -1,0 +1,130 @@
+﻿@model BusinessObjects.MOM.MoMs
+@{
+    ViewBag.Title = "MoM List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- body section start -->
+<div>
+    <div class="container-fluid">
+        <div class="row bodybackground">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row topbg">
+                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-10">
+                        <button href="#" class="btn btn-blue pull-right left-offset-10 @(Model.MoMList.Count>0?"":"hidden")"><img src="/contents/img/export.png" alt="export"> Export </button>
+                        <a href="@Url.Action("Add", "MoM", new { Id = 0 })" class="btn btn-dark-green pull-right hidden"> Plan a Meeting</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                        <div class="row darkBlueblackbackground padding-10">
+                            <h4 class="white-color" style="padding-left:5px;"><b>Meeting List</b></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="row" style="background:#fff;min-height: 68.6vh;">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="table-responsive notificationlist">
+                            <table class="table table-bordered display top-offset-20" id="notificationlist" cellspacing="0" width="100%">
+                                <thead class="second-blackbackground">
+                                    <tr style="border-bottom: 1px solid transparent !important;">
+                                        @*<th rowspan="2" style="width:5%;">S. No.</th>*@
+                                        <th class="col-md-3" rowspan="2" style="width:15%;">Meeting Date</th>
+                                        <th class="col-md-4" style="width: 15%; padding-left: 3%;" colspan="2">Notifications</th>
+                                        <th class="col-md-5 text-center" colspan="5">Action</th>
+                                    </tr>
+                                    <tr class="no-border">
+                                        <th>Total</th>
+                                        <th>Pending</th>
+                                        @if (Model.Actions != null)
+                                        {
+                                            foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                            {
+                                                <th class="text-center">@item.ActionName</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody class="whitebackground">
+                                    @if (Model.MoMList != null && Model.MoMList.Count > 0)
+                                    {
+                                        foreach (BusinessObjects.MOM.MoM obj in Model.MoMList)
+                                        {
+                                            <tr>
+                                                @*<td>@obj.ItemNumber</td>*@
+                                                <td>
+                                                    @obj.MeetingDate
+                                                </td>
+                                                <td><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="" })"><div class="span-badge">@obj.NotificationCount</div></a></td>
+                                                @if (obj.PendingCount > 0)
+                                                {
+                                                    <td><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="Pending" })"><div class="span-badge">@obj.PendingCount</div></a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="span-badge">@obj.PendingCount</div></td>
+                                                }
+                                                @foreach (BusinessObjects.MOM.Action item in Model.Actions)
+                                                {
+                                                    if (Model.MoMActionList != null && Model.MoMActionList.Count > 0)
+                                                    {
+                                                        var _Action = Model.MoMActionList.FirstOrDefault(x => x.MoMId == obj.MoMId && x.ActionId == item.ActionId);
+                                                        if (_Action == null)
+                                                        {
+                                                            <td class="text-center">0</td>
+                                                        }
+                                                        else if (_Action.ActionId == 4 || _Action.ActionId == 5)
+                                                        {
+                                                            <td class="text-center">
+                                                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-center">
+                                                                @if (_Action.PendingCount > 0)
+                                                                {
+                                                                    <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionStatus=9,ActionId=_Action.ActionId })"><span class="red-color">@_Action.PendingCount</span></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="red-color">@_Action.PendingCount</span>
+                                                                }
+                                                                /
+                                                                @if (_Action.TotalCount > 0)
+                                                                {
+                                                                    <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="red-color">@_Action.TotalCount</span>
+                                                                }
+
+                                                            </td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center">0</td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6">No Record found..</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- body section End -->

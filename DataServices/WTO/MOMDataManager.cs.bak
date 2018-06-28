@@ -9,41 +9,76 @@ namespace DataServices.WTO
 {
     public class MOMDataManager
     {
-        public DataSet GetNotificationListForMom(MOMSearch objMOMSearch)
+        public DataSet GetNotificationListForMom(string callFor,int? CountryId,string NotificationNo, string NotificationId, string SelectedNotificationId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.GetNotificationListForMom;
-                if (objMOMSearch.MeetingDate != null)
-                    sqlCommand.Parameters.AddWithValue("@MeetingDate", objMOMSearch.MeetingDate);         
+                sqlCommand.Parameters.AddWithValue("@CallFor", callFor);
+                sqlCommand.Parameters.AddWithValue("@CountryId", CountryId);
+                sqlCommand.Parameters.AddWithValue("@NotificationNumber", NotificationNo);
+                sqlCommand.Parameters.AddWithValue("@NotificationId", NotificationId);
+                sqlCommand.Parameters.AddWithValue("@SelectedNotificationId", SelectedNotificationId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public Int32 InsertUpdateMomData(AddMOM objAddMOM)
+        public Int32 InsertMeeting(Int64 UserId, AddMeeting obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.InsertUpdateMomData;
-                if (objAddMOM.MeetingDate != null)
-                    sqlCommand.Parameters.AddWithValue("@MeetingDate", objAddMOM.MeetingDate);
-                if (objAddMOM.NotificationXML != null)
-                    sqlCommand.Parameters.AddWithValue("@NotificationXML", objAddMOM.NotificationXML);
-                if (objAddMOM.CreatedBy != 0)
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", objAddMOM.CreatedBy);
+                sqlCommand.CommandText = Procedures.InsertMeeting;
+                sqlCommand.Parameters.AddWithValue("@MeetingDate", obj.MeetingDate);
+                sqlCommand.Parameters.AddWithValue("@MoMdetails", obj.MeetingDetailXML);
+                sqlCommand.Parameters.AddWithValue("@CreatedBy", UserId);
                 return DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
             }
 
         }
-        public DataTable GetMOMListData()
+        public DataSet GetMOMListData()
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.GetMOMListData;
-                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+                sqlCommand.CommandText = Procedures.GetMeetingList;
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
+        public DataSet EditMeeting(Int64 Id, string CallFor)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.EditMeeting;
+                sqlCommand.Parameters.AddWithValue("@MoMId", Id);
+                sqlCommand.Parameters.AddWithValue("@CallFor", CallFor);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataSet EditActions(Int64 Id)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_Actions;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public Int32 AddUpdateNotificationAction(Int64 UserId, AddNotificationAction obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.AddUpdateNotificationAction;
+                sqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
+                sqlCommand.Parameters.AddWithValue("@NotificationActions", obj.ActionXML);
+                return DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+            }
+
+        }
+       
     }
 }

@@ -3,6 +3,7 @@
     UserId: null,
     UserRole:null
 };
+
 (function (myWTOAPP) {
     myWTOAPP.init = function (id, uid,role) {
         myWTOAPP.id = (id == "" ? null : id);
@@ -23,6 +24,21 @@ $(window).bind("load", function () {
     HideGlobalLodingPanel();
 });
 
+////Temp
+//$(window).unload(function () {
+//    ShowGlobalLodingPanel();
+//});
+
+$(document).ajaxStart(function () {
+    ShowGlobalLodingPanel();
+});
+
+$(document).ajaxComplete(function () {
+    HideGlobalLodingPanel();
+});
+
+////End temp
+
 function ShowGlobalLodingPanel() {
     $("#loader-wrapper").css("display", "block");
 }
@@ -30,6 +46,7 @@ function ShowGlobalLodingPanel() {
 function HideGlobalLodingPanel() {
     $("#loader-wrapper").css("display", "none");
 }
+
 
 function ShowAlert() {
     var Alert = '';
@@ -87,3 +104,4 @@ function IsEmailExists(Email, CallFor) {
     });
     return IsExists;
 }
+

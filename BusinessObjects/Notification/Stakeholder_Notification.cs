@@ -1,6 +1,10 @@
 ﻿using BusinessObjects.ManageAccess;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace BusinessObjects.Notification
 {
@@ -8,18 +12,17 @@ namespace BusinessObjects.Notification
     {
         public long ItemNumber { get; set; }
         public long StakeHolderId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
+        public string FullName { get; set; }
         public string HSCodes { get; set; }
         public int MailCount { get; set; }
         public int ResponseCount { get; set; }
+        public string OrgName { get; set; }
+    }
+
+    public class MailsSentResponses
+    {
+        public List<StackholderMail> MailsSent { get; set; }
+        public List<StackholderMail> Responses { get; set; }
     }
 
     public class StackholderMail
@@ -29,7 +32,9 @@ namespace BusinessObjects.Notification
         public string Subject { get; set; }
         public string Message { get; set; }
         public long StakeholderCount { get; set; }
-        public string MailSentDate { get; set; }
+        public string Date { get; set; }
+        public string StakeholderName { get; set; }
+        public string OrgName { get; set; }
     }
 
     public class StackholderMailDetails : StackholderMail
@@ -46,16 +51,32 @@ namespace BusinessObjects.Notification
         public string UserId { get; set; }
         public string Stakeholders { get; set; }
         public List<MailAttachment> Attachments { get; set; }
-        public string _Attachments
+        public string AttachmentXML
         {
             get
             {
-                if (Attachments == null)
-                    return "";
-                else
-                {
-                    return string.Join("|", Attachments.Select(x => x.FileName).ToArray());
-                }
+                //Blank Namespace
+                XmlSerializerNamespaces Namespace = new XmlSerializerNamespaces();
+                Namespace.Add(string.Empty, string.Empty);
+
+                //Remove xml declaration
+                XmlWriterSettings xws = new XmlWriterSettings();
+                xws.OmitXmlDeclaration = true;
+                xws.Encoding = Encoding.UTF8;
+
+                //Stream to hold the serialize xml
+                StringWriter sw = new StringWriter();
+
+                XmlWriter xw = XmlWriter.Create(sw, xws);
+
+                //Create Serializer object for required Class
+                XmlSerializer serializer = new XmlSerializer(typeof(List<MailAttachment>), new XmlRootAttribute("MailAttachments"));
+                serializer.Serialize(xw, Attachments, Namespace);
+
+                //Load XML to document
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(sw.ToString());
+                return doc.InnerXml;
             }
         }
     }
@@ -63,6 +84,8 @@ namespace BusinessObjects.Notification
     public class MailAttachment
     {
         public string FileName { get; set; }
+
+        [XmlIgnore]
         public string Content { get; set; }
         public string Path { get; set; }
     }
@@ -72,5 +95,23 @@ namespace BusinessObjects.Notification
         public StackholderMail MailDetails { get; set; }
 
         public List<StakeHolder> StakeHolders { get; set; }
+
+        public List<EditAttachment> Attachments { get; set; }
+        public List<ResponseAttachment> ResponseAttachments { get; set; }
+        public StakeholderResponse SRId { get; set; }
     }
+    public class SendMailDetailStakeholders_Output
+    {
+        public StackholderMail MailDetails { get; set; }
+
+        public List<RelatedStakeHolders> StakeHolders { get; set; }
+        public List<EditAttachment> MailAttachmentDetails { get; set; }
+    }
+
+    public class ResponseMailDetailsStakeholders_Output
+    {
+        public StackholderMail objStackholderMail;
+        public List<EditAttachment> MailAttachmentDetails { get; set; }
+    }
+
 }

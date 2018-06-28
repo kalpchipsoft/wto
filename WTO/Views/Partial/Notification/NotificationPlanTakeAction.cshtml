@@ -1,0 +1,877 @@
+﻿@model BusinessObjects.Notification.NotificationActions
+@{
+    Layout = null;
+}
+@Html.Hidden("hdnNotificationActionId", "0")
+@Html.Hidden("hdnActionId", "0")
+<div class="modal fade selecthrmodal" id="ModalAddAction" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg selecthrdialog">
+        <!-- Modal content-->
+        <div class="modal-content selecthrcontent">
+            <div class="modal-header selecthrheader">
+                <button type="button" class="close selecthrclose" id="btncloseModalAction" data-callfor="close" onclick="closeModalAddAction(this);">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="modal-body selecthrbody">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
+                            <div class='col-xs-12 col-sm-12 col-md-12 top-offset-30'>
+                                <div class="notificationnumber padding-bottom-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <h4 class="notificationnumber selecthrheading2 padding-bottom-10">Plan action(s)</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationNumber"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Notification Title <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue top-offset-2 WordWrapText" id="lblNotificationTitle"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Notification Stage <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationStage"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Meeting Date<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <input type="text" class="form-control date-picker @(Model.MeetingDate == ""? "" : "disabled")" id="MeetingDateId" value="@((Model.MeetingDate == "" || Model.Status == 6 )? "" : Model.MeetingDate)" />
+                                            <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                        </div>
+                                    </div>
+                                    <div class="row top-offset-10" id="divMeetingNote">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Note <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <textarea class="form-control AutoHeight" cols="30" rows="2" id="txtMeetingNote">@Model.MeetingNotes</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                                <div class="col-xs-12 col-sm-12 col-md-12 stackholderlist">
+                                    <div class="row">
+                                        <div class="col-sm-1 pdright"></div>
+                                        <div class="col-sm-5">Action</div>
+                                        <div class="col-sm-4">Required On</div>
+                                        <div class="col-sm-2" id="divTakeActionHeader">Take Action</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground" id="divPlanActions">
+                                    <div class="row seprater">
+                                        <input type="hidden" id="hdnNotificationActionId" value="ac.NotificationActionId" />
+                                        <div class="col-sm-1 pdright">
+                                            <input type="checkbox" value="ac.ActionId" onchange="AddRemoveActions(this);" />
+                                        </div>
+                                        <div class="col-sm-5">Action</div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group has-feedback" style="margin-bottom:0px;">
+                                                <input type="text" id="RequiredOnId_ActionId" class="form-control date-picker" onkeydown="return false;" data-SearchFor="ActionId" value="RequiredOn" />
+                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a>Take Action</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <a class="btn btn-red pull-right" id="btncloseModalAction1" data-callfor="close" onclick="closeModalAddAction(this);">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                                        <a class="btn btn-dark-green pull-right" id="btnSaveActions" style="margin-right:15px;" onclick="AddNotificationActionOk();"><img src="~/contents/img/save.png" />&nbsp;Save</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade selecthrmodal" id="ActionMail" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg selecthrdialog">
+        <div class="modal-content selecthrcontent">
+
+            <div class="modal-header selecthrheader">
+                <button type="button" class="close selecthrclose" id="btnCloseActionMail" data-callfor="close" onclick="closeActionMail(this);">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="modal-body selecthrbody">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <div class="notificationnumber padding-bottom-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                            <h4 class="selecthrheading" id="ActionMailModalHeading"></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue" id="lblActionNotificationNumber"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Date of Notification<span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue" id="lblDateOfNotification"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Stakeholder Response<span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <p class="wto-label-normal dark-blue"><span id="Responses"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">To<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <select id="ddlTo" class="form-control whitebackground" multiple></select>
+                                    <input id="txtTo" class="form-control  whitebackground" />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Subject<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <textarea id="txtActionMailSubject" class="form-control  whitebackground AutoHeight" cols="30" rows="2" placeholder=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Message<sup class="mandetory">*</sup><span class="pull-right">:</span></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <textarea id="txtActionMailBody" class="form-control  whitebackground RfpEditor" cols="30" rows="5" placeholder=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
+                                <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <p class="wto-label-bold dark-blue">Attachment<span class="pull-right">:</span></p>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9">
+                                    <div class="form-group">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control whitebackground z-index-0" id="txtActionAttachmentCount" disabled placeholder="0 file(s) selected">
+                                            <span class="input-group-btn">
+                                                <button class="browse btn btn-primary z-index-0" type="button" onclick="AddActionAttachment();"> Browse</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="txtActionAttachments" class="Attachmentdiv hidden" readonly></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <a id="btnCloseActionMail1" data-callfor="close" onclick="closeActionMail(this);" class="btn btn-red btn-padding pull-right left-offset-10">Close <span class="glyphicon glyphicon-remove"></a>
+                                        <a class="btn btn-dark-green btn-padding pull-right" data-callfor="close" id="btnSendActionMail" onclick="SendActionMail();">Send</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divAddActionAttachmentOverlay" class="attachment-modal overlay ">
+                <div id="divAddActionAttachment" class="attachment-modal body">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="creatediv1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-primary filterable no-margin-bottom">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add attachment</h3>
+                                            </div>
+                                            <table class="span12">
+                                                <table>
+                                                    <tr class="filters"></tr>
+                                                </table>
+                                                <div class="bg tablescroll">
+                                                    <table class="table no-margin-bottom margin-15" id="tblActionAttachments"></table>
+                                                </div>
+                                            </table>
+                                            <div class="modal-footer">
+                                                <div class="fileinput fileinput-new pull-left">
+                                                    <span class="btn btn-light-blue btn-padding btn-file">
+                                                        <span class="puttext">Add more</span>
+                                                        <input type="file" id="AddActionAttachment_UploadDocumentId" class="fileholder uploadfile ActionUploadbtn" multiple style="width: 21.5% !important;height: 10% !important;bottom: 33px !important;left: 37px !important;" />
+                                                    </span>
+                                                    <br />
+                                                    <span class="text-danger">doc and pdf file only</span>
+                                                </div>
+                                                <input type="button" class="btn btn-primary btn-padding " value="Ok" onclick="AddActionAttachmentOk();" />
+                                                <input type="submit" class="btn btn-danger btn-padding " value="Cancel" onclick="CloseActionAddAttachment();" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var TempActionAttachments = [], ActionAttachments = [];
+
+    $(document).ready(function () {
+        var config = {
+            // Referencing the new plugin
+            toolbar: [
+                    { name: 'clipboard', items: ['Undo', 'Redo'] },
+                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                    { name: 'links', items: ['Link', 'Unlink'] },
+                    { name: 'insert', items: ['Table'] },
+                    { name: 'styles', items: ['Format'] },
+            ],
+        };
+        config.extraPlugins = 'autogrow';
+        config.autoGrow_minHeight = 200;
+        config.autoGrow_maxHeight = 600;
+        config.autoGrow_bottomSpace = 50;
+
+        $.each($('.RfpEditor'), function () {
+            CKEDITOR.replace(this.id, config);
+        });
+
+        $('#AddActionAttachment_UploadDocumentId').change(function (e) {
+            var totfilesize = 0;
+            if ($(this)[0].files.length != 0) {
+                var fileToLoad = $(this)[0].files[0];
+                var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
+                ext = ext.toLowerCase();
+                $.each($(this)[0].files, function (index, value) {
+                    totfilesize += value.size;
+                });
+
+                if (totfilesize > 10485760) {
+                    Alert("Alert", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+                    $("#Loader").hide();
+                    return false;
+                }
+                else if (ext != "docx" && ext != "doc" && ext != "pdf") {
+                    Alert("Alert", "You can upload only word and pdf files.<br/>", "Ok");
+                    $(this).val('');
+                    $("#Loader").hide();
+                    return false;
+                }
+                else {
+                    $.each($(this)[0].files, function (index, value) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            debugger;
+                            var IsExist = false;
+                            $.each(TempActionAttachments, function (i, v) {
+                                var FileName = $.trim(v.FileName);
+                                if (FileName.toLowerCase() == value.name.toLowerCase())
+                                    IsExist = true;
+                            });
+                            if (IsExist) {
+                                Alert("Alert", "An attachment with same name has been already added.<br/>", "Ok")
+                            }
+                            else {
+                                TempActionAttachments.push({ "FileName": value.name, "Content": e.target.result, "Selected": true, "Path": "", "IsSelected": true });
+                                var HTML = '';
+                                HTML += '<tr>';
+                                HTML += '<td style="width: 4%; width:50px;">';
+                                HTML += '<div class="checkbox radio-margin">';
+                                HTML += '<label>';
+                                HTML += '<input type="checkbox" checked="checked" val="" onchange="AddRemoveActionMailAttachement(this);">';
+                                HTML += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+                                HTML += '</label>';
+                                HTML += '</div>';
+                                HTML += '</td>';
+                                HTML += '<td style="width: 96%">' + value.name + '</td>';
+                                HTML += '</tr>';
+                                $('[id$=tblActionAttachments]').append(HTML);
+                            }
+                        }
+                        reader.readAsDataURL(fileToLoad);
+                    });
+                }
+            }
+        });
+    });
+
+    function EditAction(Id, ctrl) {
+        var callfor = $(ctrl).attr('data-callfor');
+        if (callfor == "takeaction") {
+            $('#btnCloseActionMail1').attr('data-callfor', 'closeaction');
+            $('#btnCloseActionMail').attr('data-callfor', 'closeaction');
+            $('#btnSendActionMail').attr('data-callfor', 'closeaction');
+            $('#ModalAddAction').modal('hide');
+        }
+        else {
+            $('#btnCloseActionMail1').attr('data-callfor', 'close');
+            $('#btnCloseActionMail').attr('data-callfor', 'close');
+            $('#btnSendActionMail').attr('data-callfor', 'close');
+        }
+        var ActionName = $(ctrl).attr('data-searchfor');
+        var ActionId = $('[id=hdnActionId_' + Id + ']').val();
+
+        $('[id$=hdnNotificationActionId]').val(Id);
+        $('[id$=hdnActionId]').val(ActionId);
+
+        $.ajax({
+            url: "/api/AddUpdateNotification/EditAction/" + $('[id$=hdnNotificationActionId]').val(),
+            async: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#ActionMail').modal('show');
+                $('#txtTo').val(result.MailTo);
+                $('#lblActionNotificationNumber').text(result.NotificationNumber);
+                $('#lblDateOfNotification').text(result.DateofNotification);
+                if (result.MailCount > 0)
+                    $('#Responses').text(result.ResponseCount + '/' + result.MailCount);
+                else
+                    $('#Responses').text(0);
+
+                if (result.MailDetails != null) {
+                    $('[id$=txtActionMailSubject]').val(result.MailDetails.Subject);
+                    CKEDITOR.instances.txtActionMailBody.setData(result.MailDetails.Message);
+                }
+                else {
+                    $('[id$=txtActionMailSubject]').val(result.DateofNotification + ', ' + result.NotificationNumber);
+                    CKEDITOR.instances.txtActionMailBody.setData('');
+                }
+
+                if (result.ActionId == 1) {
+                    $('#ActionMailModalHeading').text("Send brief to regulators");
+                    $('#ddlTo').removeClass('hidden');
+                    $('#txtTo').addClass('hidden');
+                    BindRegulatoryBodies();
+                }
+                else if (result.ActionId == 2) {
+                    $('#ActionMailModalHeading').text("Send policy brief to DoC");
+                    BindInternalStakeholders();
+                    $('#ddlTo').removeClass('hidden');
+                    $('#txtTo').addClass('hidden');
+                }
+                else {
+                    $('#ActionMailModalHeading').text("Send response to notifying country");
+                    $('#ddlTo').addClass('hidden');
+                    $('#txtTo').removeClass('hidden');
+                }
+
+                BindActionMailAttachments($('[id$=hdnNotificationId]').val());
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                if ($('#hdnActionId').val() == "1" || $('#hdnActionId').val() == "2") {
+                    $('[Id$=ddlTo]').multiselect({
+                        maxHeight: 150,
+                        enableFiltering: true,
+                        nonSelectedText: '--Select Languages--'
+                    });
+                }
+                else
+                    $('#ddlTo').multiselect('destroy');
+                HideGlobalLodingPanel();
+            }
+        });
+    }
+
+    function AddNotificationActionOk() {
+        var ErrorMsg = '';
+
+        if ($.trim($('#MeetingDateId').val()) == "")
+            ErrorMsg += "Please select meeting date.<br/>";
+
+        if (GetActionDetails() == '') {
+            ErrorMsg += "Please select action(s).<br/>";
+        }
+
+        if (ErrorMsg.length > 0) {
+            Alert("Alert", ErrorMsg, "Ok");
+            $($('.error')).eq(0).focus();
+        }
+        else {
+            AddUpdateNotificationAction();
+        }
+    }
+
+    function AddUpdateNotificationAction() {
+        var takeaction = 0;
+        var obj = {
+            Meetingdate: $('#MeetingDateId').val(),
+            NotificationId: $('#hdnNotificationId').val(),
+            Actions: GetActionDetails(),
+            MeetingNote: $.trim($('#txtMeetingNote').val())
+        };
+
+        $.ajax({
+            url: "/api/MOM/AddUpdateNotificationAction/" + myWTOAPP.UserId,
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != null) {
+                    debugger;
+                    $('#lblNotificationNumber').text(result.NotificationNumber);
+                    $('#lblNotificationTitle').text(result.Title);
+                    $('#lblNotificationStage').text(result.Status);
+                    $('#lblMeetingDate').text($('#txtmeetingdate').val());
+                    $('#txtMeetingNote').val(result.MeetingNote);
+
+                    $('#divPlanActions').empty();
+                    $('#divTakeActionHeader').addClass('hidden');
+                    var HTML = '';
+                    $.each(result.Actions, function (i, v) {
+                        HTML += '<div class="row seprater">' +
+                                '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
+                                '<div class="col-sm-1 pdright">';
+
+                        if (v.NotificationActionId > 0) {
+                            if (v.UpdatedOn == "") {
+                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
+                                            '<label style="padding-left: 0;">' +
+                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
+                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                                '</span>' +
+                                            '</label>' +
+                                        '</div>';
+                            }
+                            else {
+                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
+                                            '<label style="padding-left: 0;">' +
+                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                                '</span>' +
+                                            '</label>' +
+                                        '</div>';
+                            }
+                        }
+                        else {
+                            if (result.RetainedForNextDiscussion && v.ActionId == 5) {
+                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
+                                           '<label style="padding-left: 0;">' +
+                                               '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                               '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                                   '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                               '</span>' +
+                                           '</label>' +
+                                       '</div>';
+                            }
+                            else if (result.RetainedForNextDiscussion) {
+                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
+                                           '<label style="padding-left: 0;">' +
+                                               '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
+                                               '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                                   '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                               '</span>' +
+                                           '</label>' +
+                                       '</div>';
+                            }
+                            else {
+                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
+                                            '<label style="padding-left: 0;">' +
+                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
+                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                                '</span>' +
+                                            '</label>' +
+                                        '</div>';
+                            }
+                        }
+
+                        HTML += '</div>' +
+                                '<div class="col-sm-5">' + v.ActionName + '</div>';
+
+                        if (v.ActionId < 4) {
+                            HTML += '<div class="col-sm-4">' +
+                                '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
+                                    '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
+                                    '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
+                                '</div>' +
+                            '</div>';
+                            if (v.NotificationActionId != 0 && v.MailId == 0) {
+                                var callfor = "takeaction";
+                                takeaction++;
+                                HTML += "<div class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></div>";
+                            }
+                        }
+                        HTML += '</div>';
+                        if (takeaction > 0) {
+                            $('#divTakeActionHeader').removeClass('hidden');
+                        }
+                    });
+                    $('#divPlanActions').append(HTML);
+                    $('#ModalAddAction').modal('show');
+
+                    if (result.RetainedForNextDiscussion)
+                        $("#btnSaveActions").addClass("hidden");
+                    else
+                        $("#btnSaveActions").removeClass("hidden");
+
+                    var _NoResponseNeeded = $.map(result.Actions, function (item, i) {
+                        if (item.NotificationActionId > 0 && item.ActionId == 4)
+                            return item;
+                    });
+                    if (result.RetainedForNextDiscussion || _NoResponseNeeded.length > 0) {
+                        AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", "window.location.reload();");
+                    }
+                    else {
+                        $('#btncloseModalAction1').attr('data-callfor', 'reload');
+                        AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", BindNotificationActions());
+                    }
+                }
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                //HideGlobalLodingPanel();
+            }
+        });
+    }
+
+    function GetActionDetails() {
+        var _ActionDetails = [];
+        $.each($("#divPlanActions>.row.seprater"), function (i, v) {
+            if ($(this).find("input[type=checkbox]").is(':checked')) {
+                var _NotificationActionId = parseInt($.trim($(this).find("#hdnNotificationActionId").val()));
+                var _RequiredOn = $.trim($(this).find("input[type=text]").val());
+                var Action = {
+                    NotificationActionId: _NotificationActionId,
+                    ActionId: parseInt($(this).find("input[type=checkbox]").val()),
+                    RequiredOn: _RequiredOn
+                };
+                _ActionDetails.push(Action);
+            }
+        });
+        return _ActionDetails;
+    }
+
+    function AddRemoveActions(ctrl) {
+        if (ctrl.checked && ctrl.value == "4") {
+            $.each($('#divPlanActions').find('input[type=checkbox]'), function () {
+                if (this.id == '' && this.value != "4")
+                    this.checked = false;
+            });
+        }
+        else if (ctrl.checked && ctrl.value == "5") {
+            $.each($('#divPlanActions').find('input[type=checkbox]'), function () {
+                if (this.id == '' && this.value != "5")
+                    this.checked = false;
+            });
+        }
+        else if (ctrl.checked && ctrl.value != "4" && ctrl.value != "5") {
+            $.each($('#divPlanActions').find('input[type=checkbox]'), function () {
+                if (this.id == '' && (this.value == "4" || this.value == "5")) {
+                    this.checked = false;
+                }
+            });
+        }
+    }
+
+    function AddActionAttachmentOk() {
+        debugger;
+        var IsAttachmentSelected = false;
+        $.each(TempActionAttachments, function (i, v) {
+            if (v.IsSelected)
+                IsAttachmentSelected = true;
+        });
+
+        if (TempActionAttachments.length == 0 || !IsAttachmentSelected) {
+            Alert("Alert", "Please choose attachment.<br/>", "Ok");
+            return false;
+        }
+        else {
+            ActionAttachments = [];
+            var Files = "";
+            var FileCount = 0;
+            $.each(TempActionAttachments, function (i, v) {
+                if (v.IsSelected) {
+                    ActionAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
+                    Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+                    FileCount++;
+                }
+            });
+            $('#txtActionAttachments').empty();
+            $('#txtActionAttachments').append(Files);
+            $('#txtActionAttachments').removeClass("hidden");
+            $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
+
+            CloseActionAddAttachment();
+        }
+    }
+
+    function CloseActionAddAttachment() {
+        //TempActionAttachments = [];
+        $('[id$=divAddActionAttachmentOverlay]').hide();
+        $('[id$=divAddActionAttachment]').hide();
+    }
+
+    function AddActionAttachment() {
+        var HTML = '';
+        $.each(TempActionAttachments, function (i, v) {
+            //TempActionAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path, "IsSelected": v.IsSelected });
+            HTML += '<tr>';
+            HTML += '<td style="width: 4%; width:50px;">';
+            HTML += '<div class="checkbox radio-margin">';
+            HTML += '<label>';
+            if (v.IsSelected)
+                HTML += '<input type="checkbox" checked="checked" val="" onchange="AddRemoveActionMailAttachement(this);">';
+            else
+                HTML += '<input type="checkbox" val="" onchange="AddRemoveActionMailAttachement(this);">';
+            HTML += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+            HTML += '</label>';
+            HTML += '</div>';
+            HTML += '</td>';
+            HTML += '<td style="width: 96%">' + v.FileName + '</td>';
+            HTML += '</tr>';
+        });
+        $('[id$=tblActionAttachments]').empty();
+        $('[id$=tblActionAttachments]').append(HTML);
+        $('[id$=divAddActionAttachmentOverlay]').show();
+        $('[id$=divAddActionAttachment]').show();
+    }
+
+    function AddRemoveActionMailAttachement(ctrl) {
+        var FileName = $.trim($(ctrl).closest('td').next().text());
+        var FileContent = $(ctrl).val();
+        if (ctrl.checked) {
+            var IsChanged = false;
+            $.each(TempActionAttachments, function (index, value) {
+                if (value.FileName == FileName) {
+                    value.IsSelected = true;
+                    IsChanged = true;
+                }
+            });
+            if (!IsChanged) {
+                if (FileContent == "")
+                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": "", IsSelected: true });
+                else
+                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": FileContent, IsSelected: true });
+            }
+        }
+        else {
+            $.each(TempActionAttachments, function (index, value) {
+                if (value.FileName == FileName)
+                    value.IsSelected = false;
+            });
+        }
+    }
+
+    function SendActionMail() {
+        debugger;
+        ShowGlobalLodingPanel();
+        var ErrorMsg = '';
+        var Subject = $.trim($('#txtActionMailSubject').val());
+        var Message = $.trim(CKEDITOR.instances.txtActionMailBody.getData());
+        if (Message == "")
+            Message = $.trim($('#txtActionMailBody').val());
+        var _MailTo = '';
+
+        if ($('[id$=hdnActionId]').val() == "1" || $('[id$=hdnActionId]').val() == "2")
+            _MailTo = $('#ddlTo').val().toString() == "" ? "" : $('#ddlTo').val().toString().replace(/,/g, ';');
+        else
+            _MailTo = $('#txtTo').val();
+
+        if (_MailTo == "")
+            ErrorMsg += 'Please select mail recipients.<br/>';
+
+        if (Subject == '')
+            ErrorMsg += 'Please enter subject.<br/>';
+
+        if (Message == '')
+            ErrorMsg += 'Please enter message.<br/>';
+
+        if (ErrorMsg.length > 0) {
+            HideGlobalLodingPanel();
+            Alert("Alert", ErrorMsg, "Ok");
+            return false;
+        }
+        else {
+            var _Attachments = [];
+            $.each(ActionAttachments, function (i, v) {
+                if (v.IsSelected) {
+                    _Attachments.push({ DisplayName: "", FileName: v.FileName, Content: v.Content, Path: v.Path });
+                    //AttachXML += "<row>";
+                    //AttachXML += "<FileName>" + v.FileName + "</FileName>";
+                    //AttachXML += "<Path>" + v.Path + "</Path>";
+                    //AttachXML += "</row>";
+                }
+            });
+
+            var obj = {
+                UserId: myWTOAPP.UserId,
+                Subject: Subject,
+                Body: Message,
+                MailTo: _MailTo,
+                Attachments: _Attachments
+            }
+
+            $.ajax({
+                url: "/api/AddUpdateNotification/SendMailforAction/" + $('#hdnNotificationActionId').val(),
+                async: false,
+                type: "POST",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if ($('[id$=hdnActionId]').val() == '1')
+                        Alert("Alert", "Notification brief has been sent successfuly to regulators.<br/>", "Ok");
+                    else if ($('[id$=hdnActionId]').val() == '2')
+                        Alert("Alert", "Policy brief has been sent successfuly to DoC.<br/>", "Ok");
+                    else if ($('[id$=hdnActionId]').val() == '3')
+                        Alert("Alert", "Response has been sent successfuly to notifying country.<br/>", "Ok");
+
+                    $('[id$=hdnNotificationActionId]').val('0');
+                    $('[id$=hdnActionId]').val('0');
+                    var callfor = $('#btnSendActionMail').attr('data-callfor');
+                    if (callfor == "close") {
+                        window.location.reload();
+                    }
+                    else {
+                        $('#btncloseModalAction').attr('data-callfor', 'reload');
+                        $('#btncloseModalAction1').attr('data-callfor', 'reload')
+                        $('#ActionMail').modal('hide');
+                        EditNotificationActions();
+                    }
+                },
+                failure: function (result) {
+                    Alert("Alert", "Something went wrong.<br/>", "Ok");
+                },
+                error: function (result) {
+                    Alert("Alert", "Something went wrong.<br/>", "Ok");
+                },
+                complete: function () {
+                    //HideGlobalLodingPanel();
+                }
+            });
+        }
+        HideGlobalLodingPanel();
+    }
+
+    function closeActionMail(ctrl) {
+        var callfor = $(ctrl).attr('data-callfor');
+        if (callfor == "close") {
+            $('#btncloseModalAction').attr('data-callfor', 'close');
+            $('#ActionMail').modal('hide');
+        }
+        else {
+            $('#ActionMail').modal('hide');
+            $('#btnplanAction').click();
+            $('#btncloseModalAction').attr('data-callfor', 'closeaction');
+
+        }
+    }
+
+    function closeModalAddAction(ctrl) {
+        var callfor = $(ctrl).attr('data-callfor');
+        if (callfor == "close") {
+            $('#ModalAddAction').modal('hide');
+        }
+        else {
+            window.location.reload();
+        }
+
+    }
+
+    function BindActionMailAttachments(Id) {
+        $.ajax({
+            url: "/api/AddUpdateNotification/NotificationDocuments/" + Id,
+            async: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                var FileCount = 0;
+                var Files = '';
+                ActionAttachments = [];
+                $.each(result, function (i, v) {
+                    ActionAttachments.push({ "FileName": v.FileName, "Content": "", "Path": v.Path, "IsSelected": true });
+                    Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+                    FileCount++;
+                });
+                TempActionAttachments = ActionAttachments;
+                $('#txtActionAttachments').empty();
+                $('#txtActionAttachments').append(Files);
+                $('#txtActionAttachments').removeClass("hidden");
+                $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+        })
+    }
+
+    function RemoveActionMailAttachments(ctrl) {
+        var FileName = $.trim($(ctrl).parent().text());
+        var FileCount = 0;
+        var Files = '';
+
+        $.each(ActionAttachments, function (i, v) {
+            if (v.FileName == FileName)
+                v.IsSelected = false;
+            else if (v.IsSelected) {
+                Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+                FileCount++;
+            }
+        });
+
+        $('#txtActionAttachments').empty();
+        $('#txtActionAttachments').append(Files);
+        $('#txtActionAttachments').removeClass("hidden");
+        $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
+    }
+</script>

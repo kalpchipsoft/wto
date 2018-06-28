@@ -4,10 +4,11 @@
 }
 <script src="~/contents/js/ckeditor/ckeditor.js" type="text/javascript"></script>
 <input id="hdnTemplateId" type="hidden" value="0" />
+<input id="hdnTemplateFieldsFor" type="hidden" value="0" />
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <label class="table-heading">Templates (@Model.Templates.Count)</label>
-        <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddTemplate" data-toggle="modal" onclick="AddTemplatePopup()">Add Template</a>
+        <label class="table-heading">Templates (@(Model.Templates == null ? 0 : Model.Templates.Count))</label>
+        <a href="#" class="btn btn-blue btn-padding pull-right" data-toggle="modal" onclick="AddTemplatePopup()">Add Template</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
             <table class="table table-bordered">
                 <thead class="second-blackbackground">
@@ -23,11 +24,11 @@
                 <tbody class="whitebackground">
                     @if (@Model.Templates != null && Model.Templates.Count > 0)
                     {
-                        int i = 0;
+                        int i = 1;
                         foreach (var item in @Model.Templates)
                         {
                             <tr>
-                                <td>@(i + 1)</td>
+                                <td>@(i++)</td>
                                 <td>@item.TemplateType</td>
                                 <td>@item.TemplateFor</td>
                                 @if (@item.TemplateStatus)
@@ -77,7 +78,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Template Type<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
-                                        <select id="ddlTemplateType" class="form-control">
+                                        <select id="ddlTemplateType" class="form-control" onchange="ShowHideSubject(this);">
                                             <option value="">--Select Template Type--</option>
                                             <option value="Mail">Mail</option>
                                             <option value="SMS">SMS</option>
@@ -113,9 +114,9 @@
                                     <label class="control-label col-sm-3">Status<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="ddlTemplateStatus">
-                                            <option value="-1">---Select Status---</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
+                                            <option value="">---Select Status---</option>
+                                            <option value="true">Active</option>
+                                            <option value="false">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
@@ -138,7 +139,7 @@
             </div>
 
             <div id="divAddFieldsOverlay" class="attachment-modal overlay ">
-                <div id="divAddFields" class="attachment-modal body">
+                <div id="divAddFields" class="attachment-modal body" style="top:10%;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="creatediv1">

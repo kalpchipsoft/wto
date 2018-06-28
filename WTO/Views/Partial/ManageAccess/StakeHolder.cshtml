@@ -11,10 +11,9 @@
             <table class="table table-bordered">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th>S.No</th>
+                        @*<th>S.No</th>*@
                         <th>Stakeholder Name</th>
                         <th>Email Id</th>
-                        <th>Phone</th>
                         <th>Status</th>
                         <th class="text-center">Edit</th>
                         <th class="text-center">Delete</th>
@@ -26,10 +25,9 @@
                         foreach (var item in @Model.StakeHolderList)
                         {
                             <tr>
-                                <td>@item.ItemNumber</td>
+                                @*<td>@item.ItemNumber</td>*@
                                 <td>@item.StakeHolderName</td>
                                 <td>@item.Email</td>
-                                <td>@item.Mobile</td>
                                 @if (@item.Status == 1)
                                 {
                                     <td>Active</td>
@@ -60,7 +58,7 @@
 
 <div class="modal fade selecthrmodal" id="AddStakeholder" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog selecthrdialog">
-        <div class="modal-content selecthrcontent">
+        <div class="modal-content selecthrcontent" style="height:auto;">
             <div class="modal-header selecthrheader">
                 <button type="button" class="close selecthrclose" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
@@ -76,33 +74,39 @@
                             </div>
                             <form class="form-horizontal top-offset-20" action="/action_page.php">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-3">First Name<sup class="mandetory">*</sup>:</label>
+                                    <label class="control-label col-sm-3">Full Name<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="stakeholderFirstName" maxlength="50" onkeypress="return isAlpha(event);">
+                                        <input type="text" class="form-control" id="stakeholderName" maxlength="50" onkeypress="return isAlpha(event);">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">Last Name<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="stakeholderLastName" maxlength="50" onkeypress="return isAlpha(event);">
-                                    </div>
-                                </div>
+                                @*<div class="form-group">
+                                        <label class="control-label col-sm-3">Last Name<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="stakeholderLastName" maxlength="50" onkeypress="return isAlpha(event);">
+                                        </div>
+                                    </div>*@
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Email<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
                                         <input type="Email" class="form-control" id="stackholderEmailId" maxlength="70">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">Phone<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="stackholderMobileNo" maxlength="10" onkeypress="return isNumeric(event);">
-                                    </div>
-                                </div>
+                                @*<div class="form-group">
+                                        <label class="control-label col-sm-3">Phone<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="stackholderMobileNo" maxlength="10" onkeypress="return isNumeric(event);">
+                                        </div>
+                                    </div>*@
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Organization<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="stakeholderOrganization" maxlength="100" onkeypress="return isAlpha(event);">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Designation<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="stakeholderDesignation" maxlength="100" onkeypress="return isAlpha(event);">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -115,35 +119,35 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">Address<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-9">
-                                        <textarea id="stackholderAddress" class="form-control" cols="30" rows="2" maxlength="1000"></textarea>
+                                @*<div class="form-group">
+                                        <label class="control-label col-sm-3">Address<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="stackholderAddress" class="form-control" cols="30" rows="2" maxlength="1000"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3">State<sup class="mandetory">*</sup>:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="stackholderState" maxlength="20" onkeypress="return isAlpha(event);">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3">State<sup class="mandetory">*</sup>:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="stackholderState" maxlength="20" onkeypress="return isAlpha(event);">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5 padding-0">City<sup class="mandetory">*</sup>:</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="stackholderCity" maxlength="20" onkeypress="return isAlpha(event);" style="margin-left:12px;">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-5 padding-0">City<sup class="mandetory">*</sup>:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" id="stackholderCity" maxlength="20" onkeypress="return isAlpha(event);" style="margin-left:12px;">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5">PIN<sup class="mandetory">*</sup>:</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="stackholderPIN" maxlength="6" onkeypress="return isNumeric(event);" style="margin-left:12px;">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-5">PIN<sup class="mandetory">*</sup>:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" id="stackholderPIN" maxlength="6" onkeypress="return isNumeric(event);" style="margin-left:12px;">
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div>*@
 
 
                                 <div class="form-group">
@@ -179,7 +183,6 @@
 </div>
 
 <!-- Add Stakeholder modal popup End-->
-
 <!-- select HSCode for stakeholder modal popup start -->
 
 <input type="hidden" id="hdnstakeholderHscode" class="form-control">

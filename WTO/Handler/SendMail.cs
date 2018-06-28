@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
+using System.Net.Configuration;
 using System.Net.Mail;
 using System.Net.Security;
 using System.Runtime.Remoting.Messaging;
@@ -38,9 +40,9 @@ namespace WTO.Handler
             MailMessage xmail = new MailMessage();
 
             if (DisplayName.Trim().Length > 0)
-                xmail.From = new System.Net.Mail.MailAddress("AshviniMishra127@gmail.com", DisplayName.Trim());
+                xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in", DisplayName.Trim());
             else
-                xmail.From = new System.Net.Mail.MailAddress("AshviniMishra127@gmail.com");
+                xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in");
 
             for (int indx = 0; indx < xToSplit.Length; indx++)
                 if (xToSplit[indx].Trim().Length > 0)
@@ -79,7 +81,7 @@ namespace WTO.Handler
             xsmtp.Port = 587;
             xsmtp.EnableSsl = true;
             xsmtp.UseDefaultCredentials = true;
-            xsmtp.Credentials = new NetworkCredential("AshviniMishra127@gmail.com", "X002@Chipsoft");
+            xsmtp.Credentials = new NetworkCredential("sps-tbtcomm@gov.in", "C1%uM2@iY1");
             xsmtp.Timeout = 1500000;
             ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
             try
@@ -125,10 +127,12 @@ namespace WTO.Handler
 
                 MailMessage xmail = new MailMessage();
 
+                SmtpSection smtp = (SmtpSection)ConfigurationManager.GetSection("mailSettings/");
+
                 if (DisplayName.Trim().Length > 0)
-                    xmail.From = new System.Net.Mail.MailAddress("AshviniMishra127@gmail.com", DisplayName.Trim());
+                    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in", DisplayName.Trim());
                 else
-                    xmail.From = new System.Net.Mail.MailAddress("AshviniMishra127@gmail.com");
+                    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in");
 
                 for (int indx = 0; indx < xToSplit.Length; indx++)
                     if (xToSplit[indx].Trim().Length > 0)
@@ -160,19 +164,21 @@ namespace WTO.Handler
                         }
                     }
                 }
-                catch(Exception ex) { }
+                catch { }
 
                 SmtpClient xsmtp = new SmtpClient();
-                xsmtp.Host = "smtp.gmail.com";
-                xsmtp.Port = 587;
+                xsmtp.Host = smtp.Network.Host;
+                xsmtp.Port = smtp.Network.Port;
                 xsmtp.EnableSsl = true;
-                xsmtp.UseDefaultCredentials = true;
-                xsmtp.Credentials = new NetworkCredential("AshviniMishra127@gmail.com", "X002@Chipsoft");
+                xsmtp.UseDefaultCredentials = smtp.Network.DefaultCredentials;
+                xsmtp.Credentials = new NetworkCredential("sps-tbtcomm@gov.in", "C1%uM2@iY1");
                 xsmtp.Timeout = 1500000;
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
                 xsmtp.Send(xmail);
                 return true;
+
+
             }
             catch (Exception ex)
             {

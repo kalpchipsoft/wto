@@ -32,10 +32,8 @@ namespace BusinessService.ManageAccess
                         objSHI = new StakeHolderInfo();
                         objSHI.ItemNumber = Convert.ToInt64(dr["ItemNumber"]);
                         objSHI.StakeHolderId = Convert.ToInt64(dr["StakeHolderId"]);
-                        objSHI.FirstName = Convert.ToString(dr["FirstName"]);
-                        objSHI.LastName = Convert.ToString(dr["LastName"]);
+                        objSHI.StakeHolderName = Convert.ToString(dr["StakeHolderName"]);
                         objSHI.Email = Convert.ToString(dr["EmailId"]);
-                        objSHI.Mobile = Convert.ToString(dr["Mobile"]);
                         objSHI.Status = Convert.ToInt16(dr["IsActive"]);
                         objSHI.IsInUse = Convert.ToBoolean(dr["IsInUse"]);
                         objStakeHolderList.Add(objSHI);
@@ -63,17 +61,12 @@ namespace BusinessService.ManageAccess
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
                 {
                     obj.StakeHolderId = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["StakeHolderId"]);
-                    obj.FirstName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["FirstName"]);
-                    obj.LastName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["LastName"]);
+                    obj.StakeHolderName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["StakeHolderName"]);
                     obj.Email = Convert.ToString(ds.Tables[tblIndx].Rows[0]["EmailId"]);
-                    obj.Mobile = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Mobile"]);
                     obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["IsActive"]);
                     obj.OrgName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["OrgName"]);
-                    obj.Address = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Address"]);
-                    obj.City = Convert.ToString(ds.Tables[tblIndx].Rows[0]["City"]);
-                    obj.State = Convert.ToString(ds.Tables[tblIndx].Rows[0]["State"]);
-                    obj.PIN = Convert.ToString(ds.Tables[tblIndx].Rows[0]["PIN"]);
                     obj.HSCodes = Convert.ToString(ds.Tables[tblIndx].Rows[0]["SelectedHSCodes"]);
+                    obj.Designation = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Designation"]);
                 }
             }
             return obj;

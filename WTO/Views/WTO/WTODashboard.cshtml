@@ -1,153 +1,332 @@
 ﻿@model BusinessObjects.Notification.Dashboard_PendingCounts
-
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link rel="stylesheet" href="~/contents/css/css/daterangepicker.css">
+<link rel="stylesheet" href="~/contents/css/css/Dashboard.css" />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="~/contents/js/moment.min.js"></script>
+<script src="~/contents/js/daterangepicker.js"></script>
 <!-- body section start -->
-<div class="topbg">
+<div>
     <div class="container-fluid">
-        <div>
+
+        <!-- Notification History  start ---->
+
+        <div class="row top-offset-20">
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
                     <div class="row">
-                        <h4 class="white-color"><b>Dashboard</b></h4>
+                        <div class="col-xs-12 col-sm-6 col-md-7 top-offset-10">
+                            <p class="texthead">Notification History</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-5 top-offset-10">
+                            <div class="btngroup pull-right">
+                                <button type="button" class="btn btn-light-green btn-padding hidden">Yearly</button>
+                                <button type="button" class="btn btn-light-green btn-padding">Monthly</button>
+                                <button type="button" class="btn btn-light-green btn-padding">weekly</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-offset-6 col-md-6 top-offset-20">
+                            <div class="col-xs-12 col-sm-12 col-md-12 fullborder">
+                                <div class="col-xs-6 col-sm-3 padding-top-bottom-5">
+                                    <div class="legend dark-gray Square"></div>
+                                    <div class="countryName">
+                                        <p class="margin-0">Lapsed</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 padding-0">
+                                    <div class="legend dark-yellow Square"></div>
+                                    <div class="countryName">
+                                        <p class="margin-0">In Process</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 padding-0">
+                                    <div class="legend dark-blue Square"></div>
+                                    <div class="countryName">
+                                        <p class="margin-0">Under Action</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 padding-top-bottom-5">
+                                    <div class="legend medium-green Square"></div>
+                                    <div class="countryName">
+                                        <p class="margin-0">Closed</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <a href="#" class="leftArrow"><img src="~/contents/img/leftArrow.png" alt="leftArrow" /></a>
+                            <a href="#" class="rightArrow"><img src="~/contents/img/rightArrow.png" alt="rightArrow" /></a>
+                            <div id="chart_div" style="width:100%;height:450px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Notification History  End ---->
+
+        <div class="col-xs-12 col-sm-12 col-md-12 shadowbox top-offset-20 bottom-offset-20">
 
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv" style="background:#efefef;">
-                    <div class='lodingPanel @(Model.PendingDiscussions.Sum(x => x.Total) > -1 ? "hidden" : "")'>
-                        <img src="~/contents/img/Dashboard_Loading.gif" />
-                    </div>
-                    @* <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">*@
-                    <div class="row darkBlueblackbackground padding-10 bottom-offset-20">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h4 class="white-color">Pending Discussion (@Model.PendingDiscussions.Sum(x => x.Total))</h4>
+                <div class="col-xs-12 col-sm-10 col-md-10 top-offset-20">
+                    <p class="texthead" style="font-size:30px">Analysis for &nbsp;&nbsp;<span style="font-size:16px;">June 1 - June 30, 2018</span></p>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2 top-offset-20">
+                    <p>
+                        <span class="pull-right texthead" id="reportrange" style="cursor:pointer;"><img src="~/contents/img/humbergur.png"></span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- HSCode start ---->
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    @{ Html.RenderAction("WTOGetHSCodeGraphData", "WTO"); }
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-8 top-offset-10">
+                                <p class="texthead">By Country</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <hr class="customehr" />
+                            </div>
                         </div>
+                        @{ Html.RenderAction("WTOGetHSCodeDataByCountry", "WTO"); }
                     </div>
-                    @*</div>
-                        </div>*@
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
-                            <div class="row padding-10">
-                                @foreach (BusinessObjects.Notification.Count_Discussion item in Model.PendingDiscussions)
-                                {
-                                    <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
-                                        @if (@item.Total > 0)
-                                        {
-                                            <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, StatusId = @item.StatusId, StatusFor = "Discussion" })" class="smalldiv">
-                                                <div class="col-xs-12 col-sm-12 whitebackground full rightbottom">
-                                                    <div class="text-center dashbaorddiscussionicon @item.CssColor rightbottom">
-                                                        <img src="~/contents/img/@item.Icon" alt="document" />
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
-                                                        <div class="row">
-                                                            <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-                                                                <h1>@item.Total</h1>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-xs-12 col-sm-12 full-@item.CssColor text-center fixedbottom">
-                                                            <p>@item.Status</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <div class="col-xs-12 col-sm-12 whitebackground full rightbottom">
-                                                <div class="text-center dashbaorddiscussionicon @item.CssColor rightbottom">
-                                                    <img src="~/contents/img/@item.Icon" alt="document" />
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
-                                                    <div class="row">
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-                                                            <h1>@item.Total</h1>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xs-12 col-sm-12 full-@item.CssColor text-center fixedbottom">
-                                                        <p>@item.Status</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                }
+                </div>
+            </div>
+            <!-- HSCode End ------>
+            <!-- Processing Status start ---->
+            @{ Html.RenderAction("WTODashboardProcessingStatus", "WTO"); }
+            <!-- Processing Status End ------>
+            <!-- Action section start -->
+            @{ Html.RenderAction("GetDashboardAction", "WTO"); }
+            <!-- Action section End ---->
+            <!-- Requests & Responses start ---->
+            @{ Html.RenderAction("WTODashboardRequestResponse", "WTO"); }
+            <!-- Requests & Responses End ------>
+        </div>
+    </div>
+</div>
+
+@*<div>
+        <div class="container-fluid">
+            <div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                        <div class="row topbg">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="black-color" style="margin-top:2.8%;"><b>Dashboard</b></h4>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row" style="background:#efefef;">
-                <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv">
-                    <div class='lodingPanel @(Model.PendingActions.Sum(x => x.Total) > -1 ? "hidden" : "")'>
-                        <img src="~/contents/img/Dashboard_Loading.gif" />
-                    </div>
-                    @* <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">*@
-                    <div class="row darkBlueblackbackground padding-10 bottom-offset-20">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv" style="background:#efefef;">
+                        <div class='lodingPanel @(Model.PendingDiscussions.Sum(x => x.TotalPending) > -1 ? "hidden" : "")'>
+                            <img src="~/contents/img/Dashboard_Loading.gif" />
+                        </div>
+                        <div class="row darkBlueblackbackground padding-10 bottom-offset-20">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="white-color">Pending Discussion (@Model.PendingDiscussions.Sum(x => x.TotalPending))</h4>
+                            </div>
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h4 class="white-color">Pending Action (@Model.PendingActions.Sum(x => x.Total))</h4>
+                            <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                <div class="row padding-10">
+                                    @foreach (BusinessObjects.Notification.Count_Discussion item in Model.PendingDiscussions)
+                                    {
+                                        <div class="col-xs-12 col-sm-3 col-md-3 sm-20-bottom">
+                                            @if (@item.TotalPending > 0)
+                                            {
+                                                <div class="smalldiv">
+                                                    <div class="col-xs-12 col-sm-12 whitebackground full rightbottom">
+                                                        <div class="text-center dashbaorddiscussionicon @item.CssColor rightbottom">
+                                                            <img src="~/contents/img/@item.Icon" alt="document" />
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                                            <div class="row top-offset-30" >
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+                                                                    @if (item.TotalPending > 0)
+                                                                    {
+                                                                        if (item.PendingFromUser > 0)
+                                                                        {
+                                                                            <h1 style="font-size: 25px;font-weight: bold;">
+                                                                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = @item.StatusId, PendingFrom = "User" })" style="color: red;">@item.PendingFromUser</a>/<a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = @item.StatusId })" style="color: inherit;">@item.TotalPending</a>
+                                                                            </h1>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <h1 style="font-size: 25px;font-weight: bold;"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = @item.StatusId })" style="color: inherit;">@item.TotalPending</a></h1>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <h1 style="font-size: 25px;font-weight: bold;">@item.TotalPending</h1>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 full-@item.CssColor text-center fixedbottom">
+                                                                <p>@item.Status</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="return false;" class="smalldiv">
+                                                    <div class="col-xs-12 col-sm-12 whitebackground full rightbottom">
+                                                        <div class="text-center dashbaorddiscussionicon @item.CssColor rightbottom">
+                                                            <img src="~/contents/img/@item.Icon" alt="document" />
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-30 bottom-offset-30">
+                                                            <div class="row top-offset-30">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+                                                                    <h1 style="font-size: 25px;font-weight: bold;">@item.TotalPending</h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 full-@item.CssColor text-center fixedbottom">
+                                                                <p>@item.Status</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    @* </div>
-                        </div>*@
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
-                            <div class="row padding-10">
-                                @foreach (BusinessObjects.Notification.Count_Action item in Model.PendingActions)
-                                {
-                                    <div class="col-xs-12 col-sm-4 col-md-4 sm-20-bottom">
-                                        <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, StatusId = @item.ActionId, StatusFor = "Action" })" cla class="smalldiv">
-                                            <div class="col-xs-12 col-sm-12 left-@item.CssColor-border whitebackground full rightbottom">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 text-left">
-                                                            <p class="action left-offset-20">Overdue</p>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                                                            <p class="action right-offset-20">Total </p>
+                </div>
+
+                <div class="row" style="background:#efefef;">
+                    <div class="col-xs-12 col-sm-12 col-md-12 lodingpanelDiv">
+                        <div class='lodingPanel @(Model.PendingActions.Sum(x => x.Total) > -1 ? "hidden" : "")'>
+                            <img src="~/contents/img/Dashboard_Loading.gif" />
+                        </div>
+                        <div class="row darkBlueblackbackground padding-10 bottom-offset-20">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="white-color">Pending Action (@Model.PendingActions.Sum(x => x.Total))</h4>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                <div class="row padding-10">
+                                    @foreach (BusinessObjects.Notification.Count_Action item in Model.PendingActions)
+                                    {
+                                        <div class="col-xs-12 col-sm-4 col-md-4 sm-20-bottom">
+                                            <div class="smalldiv">
+                                                <div class="col-xs-12 col-sm-12 left-@item.CssColor-border whitebackground full rightbottom">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+                                                                <p class="action left-offset-20">Overdue</p>
+                                                            </div>
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                                <p class="action right-offset-20">Total </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-30">
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6">
-                                                            <h1 class="red-color left-offset-30">@item.OverDue</h1>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                                                            <h1 class="right-offset-15">@item.Total</h1>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-30">
+                                                        <div class="row">
+                                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, ActionId = @item.ActionId,ActionStatus=10 })">
+                                                                    <h1 class="red-color left-offset-30">@item.OverDue</h1>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, ActionId = @item.ActionId,ActionStatus=9 })">
+                                                                    <h1 class="right-offset-15">@item.Total</h1>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xs-12 col-sm-12 full-@item.CssColor-border text-center fixedbottom">
-                                                        <p class="action">@item.Action</p>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-12 full-@item.CssColor-border text-center fixedbottom">
+                                                            <p class="action">@item.Action</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </a>
-                                    </div>
-                                }
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 <!-- body section End -->
 <script>
+    $(function () {
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+        cb(start, end);
+    });
+
+    google.charts.load("visualization", "1", { packages: ["corechart"] });
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawPieChart);
+    $('#google-visualization-errors-0').css('display', 'none');
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Notification', 'Lapsed', 'In Process', 'Under Action', 'Closed', { role: 'annotation' }],
+        ['Jan', 200, 100, 150, 50, ''],
+        ['Feb', 250, 240, 150, 50, ''],
+        ['Apr', 150, 50, 90, 10, ''],
+        ['May', 200, 100, 100, 100, ''],
+        ['Jun', 200, 100, 150, 50, ''],
+        ['Jul', , , , , ''],
+        ['Aug', , , , , ''],
+        ['Sep', , , , , ''],
+        ['Oct', , , , , ''],
+        ['Nov', , , , , ''],
+        ['Dec', , , , , '']
+        ]);
+        var options = {
+            chartArea: { left: 50, top: 20, width: "100%", height: "90%" },
+            //legend: {position: 'top', alignment: 'end', maxLines: 3, textStyle: {color: 'black', fontSize: 16 } },
+            legend: 'none',
+            isStacked: true,
+            // Displays tooltip on selection.
+            // tooltip: { trigger: 'selection' },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
     function SetCallFor(CallFor) {
         localStorage.setItem("CallFrom", "Dashboard");
         localStorage.setItem("Status", CallFor);

@@ -68,6 +68,23 @@ namespace BusinessService.Notification
                 }
                 #endregion
 
+                #region "Action Status List"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<ActionStatus> ActionStatusList = new List<ActionStatus>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        ActionStatus objActionStatus = new ActionStatus();
+                        objActionStatus.StatusId = Convert.ToInt32(dr["StatusId"]);
+                        objActionStatus.Status = Convert.ToString(dr["Status"]);
+                        ActionStatusList.Add(objActionStatus);
+                    }
+
+                    objR.ActionStatusList = ActionStatusList;
+                }
+                #endregion
+
                 #region "Notification List"
                 tblIndx++;
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
@@ -93,12 +110,47 @@ namespace BusinessService.Notification
                 }
                 #endregion
 
-
                 #region "Notification Count"
                 tblIndx++;
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
                 {
                     objR.TotalCount = Convert.ToInt64(ds.Tables[tblIndx].Rows[0]["TotalCount"]);
+                }
+                #endregion
+
+                #region "Notification Process Dots Color & Tooltip Text"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<NotificationProcessDot> NPSList = new List<NotificationProcessDot>();
+                    foreach(DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        NotificationProcessDot objNPS = new NotificationProcessDot();
+                        objNPS.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objNPS.ColorCode = Convert.ToString(dr["ColorCode"]);
+                        objNPS.TooltipText = Convert.ToString(dr["TooltipText"]);
+                        objNPS.Sequence = Convert.ToInt32(dr["Sequence"]);
+                        NPSList.Add(objNPS);
+                    }
+                    objR.NotificationProcessDots = NPSList;
+                }
+                #endregion
+
+                #region "Notification Action Dots Color & Tooltip Text"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<NotificationActionDot> NASList = new List<NotificationActionDot>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        NotificationActionDot objNAS = new NotificationActionDot();
+                        objNAS.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objNAS.ColorCode = Convert.ToString(dr["ColorCode"]);
+                        objNAS.TooltipText = Convert.ToString(dr["TooltipText"]);
+                        objNAS.Sequence = Convert.ToInt32(dr["Sequence"]);
+                        NASList.Add(objNAS);
+                    }
+                    objR.NotificationActionDots = NASList;
                 }
                 #endregion
             }
@@ -145,8 +197,69 @@ namespace BusinessService.Notification
                     objR.Pager = new Pager(Convert.ToInt32(objR.TotalCount), Convert.ToInt16(obj.PageIndex));
                 }
                 #endregion
+
+                #region "Notification Process Dots Color & Tooltip Text"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<NotificationProcessDot> NPSList = new List<NotificationProcessDot>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        NotificationProcessDot objNPS = new NotificationProcessDot();
+                        objNPS.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objNPS.ColorCode = Convert.ToString(dr["ColorCode"]);
+                        objNPS.TooltipText = Convert.ToString(dr["TooltipText"]);
+                        objNPS.Sequence = Convert.ToInt32(dr["Sequence"]);
+                        NPSList.Add(objNPS);
+                    }
+                    objR.NotificationProcessDots = NPSList;
+                }
+                #endregion
+
+                #region "Notification Action Dots Color & Tooltip Text"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<NotificationActionDot> NASList = new List<NotificationActionDot>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        NotificationActionDot objNAS = new NotificationActionDot();
+                        objNAS.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objNAS.ColorCode = Convert.ToString(dr["ColorCode"]);
+                        objNAS.TooltipText = Convert.ToString(dr["TooltipText"]);
+                        objNAS.Sequence = Convert.ToInt32(dr["Sequence"]);
+                        NASList.Add(objNAS);
+                    }
+                    objR.NotificationActionDots = NASList;
+                }
+                #endregion
             }
             return objR;
+        }
+
+        public DataTable ExportNotificationList(Search_Notification obj)
+        {
+            NotificationList objR = new NotificationList();
+            NotificationListDataManager objDM = new NotificationListDataManager();
+            DataSet ds = objDM.ExportNotificationList(obj);
+            DataTable dt = new DataTable();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndx = -1;
+                #region "Notification List"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    dt = ds.Tables[tblIndx];
+                    //dt.Columns.Remove("ItemNumber");
+                    //dt.Columns.Remove("NotificationId");
+                    //dt.Columns.Remove("Actions");
+                    //dt.Columns.Remove("StatusFlag");
+                    //dt.Columns.Remove("StatusName");
+                }
+                #endregion
+            }
+            return dt;
         }
     }
 }

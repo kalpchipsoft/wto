@@ -35,6 +35,8 @@ namespace BusinessService.ManageAccess
                         objC.Status = Convert.ToInt16(dr["IsActive"]);
                         objC.IsInUse = Convert.ToBoolean(dr["IsInUse"]);
                         objC.CountryCode= Convert.ToString(dr["CountryCode"]);
+                        objC.EnquiryEmail_SPS = Convert.ToString(dr["SPSEmail"]);
+                        objC.EnquiryEmail_TBT = Convert.ToString(dr["TBTEmail"]);
                         CountryList.Add(objC);
                     }
                     obj.CountryList = CountryList;
@@ -63,6 +65,8 @@ namespace BusinessService.ManageAccess
                     obj.CountryName = Convert.ToString(ds.Tables[tblIndx].Rows[0]["CountryName"]);
                     obj.Status = Convert.ToInt16(ds.Tables[tblIndx].Rows[0]["IsActive"]);
                     obj.CountryCode = Convert.ToString(ds.Tables[tblIndx].Rows[0]["CountryCode"]);
+                    obj.EnquiryEmail_SPS = Convert.ToString(ds.Tables[tblIndx].Rows[0]["SPSEmail"]); 
+                    obj.EnquiryEmail_TBT = Convert.ToString(ds.Tables[tblIndx].Rows[0]["TBTEmail"]); 
                 }
             }
             return obj;
@@ -77,5 +81,10 @@ namespace BusinessService.ManageAccess
         {
             return objCDS.DeleteCountry(Id);
         }
+        public DataTable CheckDuplicateCountryData(int id, string Callfor, string text)
+        {
+            return objCDS.CheckDuplicateCountryData(id, Callfor, text);
+        }
+
     }
 }

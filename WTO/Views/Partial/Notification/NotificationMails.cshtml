@@ -1,63 +1,105 @@
-﻿@model List<BusinessObjects.Notification.StackholderMail>
+﻿@model BusinessObjects.Notification.MailsSentResponses
 @{
     Layout = null;
 }
-
-<div class="panel-heading" role="tab" id="headingfour">
-    <h4 class="panel-title Accordian-panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-            <i class="more-less glyphicon glyphicon-chevron-down"></i>
-            Mails Sent (@(Model == null ? 0 : Model.Count))
-        </a>
-    </h4>
-</div>
-<div id="collapsefour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfour">
-    <div class="panel-body Accordian-body">
-        @*<div class="row">*@
-        <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
-            <div class="row top-offset-20">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="table-responsive nopaging notificationlist sentmail">
-                        <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-                            <thead class="second-blackbackground">
+@if (Model != null)
+{
+    if (Model.MailsSent != null && Model.MailsSent.Count > 0)
+    {
+        <div class="row top-offset-20">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <hr />
+                <p class="wto-label-bold top-offset-30"> Mail(s) sent to stakeholders</p>
+                <div class="table-responsive nopaging notificationlist sentmail">
+                    <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                        <thead class="second-blackbackground">
+                            <tr>
+                                <th class="col-sm-2">Date</th>
+                                <th class="col-sm-8">Subject</th>
+                                <th class="col-sm-1">Sent To</th>
+                            </tr>
+                        </thead>
+                        <tbody class="whitebackground">
+                            @*@if (Model != null && Model.Count > 0)
+                                {*@
+                            @foreach (var obj in @Model.MailsSent)
+                            {
                                 <tr>
-                                    <th class="col-sm-1">Sr. No.</th>
-                                    <th class="col-sm-2">Date</th>
-                                    <th class="col-sm-8">Subject</th>
-                                    <th class="col-sm-1">Sent To</th>
+                                    <td>@obj.Date</td>
+                                    <td>
+                                        <p>
+                                            @obj.Subject
+                                        </p>
+                                    </td>
+                                    <td><div class="span-badge"><a style="color:#fff !important;" onclick="OpenSendMailModelFromStakehoderCount(@obj.MailId,'Sent')">@obj.StakeholderCount</a></div></td>
                                 </tr>
-                            </thead>
-                            <tbody class="whitebackground">
-                                @if (Model != null)
-                                {
-                                    int i = 0;
-                                    foreach (var obj in @Model)
-                                    {
-                                        i++;
-                                        <tr>
-                                            <td>@i</td>
-                                            <td>@obj.MailSentDate</td>
-                                            <td>
-                                                <p>
-                                                    @obj.Subject
-                                                </p>
-                                            </td>
-                                            <td><div class="span-badge">@obj.StakeholderCount</div></td>
-                                        </tr>
-                                    }
-                                }
+                            }
+                            @*}
                                 else
                                 {
                                     <tr>
                                         <td colspan="5">No record found..</td>
                                     </tr>
-                                }
+                                }*@
 
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    }
+    if (Model.Responses != null && Model.Responses.Count > 0)
+    {
+        <div class="row top-offset-20">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <hr />
+                <p class="wto-label-bold top-offset-30"> Response from stakeholders</p>
+                <div class="table-responsive nopaging notificationlist sentmail">
+                    <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                        <thead class="second-blackbackground">
+                            <tr>
+                                <th class="col-sm-2">Date</th>
+                                <th class="col-sm-2">Organization</th>
+                                <th class="col-sm-3">Contact</th>
+                                <th class="col-sm-4">Message</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="whitebackground">
+                            @*@if (Model != null && Model.Count > 0)
+                                {*@
+                            @foreach (var obj in @Model.Responses)
+                            {
+                                <tr>
+                                    <td>@obj.Date</td>
+                                    <td>
+                                        @obj.OrgName
+                                    </td>
+                                    <td>
+                                        @obj.StakeholderName
+                                    </td>
+                                    <td>                                        
+                                        @Html.Raw(HttpUtility.HtmlDecode((obj.Message.Trim().ToString().Length > 50 ? obj.Message.Trim().Substring(0, 50) + "..." : obj.Message.Trim().ToString())))
+                                    </td>
+                                    <td class="text-center">
+                                        <a onclick="ViewResponseFromStackHolder(@obj.StakeholderMailId);">
+                                            <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            @*}
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5">No record found..</td>
+                                    </tr>
+                                }*@
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}

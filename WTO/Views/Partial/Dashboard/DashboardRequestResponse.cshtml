@@ -1,0 +1,198 @@
+﻿@model BusinessObjects.Notification.NotificationRequestResponse
+@{
+    Layout = null;
+}
+<div class="row top-offset-20 bottom-offset-20">
+    <div class="col-xs-12 col-sm-8 col-md-8">
+        <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                    <p class="texthead">Requests & Responses</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <hr class="customehr" />
+                </div>
+            </div>
+            <div class="row top-offset-20">
+                @if (Model.objRequestForFullText != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div class="col-xs-12 col-sm-12 shadowbox">
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                <h1 class="totaltext">@(Model.objRequestForFullText.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForFullText.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[0].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[0].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForFullText.Count > 1)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[1].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[1].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Not Received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-center head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">Request for full text</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.objRequestForTranslation != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 sm-top-offset-20">
+                        <div class="col-xs-12 col-sm-12 shadowbox">
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                <h1 class="totaltext">@(Model.objRequestForTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForTranslation.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForTranslation[0].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForTranslation[0].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForTranslation.Count > 1)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForTranslation[1].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForTranslation[1].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Not Received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-center head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">Requests for translation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.objRequestForStakeholderResponse != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 sm-top-offset-20">
+                        <div class="col-xs-12 col-sm-12 shadowbox">
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                <h1 class="totaltext">@(Model.objRequestForStakeholderResponse.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForStakeholderResponse.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForStakeholderResponse[0].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForStakeholderResponse[0].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Respondants</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objRequestForStakeholderResponse.Count > 1)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForStakeholderResponse[1].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForStakeholderResponse[1].Count</p></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Non-respondants</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-xs-12 col-sm-12 col-md-12 head padding-0-0">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">Requests for stakeholder response</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                    <p class="texthead">Closed</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <hr class="customehr" />
+                </div>
+            </div>
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12" style="margin-top:30px;">
+                        <!-- <div class="col-xs-12 col-sm-12 col-md-12 text-center"> -->
+                        <!-- <h1 class="totaltext">100 <sub class="subtext">Total</sub></h1> -->
+                        <!-- </div> -->
+                        <div class="row head padding-top-bottom-15 shadowbox">
+                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                <p class="top-offset-10 font-weight-600 actiontext">Action Closed</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                <p class="font-size-18 top-offset-10 font-weight-600 actiontextcount">@Model.ClosedCount</p>
+                            </div>
+                        </div>
+                        <div class="row head padding-top-bottom-15 top-offset-20 shadowbox">
+                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                <p class="font-size-18 top-offset-10 font-weight-600 actiontext">Lapsed</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                <p class="font-size-18 top-offset-10 font-weight-600 actiontextcount">@Model.LapsedCount</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

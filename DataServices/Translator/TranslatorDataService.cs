@@ -66,6 +66,7 @@ namespace DataServices.Translator
                 sqlCommand.CommandText = Procedures.UploadTranslatedDocument_Translator;
                 sqlCommand.Parameters.AddWithValue("@TranslatorId", Id);
                 sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
+                sqlCommand.Parameters.AddWithValue("@NotificationDocumentId", obj.NotificationDocumentId);
                 sqlCommand.Parameters.AddWithValue("@TranslatedDocumentName", obj.DisplayName);
                 sqlCommand.Parameters.AddWithValue("@TranslatedDocument", obj.Document.FileName);
                 return DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);

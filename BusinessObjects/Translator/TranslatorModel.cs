@@ -24,6 +24,7 @@ namespace BusinessObjects.Translator
     public class NotificationDocument
     {
         public long NotificationId { get; set; }
+        public long NotificationDocumentId { get; set; }
         public string NotificationNumber { get; set; }
         public EditAttachment UntranslatedDocument { get; set; }
         public string SendToTranslaterOn { get; set; }
@@ -33,6 +34,7 @@ namespace BusinessObjects.Translator
 
     public class EditAttachment
     {
+        public string DisplayName { get; set; }
         public string FileName { get; set; }
         public string Path { get; set; }
     }
@@ -46,6 +48,7 @@ namespace BusinessObjects.Translator
     public class UploadDocument
     {
         public long NotificationId { get; set; }
+        public long NotificationDocumentId { get; set; }
         public string DisplayName { get; set; }
         public Attachment Document { get; set; }
     }

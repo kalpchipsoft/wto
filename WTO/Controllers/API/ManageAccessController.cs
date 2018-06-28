@@ -52,6 +52,14 @@ namespace WTO.Controllers.API
             CountryBusinessService objCBS = new CountryBusinessService();
             return Ok(objCBS.DeleteCountry(Id));
         }
+
+        [HttpGet]
+        public IHttpActionResult CheckDuplicateCountry(int id, string Callfor, string text)
+        {
+            CountryBusinessService ObjCBS = new CountryBusinessService();
+            return Ok(ObjCBS.CheckDuplicateCountryData(id, Callfor, text));
+        }
+
         #endregion
 
         #region "StakeHolders"
@@ -112,7 +120,7 @@ namespace WTO.Controllers.API
                 {
                     SendMail objMail = new SendMail();
                     string MailBody = objTBS.MailbodyForTranslator(objT);
-                    objMail.SendAsyncEMail("Ashvini.chipsoft@gmail.com", "", "", "", "WTO - World Trade Organization", "Welcome to WTO", MailBody, null);
+                    objMail.SendAsyncEMail("atul.chipsoft@gmail.com", "", "", "", "WTO - World Trade Organization", "Welcome to WTO", MailBody, null);
                 }
             }
 
@@ -149,5 +157,81 @@ namespace WTO.Controllers.API
             return Ok(objTBS.GetTemplateFields());
         }
         #endregion
+
+        #region "Internal StackHolders"
+        [HttpGet]
+        public IHttpActionResult GetInternalStackHolderDetails(Int64 Id)
+        {
+            InternalStackHolderBusinessService objISB = new InternalStackHolderBusinessService();
+            return Ok(objISB.InternalStackholderDetails(Id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddInternalStackholder(Int64 Id, AddInternalStackHolder obj)
+        {
+            InternalStackHolderBusinessService objISB = new InternalStackHolderBusinessService();
+            return Ok(objISB.AddInternalStackHolder(Id, obj));
+        }
+
+        [HttpGet]
+        public IHttpActionResult DeleteinternalStackHolder(Int64 Id)
+        {
+            InternalStackHolderBusinessService objISB = new InternalStackHolderBusinessService();
+            return Ok(objISB.DeleteInternalStackHolder(Id));
+        }
+
+        #endregion
+
+        #region "Regulatory Bodies"
+        [HttpGet]
+        public IHttpActionResult GetRegulatoryBodyDetails(Int64 Id)
+        {
+            RegulatoryBodyBusinessService objRBS = new RegulatoryBodyBusinessService();
+            return Ok(objRBS.RegulatoryBodiesDetails(Id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddRegulatoryBody(Int64 Id, AddRegulatoryBodies obj)
+        {
+            RegulatoryBodyBusinessService objRBS = new RegulatoryBodyBusinessService();
+            return Ok(objRBS.AddRegulatoryBody(Id, obj));
+        }
+
+        [HttpGet]
+        public IHttpActionResult DeleteRegulatoryBody(Int64 Id)
+        {
+            RegulatoryBodyBusinessService objRBS = new RegulatoryBodyBusinessService();
+            return Ok(objRBS.DeleteRegulatoryBody(Id));
+        }
+        #endregion
+        #region "Languages"
+        [HttpGet]
+        public IHttpActionResult GetLanguageDetails(Int64 Id)
+        {
+            LanguageBusinessServices obj = new LanguageBusinessServices();
+            return Ok(obj.LanguageDetails(Id));
+        }
+        [HttpPost]
+        public IHttpActionResult AddLanguage(Int64 Id, LanguageDetails obj)
+        {
+            LanguageBusinessServices objLBS = new LanguageBusinessServices();
+            return Ok(objLBS.AddLanguage(Id, obj));
+        }
+
+        [HttpGet]
+        public IHttpActionResult DeleteLanguage(Int64 Id)
+        {
+            LanguageBusinessServices objLBS = new LanguageBusinessServices();
+            return Ok(objLBS.DeleteLanguage(Id));
+        }
+        [HttpGet]
+        public IHttpActionResult CheckDuplicateLanguage(int id, string text)
+        {
+            LanguageBusinessServices objLBS = new LanguageBusinessServices();
+            return Ok(objLBS.CheckDuplicateLanguageData(id, text));
+        }
+        #endregion
+
+
     }
 }

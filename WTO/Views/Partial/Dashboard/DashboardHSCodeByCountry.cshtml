@@ -1,0 +1,77 @@
+﻿@model BusinessObjects.Notification.HSCodeCountry
+@{
+    Layout = null;
+}
+<script>
+    var arrayHScode = [];
+    var colors=[];
+    arrayHScode.push(['Task', 'HSCode',{ role: "style"}]);
+    function BindArray(Task,HSCode,ColorCode)
+    {   
+        arrayHScode.push([Task, HSCode,ColorCode]);
+        colors.push([Task,ColorCode]);
+    }
+</script>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="hscodecount">
+                <p>For HS Code  @Model.HSCode</p>
+                <p>Notifications &nbsp;&nbsp;&nbsp; @(Model.objHSCodeCountryData.Sum(x => x.NotificationCount)) &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp; @Model.CountryCount &nbsp;&nbsp;&nbsp; Countries  </p>
+            </div>
+            <div id="piechart" style="width:100%;height:400px;"></div>
+            <div class="hscodelegend" style="margin-top:-29px;">
+                <div class="col-xs-12 col-sm-12 col-md-12 padding-right-0">
+                    <div class="row">    
+                    @foreach (BusinessObjects.Notification.HSCodeCountryData ac in Model.objHSCodeCountryData)
+                    {
+                            <script>
+                            BindArray('@ac.Country',@ac.NotificationCount,'@ac.ColorCode');
+                            </script>
+                    <div class="col-xs-6 col-sm-4">
+                        <div class="legend" style="background:@ac.ColorCode"></div>
+                                <div class="countryName">
+                                <p style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="@ac.Country">@ac.CountryCode</p>
+                                </div>
+                    </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function drawPieChart() {
+        debugger
+        //var data = google.visualization.arrayToDataTable([
+        //     ['Task', 'HSCode'],
+        //     ['Kuwait', 20],
+        //     ['Nepal', 10],
+        //     ['Yemen', 10],
+        //     ['Mongolia', 100],
+        //     ['Afghanistan', 100],
+        //     ['China', 200],
+        //     ['Cambodia', 300],
+        //     ['India', 500],
+        //     ['Bangladesh', 30],
+        //     ['Oman', 30]
+        //]);
+        var colorpie=[];
+        for(var i=0;i< colors.length;i++)
+        {
+            colorpie.push(colors[i][1]);
+        }        
+        var data = google.visualization.arrayToDataTable(arrayHScode);
+        var options = {
+            is3D: true,
+            legend: { position: 'none', alignment: 'center' },
+            //  colors: ['#f9c851' ,'#fdd470' ,'#5edca3' ,'#599bff' ,'#fbe1a1' ,'#9fc4fc' ,'#f5707a' ,'#5edca3' ,'#73fdbf' ,'#fd989f' ,'#ffc5c9']
+            //  colors:[colors], 
+            colors:colorpie,
+            };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+        $('#piechart').fadeIn();
+     }
+</script>

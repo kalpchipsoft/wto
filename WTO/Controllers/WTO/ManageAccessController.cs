@@ -71,5 +71,36 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
+
+        public ActionResult GetInternalStackHolderList()
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                InternalStackHolderBusinessService obj = new InternalStackHolderBusinessService();
+                return View("~/Views/Partial/ManageAccess/InternalStackHolders.cshtml", obj.InternalStackholdersList());
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+        public ActionResult GetRegulatoryBodiesList()
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                RegulatoryBodyBusinessService obj = new RegulatoryBodyBusinessService();
+                return View("~/Views/Partial/ManageAccess/RegulatoryBodies.cshtml", obj.RegulatoryBodiesList());
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+        public ActionResult GetLanguageList()
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                LanguageBusinessServices obj = new LanguageBusinessServices();
+                return View("~/Views/Partial/ManageAccess/Language.cshtml", obj.GetLanguageList());
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
     }
 }

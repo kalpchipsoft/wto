@@ -1,13 +1,13 @@
 ﻿var myWTOAPP = {
     LoginCount: null,
     TranslatorId: null,
-    Role:null
+    Role: null
 };
 
 var TranslatedDocument = [];
-
+var _NotificationId, _NotificationDocumentId;
 (function (myWTOAPP) {
-    myWTOAPP.init = function (LoginCount, TransId,Role) {
+    myWTOAPP.init = function (LoginCount, TransId, Role) {
         myWTOAPP.LoginCount = (LoginCount == "" ? null : LoginCount);
         myWTOAPP.TranslatorId = (TransId == "" ? null : TransId);
         myWTOAPP.Role = (Role == "" ? null : Role);
@@ -40,7 +40,7 @@ $(document).ready(function () {
             input.val(log);
         } else {
             if (log)
-                Alert("Translator", log, "Ok");
+                Alert("Alert", log, "Ok");
         }
     });
 
@@ -48,7 +48,7 @@ $(document).ready(function () {
         var ConfirmPassword = $(this).val();
         var Password = $('[id$=txtNewPassword]').val();
         if (Password != "" && ConfirmPassword != Password) {
-            Alert("Change Password", "Password didn't Match.<br/>", "Ok");
+            Alert("Alert", "Password didn't Match.<br/>", "Ok");
         }
     });
 
@@ -62,7 +62,7 @@ $(document).ready(function () {
         var NewPassword = $(this).val();
         var Password = $('[id$=txtOldPassword]').val();
         if (Password != "" && NewPassword == Password) {
-            Alert("Change Password", "New password can't be same as the old password.<br/>", "Ok");
+            Alert("Alert", "New password can't be same as the old password.<br/>", "Ok");
             $(this).val('');
         }
     });
@@ -72,19 +72,20 @@ $(document).ready(function () {
         if ($(this)[0].files.length != 0) {
             var fileToLoad = $(this)[0].files[0];
             var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
+            ext = ext.toLowerCase();
             $.each($(this)[0].files, function (index, value) {
                 totfilesize += value.size;
             });
 
             if (totfilesize > 10485760) {
-                Alert("Translator", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+                Alert("Alert", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
                 $(this).val('');
                 TranslatedDocument = [];
                 $('[id$=TranslatedDocumentName_txt]').val('');
                 return false;
             }
             else if (ext != "docx" && ext != "doc" && ext != "pdf") {
-                Alert("Translator", "You can upload only word and pdf files.<br/>", "Ok");
+                Alert("Alert", "You can upload only word and pdf files.<br/>", "Ok");
                 $(this).val('');
                 TranslatedDocument = [];
                 $('[id$=TranslatedDocumentName_txt]').val('');
@@ -134,8 +135,9 @@ $(document).ready(function () {
     });
 });
 
-function UploadTranslatedDocument(NotificationId) {
-    $('[id$=hdnNotificationId]').val(NotificationId);
+function UploadTranslatedDocument(ctrl) {
+    _NotificationId = $(ctrl).closest('tr').find('[id^=hdnNotificationId_]').val();
+    _NotificationDocumentId = $(ctrl).closest('tr').find('[id^=hdnNotificationDocumentId_]').val();
     $('[id$=TranslatedDocumentId]').val('');
     $('[id$=TranslatedDocumentNameId]').val('');
     $('[id$=TranslatedDocumentName_txt]').val('');
@@ -167,11 +169,16 @@ function ChangePassword() {
     }
 
     if (ErrorMsg.length > 0) {
-        Alert("Change Password", ErrorMsg, "Ok");
+        Alert("Alert", ErrorMsg, "Ok");
         return false;
     }
     else
         UpdatePassword();
+}
+
+function AfterUpdatePassword() {
+    $("#changepassword").modal("hide");
+    window.location.href = window.location.origin + "/Translator/List";
 }
 
 function UpdatePassword() {
@@ -189,20 +196,18 @@ function UpdatePassword() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result.Status.toLowerCase() == "success") {
-                Alert("Change Password", "Your password has been updated successfully.<br/>", "Ok");
-                $("#changepassword").modal("hide");
-                window.location.href = window.location.origin + "/Translator/List";
+                AlertwithFunction("Change Password", "Your password has been updated successfully.<br/>", "Ok", "AfterUpdatePassword()");
             }
             else if (result.Status.toLowerCase() == "failure" && result.MessageType == "3")
-                Alert("Change Password", "Existing password entered by you is incorrect.", "Ok");
+                Alert("Alert", "Existing password entered by you is incorrect.", "Ok");
             else
-                Alert("Change Password", "Something went wrong. Please try again.<br/>", "Ok");
+                Alert("Alert", "Something went wrong. Please try again.<br/>", "Ok");
         },
         failure: function (result) {
-            Alert("Change Password", "Something went wrong.<br/>", "Ok");
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-            Alert("Change Password", "Something went wrong.<br/>", "Ok");
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
             //HideGlobalLodingPanel();
@@ -220,12 +225,13 @@ function SaveTranslatedDocument() {
         ErrorMsg += "Please provide attachment name. <br/>";
 
     if (ErrorMsg.length > 0) {
-        Alert("Translator", ErrorMsg, "Ok");
+        Alert("Alert", ErrorMsg, "Ok");
         return false;
     }
     else {
         var obj = {
-            NotificationId: $('[id$=hdnNotificationId]').val(),
+            NotificationDocumentId: _NotificationDocumentId,
+            NotificationId: _NotificationId,
             DisplayName: $.trim($('[id$=TranslatedDocumentNameId]').val()),
             Document: TranslatedDocument
         }
@@ -236,14 +242,13 @@ function SaveTranslatedDocument() {
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                Alert("Translator", "Document has been saved successfully.<br/>", "Ok");
-                window.location.reload();
+                AlertwithFunction("Translator", "Document has been saved successfully.<br/>", "Ok", "window.location.reload()");
             },
             failure: function (result) {
-                Alert("Translator", "Something went wrong.<br/>", "Ok");
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             error: function (result) {
-                Alert("Translator", "Something went wrong.<br/>", "Ok");
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             complete: function () {
                 //HideGlobalLodingPanel();
@@ -286,11 +291,11 @@ function SearchDocument() {
                     HtmlData += '<td>' + v.NotificationNumber + '</td>';
                     HtmlData += '<td>' + v.SendToTranslaterOn + '</td>';
                     HtmlData += '<td>' + v.TranslationDueBy + '</td>';
-                    HtmlData += '<td><a href="' + v.UntranslatedDocument.Path + '" download="' + v.UntranslatedDocument.FileName + '"><i class="material-icons download">&#xE2C4;</i>' + v.UntranslatedDocument.FileName + '</a></td>';
-                    if (v.TranslatedDocument.FileName == "")
+                    HtmlData += '<td><a href="' + v.UntranslatedDocument.Path + '" download="' + v.UntranslatedDocument.FileName + '"><i class="glyphicon glyphicon-save download"></i>&nbsp;' + v.UntranslatedDocument.DisplayName + '</a></td>';
+                    if (v.TranslatedDocument.length > 0 && v.TranslatedDocument.FileName == "")
                         HtmlData += '<td><a href="#" onclick="UploadTranslatedDocument(' + v.NotificationId + ');" class="delete" data-toggle="modal">Upload</a></td>';
                     else {
-                        HtmlData += '<td><a href="' + v.TranslatedDocument.Path + '" download="' + v.TranslatedDocument.FileName + '"><i class="material-icons download">&#xE2C4;</i> ' + v.TranslatedDocument.FileName + '</a></td>';
+                        HtmlData += '<td><a href="' + v.TranslatedDocument.Path + '" download="' + v.TranslatedDocument.FileName + '"><i class="glyphicon glyphicon-save download"></i>&nbsp;' + v.TranslatedDocument.DisplayName + '</a></td>';
                     }
                     HtmlData += '</tr>';
                 });
@@ -302,10 +307,10 @@ function SearchDocument() {
             $('[id$=tblData]').find('tbody').append(HtmlData);
         },
         failure: function (result) {
-            Alert("Translator", "Something went wrong.<br/>", "Ok");
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-            Alert("Translator", "Something went wrong.<br/>", "Ok");
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
             //HideGlobalLodingPanel();

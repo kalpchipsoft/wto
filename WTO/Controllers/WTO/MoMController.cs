@@ -23,53 +23,31 @@ namespace WTO.Controllers.WTO
         }
 
         // GET: MoM/Details/5
-        public ActionResult Add(Int64 Id)
+        public ActionResult Add(string CallFor, int? CountryId, string NotificationNo, string NotificationId)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 MomBusinessService obj = new MomBusinessService();
-                return View(obj.GetNotificationList_Mom(Id));
+                return View(obj.GetNotificationList_Mom(CallFor, CountryId, NotificationNo, NotificationId, ""));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+        // POST: MoM/Edit/5
+        public ActionResult Edit(Nullable<Int64> Id, string CallFor)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                ViewBag.Id = Id;
+
+                if (Id == 0)
+                    Id = null;
+                MomBusinessService obj = new MomBusinessService();
+                return View(obj.EditMoM(Id, CallFor));
             }
             else
                 return RedirectToAction("Index", "Login");
         }
 
-        // POST: MoM/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MoM/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MoM/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

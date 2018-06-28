@@ -68,5 +68,48 @@ namespace BusinessService.Masters
             DataTable dt = objMDM.CheckIsEmailExists(Email,callFor);
             return Convert.ToBoolean(dt.Rows[0][0]);
         }
+
+        public List<RegulatoryBodiesMaster> GetRegulatoryBodies()
+        {
+            List<RegulatoryBodiesMaster> RBList = new List<RegulatoryBodiesMaster>();
+            MatersDataManager objMDM = new MatersDataManager();
+            DataTable dt = objMDM.GetRegulatoryBodies();
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    RegulatoryBodiesMaster obj = new RegulatoryBodiesMaster();
+                    obj.RegulatoryBodyId = Convert.ToInt32(dr["RegulatoryBodyId"]);
+                    obj.Name = Convert.ToString(dr["Name"]);
+                    obj.Email = Convert.ToString(dr["EmailId"]);
+                    obj.Address = Convert.ToString(dr["Address"]);
+                    RBList.Add(obj);
+                }
+            }
+
+            return RBList;
+        }
+        public List<InternalStakeHolderMaster> GetInternalStakeHolder()
+        {
+            List<InternalStakeHolderMaster> ISList = new List<InternalStakeHolderMaster>();
+            MatersDataManager objMDM = new MatersDataManager();
+            DataTable dt = objMDM.GetInternalStakeholder();
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    InternalStakeHolderMaster obj = new InternalStakeHolderMaster();
+                    obj.InternalStakeHolderId = Convert.ToInt32(dr["InternalStakeHolderId"]);
+                    obj.Name = Convert.ToString(dr["Name"]);
+                    obj.Email = Convert.ToString(dr["EmailId"]);
+                    obj.OrganisationName = Convert.ToString(dr["OrgName"]);
+                    obj.Designation = Convert.ToString(dr["Designation"]);
+                    ISList.Add(obj);
+                }
+            }
+
+            return ISList;
+        }
+
     }
 }

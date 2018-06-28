@@ -39,7 +39,7 @@ namespace WTO.Controllers.API
 
                         if (obj.Document.FileName.Length > 0 && bytes.Length > 0)
                         {
-                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument_Translated/" + obj.NotificationId + "_" + obj.Document.FileName);
+                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/NotificationDocument_Translated/" + obj.NotificationDocumentId + "_" + obj.Document.FileName);
                             File.WriteAllBytes(filePath, bytes);
                         }
                     }

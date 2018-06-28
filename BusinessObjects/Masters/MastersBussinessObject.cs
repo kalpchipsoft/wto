@@ -8,16 +8,10 @@
     {
         public long ItemNumber { get; set; }
         public long StakeHolderId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
+        public string FullName { get; set; }
         public string HSCodes { get; set; }
+        public string OrganizationName { get; set; }
+        public string Designation { get; set; }
     }
 
     public class HSCodes
@@ -56,5 +50,23 @@
         public string Status { get; set; }
         public string Message { get; set; }
         public long Id { get; set; }
+    }
+
+    public class InternalStakeHolderMaster
+    {
+        public int InternalStakeHolderId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string OrganisationName { get; set; }
+        public string Designation { get; set; }
+    }
+
+    public class RegulatoryBodiesMaster
+    {
+        public int RegulatoryBodyId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string Contact { get; set; }
     }
 }

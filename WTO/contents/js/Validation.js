@@ -86,6 +86,28 @@ $(document).ready(function () {
             $(this).val(parseFloat($(this).val()).toFixed(2));
         }
     });
+
+    //No special Character
+    $(document).on('keypress', '.NoSpecialChar', function (e) {
+        var regex = new RegExp("^[a-zA-Z0-9_ ]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (regex.test(str)) {
+            return true;
+        }
+
+        e.preventDefault();
+        return false;
+    });
+
+    $(document).on('paste', '.NoSpecialChar', function (e) {
+        var str = e.originalEvent.clipboardData.getData('text');
+        var regex = new RegExp("^[a-zA-Z0-9_ ]+$");
+        if (!regex.test(str)) {
+            Alert("", "Alphanumeric value allowed only.<br/>", "Ok");
+            $(this).val('');
+            return false;
+        }
+    });
 });
 
 //Alpha character only
@@ -149,6 +171,22 @@ function HSCodeValidation() {
 
     if (msg.length > 0) {
         Alert("HS Codes", msg, "Ok");
+        return false;
+    }
+}
+
+function onlyEmailsWithSemicolon(evt) {
+    var keyCode = (evt.which) ? evt.which : event.keyCode;
+    var IsInvalid = false;
+    if (!((keyCode >= 65 && keyCode <= 90) || (keyCode == 8) || (keyCode == 9) || (keyCode >= 97 && keyCode <= 122) || (keyCode == 32) || (keyCode == 45) || (keyCode >= 48 && keyCode <= 57))) {
+        IsInvalid = true;
+    }
+
+    if (keyCode == 46 || keyCode == 59 || keyCode == 64 || keyCode == 95)
+        IsInvalid = false;
+
+    if (IsInvalid) {
+        //Alert("", "Only alphabets and numbers are allowed.<br/>", "Ok");
         return false;
     }
 }

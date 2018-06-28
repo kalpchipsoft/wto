@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using BusinessService.Notification;
 using BusinessObjects.Notification;
 
+
 namespace WTO.Controllers.WTO
 {
     public class AddNotificationController : Controller
@@ -30,7 +31,18 @@ namespace WTO.Controllers.WTO
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationStakeholders.cshtml", obj.GetNotificationStakeholders(Id));
+                return View("~/Views/Partial/NotificationStakeholders.cshtml", obj.GetNotificationStakeholders(Id));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult GetStakeHoldersMaster(string SearchText)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                NotificationBusinessService obj = new NotificationBusinessService();
+                return View("~/Views/Partial/StakeHolderList.cshtml", obj.GetStakeHoldersMaster(SearchText));
             }
             else
                 return RedirectToAction("Index", "Login");
@@ -52,7 +64,7 @@ namespace WTO.Controllers.WTO
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id));
+                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id,0));
             }
             else
                 return RedirectToAction("Index", "Login");
@@ -64,6 +76,33 @@ namespace WTO.Controllers.WTO
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
                 return View("~/Views/Partial/Notification/NotificationMails.cshtml", obj.GetNotificationMails(Id));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult GetNotificatioNote(string Note)
+        {
+            ViewBag.Note = Note;
+            return PartialView("~/Views/Partial/Notification/NotificationNote.cshtml", Note);
+        }
+        public ActionResult GetNotificationPlanTakeAction(Int64 Id)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                NotificationBusinessService obj = new NotificationBusinessService();
+                return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.GetNotificationActions(Id, 0));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult NotificationRelatedMaterials(Int64 Id)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                NotificationBusinessService obj = new NotificationBusinessService();
+                return View("~/Views/Partial/Notification/NotificationRelatedMaterial.cshtml", obj.GetNotificationRelatedMaterial(Id));
             }
             else
                 return RedirectToAction("Index", "Login");

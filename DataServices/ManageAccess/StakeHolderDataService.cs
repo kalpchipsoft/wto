@@ -38,16 +38,10 @@ namespace DataServices.ManageAccess
                 sqlCommand.CommandText = Procedures.AddStakeHolder;
                 sqlCommand.Parameters.AddWithValue("@UserId", Id);
                 sqlCommand.Parameters.AddWithValue("@StakeHolderId", obj.StakeHolderId);
-                sqlCommand.Parameters.AddWithValue("@FirstName", obj.FirstName);
-                sqlCommand.Parameters.AddWithValue("@LastName", obj.LastName);
+                sqlCommand.Parameters.AddWithValue("@StakeHolderName", obj.StakeHolderName);
                 sqlCommand.Parameters.AddWithValue("@Email", obj.Email);
-                sqlCommand.Parameters.AddWithValue("@Mobile", obj.Mobile);
                 sqlCommand.Parameters.AddWithValue("@IsActive", obj.Status);
                 sqlCommand.Parameters.AddWithValue("@OrgName", obj.OrgName);
-                sqlCommand.Parameters.AddWithValue("@Address", obj.Address);
-                sqlCommand.Parameters.AddWithValue("@City", obj.City);
-                sqlCommand.Parameters.AddWithValue("@State", obj.State);
-                sqlCommand.Parameters.AddWithValue("@PIN", obj.PIN);
                 sqlCommand.Parameters.AddWithValue("@HSCodes", obj.HSCodes);
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }

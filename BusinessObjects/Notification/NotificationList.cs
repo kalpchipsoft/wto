@@ -13,19 +13,14 @@ namespace BusinessObjects.Notification
 
         private DateTime _dateFrom = Convert.ToDateTime("1/1/1753 12:00:00 AM");
         private DateTime _dateTo = Convert.ToDateTime("1/1/9998 12:00:00 AM");
-        public DateTime FinalDateOfComments_From
-        {
-            get { return _dateFrom; }
-            set { _dateFrom = value; }
-        }
-        public DateTime FinalDateOfComments_To
-        {
-            get { return _dateTo; }
-            set { _dateTo = value; }
-        }
+        public Nullable<DateTime> FinalDateOfComments_From { get; set; }
+        public Nullable<DateTime> FinalDateOfComments_To { get; set; }
         public int NotificationType { get; set; }
         public int StatusId { get; set; }
-        public string StatusFor { get; set; }
+        public string PendingFrom { get; set; }
+        public int ActionId { get; set; }
+        public string ActionStatus { get; set; }
+        public Nullable<DateTime> MeetingDate { get; set; }
     }
     public class Notification : CommonResponseModel
     {
@@ -42,16 +37,40 @@ namespace BusinessObjects.Notification
         public string Actions { get; set; }
     }
 
-    public class NotificationList 
+    public class NotificationList
     {
         public List<Country> CountryList { get; set; }
         public List<StatusMaster> StatusList { get; set; }
         public List<ActionMaster> ActionList { get; set; }
         public List<Notification> Notifications { get; set; }
-
+        public List<ActionStatus> ActionStatusList { get; set; }
         public long TotalCount { get; set; }
+
+        public List<NotificationProcessDot> NotificationProcessDots { get; set; }
+        public List<NotificationActionDot> NotificationActionDots { get; set; }
     }
 
+    public class NotificationProcessDot
+    {
+        public Int64 NotificationId { get; set; }
+        public string ColorCode { get; set; }
+        public string TooltipText { get; set; }
+        public int Sequence { get; set; }
+    }
+
+    public class NotificationActionDot
+    {
+        public Int64 NotificationId { get; set; }
+        public string ColorCode { get; set; }
+        public string TooltipText { get; set; }
+        public int Sequence { get; set; }
+    }
+
+    public class ActionStatus
+    {
+        public string Status { get; set; }
+        public int StatusId { get; set; }
+    }
     public class StatusMaster
     {
         public int StatusId { get; set; }
@@ -60,7 +79,8 @@ namespace BusinessObjects.Notification
 
     public class Notifications : PagerTotalCount
     {
-
         public List<Notification> ItemsList { get; set; }
+        public List<NotificationProcessDot> NotificationProcessDots { get; set; }
+        public List<NotificationActionDot> NotificationActionDots { get; set; }
     }
 }

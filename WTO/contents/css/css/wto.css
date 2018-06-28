@@ -4,7 +4,12 @@
 }
 
 .notificationlist thead tr, .notificationlist tbody tr {
-    border-bottom: 1px solid #d5d5d5 !important;
+    border: 1px solid #d5d5d5 !important;
+    border-top: none !important;
+}
+
+.notificationlist thead tr {
+    border: 1px solid transparent !important;
 }
 
 .show {
@@ -111,10 +116,10 @@
 
 
 /* Add notification css start */
-.adduploadbutton
-{
-	float:right;
+.adduploadbutton {
+    float: right;
 }
+
 .combobox-container .input-group .input-group-addon {
     border-color: black;
     border-top-right-radius: 0px;
@@ -318,7 +323,7 @@ textarea {
     border-radius: 12px;
     /* border: 4px solid #cccccc; */
     overflow: auto;
-    background: #e53472;
+    background: #1edec5;
 }
 
 .selecthrheader {
@@ -335,7 +340,7 @@ textarea {
     margin-right: 4px;
     padding: 4px !important;
     opacity: 1;
-	color:#fff;
+    color: #fff;
 }
 
 .selecthrbody {
@@ -344,6 +349,9 @@ textarea {
 
 .selecthrbodyinner {
     background: #fff;
+    min-height: 300px;
+    max-height: 500px;
+    overflow: auto;
 }
 
 .selecthrheading {
@@ -377,78 +385,84 @@ a:hover, a:focus {
     outline: none;
     text-decoration: none;
 }
-#accordionmailcount
-{
-	border:2px solid #e53472;
-}
-#accordionmailcount .panel {
-    border: 0px none;
-    border-radius: 0px;
-    box-shadow: none;
-    margin-bottom: 0px;
+
+#accordionmailcount {
+    border: 2px solid #e53472;
 }
 
-#accordionmailcount .panel-default {
-    margin-top: 0px !important;
-}
+    #accordionmailcount .panel {
+        border: 0px none;
+        border-radius: 0px;
+        box-shadow: none;
+        margin-bottom: 0px;
+    }
 
-#accordionmailcount .panel-heading {
-    padding: 0;
-    border-radius: 0px;
-    border-bottom: 1px solid lightgray;
-}
+    #accordionmailcount .panel-default {
+        margin-top: 0px !important;
+    }
 
-#accordionmailcount .panel-title > a {
-    display: block;
-    padding: 15px 50px 15px 15px;
-    position: relative;
-    background: #fff;
-    transition: 0.4s ease;
-    color: #000;
-}
+    #accordionmailcount .panel-heading {
+        padding: 0;
+        border-radius: 0px;
+        border-bottom: 1px solid lightgray;
+    }
 
-    #accordionmailcount .panel-title > a.collapsed {
+    #accordionmailcount .panel-title > a {
+        display: block;
+        padding: 15px 50px 15px 15px;
+        position: relative;
         background: #fff;
-        color: #000;
-    }
-
-    #accordionmailcount .panel-title > a:hover {
-        background: #fff;
-        color: #000;
-    }
-
-    #accordionmailcount .panel-title > a:after,
-    #accordionmailcount .panel-title > a.collapsed:after {
-        content: "\f068";
-        font-family: FontAwesome;
-        color: #ea8b23;
-        font-size: 18px;
-        position: absolute;
-        top: 0;
-        right: 0px;
-        padding: 14.5px;
-        line-height: 16px;
-    }
-
-    #accordionmailcount .panel-title > a.collapsed:after {
-        content: "\f067";
-        color: #ea8b23;
-        font-size: 18px;
         transition: 0.4s ease;
+        color: #000;
     }
 
-    #accordionmailcount .panel-title > a.collapsed:hover:after {
-        color: #ea8b23;
-    }
+        #accordionmailcount .panel-title > a.collapsed {
+            background: #fff;
+            color: #000;
+        }
 
-#accordionmailcount .panel-body {
-    color: #808080;
-    background: #fff;
-    line-height: 24px;
-    border: 1px solid lightgray;
-    border-top: 0px none;
-    position: relative;
-}
+        #accordionmailcount .panel-title > a:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        #accordionmailcount .panel-title > a:after,
+        #accordionmailcount .panel-title > a.collapsed:after {
+            /*content: "\f068";
+       font-family: FontAwesome;*/
+            content: "\2212";
+            font-family: Bootstrap;
+            color: #ea8b23;
+            font-size: 30px;
+            font-weight: 700;
+            position: absolute;
+            top: 0;
+            right: 0px;
+            padding: 14.5px;
+            line-height: 16px;
+        }
+
+        #accordionmailcount .panel-title > a.collapsed:after {
+            /*content: "\f067";*/
+            content: "\2b";
+            color: #ea8b23;
+            font-size: 30px;
+            font-weight: 700;
+            transition: 0.4s ease;
+        }
+
+        #accordionmailcount .panel-title > a.collapsed:hover:after {
+            color: #ea8b23;
+        }
+
+    #accordionmailcount .panel-body {
+        color: #808080;
+        background: #fff;
+        line-height: 24px;
+        border: 1px solid lightgray;
+        border-top: 0px none;
+        position: relative;
+    }
 
 .forwardmail, .forwardmail:hover, .forwardmail:active, .forwardmail:focus {
     position: absolute;
@@ -465,47 +479,50 @@ a:hover, a:focus {
     position: absolute;
     top: 16px;
     right: 20%;
-	color:#e38271;
+    color: #e38271;
 }
 
 .shareback {
     position: absolute;
     top: 14px;
     right: 10%;
-	color:#0473bb;
+    color: #0473bb;
 }
+
 .rotate {
     transform: rotateY(180deg);
 }
+
 .mail-count-height {
-    height: 300px;
+    /*height: 300px;*/
     overflow: auto;
 }
 
-.mail-count-height::-webkit-scrollbar {
-    width: 0.5em;
-}
- 
-.mail-count-height::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-}
- 
-.mail-count-height::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
-  border-radius: 10px;
-}
+    .mail-count-height::-webkit-scrollbar {
+        width: 0.5em;
+    }
 
-.mail-count-height::-webkit-scrollbar{
-    height: 10px;
-    width: 10px;
-    background: gray;
-}
-.mail-count-height::-webkit-scrollbar-thumb:horizontal{
-    background: darkgrey;
-    border-radius: 10px;
-	outline: 1px solid slategrey;
-}
+    .mail-count-height::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    .mail-count-height::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+        border-radius: 10px;
+    }
+
+    .mail-count-height::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+        background: gray;
+    }
+
+    .mail-count-height::-webkit-scrollbar-thumb:horizontal {
+        background: darkgrey;
+        border-radius: 10px;
+        outline: 1px solid slategrey;
+    }
 /* mailcount popup */
 
 
@@ -521,9 +538,9 @@ a:hover, a:focus {
     background: #fff;
     border: 1px solid #ef4438;
     margin-bottom: 5px !important;
-	-webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
-	-moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
-	box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    -webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    -moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
 }
 
 .jstree-icon:empty {
@@ -590,9 +607,9 @@ a:hover, a:focus {
 .jstree-default.jstree-checkbox-no-clicked .jstree-clicked {
     background: #fff !important;
     box-shadow: none;
-	-webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
-	-moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
-	box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    -webkit-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    -moz-box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
+    box-shadow: inset 0px -6px 7px -6px rgba(239,69,56,1);
 }
 /* tree view css start */
 
@@ -666,7 +683,7 @@ a:hover, a:focus {
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #959595;
-    font-size: 13px;
+    /*font-size: 13px;*/
 }
 
     .seprater:last-child {
@@ -754,9 +771,9 @@ a:hover, a:focus {
 .btn-file > input {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 120px;
-    height: 100%;
+    right: 15px;
+    width: 160px;
+    height: 60%;
     margin: 0;
     font-size: 23px;
     cursor: pointer;
@@ -806,8 +823,7 @@ a:hover, a:focus {
 
 /* dashboard css start */
 
-.dashbaorddiscussionicon
-{
+.dashbaorddiscussionicon {
     position: absolute;
     top: -15px;
     left: 15px;
@@ -815,33 +831,32 @@ a:hover, a:focus {
     width: 40%;
     padding: 15px;
     border-radius: 10px;
-	height:50%;
+    height: 50%;
 }
 
-.YBG
-{
-	background:#f7921e;
-}
-.KBG
-{
-	background:#e02a6c;
-}
-.GBG
-{
-	background:#54ad57;
-}
-.PBG
-{
-	background:#11b5ca;
+.YBG {
+    background: #f7921e;
 }
 
-.rightbottom{
-	box-shadow: 6px 3px 8px #d4d4d4;
+.KBG {
+    background: #e02a6c;
+}
+
+.GBG {
+    background: #54ad57;
+}
+
+.PBG {
+    background: #11b5ca;
+}
+
+.rightbottom {
+    box-shadow: 6px 3px 8px #d4d4d4;
 }
 
 .full {
     height: 150px;
-	border-radius:12px;
+    border-radius: 12px;
 }
 
 /*.full-lightskyblue-border {
@@ -862,25 +877,25 @@ a:hover, a:focus {
 
 .full-YBG {
     /*background: #009ee3;*/
-	color: #f7921e;
+    color: #f7921e;
     border-top: 1px solid #f7921e;
 }
 
 .full-KBG {
     /*background: #7966ab;*/
-	color: #e02a6c;
+    color: #e02a6c;
     border-top: 1px solid #e02a6c;
 }
 
 .full-GBG {
     /*background: #9e6a9f;*/
-	color: #54ad57;
+    color: #54ad57;
     border-top: 1px solid #54ad57;
 }
 
 .full-PBG {
     /*background: #c9628f;*/
-	color: #11b5ca;
+    color: #11b5ca;
     border-top: 1px solid #11b5ca;
 }
 
@@ -896,7 +911,7 @@ a:hover, a:focus {
     .smalldiv p {
         margin-top: 10px;
         margin-bottom: 10px;
-		font-weight:700;
+        font-weight: 700;
         /*color: #fff;*/
     }
 
@@ -967,14 +982,14 @@ a:hover, a:focus {
 /* Add MOM List css */
 
 .tab .nav-tabs {
-    border: 1px solid #e53472;
-    background: #e53472;
+    border: 1px solid #1edec5;
+    background: #1edec5;
     color: #fff;
 }
 
     .tab .nav-tabs li {
         margin: 0;
-        width: 16.66%;
+        width: 12.5%;
         text-align: center;
     }
 
@@ -983,11 +998,11 @@ a:hover, a:focus {
             color: #fff;
             background: transparent;
             margin: 0;
-            padding: 20px 25px;
+            padding: 20px 0px;
             border-radius: 0;
             border: none;
             border-right: 1px solid transparent;
-            text-transform: uppercase;
+            text-transform: capitalize;
             position: relative;
         }
 
@@ -998,17 +1013,17 @@ a:hover, a:focus {
 
         .tab .nav-tabs li.active a,
         .tab .nav-tabs li.active a:hover {
-            color: #e53472;
-			border: none;
-			background: #fff;
-			font-weight: 700;
+            color: #1edec5;
+            border: none;
+            background: #fff;
+            font-weight: 700;
         }
 
             .tab .nav-tabs li.active a:before {
                 content: "";
                 width: 58%;
                 height: 4px;
-				background: #e53472;
+                background: #1edec5;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -1018,7 +1033,7 @@ a:hover, a:focus {
 
             .tab .nav-tabs li.active a:after {
                 content: "";
-                border-top: 10px solid #e53472;
+                border-top: 10px solid #1edec5;
                 border-left: 10px solid transparent;
                 border-right: 10px solid transparent;
                 position: absolute;
@@ -1032,7 +1047,7 @@ a:hover, a:focus {
     line-height: 25px;
     background: #fff;
     padding: 20px;
-    border: 1px solid #000f79;
+    border: 1px solid #1edec5;
     border-top: none;
 }
 
@@ -1084,11 +1099,11 @@ a:hover, a:focus {
     .v-center {
         min-height: 230px;
     }
-	.insertfielddiv
-	{
-		width: 95% !important;
-		 margin-bottom: 10px;
-	}
+
+    .insertfielddiv {
+        width: 95% !important;
+        margin-bottom: 10px;
+    }
 }
 
 .disabled {
@@ -1125,6 +1140,12 @@ span.warning {
     font-size: 12px;
 }
 
+span.note {
+    color: grey;
+    font-size: 12px;
+}
+
+
 .Close-dialoge {
     position: absolute;
     right: 8px;
@@ -1147,7 +1168,7 @@ span.warning {
 
     .attachment-modal.body {
         position: absolute;
-        top: 20%;
+        /*top: 20%;*/
     }
 
 .modal {
@@ -1200,7 +1221,7 @@ span.warning {
 .tablescroll {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 150px;
+    height: 300px;
     margin-right: 1px;
 }
 
@@ -1327,19 +1348,19 @@ a {
 
 .Attachmentdiv {
     width: 100%;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
     min-height: 34px;
-    padding: 10px;
+    padding: 0 5px;
     color: #555;
     background: #fff;
     float: left;
-    max-height: 70px;
-    overflow-y: auto;
+    /*max-height: 70px;
+    overflow-y: auto;*/
 }
 
 .Attachmentfilename {
-    padding: 2px 5px;
-    background: #ccc;
+    padding: 4px 7px;
+    background: #eee;
     color: #000;
     margin-left: 5px;
     border-radius: 10px;
@@ -1390,14 +1411,115 @@ h3.panel-title {
 .no-padding {
     padding: 0 !important;
 }
-.insertfielddiv
-{
-	width: 42%;
-	font-size:14px;
-	float: left;
-	margin-top: -2px;
+
+.insertfielddiv {
+    width: 50%;
+    font-size: 14px;
+    float: left;
+    margin-top: -2px;
 }
-.insertcheckbox
-{
-	margin-top:4px;
+
+.insertcheckbox {
+    margin-top: 4px;
 }
+
+.Attachmentbadge a {
+    padding: 5px 10px 7px 10px;
+    background-color: #e3e3e3;
+    /* border-radius: 10px; */
+    margin-right: 10px;
+    color: #000;
+    font-size: 14px;
+}
+
+.icon-selected {
+    background: url(../../img/icon-check-black.png);
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-decoration: none;
+    margin-left: 15px;
+    margin-top: 2px;
+    padding: 0;
+}
+
+.dropdown-menu > li > i {
+    position: absolute;
+    left: 0;
+    top: 7px;
+}
+
+
+element.style {
+}
+
+.btn.btn-default.btn-block {
+    text-align: left;
+}
+
+.btn-group > .btn:first-child {
+    margin-left: 0;
+}
+
+.btn-group-vertical > .btn, .btn-group > .btn {
+    position: relative;
+    float: left;
+}
+
+.btn.disabled, .btn[disabled] {
+    opacity: 1 !important;
+}
+
+a.fileremove {
+    color: #d7534f;
+    border: 1px solid #d7534f;
+    border-radius: 50%;
+    padding: 3px;
+    margin-left: 5px;
+    font-size: 10px;
+}
+
+.default-pointer {
+    cursor: default !important;
+}
+
+.WordWrapText {
+    word-wrap: break-word;
+}
+
+.hasDatepicker {
+    cursor: pointer;
+}
+
+.btn-label {
+    position: relative;
+    display: inline-block;
+    padding: 9px 12px 12px 12px;
+    background: rgb(30, 222, 197);
+    color: #fff;
+    border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+    position: fixed;
+    padding-top: 0;
+    padding-bottom: 0;
+    z-index: 999;
+    top: 50%;
+}
+
+    .btn-labeled.left {
+        left: 0;
+    }
+
+        .btn-labeled.left .btn-label {
+            left: -12px;
+        }
+
+    .btn-labeled.right {
+        right: 0;
+    }
+
+        .btn-labeled.right .btn-label {
+            right: -12px;
+        }

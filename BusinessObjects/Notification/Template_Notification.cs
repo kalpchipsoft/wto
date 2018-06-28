@@ -10,6 +10,9 @@ namespace BusinessObjects.Notification
     {
         public string TemplateType { get; set; }
         public string TemplateFor { get; set; }
+        public Int64 NotificationDocumentId { get; set; }
+        public Int64 NotificationActionId { get; set; }
+        public string StakeHolderResponseDate { get; set; }
     }
 
     public class Notification_Template

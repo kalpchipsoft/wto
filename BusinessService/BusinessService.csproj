@@ -71,6 +71,9 @@
   <ItemGroup>
     <Compile Include="LoginBusinessService.cs" />
     <Compile Include="ManageAccess\CountryBusinessService.cs" />
+    <Compile Include="ManageAccess\InternalStackHolderBusinessService.cs" />
+    <Compile Include="ManageAccess\LanguageBusinessServices.cs" />
+    <Compile Include="ManageAccess\RegulatoryBodyBusinessService.cs" />
     <Compile Include="ManageAccess\StakeHolderBusinessService.cs" />
     <Compile Include="ManageAccess\TemplateBussinessService.cs" />
     <Compile Include="ManageAccess\TranslatorBusinessService.cs" />

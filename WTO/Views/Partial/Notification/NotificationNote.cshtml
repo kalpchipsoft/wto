@@ -1,0 +1,113 @@
+﻿@model BusinessObjects.Notification.SaveNote
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content selecthrcontent">
+        <div class="modal-header selecthrheader">
+            <button type="button" class="close selecthrclose" data-dismiss="modal">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        <div class="modal-body selecthrbody">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner" style="min-height: 150px;">
+                        <h4 class="selecthrheading" id="AddTemplatepopupHead">Note</h4>
+                        <hr />
+                        <form class="form-horizontal top-offset-20">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea type="text" class="form-control AutoHeight" id="NoteId"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-sm-7">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a href="#" class="btn btn-dark-green btn-block btn-padding" onclick="NoteValidation();">Save</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        autosize($(".AutoHeight"));
+    });
+
+    function NoteValidation() {
+        var msg = "";
+        if ($('#NoteId').val().trim().length == 0) {
+            $('#NoteId').addClass("error");
+            msg += "Please enter Note.<br/>";
+        }
+        else {
+            $('[id$=NoteId]').removeClass("error");
+        }
+
+        if (msg.length > 0) {
+            Alert("Alert", msg, "Ok");
+        }
+        else {
+            var _NotificationId = $('#hdnNotificationId').val();
+            SaveUpdateNote(_NotificationId);
+        }
+    }
+
+    function SaveUpdateNote(_NotificationId) {
+        ShowGlobalLodingPanel();
+        var obj = {
+            NotificationId: _NotificationId,
+            MeetingNote: $('#NoteId').val()
+        };
+        $.ajax({
+            url: "/api/AddUpdateNotification/SaveNote",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result) {
+                    var _MeetingNote = result.length > 40 ? result.substring(0, 39) + "...." : result;
+                    if (location.pathname.indexOf('/MoM/Edit/') >= 0)
+                        AlertwithFunction("Alert", "Note has been updated successfully.<br/>", "Ok", "location.reload();");
+                    else {
+                        $('#MeetingNoteId').text(_MeetingNote);
+                        Alert("Alert", "Note has been updated successfully.<br/>", "Ok");
+                    }
+                }
+                else
+                    Alert("Alert", "Something went wrong. Please try again.<br/>", "Ok");
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                CloseAddNote();
+                HideGlobalLodingPanel();
+            }
+        });
+    }
+
+    function RefreshAutoheight() {
+        $.each($('.AutoHeight'), function (i, v) {
+            var evt = document.createEvent('Event');
+            evt.initEvent('autosize:update', true, false);
+            this.dispatchEvent(evt);
+        });
+    }
+</script>

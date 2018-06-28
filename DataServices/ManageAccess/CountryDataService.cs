@@ -41,6 +41,8 @@ namespace DataServices.ManageAccess
                 sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryName);
                 sqlCommand.Parameters.AddWithValue("@IsActive", obj.Status);
                 sqlCommand.Parameters.AddWithValue("@CountryCode", obj.CountryCode);
+                sqlCommand.Parameters.AddWithValue("@SPSEnquiryEmailId", obj.EnquiryEmail_SPS);
+                sqlCommand.Parameters.AddWithValue("@TBTEnquiryEmailId", obj.EnquiryEmail_TBT);
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }
         }
@@ -55,5 +57,18 @@ namespace DataServices.ManageAccess
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }
         }
+        public DataTable CheckDuplicateCountryData(int Id, string Callfor, string text)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetDupCountryCode;
+                sqlCommand.Parameters.AddWithValue("@Id", Id);
+                sqlCommand.Parameters.AddWithValue("@Callfor", Callfor);
+                sqlCommand.Parameters.AddWithValue("@text", text);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+
     }
 }

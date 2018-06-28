@@ -91,25 +91,34 @@ namespace BusinessService.Translator
                 tblIndex++;
                 if (ds.Tables.Count > tblIndex)
                 {
-                    using(DataTable dt = ds.Tables[tblIndex])
+                    using (DataTable dt = ds.Tables[tblIndex])
                     {
-                        foreach(DataRow dr in dt.Rows)
+                        foreach (DataRow dr in dt.Rows)
                         {
                             NotificationDocument objND = new NotificationDocument();
                             objND.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                            objND.NotificationDocumentId = Convert.ToInt64(dr["NotificationDocumentId"]);
                             objND.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                             objND.SendToTranslaterOn = Convert.ToString(dr["SendToTranslaterOn"]);
                             objND.TranslationDueBy = Convert.ToString(dr["TranslationDueBy"]);
 
                             EditAttachment objE = new EditAttachment();
-                            objE.FileName= Convert.ToString(dr["NotificationDocumentName"]);
-                            objE.Path = "/Attachments/NotificationDocument/" + Convert.ToInt64(dr["NotificationId"]) + "_" + Convert.ToString(dr["NotificationDocument"]);
-                            objND.UntranslatedDocument = objE;
+                            if (Convert.ToString(dr["NotificationDocumentName"]) != "")
+                            {
+                                objE.DisplayName = Convert.ToString(dr["NotificationDocumentName"]);
+                                objE.FileName = Convert.ToString(dr["NotificationDocument"]);
+                                objE.Path = "/Attachments/NotificationDocument/" + Convert.ToInt64(dr["NotificationDocumentId"]) + "_" + Convert.ToString(dr["NotificationDocument"]);
+                                objND.UntranslatedDocument = objE;
+                            }
 
                             objE = new EditAttachment();
-                            objE.FileName = Convert.ToString(dr["TranslatedDocumentName"]);
-                            objE.Path = "/Attachments/NotificationDocument_Translated/" + Convert.ToInt64(dr["NotificationId"]) + "_" + Convert.ToString(dr["TranslatedDocument"]);
-                            objND.TranslatedDocument = objE;
+                            if (Convert.ToString(dr["TranslatedDocumentName"]) != "")
+                            {
+                                objE.DisplayName = Convert.ToString(dr["TranslatedDocumentName"]);
+                                objE.FileName = Convert.ToString(dr["TranslatedDocument"]);
+                                objE.Path = "/Attachments/NotificationDocument_Translated/" + Convert.ToInt64(dr["NotificationDocumentId"]) + "_" + Convert.ToString(dr["TranslatedDocument"]);
+                                objND.TranslatedDocument = objE;
+                            }
 
                             DocumentList.Add(objND);
                         }
@@ -122,7 +131,7 @@ namespace BusinessService.Translator
         public int SaveTranslatedDocument(long Id, UploadDocument obj)
         {
             TranslatorDataService objTDS = new TranslatorDataService();
-            return(objTDS.SaveTranslatedDocument(Id, obj));
+            return (objTDS.SaveTranslatedDocument(Id, obj));
         }
     }
 }

@@ -33,5 +33,19 @@ namespace WTO.Controllers.API.Master
             MastersBusinessService objMstr = new MastersBusinessService();
             return Ok(objMstr.CheckIsEmailExists(Email,callFor));
         }
+
+        [HttpGet]
+        public IHttpActionResult GetRegulatoryBodies()
+        {
+            MastersBusinessService objMstr = new MastersBusinessService();
+            return Ok(objMstr.GetRegulatoryBodies());
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetInternalStakeHolder()
+        {
+            MastersBusinessService objMstr = new MastersBusinessService();
+            return Ok(objMstr.GetInternalStakeHolder());
+        }
     }
 }

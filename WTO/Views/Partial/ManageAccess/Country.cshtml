@@ -11,12 +11,13 @@
             <table class="table table-bordered">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th>S.No</th>
-                        <th>Country Code</th>
-                        <th>Country Name</th>
-                        <th>Status</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Delete</th>
+                        <th class="col-sm-1">S.No</th>
+                        <th class="col-sm-4">Country Name</th>
+                        <th class="text-center col-sm-2">SPS Enquiry Point</th>
+                        <th class="text-center col-sm-2">TBT Enquiry Point</th>
+                        <th class="col-sm-1">Status</th>
+                        <th class="text-center col-sm-1">Edit</th>
+                        <th class="text-center col-sm-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -26,8 +27,19 @@
                         {
                             <tr>
                                 <td>@item.ItemNumber</td>
-                                <td>@item.CountryCode</td>
-                                <td>@item.CountryName</td>
+                                <td>@item.CountryName (@item.CountryCode)</td>
+                                <td class="text-center">
+                                    @if (item.EnquiryEmail_SPS != "")
+                                    {
+                                        <span class="glyphicon glyphicon-ok dark-green-color"></span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (item.EnquiryEmail_TBT != "")
+                                    {
+                                        <span class="glyphicon glyphicon-ok dark-green-color"></span>
+                                    }
+                                </td>
                                 @if (@item.Status == 1)
                                 {
                                     <td>Active</td>

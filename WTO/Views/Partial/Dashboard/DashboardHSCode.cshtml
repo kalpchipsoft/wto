@@ -1,0 +1,96 @@
+﻿@model List<BusinessObjects.Notification.HSCodeGraphData>
+@{
+    Layout = null;
+}
+<div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-8 top-offset-10">
+            <p class="texthead">HS Codes</p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 top-offset-10">
+            <p>
+                <span class="pull-right texthead"><img src="~/contents/img/humbergur.png"></span>
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <hr class="customehr" />
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          
+                @{int i = 0; }
+                @foreach (BusinessObjects.Notification.HSCodeGraphData ac in Model)
+                {
+                    if (i % 3 == 0)
+                    {
+                     @Html.Raw("<div class='row top-offset-20'>")                              
+                     }
+                            <div class="col-xs-12 col-ms-6 col-md-4 sm-top-offset-20">
+                                <a class="hscodelink " onclick="callpiechart(this,'@ac.HSCode');">
+                                    <div class="hscodeheader text-center">
+                                        <p>@ac.Text</p>
+                                    </div>
+                                    <div class="hscodebody text-center">
+                                        <p>@ac.NotificationCount</p>
+                                    </div>
+                                </a>
+                            </div>
+                    if (i % 3 == 2)
+                    {
+                        @Html.Raw("</div>")
+                    }
+                    i++;
+                }
+                            </div>
+    </div>
+</div>
+<script>
+    function callpiechart(ctrl,HSCode)
+    {
+        $('.hscodelink').removeClass('active');
+        $(ctrl).addClass('active');
+        BindPieChart(HSCode);
+    }
+    function BindPieChart(HSCode)
+    {
+        $.ajax({
+            url: "/api/Dashboard/WTOGetHSCodeDataByCountry",
+            async: false,
+            type: "POST",
+            data: JSON.stringify({
+                HSCode: HSCode
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                var TotalNotificationCount = 0;
+                var hscodelegend='<div class="col-xs-12 col-sm-12 col-md-12 padding-right-0">';
+                hscodelegend+='<div class="row">';
+                arrayHScode = [];
+                 colors = [];
+                arrayHScode.push(['Task', 'HSCode', { role: "style" }]);
+                $(result.objHSCodeCountryData).each(function (index, value) {
+                    if (value.NotificationCount > 0)
+                    {    
+                    BindArray(value.Country,value.NotificationCount,value.ColorCode);
+                    hscodelegend+='<div class="col-xs-6 col-sm-4">';
+                    hscodelegend += '<div class="legend" style="background:' + value.ColorCode + '"></div>';
+                    hscodelegend+='<div class="countryName">';
+                    hscodelegend+='<p style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="'+value.Country+'">'+value.CountryCode+'</p>';
+                    hscodelegend += '</div></div>';
+                    TotalNotificationCount += value.NotificationCount;
+                    }
+                })
+                hscodelegend + ' </div></div>';
+                var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp; ' + result.CountryCount + ' &nbsp;&nbsp;&nbsp; Countries  </p>';
+                $('.hscodecount').html(divhscode);
+                $('.hscodelegend').html(hscodelegend);
+              
+                google.charts.setOnLoadCallback(drawPieChart);
+            }
+        });
+
+    }
+</script>

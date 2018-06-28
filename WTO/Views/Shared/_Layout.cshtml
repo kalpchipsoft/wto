@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @*  @Styles.Render("~/contents/css/css")*@
     <link href="~/contents/css/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/contents/css/css/style.min.css" rel="stylesheet" />
     <link href="~/contents/css/css/jquery-ui.css" rel="stylesheet" />
@@ -18,6 +17,7 @@
     <script src="~/contents/js/WTOHTMLJS.js?v=1"></script>
     <script src="~/contents/js/Validation.js"></script>
     <script src="~/contents/js/CustomAlert.js"></script>
+    <script src="~/contents/js/autosize.min.js"></script>
     <script src="~/JQuery/master.js"></script>
 </head>
 <body>
@@ -37,7 +37,7 @@
                             <span class="hamb-middle"></span>
                             <span class="hamb-bottom"></span>
                         </button>
-                        <a class="navbar-brand MenuHeading" href="#">SPS/ TBT Notification Management System</a>
+                        <a class="navbar-brand MenuHeading default-pointer">SPS/ TBT Notification Management System</a>
                     </div>
                     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
                         <ul class="nav sidebar-nav">
@@ -46,39 +46,59 @@
                                 <span class="hamb-middle"></span>
                                 <span class="hamb-bottom"></span>
                             </button>
-                            <li class="sidebar-brand bottom-offset-20 top-offset-20">
-                                <a href="#">
+                            <li class="sidebar-brand">
+                                <a href="#" class="bottom-offset-20">
                                     <img src="~/contents/img/wto-logo.png" alt="WTOlogo" class="WTOlogo img-responsive " />
                                 </a>
                             </li>
-                            <li class="top-offset-50 list dashboard">
+                            <li class="list dashboard" style="margin-top:-5px;">
                                 <a href="~/WTO/WTODashboard">
-                                    <img src="~/contents/img/dashboard1.png" alt="dashboard" /><span class="submenulist">Dashboard</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                    <img src="~/contents/img/dashboard1.png" alt="dashboard" /><span class="submenulist">Dashboard</span>
                                 </a>
                             </li>
-                            <li class="list notification">
-                                <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15 })">
-                                <img src="~/contents/img/notification.png" alt="notification" /><span class="submenulist">Notification List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+
+                            <li class="list dropdown">
+                                <a class="dropdown-toggle drop" data-toggle="dropdown" href="#">
+                                    <img src="~/contents/img/drpoNotification.png" /> <span class="submenulist">Notification</span><span class="caret pull-right" style="margin-top:7px;"></span>
                                 </a>
+                                <ul class="dropdown-menu">
+                                    <li class="list Addnotification">
+                                        <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = 0 })">
+                                            <img src="~/contents/img/Addnotification1.png" alt="Addnotification" /><span class="submenulist">Add Notification</span>
+                                        </a>
+                                    </li>
+                                    <li class="list notification">
+                                        <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10 })">
+                                            <img src="~/contents/img/notification.png" alt="notification" /><span class="submenulist">Notification List</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="list Addnotification">
-                                <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = 0 })">
-                                    <img src="~/contents/img/Addnotification1.png" alt="Addnotification" /><span class="submenulist">Add Notification</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                            <li class="list dropdown">
+                                <a class="dropdown-toggle drop" data-toggle="dropdown" href="#">
+                                    <img src="~/contents/img/mettings.png" /> <span class="submenulist" style="margin-left:10px;">Meetings</span><span class="caret pull-right" style="margin-top:7px;"></span>
                                 </a>
-                            </li>
-                            <li class="list AddMOMList">
-                                <a href="@Url.Action("Index","MoM")">
-                                    <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">MOM List</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
-                                </a>
-                            </li>
-                            <li class="list AddMOM">
-                                <a href="@Url.Action("Add", "MoM", new { Id = 0 })">
-                                    <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">Add MOM</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
-                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="list AddMOM">
+                                        <a href="@Url.Action("Add", "MoM", new { Id = 0 })">
+                                            <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">Schedule new meeting</span>
+                                        </a>
+                                    </li>
+                                    <li class="list AddMOM">
+                                        <a href="@Url.Action("Edit", "MoM", new { Id = 0 })">
+                                            <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">Current Meeting</span>
+                                        </a>
+                                    </li>
+                                    <li class="list AddMOMList">
+                                        <a href="@Url.Action("Index","MoM")">
+                                            <img src="~/contents/img/AddMOMList.png" alt="Addnotification" /><span class="submenulist">Meeting schedules</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="list ManageAccess">
                                 <a href="@Url.Action("Index", "ManageAccess")">
-                                    <img src="~/contents/img/manageW.png" alt="Addnotification" /><span class="submenulist">Manage</span> @*<span class="glyphicon glyphicon-chevron-right pull-right"></span>*@
+                                    <img src="~/contents/img/manageW.png" alt="Addnotification" /><span class="submenulist">Manage</span>
                                 </a>
                             </li>
                         </ul>

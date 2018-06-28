@@ -24,75 +24,78 @@ $(document).ready(function () {
         dateFormat: 'dd M yy'
     });
 
+    $(".date-picker").attr("readonly", "readonly");
+    $(".date-picker").css("background-color", "#FFF");
+
     // <!-- datepicker js end-->
 
     //Calculate some cutoff dates based on Final date for comments 
-    $("#FinalDateforCommentsId").change(function () {
-        var FinalDateforComments = $(this).val();
-        if (!isNaN(new Date($.trim(FinalDateforComments)).valueOf())) {
-            var _FinalDate = new Date(FinalDateforComments);
-            var DateofNotification = $('#DateofNotificationId').val();
-            var _DateofNotification = new Date(DateofNotification);
+    //$("#FinalDateforCommentsId").change(function () {
+    //    var FinalDateforComments = $(this).val();
+    //    if (!isNaN(new Date($.trim(FinalDateforComments)).valueOf())) {
+    //        var _FinalDate = new Date(FinalDateforComments);
+    //        var DateofNotification = $('#DateofNotificationId').val();
+    //        var _DateofNotification = new Date(DateofNotification);
 
-            //Set Send Response due date i.e. Final date for comments – 20 days 
-            var ResponseOn = new Date(FinalDateforComments);
-            ResponseOn.setDate(ResponseOn.getDate() - 20);
-            var _ResponseOn = ResponseOn.getDate() + ' ' + Months[ResponseOn.getMonth()] + ' ' + ResponseOn.getFullYear();
-            $("#SendResponseById").val(_ResponseOn);
+    //        //Set Send Response due date i.e. Final date for comments – 20 days 
+    //        var ResponseOn = new Date(FinalDateforComments);
+    //        ResponseOn.setDate(ResponseOn.getDate() - 20);
+    //        var _ResponseOn = ResponseOn.getDate() + ' ' + Months[ResponseOn.getMonth()] + ' ' + ResponseOn.getFullYear();
+    //        $("#SendResponseById").val(_ResponseOn);
+    //        if (_DateofNotification > ResponseOn) {
+    //            $("#SendResponseError").removeClass("hidden");
+    //            return false;
+    //        }
+    //        else {
+    //            $("#SendResponseError").addClass("hidden");
+    //            return true;
+    //        }
+    //    }
+    //    else {
+    //        $("#SendResponseById").val('');
+    //    }
 
-            if (_DateofNotification > ResponseOn) {
-                $("#SendResponseError").removeClass("hidden");
-                return false;
-            }
-            else {
-                $("#SendResponseError").addClass("hidden");
-                return true;
-            }
-        }
-        else {
-            $("#SendResponseById").val('');
-        }
-    });
+    //});
 
-    $("#SendResponseById").change(function () {
-        var FinalDateforComments = $('#FinalDateforCommentsId').val();
-        var _FinalDate = new Date(FinalDateforComments);
-        var DateofNotification = $('#DateofNotificationId').val();
-        var _DateofNotification = new Date(DateofNotification);
+    //$("#SendResponseById").change(function () {
+    //    var FinalDateforComments = $('#FinalDateforCommentsId').val();
+    //    var _FinalDate = new Date(FinalDateforComments);
+    //    var DateofNotification = $('#DateofNotificationId').val();
+    //    var _DateofNotification = new Date(DateofNotification);
 
-        //Set Send Response due date i.e. Final date for comments – 20 days 
-        var ResponseOn = new Date($(this).val());
-        if (_DateofNotification > ResponseOn) {
-            $("#SendResponseError").removeClass("hidden");
-            return false;
-        }
-        else if (_FinalDate < ResponseOn) {
-            $("#SendResponseError").removeClass("hidden");
-            return false;
-        }
-        else {
-            $("#SendResponseError").addClass("hidden");
-            return true;
-        }
-    });
+    //    //Set Send Response due date i.e. Final date for comments – 20 days 
+    //    var ResponseOn = new Date($(this).val());
+    //    if (_DateofNotification > ResponseOn) {
+    //        $("#SendResponseError").removeClass("hidden");
+    //        return false;
+    //    }
+    //    else if (_FinalDate < ResponseOn) {
+    //        $("#SendResponseError").removeClass("hidden");
+    //        return false;
+    //    }
+    //    else {
+    //        $("#SendResponseError").addClass("hidden");
+    //        return true;
+    //    }
+    //});
 
-    $("#DateofNotificationId").change(function () {
-        var DateofNotification = $('#DateofNotificationId').val();
-        DateofNotification = new Date(DateofNotification);
+    //$("#DateofNotificationId").change(function () {
+    //    var DateofNotification = $('#DateofNotificationId').val();
+    //    DateofNotification = new Date(DateofNotification);
 
-        var FinalDateforComments = new Date($('#FinalDateforCommentsId').val());
-        FinalDateforComments = new Date(FinalDateforComments);
-        FinalDateforComments.setDate(ResponseOn.getDate() - 60);
+    //    var FinalDateforComments = new Date($('#FinalDateforCommentsId').val());
+    //    FinalDateforComments = new Date(FinalDateforComments);
+    //    FinalDateforComments.setDate(ResponseOn.getDate() - 60);
 
-        if (_DateofNotification > FinalDateforComments) {
-            $("#DateofNotificationId").removeClass("hidden");
-            return false;
-        }
-        else {
-            $("#SendResponseError").addClass("hidden");
-            return true;
-        }
-    });
+    //    if (_DateofNotification > FinalDateforComments) {
+    //        $("#DateofNotificationId").removeClass("hidden");
+    //        return false;
+    //    }
+    //    else {
+    //        $("#SendResponseError").addClass("hidden");
+    //        return true;
+    //    }
+    //});
 
     // <!-- hamburger js -->
     if (window.location.href.match(/([^\/]*)\/*$/)[1] == "WTODashboard") {

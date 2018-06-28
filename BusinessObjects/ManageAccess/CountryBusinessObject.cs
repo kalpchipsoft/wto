@@ -15,6 +15,8 @@ namespace BusinessObjects.ManageAccess
         public int Status { get; set; }
         public bool IsInUse { get; set; }
         public string CountryCode { get; set; }
+        public string EnquiryEmail_SPS { get; set; }
+        public string EnquiryEmail_TBT { get; set; }
     }
 
     public class AddCountry
@@ -26,6 +28,8 @@ namespace BusinessObjects.ManageAccess
         public int Status { get; set; }
         [Required]
         public string CountryCode { get; set; }
+        public string EnquiryEmail_SPS { get; set; }
+        public string EnquiryEmail_TBT { get; set; }
     }
 
     public class PageLoad_CountryList

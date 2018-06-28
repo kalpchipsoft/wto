@@ -26,30 +26,30 @@
                     {
                         foreach (var item in @Model.UserList)
                         {
-                    <tr>
-                        <td>@item.ItemNumber</td>
-                        <td>@item.UserName</td>
-                        <td>@item.Email</td>
-                        <td>@item.Mobile</td>
-                        @if (@item.Status == 1)
+                            <tr>
+                                <td>@item.ItemNumber</td>
+                                <td>@item.UserName</td>
+                                <td>@item.Email</td>
+                                <td>@item.Mobile</td>
+                                @if (@item.Status == 1)
                                 {
-                        <td>Active</td>
+                                    <td>Active</td>
                                 }
                                 else
                                 {
-                        <td>Inactive</td>
+                                    <td>Inactive</td>
                                 }
-                        <td class="text-center"><a href="#"><span class="glyphicon glyphicon-eye-open eye"></span><span class="hidden pwd">@item.Password</span></a></td>
-                        <td class="text-center"><a href="#" onclick="EditUserData(@item.UserId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                        <td class="text-center"><a href="#" onclick="Confirm('Delete','Do you want to delete the @item.UserName ?','Yes', 'No', 'DeleteUser(@item.UserId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
-                    </tr>
+                                <td class="text-center"><a href="#"><span class="glyphicon glyphicon-eye-open eye"></span><span class="hidden pwd">@item.Password</span></a></td>
+                                <td class="text-center"><a href="#" onclick="EditUserData(@item.UserId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center"><a href="#" onclick="Confirm('Delete','Do you want to delete the @item.UserName ?','Yes', 'No', 'DeleteUser(@item.UserId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
                         }
                     }
                     else
                     {
-                    <tr>
-                        <td colspan="8">No Record Found ...</td>
-                    </tr>
+                        <tr>
+                            <td colspan="8">No Record Found ...</td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -83,9 +83,9 @@
                                     </div>
                                     <div class="text-center">
                                         <a href="#" id="lnkUploadImage" onclick="UploadImage();">Upload</a>
-                                        &nbsp;                                         
+                                        &nbsp;
                                         <a href="#" id="lnkRemoveImage" onclick="RemoveImage();" Style="display: none;">Remove</a>
-                                        <input type="file" id="fileUploadId" style="display:none;" />
+                                        <input type="file" id="fileUploadId" style="display:none;" onchange="ChangeFile(this);" />
                                     </div>
                                 </div>
                                 <div class="form-group">

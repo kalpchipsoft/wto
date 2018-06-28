@@ -23,7 +23,7 @@
     <script src="~/contents/js/Validation.js" type="text/javascript"></script>
 </head>
 <body>
-    <input type="hidden" id="hdnNotificationId" />
+    <input type="hidden" id="hdnNotificationDocumentId" />
     <nav class="navbar navbar-default navbar-fixed-top translatormenu">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -47,21 +47,23 @@
         </div><!-- /.container-fluid -->
     </nav>
 
+
+
     <div class="container-fluid">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8"><h2>Notifications <b>List</b></h2></div>
-                </div>
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8"><h2>Notifications <b>List</b></h2></div>
             </div>
+        </div>
+        <div class="table-wrapper">
             <div class="filter-section">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <!--<div class="col-sm-12">
                         <h4><span class="glyphicon glyphicon-filter" style="font-size:15px;"></span> Filter</h4>
-                    </div>
+                    </div>-->
                     <div class="col-sm-3">
                         <input type="text" class="form-control notificationtxt" placeholder="Notification Number" id="txtNotificationNumber">
-                        <a href="#" id="clearNotificationNumber" style="display:none;"><i class="material-icons crossnotification">&#xE14C;</i></a>
+                        <a href="#" id="clearNotificationNumber" style="display:none;"><i class="glyphicon glyphicon-remove crossnotification"></i></a>
                     </div>
                     <div class="col-sm-3 has-feedback">
                         <input type="text" class="form-control date" placeholder="Received on" id="txtDocumentReceivedOn">
@@ -81,13 +83,13 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <a href="#" onclick="ClearSearch();" class="btn btn-danger pull-right filterbtn"><i class="material-icons download">&#xE14C;</i>Clear</a>
-                        <a href="#" onclick="SearchDocument();" class="btn btn-primary pull-right filterbtn right-offset-15"><i class="material-icons download">&#xE8B6;</i>Search</a>
+                        <a href="#" onclick="ClearSearch();" class="btn btn-red pull-right filterbtn"><i class="glyphicon glyphicon-remove download"></i>&nbsp;Clear</a>
+                        <a href="#" onclick="SearchDocument();" class="btn btn-blue pull-right filterbtn right-offset-15"><i class="glyphicon glyphicon-search download"></i>&nbsp;Search</a>
                     </div>
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="tblData">
+                <table class="table" id="tblData">
                     <thead>
                         <tr>
                             <th>S.No</th>
@@ -109,14 +111,18 @@
                                     <td>@item.NotificationNumber</td>
                                     <td>@item.SendToTranslaterOn</td>
                                     <td>@item.TranslationDueBy</td>
-                                    <td><a href="@item.UntranslatedDocument.Path" download="@item.UntranslatedDocument.FileName"><i class="material-icons download">&#xE2C4;</i> @item.UntranslatedDocument.FileName</a></td>
-                                    @if (item.TranslatedDocument.FileName == "")
+                                    <td><a href="@item.UntranslatedDocument.Path" download="@item.UntranslatedDocument.FileName"><i class="glyphicon glyphicon-save download"></i>&nbsp;@item.UntranslatedDocument.DisplayName</a></td>
+                                    @if (item.TranslatedDocument == null)
                                     {
-                                        <td><a href="#" onclick="UploadTranslatedDocument(@item.NotificationId);" class="delete" data-toggle="modal">Upload</a></td>
+                                        <td>
+                                            <a href="#" onclick="UploadTranslatedDocument(this);" class="delete" data-toggle="modal"><i class="glyphicon glyphicon-open"></i>&nbsp;Upload</a>
+                                            <input type="hidden" id="hdnNotificationId_@(i+1)" value="@item.NotificationId" />
+                                            <input type="hidden" id="hdnNotificationDocumentId_@(i+1)" value="@item.NotificationDocumentId" />
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td><a href="@item.TranslatedDocument.Path" download="@item.TranslatedDocument.FileName"><i class="material-icons download">&#xE2C4;</i> @item.TranslatedDocument.FileName</a></td>
+                                        <td><a href="@item.TranslatedDocument.Path" download="@item.TranslatedDocument.FileName"><i class="glyphicon glyphicon-save download"></i>&nbsp;@item.TranslatedDocument.DisplayName</a></td>
                                     }
                                 </tr>
                             }
@@ -156,8 +162,8 @@
                         <input type="text" id="TranslatedDocumentNameId" class="form-control alphanumericonly" placeholder="Attachment name" style="margin-top:15px;">
                     </div>
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-primary" value="Save" onclick="SaveTranslatedDocument();" />
-                        <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
+                        <input type="button" class="btn btn-blue" value="Save" onclick="SaveTranslatedDocument();" />
+                        <input type="submit" class="btn btn-red" value="Cancel" data-dismiss="modal" />
                     </div>
                 </form>
             </div>
@@ -172,6 +178,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">Change Password</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <hr />
                     </div>
                     <div class="modal-body">
                         <form action="/action_page.php">
@@ -190,15 +197,15 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-primary" value="Update" onclick="ChangePassword();" />
-                        <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
+                        <input type="button" class="btn btn-blue" value="Update" onclick="ChangePassword();" />
+                        <input type="submit" class="btn btn-red" value="Cancel" data-dismiss="modal" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        myWTOAPP.init('@ViewContext.RouteData.Values["id"]', '@Session["TranslatorId"]','Translator');
+        myWTOAPP.init('@ViewContext.RouteData.Values["id"]', '@Session["TranslatorId"]', 'Translator');
     </script>
 </body>
 </html>

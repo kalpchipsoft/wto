@@ -1,0 +1,60 @@
+﻿@model BusinessObjects.Notification.StakeHoldersList
+@{
+    Layout = null;
+}
+@if (@Model.StakeHolders != null)
+{
+    foreach (var item in @Model.StakeHolders)
+    {
+        <div class="row seprater">
+            <div class="col-sm-1"><input id="chkStakeholder_@item.StakeHolderId" type="checkbox" class="checked" value="@item.StakeHolderId" onclick="Update_hdnSelected(this);" /></div>
+            <div class="col-sm-3"><b>@item.OrganizationName</b></div>
+            <div class="col-sm-2">@item.FullName</div>
+            <div class="col-sm-4">@item.Designation </div>
+            <div class="col-sm-2">@item.HSCodes</div>
+        </div>
+    }
+}
+else
+{
+    <div class="row seprater">
+        <div class="col-sm-10">No stakeholder found..</div>
+    </div>
+}
+<script>
+    function Update_hdnSelected(ctrl) {
+        var SelectedIds = $('#hdnSelected').val();
+        var id = ctrl.id;
+        if ($('#chkStakeholder_' + id).is(':checked')) {
+            $('#hdnSelected').val(SelectedIds + ',' + id.replace('chkStakeholder_', ''));
+        }
+        else {
+            $('#hdnSelected').val(SelectedIds.replace(',' + id.replace('chkStakeholder_', ''), ''));
+        }
+        CheckHeaderAll();
+    }
+
+    $(document).ready(function () {
+        if ($('#hdnSelected').val() != null && $('#hdnSelected').val().trim() != '') {
+            var SelectedIds = $('#hdnSelected').val().trim().split(',');
+            for (var i = 0; i < SelectedIds.length; i++) {
+                if (SelectedIds[i] != null && SelectedIds[i] != '')
+                    $('#chkStakeholder_' + SelectedIds[i]).prop('checked', true);
+            }
+        }
+
+        $(".checked").prop("checked", false);
+        if ($("#hdnSelectedStakeHolders").val() != null && $("#hdnSelectedStakeHolders").val() != '') {
+            var hdnId = $("#hdnSelectedStakeHolders").val().split(',');
+            var str = '';
+            for (var i = 0; hdnId.length > i; i++) {
+                str = hdnId[i];
+                $("#chkStakeholder_" + str).prop("checked", true);
+            }
+        }
+    });
+
+    function searchstakeholder() {
+        $("#divStakholder").load('/AddNotification/GetStakeHoldersMaster', { SearchText: $('#txtSearchStakeHolder').val() });
+    }
+</script>

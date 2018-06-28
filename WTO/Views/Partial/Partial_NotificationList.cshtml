@@ -30,7 +30,7 @@
                             <td>@Model.ItemsList[i].ItemNumber</td>
                             <td>
                                 <p class="red-color">@Model.ItemsList[i].NotificationNumber</p>
-                                <p>
+                                <p style="word-break:break-word;">
                                     <b>Title :</b>@Model.ItemsList[i].Title
                                 </p>
                             </td>
@@ -74,10 +74,6 @@
         var count = $('[id$=hdnCount]').val();
         $('#lblCount').text(count);
     });
-
-    function FetchDataFromServer() {
-        alert('New Page');
-    }
 
     $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {

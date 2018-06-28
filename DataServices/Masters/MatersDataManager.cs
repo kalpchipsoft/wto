@@ -51,5 +51,25 @@ namespace DataServices.Masters
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
+
+        public DataTable GetInternalStakeholder()
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetInternalStakeholderMaster;
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+
+        public DataTable GetRegulatoryBodies()
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetRegulatoryBodiesMaster;
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
     }
 }
