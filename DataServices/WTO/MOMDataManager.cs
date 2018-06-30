@@ -9,17 +9,18 @@ namespace DataServices.WTO
 {
     public class MOMDataManager
     {
-        public DataSet GetNotificationListForMom(string callFor,int? CountryId,string NotificationNo, string NotificationId, string SelectedNotificationId)
+        public DataSet GetNotificationListForMom(Search_MoM obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.GetNotificationListForMom;
-                sqlCommand.Parameters.AddWithValue("@CallFor", callFor);
-                sqlCommand.Parameters.AddWithValue("@CountryId", CountryId);
-                sqlCommand.Parameters.AddWithValue("@NotificationNumber", NotificationNo);
-                sqlCommand.Parameters.AddWithValue("@NotificationId", NotificationId);
-                sqlCommand.Parameters.AddWithValue("@SelectedNotificationId", SelectedNotificationId);
+                sqlCommand.Parameters.AddWithValue("@CallFor", obj.callFor);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@NotificationNumber", obj.NotificationNumber);
+                sqlCommand.Parameters.AddWithValue("@SelectedNotifications", obj.SelectedNotifications);
+                sqlCommand.Parameters.AddWithValue("@ExistingNotifications", obj.ExistingNotifications);
+                sqlCommand.Parameters.AddWithValue("@SearchText", obj.SearchText);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

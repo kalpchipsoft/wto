@@ -97,31 +97,37 @@ function GetMoMDetails() {
 function GetAllNotifications(ctrl) {
     ShowGlobalLodingPanel();
     var NotificationId = "";
-    var Not = "";
+    var _SelectedNotifications = "";
     var len = $('#tblFilterResult tbody td').length;
     if (len > 0) {
         $('#tblFilterResult tbody tr').each(function () {
-
             var row = $(this);
             if (row.find('input[type="checkbox"]').is(':checked')) {
-                Not += (row.find('input[type="hidden"]')).val() + ",";
+                _SelectedNotifications += (row.find('input[type="hidden"]')).val() + ",";
             }
         });
-        if (Not == "") {
+        if (_SelectedNotifications == "") {
             Alert('Alert', 'Please select atleast one notification.<br/>', 'Ok');
             HideGlobalLodingPanel();
         }
         else {
-            NotificationId = Not;
             $("#hdnNId").val($("#hdnNId").val() + NotificationId);
-            var CallFor = $(ctrl).attr('data-CallFor');
-            var CountryId = 0;
-            var NotificationNumber = $.trim($("#txtNotificationNo").val());
-            var SelectedNotificationId = '';// GetSelectedNotification();
+            var _CallFor = $(ctrl).attr('data-CallFor');
+            var _CountryId = 0;
+            var _NotificationNumber = $.trim($("#txtNotificationNo").val());
+            var SelectedNotificationId = '';
+
+            var obj = {
+                callFor: _CallFor,
+                NotificationNumber: _NotificationNumber,
+                SelectedNotifications: _SelectedNotifications
+            }
+
             $.ajax({
-                url: "/api/MoM/getNotifications?CallFor=" + CallFor + "&CountryId=" + CountryId + "&NotificationNo=" + NotificationNumber + "&NotificationId=" + NotificationId + "&SelectedNotificationId=" + SelectedNotificationId,
+                url: "/api/MoM/getNotifications",
                 async: false,
-                type: "GET",
+                type: "POST",
+                data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     var tblCount = 0;
@@ -136,21 +142,21 @@ function GetAllNotifications(ctrl) {
                     if (result.Notification_MomList.length > 0) {
                         $.each(result.Notification_MomList, function (i, v) {
                             html += '<tr>' +
-                                      '<td class="text-center">' +
-                                            '<div class="checkbox radio-margin" style="margin-top:2px;">' +
-                                            '<label>' +
-                                        '<input type="checkbox" name="Action" id="chkNotification_' + tblCount + '" checked="checked" onchange="CheckHeaderCheckbox()" />' +
-                                        '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>' +
-                                    '</label>' +
-                                    '</div>' +
-                                            '<input type="hidden" id="hdnNotificationId_' + tblCount + '" value="' + v.NotificationId + '" />' +
-                                        '</td>' +
-                                        '<td style="width:400px;">' +
-                                            '<p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color ">' + v.NotificationNumber + '</a></p>' +
-                                            '<p style="word-wrap:break-word; width:400px;">' + v.Title + '</p>' +
-                                         '</td>' +
-                                           '<td class="text-center">' + v.FinalDateofComments + '</td>' +
-                                        '<td class="text-center">' + v.Country + '</td>';
+                                '<td class="text-center">' +
+                                '<div class="checkbox radio-margin" style="margin-top:2px;">' +
+                                '<label>' +
+                                '<input type="checkbox" name="Action" id="chkNotification_' + tblCount + '" checked="checked" onchange="CheckHeaderCheckbox()" />' +
+                                '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>' +
+                                '</label>' +
+                                '</div>' +
+                                '<input type="hidden" id="hdnNotificationId_' + tblCount + '" value="' + v.NotificationId + '" />' +
+                                '</td>' +
+                                '<td style="width:400px;">' +
+                                '<p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color ">' + v.NotificationNumber + '</a></p>' +
+                                '<p style="word-wrap:break-word; width:400px;">' + v.Title + '</p>' +
+                                '</td>' +
+                                '<td class="text-center">' + v.FinalDateofComments + '</td>' +
+                                '<td class="text-center">' + v.Country + '</td>';
 
                             //Discussion
                             if (result.NotificationProcessDots != null) {
@@ -170,9 +176,9 @@ function GetAllNotifications(ctrl) {
                                 html += '</td>';
                             }
                             html += '<td>' +
-                                            '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="2" id="txtMeetingNote_' + tblCount + '"></textarea>' +
-                                         '</td>' +
-                                    '</tr>';
+                                '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="2" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                                '</td>' +
+                                '</tr>';
                             tblCount++;
                         });
                     }
@@ -185,6 +191,7 @@ function GetAllNotifications(ctrl) {
                             $('#tblNotificationMoM > tbody').html('');
                         }
                     })
+                    $('#tblNotificationMoM > tbody').empty();
                     $('#tblNotificationMoM > tbody').append(html);
                     $("#ddlCountry").val("");
                     $("#txtNotificationNo").val('');
@@ -216,21 +223,23 @@ function GetAllNotifications(ctrl) {
 function GetFilterNotification(ctrl) {
     ShowGlobalLodingPanel();
     var NotificationId = "";
-    var CallFor = "";
-    CallFor = $(ctrl).attr('data-CallFor');
+    var _CallFor = $(ctrl).attr('data-CallFor');
+    var _CountryId = $("#ddlCountry").val() == "" ? 0 : $("#ddlCountry").val();
+    var _NotificationNumber = $.trim($("#txtNotificationNo").val());
+    var _ExistingNotifications = GetExistingNotifications();
 
-    var CountryId = 0;
-    if ($("#ddlCountry").val() == "")
-        CountryId = 0;
-    else
-        CountryId = $("#ddlCountry").val();
+    var obj = {
+        callFor: _CallFor,
+        CountryId: _CountryId,
+        NotificationNumber: _NotificationNumber,
+        ExistingNotifications: _ExistingNotifications
+    }
 
-    var NotificationNumber = $.trim($("#txtNotificationNo").val());
-    var SelectedNotificationId = GetSelectedNotification();
     $.ajax({
-        url: "/api/MoM/getNotifications?CallFor=" + CallFor + "&CountryId=" + CountryId + "&NotificationNo=" + NotificationNumber + "&NotificationId=" + NotificationId + "&SelectedNotificationId=" + SelectedNotificationId,
+        url: "/api/MoM/getNotifications",
         async: false,
-        type: "GET",
+        type: "POST",
+        data: JSON.stringify(obj),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             $('#tblFilterResult > tbody').empty();
@@ -294,7 +303,6 @@ function OpenPopup() {
 }
 
 function ClosePopup() {
-
     $('#tblFilterResult tbody').empty();
     $("#chkSelectAll").prop('checked', false);
     $("#ddlCountry").val("");
@@ -337,14 +345,15 @@ function CheckHeaderCheckbox() {
         $('[id$=chkSelectAllNotification]').prop('checked', false);
 }
 
-function GetSelectedNotification() {
+function GetExistingNotifications() {
     var Notifications = "";
     var len = $('#tblNotificationMoM tbody td').length;
     if (len > 0) {
         $('#tblNotificationMoM tbody tr').each(function () {
+            debugger;
             var row = $(this);
-            if (row.find('[id*=hdnNotificationId]').val() != undefined)
-                Notifications += (row.find('[id*=hdnNotificationId]')).val() + ",";
+            if (row.find('[id^=hdnNotificationId_]').val() != undefined)
+                Notifications += (row.find('[id^=hdnNotificationId_]')).val() + ",";
         });
     }
     return Notifications;
@@ -414,18 +423,18 @@ function UpdateMeetingDate() {
 
 //===================================================
 
-function GetSelectedNotification() {
-    var Notifications = "";
-    var len = $('#tblNotificationMoM tbody td').length;
-    if (len > 0) {
-        $('#tblNotificationMoM tbody tr').each(function () {
-            var row = $(this);
-            if (row.find('[id*=hdnNotificationId]').val() != undefined)
-                Notifications += (row.find('[id*=hdnNotificationId]')).val() + ",";
-        });
-    }
-    return Notifications;
-}
+//function GetSelectedNotification() {
+//    var Notifications = "";
+//    var len = $('#tblNotificationMoM tbody td').length;
+//    if (len > 0) {
+//        $('#tblNotificationMoM tbody tr').each(function () {
+//            var row = $(this);
+//            if (row.find('[id*=hdnNotificationId]').val() != undefined)
+//                Notifications += (row.find('[id*=hdnNotificationId]')).val() + ",";
+//        });
+//    }
+//    return Notifications;
+//}
 
 function closeActionMail(ctrl) {
     var callfor = $(ctrl).attr('data-callfor');
@@ -568,74 +577,74 @@ function BindNotificationActions() {
                 var HTML = '';
                 $.each(result.Actions, function (i, v) {
                     HTML += '<div class="row seprater">' +
-                            '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
-                            '<div class="col-sm-1 pdright">';
+                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
+                        '<div class="col-sm-1 pdright">';
 
                     if (v.NotificationActionId > 0) {
                         if (v.UpdatedOn == "") {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                     }
                     else {
                         if (result.RetainedForNextDiscussion && v.ActionId == 5) {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                       '<label style="padding-left: 0;">' +
-                                           '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                           '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                               '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                           '</span>' +
-                                       '</label>' +
-                                   '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else if (result.RetainedForNextDiscussion) {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                       '<label style="padding-left: 0;">' +
-                                           '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                           '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                               '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                           '</span>' +
-                                       '</label>' +
-                                   '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                     }
 
                     HTML += '</div>' +
-                            '<div class="col-sm-5">' + v.ActionName + '</div>';
+                        '<div class="col-sm-5">' + v.ActionName + '</div>';
 
                     if (v.ActionId < 4) {
                         HTML += '<div class="col-sm-4">' +
                             '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                                '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                                '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
+                            '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
+                            '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
                             '</div>' +
-                        '</div>';
+                            '</div>';
                         if (v.NotificationActionId != 0 && v.MailId == 0) {
                             var callfor = "takeaction";
                             takeaction++;

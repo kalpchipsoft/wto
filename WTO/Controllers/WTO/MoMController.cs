@@ -23,12 +23,12 @@ namespace WTO.Controllers.WTO
         }
 
         // GET: MoM/Details/5
-        public ActionResult Add(string CallFor, int? CountryId, string NotificationNo, string NotificationId)
+        public ActionResult Add(Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 MomBusinessService obj = new MomBusinessService();
-                return View(obj.GetNotificationList_Mom(CallFor, CountryId, NotificationNo, NotificationId, ""));
+                return View(obj.GetNotificationList_Mom(objS));
             }
             else
                 return RedirectToAction("Index", "Login");

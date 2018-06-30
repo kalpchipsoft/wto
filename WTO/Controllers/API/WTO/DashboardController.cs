@@ -18,6 +18,12 @@ namespace WTO.Controllers.API.WTO
     public class DashboardController : ApiController
     {
         [HttpPost]
+        public IHttpActionResult WTOGetHSCodeData(DashboardSearch obj1)
+        {
+            DashboardBusinessService obj = new DashboardBusinessService();
+            return Ok(obj.GetHSCodeGraphData(obj1));
+        }
+        [HttpPost]
         public IHttpActionResult WTOGetHSCodeDataByCountry(DashboardSearch obj1)
         {
             DashboardBusinessService obj = new DashboardBusinessService();

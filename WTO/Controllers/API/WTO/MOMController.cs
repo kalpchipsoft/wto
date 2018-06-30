@@ -21,11 +21,11 @@ namespace WTO.Controllers.API.WTO
             return Ok(objAM.InsertRemoveActions(Id, obj));
         }
 
-        [HttpGet]
-        public IHttpActionResult getNotifications(string callFor, int CountryId, string NotificationNo, string NotificationId, string SelectedNotificationId)
+        [HttpPost]
+        public IHttpActionResult getNotifications(Search_MoM obj)
         {
             MomBusinessService objAM = new MomBusinessService();
-            return Ok(objAM.GetNotificationList_Mom(callFor, CountryId, NotificationNo, NotificationId, SelectedNotificationId));
+            return Ok(objAM.GetNotificationList_Mom(obj));
         }
 
         [HttpGet]

@@ -8,13 +8,13 @@ namespace BusinessService.MOM
 {
     public class MomBusinessService
     {
-        public NotificationMOM GetNotificationList_Mom(string callFor, int? CountryId, string NotificationNo, string NotificationId, string SelectedNotificationId)
+        public NotificationMOM GetNotificationList_Mom(Search_MoM obj)
         {
             NotificationMOM NotificationMoMList = new NotificationMOM();
 
             MOMDataManager objDM = new MOMDataManager();
 
-            DataSet ds = objDM.GetNotificationListForMom(callFor, CountryId, NotificationNo, NotificationId, SelectedNotificationId);
+            DataSet ds = objDM.GetNotificationListForMom(obj);
             if (ds != null)
             {
                 int tblIndex = -1;
@@ -37,6 +37,7 @@ namespace BusinessService.MOM
                         objNotification.FinalDateofComments = Convert.ToString(dr["FinalDateOfComment"]);
                         objNotification.Description = Convert.ToString(dr["Description"]);
                         objNotification.MeetingNote = Convert.ToString(dr["MeetingNote"]);
+                        objNotification.NotificationGroup = Convert.ToString(dr["NotificationGroup"]);
                         i++;
                         NotificationList.Add(objNotification);
                     }

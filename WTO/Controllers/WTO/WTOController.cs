@@ -26,10 +26,6 @@ namespace WTO.Controllers
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 Dashboard_PendingCounts objP = new Dashboard_PendingCounts();
-                //Dashboard objModel = new Dashboard();
-                //objModel.UserId = Convert.ToInt64(Session["UserId"]);
-                //DashboardBusinessService obj = new DashboardBusinessService();
-                //return View(obj.GetDashboard_PendingCounts(objModel));
                 return View(objP);
             }
             else
@@ -58,7 +54,6 @@ namespace WTO.Controllers
                 return View();
             }
         }
-
         public ActionResult WTODashboardRequestResponse()
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -103,6 +98,17 @@ namespace WTO.Controllers
             DashboardBusinessService obj = new DashboardBusinessService();
             DashboardSearch obj1 = new DashboardSearch();
             return View("~/Views/Partial/Dashboard/DashboardHSCodeByCountry.cshtml", obj.GetHsCodeGraphDataCountryWise(obj1));
+        }
+        public ActionResult GetNotificationGraphData(DashboardSearch obj1)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                DashboardBusinessService obj = new DashboardBusinessService();
+
+                return View("~/Views/Partial/Dashboard/DashboardNotificationHistory.cshtml", obj.GetNotificationGraphData(obj1));
+            }
+            else
+                return RedirectToAction("Index", "Login");
         }
     }
 }

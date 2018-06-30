@@ -2,6 +2,11 @@
 @{
     Layout = null;
 }
+<style>
+    div.google-visualization-tooltip > ul > li > span {
+        color: #ff0000 !important;
+    }
+</style>
 <script>
     var arrayHScode = [];
     var colors=[];
@@ -43,7 +48,6 @@
 </div>
 <script>
     function drawPieChart() {
-        debugger
         //var data = google.visualization.arrayToDataTable([
         //     ['Task', 'HSCode'],
         //     ['Kuwait', 20],
@@ -64,8 +68,9 @@
         }        
         var data = google.visualization.arrayToDataTable(arrayHScode);
         var options = {
-            is3D: true,
+           // is3D: true,
             legend: { position: 'none', alignment: 'center' },
+            tooltip:{textStyle: {color: '#FF0000',fontSize:15},fill:'black', showColorCode: true},
             //  colors: ['#f9c851' ,'#fdd470' ,'#5edca3' ,'#599bff' ,'#fbe1a1' ,'#9fc4fc' ,'#f5707a' ,'#5edca3' ,'#73fdbf' ,'#fd989f' ,'#ffc5c9']
             //  colors:[colors], 
             colors:colorpie,

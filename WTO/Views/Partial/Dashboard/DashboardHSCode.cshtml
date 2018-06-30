@@ -4,23 +4,20 @@
 }
 <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-8 top-offset-10">
+        <div class="col-xs-8 col-sm-6 col-md-8 top-offset-10">
             <p class="texthead">HS Codes</p>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 top-offset-10">
+        <div class="col-xs-4 col-sm-6 col-md-4 top-offset-10">
             <p>
-                <span class="pull-right texthead"><img src="~/contents/img/humbergur.png"></span>
+                <span class="pull-right texthead"><img src="~/contents/img/humbergur.png" data-toggle="modal" data-target="#selecthr" onclick="bindhscodeUId();"></span>
             </p>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <hr class="customehr" />
         </div>
     </div>
-
     <div class="row">
-
-        <div class="col-xs-12 col-sm-12 col-md-12">
-          
+        <div class="col-xs-12 col-sm-12 col-md-12" id="divHSCode">   
                 @{int i = 0; }
                 @foreach (BusinessObjects.Notification.HSCodeGraphData ac in Model)
                 {
@@ -29,7 +26,7 @@
                      @Html.Raw("<div class='row top-offset-20'>")                              
                      }
                             <div class="col-xs-12 col-ms-6 col-md-4 sm-top-offset-20">
-                                <a class="hscodelink " onclick="callpiechart(this,'@ac.HSCode');">
+                                <a class="hscodelink " data-HScode="@ac.HSCode" onclick="callpiechart(this);">
                                     <div class="hscodeheader text-center">
                                         <p>@ac.Text</p>
                                     </div>
@@ -44,24 +41,139 @@
                     }
                     i++;
                 }
-                            </div>
+</div>
     </div>
 </div>
+<!-- select HSCodes modal popup start -->
+<div class="modal fade selecthrmodal" id="selecthr" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg selecthrdialog">
+        <!-- Modal content-->
+        <div class="modal-content selecthrcontent">
+            <div class="modal-header selecthrheader">
+                <button type="button" class="close selecthrclose" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="modal-body selecthrbody">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner" style="height:auto;">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="selecthrheading">HSCodes description</h4>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="input-group">
+                                    <input type="text" id="HSCodeSearchTxt" class="form-control selecthrsearchtextbox" placeholder="HSCode/Description">
+                                    <span class="input-group-btn">
+                                        <button id="searchhscodebtn" class="btn sky-blue" type="button" onclick="SearchHSCode();">Search <span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-2 col-md-2">
+                                <a class="btn btn-dark-red" onclick="clearSearchtxt();">Clear <span class="glyphicon glyphicon-remove"></span></a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 ">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <a class="btn btn-dark-green btn-block" onclick="SaveHSCode();"><img src="~/contents/img/save.png" /> Save</a>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <a class="btn btn-red btn-block" data-dismiss="modal">Close <span class="glyphicon glyphicon-remove"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- jstree start -->
+                            <div class="col-xs-12 col-sm-12 col-md-12s">
+                                <div class="row mail-count-height top-offset-16">                
+                                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10" style="height: 345px;">
+                                        <div id="HSCodeTree" class="bottom-offset-40">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- jstree End -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- select HSCodes modal popup End -->
+<input type="hidden" id="hdnSelectedHSCodes" />
 <script>
-    function callpiechart(ctrl,HSCode)
+    $(function () {
+        GetHSCode();
+    })
+
+    //Bind HSCode Api Below
+    function GetHSCode() {
+        $.ajax({
+            url: "/api/Masters/GetHSCode",
+            async: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#HSCodeTree').jstree({
+                    'core': {
+                        'data': result
+                    },
+                    "checkbox": { "keep_selected_style": false },
+                    "search": {
+                        "case_sensitive": false,
+                        "show_only_matches": true
+                    },
+                    "plugins": ["checkbox", "search"]
+                });
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                //HideGlobalLodingPanel();
+            }
+        });
+    }
+    //Bind HSCode on Edit Mode
+    function bindhscodeUId() {
+        document.getElementById('HSCodeSearchTxt').value = '';
+        var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');      
+          $('#HSCodeTree').jstree(true).select_node(numbersArray);
+    }
+
+    //JSTree Search function
+    function SearchHSCode() {
+        var searchString = $("#HSCodeSearchTxt").val();
+        $('#HSCodeTree').jstree('search', searchString);
+    }
+
+    //JSTree clear Search function
+    function clearSearchtxt() {
+        document.getElementById('HSCodeSearchTxt').value = '';
+        $('#searchhscodebtn').click();
+    }
+
+    function callpiechart(ctrl)
     {
         $('.hscodelink').removeClass('active');
         $(ctrl).addClass('active');
-        BindPieChart(HSCode);
+
+        BindPieChart($(ctrl).attr('data-HScode'), DateFrom, DateTo);
     }
-    function BindPieChart(HSCode)
+    function BindPieChart(HSCode,DateFrom,DateTo)
     {
+        debugger
         $.ajax({
             url: "/api/Dashboard/WTOGetHSCodeDataByCountry",
             async: false,
             type: "POST",
             data: JSON.stringify({
-                HSCode: HSCode
+                HSCode: HSCode,
+                DateFrom: DateFrom,
+                DateTo: DateTo
             }),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -91,6 +203,144 @@
                 google.charts.setOnLoadCallback(drawPieChart);
             }
         });
-
     }
+    //GetHSCode popup code
+    function SaveHSCode() {
+        var seen = {};
+        var HSCodeId = [];
+        var LengthTwo = [];
+        var LengthFour = [];
+        var TotalIdArray = [];
+        var FinalArray = [];
+        var index = [];
+        var index2 = [];
+        var i, j, r = [];
+        var row = '';
+        if ($('.jstree-anchor.jstree-clicked').length == 0 && !$('#cbNoHSCode').is(':Checked')) {
+            Alert("Alert", "Please select atleast one HSCode.<br/>", "Ok");
+            $("#HSCodesId tbody > tr").remove();
+            var rowCount = $('#HSCodesId>tbody>tr').length;
+            if ($('#HSCodesId>tbody>tr').length == 0) {
+                $(".hs-code-table").addClass("hidden");
+                $("#hdnSelectedHSCodes").val('');
+                return false;
+            }
+            return false;
+        }
+        else {
+            $("#HSCodesId tbody > tr").remove();
+            $.each($('.jstree-anchor.jstree-clicked'), function (i, nodeId) {
+                HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
+            });
+
+            $.each(HSCodeId, function (i, nodeId) {
+                for (var x = 0; x < nodeId.length; x++) {
+                    var id = $('#HSCodeTree').jstree(true).get_selected(true)[x].id;
+                    //var text = $('#HSCodeTree').jstree(true).get_selected(true)[x].text;
+                    if (id.length == 2)
+                        if (LengthTwo.indexOf(id) < 0)
+                            LengthTwo.push(id);
+                }
+            });
+
+            $.each(HSCodeId[0], function (j, HSCode) {
+                var IsIndexOf = false;
+                var IsHScodeNodeSame = false;
+                $.each(LengthTwo, function (i, nodeId) {
+                    var indx = HSCode.indexOf(nodeId);
+                    if (indx == 0) {
+                        IsIndexOf = true;
+                        if (HSCode == nodeId)
+                            IsHScodeNodeSame = true;
+                    }
+                });
+
+                if (!IsIndexOf || IsHScodeNodeSame) {
+                    TotalIdArray.push(HSCode);
+                    if (HSCode.length == 4)
+                        LengthFour.push(HSCode);
+                }
+            });
+
+            $.each(TotalIdArray, function (j, HSCode) {
+                var IsIndexOf = false;
+                var IsHScodeNodeSame = false;
+                $.each(LengthFour, function (i, nodeId) {
+                    var indx = HSCode.indexOf(nodeId);
+                    if (indx == 0) {
+                        IsIndexOf = true;
+                        if (HSCode == nodeId)
+                            IsHScodeNodeSame = true;
+                    }
+                });
+
+                if (!IsIndexOf || IsHScodeNodeSame)
+                    FinalArray.push(HSCode);
+            });
+
+            var items = '';
+
+            if (FinalArray.length == 0 && $('#cbNoHSCode').is(':Checked')) {
+                var nodeId = "-1";
+                items = '-1';
+                var text = "No HS Code";
+                var Onclick = 'RemoveHSCodeRow(this)';
+                row += "<tr class='" + nodeId + "'><td colspan='2'>" + text + "</td><td><a id='" + nodeId + "' onclick='" + Onclick + "' class='remove-icon pull-right hidden'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
+                $("#HSCodesId thead").addClass('hidden');
+            }
+            else {
+                $.each(FinalArray, function (i, nodeId) {
+                    items += nodeId + ',';
+                    var text = $('#HSCodeTree').jstree().get_node(nodeId).text.split(':')[1].trim();
+                    var Onclick = 'RemoveHSCodeRow(this)';
+                    row += "<tr class='" + nodeId + "'><td>" + nodeId + "</td><td>" + text + "</td><td><a id='" + nodeId + "' onclick='" + Onclick + "' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
+                });
+                $("#HSCodesId thead").removeClass('hidden');
+            }
+
+            $("#hdnSelectedHSCodes").val(items);
+            $("#HSCodesId tbody").append(row);
+        }
+
+        $("#HSCodesId tbody > tr").each(function () {
+            var txt = $(this).text();
+            if (seen[txt])
+                $(this).remove();
+            else
+                seen[txt] = true;
+        });
+        $(".hs-code-table").removeClass("hidden");
+        $('#selecthr').modal('hide');
+    }
+
+    //Remove HSCode table tr
+    function RemoveHSCodeRow(ClassName) {
+        //if (ClassName == "-1")
+        DeselectHSCodeNode(ClassName);
+        //else
+        //    Confirm('Delete', 'Do you want to remove this HS Code among selected HS Codes?', 'Yes', 'No', 'DeselectHSCodeNode("' + ClassName + '")');
+    }
+
+    //Remove HSCode table tr
+    function DeselectHSCodeNode(ctrl) {
+        var id = '';
+        id = ctrl.id;
+        var ClassName = id;
+        if (ClassName == "-1")
+            $('#cbNoHSCode').prop('checked', false);
+        else
+            $('#HSCodeTree').jstree("uncheck_node", ClassName);
+
+        $('.' + ClassName).remove();
+        var UpdateHSCodeId = $("#hdnSelectedHSCodes").val().replace(ClassName, "").replace(",,", ",");
+        $("#hdnSelectedHSCodes").val('');
+        $("#hdnSelectedHSCodes").val(UpdateHSCodeId);
+
+        var rowCount = $('#HSCodesId>tbody>tr').length;
+        if ($('#HSCodesId>tbody>tr').length == 0) {
+            $(".hs-code-table").addClass("hidden");
+            return false;
+        }
+    }
+
 </script>

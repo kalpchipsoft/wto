@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -616,6 +617,7 @@
     <Content Include="contents\css\fonts\Lato-Regular.ttf" />
     <Content Include="contents\css\fonts\Verdana.ttf" />
     <Content Include="Views\MoM\Edit.cshtml" />
+    <Content Include="Views\WTO\WTODashboard.cshtml" />
     <Content Include="XceptionLog.txt" />
     <Content Include="contents\css\fonts\flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" />
     <Content Include="contents\js\ckeditor\plugins\scayt\CHANGELOG.md" />
@@ -683,7 +685,6 @@
     <Content Include="Views\WTO\AddNotification.cshtml" />
     <Content Include="Views\WTO\ManageAccess.cshtml" />
     <Content Include="Views\WTO\NotificationList.cshtml" />
-    <Content Include="Views\WTO\WTODashboard.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -717,6 +718,7 @@
     <Content Include="Views\Partial\Dashboard\DashboardHSCodeByCountry.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardProcessingStatus.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardRequestResponse.cshtml" />
+    <Content Include="Views\Partial\Dashboard\DashboardNotificationHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
