@@ -25,412 +25,412 @@ namespace WTO.Controllers.API.WTO
         public IHttpActionResult ReadNotificationDetails(BusinessObjects.Notification.Attachment file)
         {
             NotificationDetails objE = new NotificationDetails();
-            //try
-            //{
-            if (file != null && file.Content.Length > 0)
+            try
             {
-                #region "Get & save Document"
-                byte[] bytes = null;
-                if (file.Content.IndexOf(',') >= 0)
+                if (file != null && file.Content.Length > 0)
                 {
-                    var myString = file.Content.Split(new char[] { ',' });
-                    bytes = Convert.FromBase64String(myString[1]);
-                }
-                else
-                    bytes = Convert.FromBase64String(file.Content);
-
-                string filePath = HttpContext.Current.Server.MapPath("/Attachments/Temp/" + file.FileName);
-
-                if (file.FileName.Length > 0 && bytes.Length > 0)
-                {
-                    if (File.Exists(filePath))
-                        File.Delete(filePath);
-
-                    File.WriteAllBytes(filePath, bytes);
-                }
-
-                //Stream st = new MemoryStream(bytes);
-                string _fileName = System.IO.Path.GetFileName(file.FileName);
-                string fileExtension = System.IO.Path.GetExtension(_fileName);
-                #endregion
-
-                #region "Pdf File"
-                if (fileExtension.ToLower() == ".pdf")
-                {
-                    #region "REad PDF"
-                    //PdfReader reader = new PdfReader(filePath);
-                    //int intPageNum = reader.NumberOfPages;
-                    //string[] words;
-                    //string line;
-
-                    //for (int i = 1; i <= intPageNum; i++)
-                    //{
-
-                    //    string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
-                    //    List<string> Data = new List<string>();
-                    //    if (text.Trim().Contains("\a"))
-                    //    {
-                    //        foreach (string str in text.Trim().Replace("\a", "#").Split('#'))
-                    //        {
-                    //            if (str.Trim() != "")
-                    //                Data.Add(str);
-                    //        }
-                    //    }
-                    //    else if (text.Trim().Contains("\n"))
-                    //    {
-                    //        foreach (string str in text.Trim().Replace("\n", "").Replace("\r", "#").Split('#'))
-                    //        {
-                    //            if (str.Trim() != "")
-                    //                Data.Add(str);
-                    //        }
-                    //    }
-
-                    //    words = text.Split('\n');
-                    //    for (int j = 0, len = words.Length; j < len; j++)
-                    //    {
-                    //        line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[j]));
-                    //    }
-
-                    //    #region "Loop start"
-                    //    foreach (string str in Data)
-                    //    {
-                    //        string Header = str;
-                    //        Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
-                    //        Header = Regex.Replace(Header, @"\r\r+", ",");
-                    //        if (Header.Split(',').Length > 1)
-                    //        {
-                    //            foreach (string hdrstr in Header.Split(','))
-                    //            {
-                    //                string Ctext = hdrstr;
-
-                    //                if (Ctext.Contains("G/TBT/N/"))
-                    //                {
-                    //                    objE.NotificationNumber = Ctext;
-                    //                    objE.Type = "2";
-                    //                }
-                    //                else if (Ctext.Contains("G/SPS/N/"))
-                    //                {
-                    //                    objE.NotificationNumber = Ctext;
-                    //                    objE.Type = "1";
-                    //                }
-
-                    //                DateTime Temp;
-                    //                if (DateTime.TryParse(Ctext, out Temp) == true)
-                    //                {
-                    //                    DateTime d = Convert.ToDateTime(DateTime.Parse(Ctext.Trim()).ToString("dd MM yyyy", System.Globalization.CultureInfo.InvariantCulture));
-                    //                    objE.NotificationDate = d.ToString("dd MMM yyyy");
-                    //                }
-                    //            }
-                    //        }
-
-                    //        if (str.Contains("/SPS/") || str.Contains("/TBT/"))
-                    //        {
-                    //            objE.NotificationNumber = Regex.Replace(str, @"[^\w\s.,!/@#$%^&*()=+~`]", "#").Replace("\r", "").Split('#')[0];
-
-                    //            if (objE.NotificationNumber.Length > 15)
-                    //            {
-                    //                objE.NotificationNumber = objE.NotificationNumber.Substring(0, 15);
-                    //                objE.NotificationDate = objE.NotificationNumber.Substring(15, 13);
-                    //            }
-
-                    //            if (objE.NotificationNumber.Contains("/SPS/"))
-                    //                objE.Type = "1";
-                    //            else if (objE.NotificationNumber.Contains("/TBT/"))
-                    //                objE.Type = "2";
-
-                    //        }
-
-                    //        if (str.Contains("Notified under Article"))
-                    //        {
-                    //            objE.Articles = "";
-                    //            foreach (string ar in str.Replace("Notified under Article ", "").Split(','))
-                    //            {
-                    //                if (ar.Contains("["))
-                    //                {
-                    //                    if ((ar.Split('[')[1]).Contains("X"))
-                    //                        objE.Articles += ar.Split('[')[0].Trim() + ",";
-                    //                }
-                    //            }
-                    //        }
-
-
-                    //        if (str.Contains("Notifying Member"))
-                    //        {
-                    //            string NotifyingMember = str.Replace("Notifying Member:", "");
-                    //            objE.Country = Regex.Replace(NotifyingMember, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //        }
-
-                    //        if (str.Contains("Agency responsible"))
-                    //        {
-                    //            string AgencyResponsible = str.Replace("Agency responsible:", "");
-                    //            objE.ResponsibleAgency = Regex.Replace(AgencyResponsible, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //        }
-
-                    //        if (str.Contains("Products covered"))
-                    //        {
-                    //            string ProductsCovered = str.Split(':')[str.Split(':').Length - 1];
-                    //            objE.ProductsCovered = Regex.Replace(ProductsCovered, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //        }
-
-                    //        if (str.Contains("Title"))
-                    //        {
-                    //            if (str.Contains("Title of the notified document"))
-                    //            {
-                    //                string Title = str.Replace("Title of the notified document:", "");
-                    //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //            }
-                    //            else
-                    //            {
-                    //                string Title = str.Split(':')[str.Split(':').Length - 1];
-                    //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //            }
-                    //        }
-
-                    //        if (str.Contains("Description of content"))
-                    //        {
-                    //            string Description = str.Replace("Description of content:", "");
-                    //            objE.Description = Regex.Replace(Description, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //        }
-
-                    //        if (str.Contains("Final date for comments"))
-                    //        {
-                    //            string FinalDateForComments = str.Split('\r')[0].Split(':')[str.Split('\r')[0].Split(':').Length - 1];
-                    //            objE.FinalDateOfComments = Regex.Replace(FinalDateForComments, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
-                    //        }
-                    //    }
-                    //    #endregion
-                    //}
-                    #endregion
-                }
-                #endregion
-
-                #region "Word File"
-                if (fileExtension.ToLower() == ".doc" || fileExtension.ToLower() == ".docx")
-                {
-                    //running
-                    #region "Read file using Interop"
-                    Application word = new Application(); ;
-
-                    Microsoft.Office.Interop.Word.Document wordfile = new Microsoft.Office.Interop.Word.Document();
-                    object path = filePath;
-                    // Define an object to pass to the API for missing parameters
-                    object missing = System.Type.Missing;
-                    wordfile = word.Documents.Open(ref path,
-                            ref missing, ref missing, ref missing, ref missing,
-                            ref missing, ref missing, ref missing, ref missing,
-                            ref missing, ref missing, ref missing, ref missing,
-                            ref missing, ref missing, ref missing);
-
-                    //try
-                    //{
-                    String read = string.Empty;
-                    List<string> data = new List<string>();
-                    List<string> headers = new List<string>();
-
-                    #region "Read File Header"
-                    foreach (Microsoft.Office.Interop.Word.Section aSection in word.ActiveDocument.Sections)
+                    #region "Get & save Document"
+                    byte[] bytes = null;
+                    if (file.Content.IndexOf(',') >= 0)
                     {
-                        foreach (HeaderFooter aHeader in aSection.Headers)
-                        {
-                            headers.Add(aHeader.Range.Text);
-                            string Header = aHeader.Range.Text;
-                            Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
-                            Header = Regex.Replace(Header, @"\r\r+", ",");
-                            if (Header.Split(',').Length > 1)
-                            {
-                                foreach (string hdrstr in Header.Split(','))
-                                {
-                                    string Ctext = hdrstr;
+                        var myString = file.Content.Split(new char[] { ',' });
+                        bytes = Convert.FromBase64String(myString[1]);
+                    }
+                    else
+                        bytes = Convert.FromBase64String(file.Content);
 
-                                    if (Ctext.Contains("G/TBT/N/"))
-                                    {
-                                        objE.NotificationNumber = Ctext;
-                                        objE.NotificationType = "2";
-                                    }
-                                    else if (Ctext.Contains("G/SPS/N/"))
-                                    {
-                                        objE.NotificationNumber = Ctext;
-                                        objE.NotificationType = "1";
-                                    }
+                    string filePath = HttpContext.Current.Server.MapPath("/Attachments/Temp/" + file.FileName);
 
-                                    DateTime Temp;
-                                    if (DateTime.TryParse(Ctext, out Temp) == true)
-                                        objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
-                                }
-                            }
-                        }
+                    if (file.FileName.Length > 0 && bytes.Length > 0)
+                    {
+                        if (File.Exists(filePath))
+                            File.Delete(filePath);
+
+                        File.WriteAllBytes(filePath, bytes);
+                    }
+
+                    //Stream st = new MemoryStream(bytes);
+                    string _fileName = System.IO.Path.GetFileName(file.FileName);
+                    string fileExtension = System.IO.Path.GetExtension(_fileName);
+                    #endregion
+
+                    #region "Pdf File"
+                    if (fileExtension.ToLower() == ".pdf")
+                    {
+                        #region "REad PDF"
+                        //PdfReader reader = new PdfReader(filePath);
+                        //int intPageNum = reader.NumberOfPages;
+                        //string[] words;
+                        //string line;
+
+                        //for (int i = 1; i <= intPageNum; i++)
+                        //{
+
+                        //    string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                        //    List<string> Data = new List<string>();
+                        //    if (text.Trim().Contains("\a"))
+                        //    {
+                        //        foreach (string str in text.Trim().Replace("\a", "#").Split('#'))
+                        //        {
+                        //            if (str.Trim() != "")
+                        //                Data.Add(str);
+                        //        }
+                        //    }
+                        //    else if (text.Trim().Contains("\n"))
+                        //    {
+                        //        foreach (string str in text.Trim().Replace("\n", "").Replace("\r", "#").Split('#'))
+                        //        {
+                        //            if (str.Trim() != "")
+                        //                Data.Add(str);
+                        //        }
+                        //    }
+
+                        //    words = text.Split('\n');
+                        //    for (int j = 0, len = words.Length; j < len; j++)
+                        //    {
+                        //        line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[j]));
+                        //    }
+
+                        //    #region "Loop start"
+                        //    foreach (string str in Data)
+                        //    {
+                        //        string Header = str;
+                        //        Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
+                        //        Header = Regex.Replace(Header, @"\r\r+", ",");
+                        //        if (Header.Split(',').Length > 1)
+                        //        {
+                        //            foreach (string hdrstr in Header.Split(','))
+                        //            {
+                        //                string Ctext = hdrstr;
+
+                        //                if (Ctext.Contains("G/TBT/N/"))
+                        //                {
+                        //                    objE.NotificationNumber = Ctext;
+                        //                    objE.Type = "2";
+                        //                }
+                        //                else if (Ctext.Contains("G/SPS/N/"))
+                        //                {
+                        //                    objE.NotificationNumber = Ctext;
+                        //                    objE.Type = "1";
+                        //                }
+
+                        //                DateTime Temp;
+                        //                if (DateTime.TryParse(Ctext, out Temp) == true)
+                        //                {
+                        //                    DateTime d = Convert.ToDateTime(DateTime.Parse(Ctext.Trim()).ToString("dd MM yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                        //                    objE.NotificationDate = d.ToString("dd MMM yyyy");
+                        //                }
+                        //            }
+                        //        }
+
+                        //        if (str.Contains("/SPS/") || str.Contains("/TBT/"))
+                        //        {
+                        //            objE.NotificationNumber = Regex.Replace(str, @"[^\w\s.,!/@#$%^&*()=+~`]", "#").Replace("\r", "").Split('#')[0];
+
+                        //            if (objE.NotificationNumber.Length > 15)
+                        //            {
+                        //                objE.NotificationNumber = objE.NotificationNumber.Substring(0, 15);
+                        //                objE.NotificationDate = objE.NotificationNumber.Substring(15, 13);
+                        //            }
+
+                        //            if (objE.NotificationNumber.Contains("/SPS/"))
+                        //                objE.Type = "1";
+                        //            else if (objE.NotificationNumber.Contains("/TBT/"))
+                        //                objE.Type = "2";
+
+                        //        }
+
+                        //        if (str.Contains("Notified under Article"))
+                        //        {
+                        //            objE.Articles = "";
+                        //            foreach (string ar in str.Replace("Notified under Article ", "").Split(','))
+                        //            {
+                        //                if (ar.Contains("["))
+                        //                {
+                        //                    if ((ar.Split('[')[1]).Contains("X"))
+                        //                        objE.Articles += ar.Split('[')[0].Trim() + ",";
+                        //                }
+                        //            }
+                        //        }
+
+
+                        //        if (str.Contains("Notifying Member"))
+                        //        {
+                        //            string NotifyingMember = str.Replace("Notifying Member:", "");
+                        //            objE.Country = Regex.Replace(NotifyingMember, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Agency responsible"))
+                        //        {
+                        //            string AgencyResponsible = str.Replace("Agency responsible:", "");
+                        //            objE.ResponsibleAgency = Regex.Replace(AgencyResponsible, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Products covered"))
+                        //        {
+                        //            string ProductsCovered = str.Split(':')[str.Split(':').Length - 1];
+                        //            objE.ProductsCovered = Regex.Replace(ProductsCovered, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Title"))
+                        //        {
+                        //            if (str.Contains("Title of the notified document"))
+                        //            {
+                        //                string Title = str.Replace("Title of the notified document:", "");
+                        //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //            }
+                        //            else
+                        //            {
+                        //                string Title = str.Split(':')[str.Split(':').Length - 1];
+                        //                objE.Title = Regex.Replace(Title, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //            }
+                        //        }
+
+                        //        if (str.Contains("Description of content"))
+                        //        {
+                        //            string Description = str.Replace("Description of content:", "");
+                        //            objE.Description = Regex.Replace(Description, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+
+                        //        if (str.Contains("Final date for comments"))
+                        //        {
+                        //            string FinalDateForComments = str.Split('\r')[0].Split(':')[str.Split('\r')[0].Split(':').Length - 1];
+                        //            objE.FinalDateOfComments = Regex.Replace(FinalDateForComments, @"[^\w\s.,!@#$%^&*()=+~`-]", "#").Split('#')[0].Split('\r')[0];
+                        //        }
+                        //    }
+                        //    #endregion
+                        //}
+                        #endregion
                     }
                     #endregion
 
-                    #region "File Body"
-
-                    #region "Table"
-                    Table t = wordfile.Tables[1];
-                    Rows rows = t.Rows;
-                    foreach (Row tablerow in rows)
+                    #region "Word File"
+                    if (fileExtension.ToLower() == ".doc" || fileExtension.ToLower() == ".docx")
                     {
-                        String str = tablerow.Range.Text;
-                        if (str.Contains("Notifying Member"))
+                        //running
+                        #region "Read file using Interop"
+                        Application word = new Application(); ;
+
+                        Microsoft.Office.Interop.Word.Document wordfile = new Microsoft.Office.Interop.Word.Document();
+                        object path = filePath;
+                        // Define an object to pass to the API for missing parameters
+                        object missing = System.Type.Missing;
+                        wordfile = word.Documents.Open(ref path,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing, ref missing,
+                                ref missing, ref missing, ref missing);
+
+                        try
                         {
-                            foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                            String read = string.Empty;
+                            List<string> data = new List<string>();
+                            List<string> headers = new List<string>();
+
+                            #region "Read File Header"
+                            foreach (Microsoft.Office.Interop.Word.Section aSection in word.ActiveDocument.Sections)
                             {
-                                if (s.Contains("Notifying Member"))
-                                    objE.Country = s.Replace("Notifying Member", "").Trim();
-                            }
-                        }
-
-                        if (str.Contains("Agency responsible"))
-                        {
-                            string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                            objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
-                        }
-
-                        if (str.Contains("Products covered"))
-                        {
-                            string _Products = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                            int startIndex = _Products.IndexOf(":", 0);
-                            if (startIndex >= 0)
-                            {
-                                _Products = _Products.Substring(startIndex + 1);
-                                objE.ProductsCovered = _Products;
-
-                                string hs = "";
-                                if (_Products.Contains("(HS "))
+                                foreach (HeaderFooter aHeader in aSection.Headers)
                                 {
-                                    hs = _Products.Remove(0, _Products.IndexOf("(HS"));
-                                    hs = hs.Substring(0, hs.IndexOf(')'));
-                                    hs = hs.Replace("(HS", "").Trim();
-                                    objE.HSCodes = hs;
-                                }
-                                else if (_Products.Contains("(HS:"))
-                                {
-                                    hs = _Products.Substring(_Products.IndexOf("(HS:") + 1).Replace(")", "");
-                                    hs = hs.Substring(0, hs.IndexOf(","));
-                                    hs = hs.Replace("HS:", "").Trim();
-                                    objE.HSCodes = hs.Replace('.', ',');
-                                }
-                            }
-                        }
-
-                        if (str.Contains("Title"))
-                        {
-                            string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                            if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Title of the notified document:"))
-                                objE.Title = _Title.Replace("Title of the notified document:", "").Trim();
-                            else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Title, number of pages and language(s) of the notified document:"))
-                                objE.Title = _Title.Replace("Title, number of pages and language(s) of the notified document:", "").Trim();
-
-                            objE.Title = objE.Title.Replace("5.", "");
-                        }
-
-                        if (str.Contains("Description of content"))
-                        {
-                            foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
-                            {
-                                if (s.Contains("Description of content"))
-                                    objE.Description = s.Replace("Description of content", "").Trim();
-                            }
-                            var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                            objE.Description = _Desc.Replace("Description of content", "").Trim();
-                            objE.Description = objE.Description.Replace("6.", "");
-                        }
-
-                        if (str.Contains("Final date for comments"))
-                        {
-                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
-                            {
-                                if (s.Contains("Final date for comments"))
-                                {
-                                    string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
-                                    DateTime Temp;
-                                    if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
-                                        objE.FinalDateOfComments = FinalDateForComments.Trim();
-                                }
-                            }
-                        }
-
-                        if (str.Contains("Notified under Article"))
-                        {
-                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
-                            {
-                                if (s.Contains("Notified under Article"))
-                                {
-                                    foreach (string ar in s.Replace("Notified under Article ", "").Split(','))
+                                    headers.Add(aHeader.Range.Text);
+                                    string Header = aHeader.Range.Text;
+                                    Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
+                                    Header = Regex.Replace(Header, @"\r\r+", ",");
+                                    if (Header.Split(',').Length > 1)
                                     {
-                                        if (ar.Contains("X"))
-                                            objE.Articles += ar.Replace("X", "").Trim() + ",";
-                                    }
-                                }
-                            }
-                        }
-
-                        if (str.Contains("Texts available from") || str.Contains("Text(s) available from"))
-                        {
-                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
-                            {
-                                if (s.Contains("Email"))
-                                {
-                                    string email = s.Replace("E-mail", "").Replace("Email", "").Replace(":", "").Trim();
-                                    if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-                                        objE.EnquiryEmailId = email;
-                                }
-                                else if (s.Contains("E-mail"))
-                                {
-                                    string email = s.Substring(s.IndexOf("E-mail")).Replace("E-mail:", "").Trim();
-                                    if (email.IndexOf("\v") > 0)
-                                        email = email.Substring(0, email.IndexOf("\v"));
-                                    if (email.IndexOf(',') >= 0)
-                                    {
-                                        var _EnquiryEmailId = "";
-                                        foreach (string e in email.Split(','))
+                                        foreach (string hdrstr in Header.Split(','))
                                         {
-                                            if (Regex.IsMatch(e, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-                                                _EnquiryEmailId += e + ";";
+                                            string Ctext = hdrstr;
+
+                                            if (Ctext.Contains("G/TBT/N/"))
+                                            {
+                                                objE.NotificationNumber = Ctext;
+                                                objE.NotificationType = "2";
+                                            }
+                                            else if (Ctext.Contains("G/SPS/N/"))
+                                            {
+                                                objE.NotificationNumber = Ctext;
+                                                objE.NotificationType = "1";
+                                            }
+
+                                            DateTime Temp;
+                                            if (DateTime.TryParse(Ctext, out Temp) == true)
+                                                objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
                                         }
-                                        objE.EnquiryEmailId = _EnquiryEmailId.TrimEnd(';');
-                                    }
-                                    else
-                                    {
-                                        if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-                                            objE.EnquiryEmailId = email;
                                     }
                                 }
                             }
+                            #endregion
+
+                            #region "File Body"
+
+                            #region "Table"
+                            Table t = wordfile.Tables[1];
+                            Rows rows = t.Rows;
+                            foreach (Row tablerow in rows)
+                            {
+                                String str = tablerow.Range.Text;
+                                if (str.Contains("Notifying Member"))
+                                {
+                                    foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                    {
+                                        if (s.Contains("Notifying Member"))
+                                            objE.Country = s.Replace("Notifying Member", "").Trim();
+                                    }
+                                }
+
+                                if (str.Contains("Agency responsible"))
+                                {
+                                    string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
+                                }
+
+                                if (str.Contains("Products covered"))
+                                {
+                                    string _Products = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    int startIndex = _Products.IndexOf(":", 0);
+                                    if (startIndex >= 0)
+                                    {
+                                        _Products = _Products.Substring(startIndex + 1);
+                                        objE.ProductsCovered = _Products;
+
+                                        string hs = "";
+                                        if (_Products.Contains("(HS "))
+                                        {
+                                            hs = _Products.Remove(0, _Products.IndexOf("(HS"));
+                                            hs = hs.Substring(0, hs.IndexOf(')'));
+                                            hs = hs.Replace("(HS", "").Trim();
+                                            objE.HSCodes = hs;
+                                        }
+                                        else if (_Products.Contains("(HS:"))
+                                        {
+                                            hs = _Products.Substring(_Products.IndexOf("(HS:") + 1).Replace(")", "");
+                                            hs = hs.Substring(0, hs.IndexOf(","));
+                                            hs = hs.Replace("HS:", "").Trim();
+                                            objE.HSCodes = hs.Replace('.', ',');
+                                        }
+                                    }
+                                }
+
+                                if (str.Contains("Title"))
+                                {
+                                    string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Title of the notified document:"))
+                                        objE.Title = _Title.Replace("Title of the notified document:", "").Trim();
+                                    else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Title, number of pages and language(s) of the notified document:"))
+                                        objE.Title = _Title.Replace("Title, number of pages and language(s) of the notified document:", "").Trim();
+
+                                    objE.Title = objE.Title.Replace("5.", "");
+                                }
+
+                                if (str.Contains("Description of content"))
+                                {
+                                    foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                    {
+                                        if (s.Contains("Description of content"))
+                                            objE.Description = s.Replace("Description of content", "").Trim();
+                                    }
+                                    var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                    objE.Description = _Desc.Replace("Description of content", "").Trim();
+                                    objE.Description = objE.Description.Replace("6.", "");
+                                }
+
+                                if (str.Contains("Final date for comments"))
+                                {
+                                    foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                    {
+                                        if (s.Contains("Final date for comments"))
+                                        {
+                                            string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
+                                            DateTime Temp;
+                                            if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
+                                                objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                        }
+                                    }
+                                }
+
+                                if (str.Contains("Notified under Article"))
+                                {
+                                    foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                    {
+                                        if (s.Contains("Notified under Article"))
+                                        {
+                                            foreach (string ar in s.Replace("Notified under Article ", "").Split(','))
+                                            {
+                                                if (ar.Contains("X"))
+                                                    objE.Articles += ar.Replace("X", "").Trim() + ",";
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (str.Contains("Texts available from") || str.Contains("Text(s) available from"))
+                                {
+                                    foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                    {
+                                        if (s.Contains("Email"))
+                                        {
+                                            string email = s.Replace("E-mail", "").Replace("Email", "").Replace(":", "").Trim();
+                                            if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                objE.EnquiryEmailId = email;
+                                        }
+                                        else if (s.Contains("E-mail"))
+                                        {
+                                            string email = s.Substring(s.IndexOf("E-mail")).Replace("E-mail:", "").Trim();
+                                            if (email.IndexOf("\v") > 0)
+                                                email = email.Substring(0, email.IndexOf("\v"));
+                                            if (email.IndexOf(',') >= 0)
+                                            {
+                                                var _EnquiryEmailId = "";
+                                                foreach (string e in email.Split(','))
+                                                {
+                                                    if (Regex.IsMatch(e, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                        _EnquiryEmailId += e + ";";
+                                                }
+                                                objE.EnquiryEmailId = _EnquiryEmailId.TrimEnd(';');
+                                            }
+                                            else
+                                            {
+                                                if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                    objE.EnquiryEmailId = email;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            Marshal.ReleaseComObject(t);
+                            Marshal.ReleaseComObject(rows);
+                            Marshal.ReleaseComObject(wordfile);
+                            #endregion
                         }
+                        catch (Exception ex)
+                        {
+                            File.AppendAllText(HttpContext.Current.Server.MapPath("~/XceptionLog.txt"), ex.Message);
+                        }
+                        finally
+                        {
+
+                            ((_Document)wordfile).Close();
+                            if (word.Documents.Count > 0)
+                                word.Documents.Close();
+
+                            ((_Application)word.Application).Quit();
+                            word.Quit();
+
+                            if (File.Exists(filePath))
+                                File.Delete(filePath);
+                        }
+                        #endregion
                     }
                     #endregion
-
-                    Marshal.ReleaseComObject(t);
-                    Marshal.ReleaseComObject(rows);
-                    Marshal.ReleaseComObject(wordfile);
-                    #endregion
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    File.AppendAllText(HttpContext.Current.Server.MapPath("~/XceptionLog.txt"), ex.Message);
-                    //}
-                    //finally
-                    //{
-
-                    ((_Document)wordfile).Close();
-                    if (word.Documents.Count > 0)
-                        word.Documents.Close();
-
-                    ((_Application)word.Application).Quit();
-                    word.Quit();
-
-                    if (File.Exists(filePath))
-                        File.Delete(filePath);
-                    //}
-                    #endregion
                 }
-                #endregion
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    ModelState.AddModelError("", ex.Message);
-            //}
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
 
             if (objE != null && objE.NotificationNumber != null && objE.NotificationNumber != "")
             {
