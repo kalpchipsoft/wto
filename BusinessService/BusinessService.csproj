@@ -48,13 +48,11 @@
     <Reference Include="DataServices">
       <HintPath>..\DataServices\bin\Debug\DataServices.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\Working\WTO\April 2018\16 April\WTO\BusinessService\bin\Debug\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\Working\WTO\April 2018\16 April\WTO\BusinessService\bin\Debug\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -92,10 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dll\Ionic.Zip.dll" />
-    <Content Include="Dll\itextsharp.dll" />
+    <Content Include="bin\Ionic.Zip.dll" />
+    <Content Include="bin\itextsharp.dll" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
