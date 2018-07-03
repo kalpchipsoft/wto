@@ -439,7 +439,7 @@ namespace WTO.Controllers.API.WTO
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                File.AppendAllText(HttpContext.Current.Server.MapPath("~/XceptionLog.txt"), ex.Message);
             }
 
             if (objE != null && objE.NotificationNumber != null && objE.NotificationNumber != "")
