@@ -21,6 +21,9 @@
         public const string Dashboards_PendingCounts = "proc_GetDashboardPendingCounts";
         public const string Dashboards_NotificationGraphData = "Proc_GetNotificationGraphData";
         public const string Dashboards_PendingCounts_Discussion = "proc_GetDashboardPendingCounts_Discussion";
+
+        public const string Dashboards_NotificationGraphDataWeekly = "Proc_GetNotificationGraphDataWeekly";
+        public const string Dashboards_NotificationGraphDataMonthly = "Proc_GetNotificationGraphDataMonthly";
         #endregion
 
         #region "Add Notification"

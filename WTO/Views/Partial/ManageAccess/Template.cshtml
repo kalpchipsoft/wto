@@ -10,15 +10,15 @@
         <label class="table-heading">Templates (@(Model.Templates == null ? 0 : Model.Templates.Count))</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-toggle="modal" onclick="AddTemplatePopup()">Add Template</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th>S.No</th>
-                        <th>Template Type</th>
-                        <th>Template For</th>
-                        <th>Status</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Delete</th>
+                        <th class="col-xs-1">S.No</th>
+                        <th class="col-xs-2">Template Type</th>
+                        <th class="col-xs-6">Template For</th>
+                        <th class="col-xs-1">Status</th>
+                        <th class="text-center col-xs-1">Edit</th>
+                        <th class="text-center col-xs-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -28,19 +28,19 @@
                         foreach (var item in @Model.Templates)
                         {
                             <tr>
-                                <td>@(i++)</td>
-                                <td>@item.TemplateType</td>
-                                <td>@item.TemplateFor</td>
+                                <td class="col-xs-1">@(i++)</td>
+                                <td class="col-xs-2">@item.TemplateType</td>
+                                <td class="col-xs-6">@item.TemplateFor</td>
                                 @if (@item.TemplateStatus)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-xs-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-xs-1">Inactive</td>
                                 }
-                                <td class="text-center"><a href="#" onclick="EditTemplate(@item.TemplateId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" onclick="Confirm('Delete','Do you want to delete the template?','Yes', 'No', 'DeleteTemplate(@item.TemplateId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="EditTemplate(@item.TemplateId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="Confirm('Delete','Do you want to delete the template?','Yes', 'No', 'DeleteTemplate(@item.TemplateId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -193,5 +193,14 @@
             ],
         };
         CKEDITOR.replace(txtMessage, config);
+
+
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-xs-1 col-xs-2 col-xs-6 table-fixed");
+            $("td").removeClass("col-xs-1 col-xs-2 col-xs-6 table-fixed");
+        }
+
+
     });
 </script>

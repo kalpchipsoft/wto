@@ -29,5 +29,19 @@ namespace WTO.Controllers.API.WTO
             DashboardBusinessService obj = new DashboardBusinessService();
             return Ok(obj.GetHsCodeGraphDataCountryWise(obj1));
         }
+
+        [HttpPost]
+        public IHttpActionResult WTOGetNotificationGraphDataWeekly(DashboardSearch obj1)
+        {
+            DashboardBusinessService obj = new DashboardBusinessService();
+            return Ok(obj.GetNotificationGraphDataWeekly(obj1));
+        }
+        [HttpPost]
+        public IHttpActionResult WTOGetNotificationGraphDataMonthly(DashboardSearch obj1)
+        {
+            DashboardBusinessService obj = new DashboardBusinessService();
+            return Ok(obj.GetNotificationGraphDataMonthly(obj1));
+        }
+
     }
 }

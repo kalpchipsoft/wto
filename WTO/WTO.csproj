@@ -601,6 +601,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="JQuery\Dashboard.js" />
     <Content Include="JQuery\ManageAccess.js" />
     <Content Include="JQuery\master.js" />
     <Content Include="JQuery\Mom.js" />

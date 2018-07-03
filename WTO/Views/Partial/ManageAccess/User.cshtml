@@ -8,17 +8,17 @@
         <label class="table-heading">Users (@Model.TotalCount)</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddUser" onclick="AddUserPopup();" data-toggle="modal">Add User</a>
         <div class="table-responsive nopaging notificationlist top-offset-20">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th>S.No</th>
-                        <th>User Name</th>
-                        <th>Email Id</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th class="text-center">View Password</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Delete</th>
+                        <th class="col-xs-1">S.No</th>
+                        <th class="col-xs-3">User Name</th>
+                        <th class="col-xs-3">Email Id</th>
+                        <th class="col-xs-1">Phone</th>
+                        <th class="col-xs-1">Status</th>
+                        <th class="text-center col-xs-1">View Password</th>
+                        <th class="text-center col-xs-1">Edit</th>
+                        <th class="text-center col-xs-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -27,21 +27,21 @@
                         foreach (var item in @Model.UserList)
                         {
                             <tr>
-                                <td>@item.ItemNumber</td>
-                                <td>@item.UserName</td>
-                                <td>@item.Email</td>
-                                <td>@item.Mobile</td>
+                                <td class="col-xs-1">@item.ItemNumber</td>
+                                <td class="col-xs-3">@item.UserName</td>
+                                <td class="col-xs-3">@item.Email</td>
+                                <td class="col-xs-1">@item.Mobile</td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-xs-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-xs-1">Inactive</td>
                                 }
-                                <td class="text-center"><a href="#"><span class="glyphicon glyphicon-eye-open eye"></span><span class="hidden pwd">@item.Password</span></a></td>
-                                <td class="text-center"><a href="#" onclick="EditUserData(@item.UserId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" onclick="Confirm('Delete','Do you want to delete the @item.UserName ?','Yes', 'No', 'DeleteUser(@item.UserId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#"><span class="glyphicon glyphicon-eye-open eye"></span><span class="hidden pwd">@item.Password</span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="EditUserData(@item.UserId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="Confirm('Delete','Do you want to delete the @item.UserName ?','Yes', 'No', 'DeleteUser(@item.UserId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -159,5 +159,12 @@
                 $(".eye").removeClass("hidden");
             });
         })
+
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-xs-1 col-xs-3 table-fixed");
+            $("td").removeClass("col-xs-1 col-xs-3 table-fixed");
+        }
+
     })
 </script>

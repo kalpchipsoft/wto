@@ -8,13 +8,13 @@
         <label class="table-heading">Language (@Model.TotalCount)</label>
         <a onclick="AddLanguagePopup();" class="btn btn-blue btn-padding pull-right" data-target="#AddLanguage" data-toggle="modal">Add Language</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th class="col-sm-1">S.No</th>
-                        <th class="col-sm-3">Language</th>
-                        <th class="col-sm-1">Status</th>
-                        <th class="text-center col-sm-1">Edit</th>
+                        <th class="width-25">S.No</th>
+                        <th class="width-25">Language</th>
+                        <th class="width-25">Status</th>
+                        <th class="text-center width-25">Edit</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -25,17 +25,17 @@
                         {
                             srno++;
                             <tr>
-                                <td>@srno</td>
-                                <td>@item.Language </td>
+                                <td class="width-25">@srno</td>
+                                <td class="width-25">@item.Language </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="width-25">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="width-25">Inactive</td>
                                 }
-                                <td class="text-center"><a href="#" onclick="EditLanguageData(@item.LanguageId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center width-25"><a href="#" onclick="EditLanguageData(@item.LanguageId);"><span class="glyphicon glyphicon-edit"></span></a></td>
                                 @*<td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteInternalTranslator(@item.InternalStakeholdersId)');"><span class="glyphicon glyphicon-trash"></span></a>*@
                                
                             </tr>
@@ -107,3 +107,13 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("table-fixed");
+            $("td").removeClass("table-fixed");
+        }
+    });
+</script>

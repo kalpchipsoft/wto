@@ -46,14 +46,15 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public DataSet EditMeeting(Nullable<Int64> Id, string CallFor)
+        public DataSet EditMeeting(Nullable<Int64> Id, Search_MoM obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.EditMeeting;
                 sqlCommand.Parameters.AddWithValue("@MoMId", Id);
-                sqlCommand.Parameters.AddWithValue("@CallFor", CallFor);
+                sqlCommand.Parameters.AddWithValue("@CallFor", obj.callFor);
+                sqlCommand.Parameters.AddWithValue("@SearchText", obj.SearchText);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

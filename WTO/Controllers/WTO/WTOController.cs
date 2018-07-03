@@ -99,13 +99,13 @@ namespace WTO.Controllers
             DashboardSearch obj1 = new DashboardSearch();
             return View("~/Views/Partial/Dashboard/DashboardHSCodeByCountry.cshtml", obj.GetHsCodeGraphDataCountryWise(obj1));
         }
-        public ActionResult GetNotificationGraphData(DashboardSearch obj1)
+        public ActionResult GetNotificationGraphData(DashboardSearch obj1) 
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 DashboardBusinessService obj = new DashboardBusinessService();
-
-                return View("~/Views/Partial/Dashboard/DashboardNotificationHistory.cshtml", obj.GetNotificationGraphData(obj1));
+                obj1.DateFrom = System.DateTime.Now.ToString("dd MMM yyyy");
+                return View("~/Views/Partial/Dashboard/DashboardNotificationHistory.cshtml", obj.GetNotificationGraphDataMonthly(obj1));
             }
             else
                 return RedirectToAction("Index", "Login");

@@ -199,11 +199,11 @@ namespace BusinessService.MOM
 
             return objMoM;
         }
-        public EditMeeting EditMoM(Nullable<Int64> Id, string CallFor)
+        public EditMeeting EditMoM(Nullable<Int64> Id, Search_MoM obj)
         {
             EditMeeting objE = new EditMeeting();
             MOMDataManager objDM = new MOMDataManager();
-            DataSet ds = objDM.EditMeeting(Id, CallFor);
+            DataSet ds = objDM.EditMeeting(Id, obj);
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
                 int tblIndex = -1;
@@ -255,6 +255,7 @@ namespace BusinessService.MOM
                         objNotification.Description = Convert.ToString(dr["Description"]);
                         objNotification.RowNum = Convert.ToInt64(dr["ROWNum"]);
                         objNotification.TotalRow = Convert.ToInt64(dr["TotalRow"]);
+                        objNotification.NotificationGroup= Convert.ToString(dr["NotificationGroup"]);
                         i++;
                         NotificationList.Add(objNotification);
                     }

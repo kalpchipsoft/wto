@@ -127,8 +127,12 @@ $(document).ready(function () {
                             $('#NotificationFileName').text('No File Choosen');
                         }
                         else {
-                            if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1)
+                            if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1) {
                                 Alert("Alert", "No country found in our masters w.r.t. notification country code.", "Ok");
+                                $('#NotifyingCountryId').text('');
+                                $('#NotifyingCountryId').attr('data-SearchFor', 0);
+                                $('#NotificationNumberId').val('');
+                            }
                             else {
                                 $('#NotifyingCountryId').text(result.Country + '(' + $.trim(result.CountryCode) + ')');
                                 $('#NotifyingCountryId').attr('data-SearchFor', result.CountryId);
@@ -495,6 +499,9 @@ function Validate() {
     }
     else {
         $('[id$=NotificationNumberId]').removeClass("error");
+        if ($('#NotifyingCountryId').attr('data-SearchFor').trim() != null && $('#NotifyingCountryId').attr('data-SearchFor').trim() <= 0) {
+            MSG += "No country found in our masters w.r.t. notification country code.<br/>";
+        }
     }
 
     //Notification status Validation
@@ -542,10 +549,6 @@ function Validate() {
     else {
         $('.combobox-container input').removeClass("error");
         $('.combobox-container .input-group .input-group-addon').removeClass("error");
-    }
-
-    if ($('#NotifyingCountryId').attr('data-SearchFor').trim() != null && $('#NotifyingCountryId').attr('data-SearchFor').trim() <= 0) {
-        MSG += "No country found in our masters w.r.t. notification country code.<br/>";
     }
 
     //$("#")
@@ -810,10 +813,12 @@ function SaveHSCode() {
         return false;
     }
     else {
+        debugger;
         $("#HSCodesId tbody > tr").remove();
-        $.each($('.jstree-anchor.jstree-clicked'), function (i, nodeId) {
-            HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
-        });
+        HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
+        //$.each($('.jstree-anchor.jstree-clicked'), function (i, nodeId) {
+        //    HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
+        //});
 
         $.each(HSCodeId, function (i, nodeId) {
             for (var x = 0; x < nodeId.length; x++) {
@@ -1238,18 +1243,18 @@ function UploadDocumentOk() {
             var html = '';
             var OnclickFunction = "OpenModelForUploadDocument('translateddoc',this);";
             html += '<tr>' +
-                        '<td><a id="lblRegulation_' + uploadedAttachCount + '" class="default-pointer" download="' + UploadedDocument.FileName + '">' + DisplayName + '</a></td>' +
-                        '<td><select class="form-control languageddl"></select><input id="hdnDocId_' + uploadedAttachCount + '" type="hidden" value="" /></td>' +
-                        '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '"><label id="lblSentToTranslator_' + uploadedAttachCount + '"></label></td>' +
-                        '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '"><label data-searchfor="1" id="lblTranslator_' + uploadedAttachCount + '"></label></td>' +
-                        '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '">' +
-                            '<span id="btnUploadTranslatedDoc_' + uploadedAttachCount + '" onclick="' + OnclickFunction + '" style="color:#E34724; text-decoration: underline; cursor:pointer;" class="forTranslation hidden">' +
-                                '<span id="btntxtTranslatedDoc_' + uploadedAttachCount + '">Upload</span>' +
-                            '</span>' +
-                            '<span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline"><a id="Notifi_Attach_Name_Translated_' + uploadedAttachCount + '" href=""></a></span>' +
-                        '</td>' +
-                        "<td><a style='float: right;' onclick='RemoveNotificationDoc(this)' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a></td>" +
-                     '</tr>';
+                '<td><a id="lblRegulation_' + uploadedAttachCount + '" class="default-pointer" download="' + UploadedDocument.FileName + '">' + DisplayName + '</a></td>' +
+                '<td><select class="form-control languageddl"></select><input id="hdnDocId_' + uploadedAttachCount + '" type="hidden" value="" /></td>' +
+                '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '"><label id="lblSentToTranslator_' + uploadedAttachCount + '"></label></td>' +
+                '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '"><label data-searchfor="1" id="lblTranslator_' + uploadedAttachCount + '"></label></td>' +
+                '<td class="translateddoc ' + ($('.translateddoc').eq(0).attr('class').indexOf('hidden') >= 0 ? "hidden" : "") + '">' +
+                '<span id="btnUploadTranslatedDoc_' + uploadedAttachCount + '" onclick="' + OnclickFunction + '" style="color:#E34724; text-decoration: underline; cursor:pointer;" class="forTranslation hidden">' +
+                '<span id="btntxtTranslatedDoc_' + uploadedAttachCount + '">Upload</span>' +
+                '</span>' +
+                '<span class="fileinput-filename"></span><span class="fileinput-new dark-blue underline"><a id="Notifi_Attach_Name_Translated_' + uploadedAttachCount + '" href=""></a></span>' +
+                '</td>' +
+                "<td><a style='float: right;' onclick='RemoveNotificationDoc(this)' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a></td>" +
+                '</tr>';
             $("#RegulationsBody").append(html);
 
             var IsForeignLanguageSelected = false;
@@ -2388,74 +2393,74 @@ function BindNotificationActions() {
                 var HTML = '';
                 $.each(result.Actions, function (i, v) {
                     HTML += '<div class="row seprater">' +
-                            '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
-                            '<div class="col-sm-1 pdright">';
+                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
+                        '<div class="col-sm-1 pdright">';
 
                     if (v.NotificationActionId > 0) {
                         if (v.UpdatedOn == "") {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                     }
                     else {
                         if (result.RetainedForNextDiscussion && v.ActionId == 5) {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                       '<label style="padding-left: 0;">' +
-                                           '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                           '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                               '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                           '</span>' +
-                                       '</label>' +
-                                   '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else if (result.RetainedForNextDiscussion) {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                       '<label style="padding-left: 0;">' +
-                                           '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                           '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                               '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                           '</span>' +
-                                       '</label>' +
-                                   '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                         else {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                        '<label style="padding-left: 0;">' +
-                                            '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                            '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                            '</span>' +
-                                        '</label>' +
-                                    '</div>';
+                                '<label style="padding-left: 0;">' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
+                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                '</span>' +
+                                '</label>' +
+                                '</div>';
                         }
                     }
 
                     HTML += '</div>' +
-                            '<div class="col-sm-5">' + v.ActionName + '</div>';
+                        '<div class="col-sm-5">' + v.ActionName + '</div>';
 
                     if (v.ActionId < 4) {
                         HTML += '<div class="col-sm-4">' +
                             '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                                '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                                '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
+                            '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
+                            '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
                             '</div>' +
-                        '</div>';
+                            '</div>';
                         if (v.NotificationActionId != 0 && v.MailId == 0) {
                             var callfor = "takeaction";
                             takeaction++;

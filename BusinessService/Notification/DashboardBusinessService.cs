@@ -223,7 +223,7 @@ namespace BusinessService.Notification
                         objD.Completed = Convert.ToInt32(dr["Completed"]);
                         objD.Pending = Convert.ToInt32(dr["Pending"]);
                         objD.Overdue = Convert.ToInt32(dr["Overdue"]);
-
+                        objD.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationDashboardAction.Add(objD);
                     }
                 }
@@ -292,6 +292,58 @@ namespace BusinessService.Notification
                 }
             }
             return objNotificationProcessingStatus;
+        }
+        public List<NotificationGraphData> GetNotificationGraphDataWeekly(DashboardSearch obj)
+        {
+            List<NotificationGraphData> objNotificationGraphList = new List<NotificationGraphData>();
+            DashboardDataManager objDDM = new DashboardDataManager();
+            DataSet ds = objDDM.GetNotificationGraphDataWeekly(obj);
+            if (ds != null)
+            {
+                int tblIndex = -1;
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        NotificationGraphData objD = new NotificationGraphData();
+                        objD.NotificationCount = Convert.ToInt32(dr["NotificationCount"]);
+                        objD.InProcessCount = Convert.ToInt32(dr["InProcessCount"]);
+                        objD.UnderActionCount = Convert.ToInt32(dr["UnderActionCount"]);
+                        objD.ClosedCount = Convert.ToInt32(dr["ClosedCount"]);
+                        objD.LapsedCount = Convert.ToInt32(dr["LapsedCount"]);
+                        objD.MonthName = Convert.ToString(dr["WeekName"]);
+                        objNotificationGraphList.Add(objD);
+                    }
+                }
+            }
+            return objNotificationGraphList;
+        }
+        public List<NotificationGraphData> GetNotificationGraphDataMonthly(DashboardSearch obj)
+        {
+            List<NotificationGraphData> objNotificationGraphList = new List<NotificationGraphData>();
+            DashboardDataManager objDDM = new DashboardDataManager();
+            DataSet ds = objDDM.GetNotificationGraphDataMonthly(obj);
+            if (ds != null)
+            {
+                int tblIndex = -1;
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        NotificationGraphData objD = new NotificationGraphData();
+                        objD.NotificationCount = Convert.ToInt32(dr["NotificationCount"]);
+                        objD.InProcessCount = Convert.ToInt32(dr["InProcessCount"]);
+                        objD.UnderActionCount = Convert.ToInt32(dr["UnderActionCount"]);
+                        objD.ClosedCount = Convert.ToInt32(dr["ClosedCount"]);
+                        objD.LapsedCount = Convert.ToInt32(dr["LapsedCount"]);
+                        objD.MonthName = Convert.ToString(dr["MONTHNAME"]);
+                        objNotificationGraphList.Add(objD);
+                    }
+                }
+            }
+            return objNotificationGraphList;
         }
     }
 }

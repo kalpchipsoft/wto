@@ -1,14 +1,14 @@
 ﻿$(function () {
-    var len = $('#tblNotificationMoM tbody tr').length;
-    var Id = "";
-    if (len > 0) {
-        $.each($("#tblNotificationMoM > tbody > tr"), function (index, value) {
-            Id += $(this).find("#hdnNotificationId_" + (index + 1)).val() + ",";
-        });
-        if (Id != "") {
-            $("#hdnNId").val(Id);
-        }
-    }
+    //var len = $('#tblNotificationMoM tbody tr').length;
+    //var Id = "";
+    //if (len > 0) {
+    //    $.each($("#tblNotificationMoM > tbody > tr"), function (index, value) {
+    //        Id += $(this).find("#hdnNotificationId_" + (index + 1)).val() + ",";
+    //    });
+    //    if (Id != "") {
+    //        $("#hdnNId").val(Id);
+    //    }
+    //}
     $('#chkSelectAll').change(function () {
         var IsCheckedAll = this.checked;
         $.each($(this).closest('table').find('tbody > tr > td > input[type=checkbox]'), function () {
@@ -82,16 +82,133 @@ function GetMoMDetails() {
     var _MoMDetails = [];
     $.each($("[id$=tblNotificationMoM] tr"), function (i, v) {
         if ($(this).find("[id*=chkNotification]").is(':checked')) {
-            var _NotificationId = parseInt($.trim($(this).find("[id*=hdnNotificationId]").val()));
-            var _MeetingNote = $.trim($(this).find("[id*=txtMeetingNote]").val());
+            var _NotificationId = parseInt($.trim($(this).find("[id^=hdnNotificationId_]").val()));
+            var _MeetingNote = $.trim($(this).find("[id^=txtMeetingNote_]").val());
+            var _NotificationGroup = $.trim($(this).find("[id^=txtNotificationGroup_]").val());
             var MeetingDetails = {
                 NotificationId: _NotificationId,
-                MeetingNote: _MeetingNote
+                MeetingNote: _MeetingNote,
+                NotificationGroup: _NotificationGroup
             };
             _MoMDetails.push(MeetingDetails);
         }
     });
     return _MoMDetails;
+}
+
+function SearchNotifications(ctrl) {
+    ShowGlobalLodingPanel();
+    var _ExistingNotifications = GetExistingNotifications();
+
+    var _Class = $(ctrl).find('i').attr('class');
+    if (_Class.indexOf('glyphicon-search') >= 0) {
+        $('#hdnExistingNotificationsId').val(_ExistingNotifications);
+
+        if ($.trim($('#txtSearch').val()) != "")
+            $(ctrl).find('i').attr('class', _Class.replace('glyphicon-search', 'glyphicon-remove'));
+    }
+    else {
+        $('#txtSearch').val('');
+        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-remove', 'glyphicon-search'));
+    }
+
+    var _SearchText = $.trim($('#txtSearch').val());
+
+    var obj = {
+        callFor: 'All',
+        ExistingNotifications: $('#hdnExistingNotificationsId').val(),
+        SearchText: _SearchText
+    }
+
+    $.ajax({
+        url: "/api/MoM/getNotifications",
+        async: false,
+        type: "POST",
+        data: JSON.stringify(obj),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            var tblCount = 0;
+            if ($('#tblNotificationMoM > tbody').find("[Type='checkbox']").attr('id') != null) {
+                if ($('#tblNotificationMoM > tbody').length > 0)
+                    tblCount = $('#tblNotificationMoM > tbody').length + 1;
+            }
+            else
+                tblCount = 1;
+
+            var html = '';
+            if (result.Notification_MomList != null && result.Notification_MomList.length > 0) {
+                $.each(result.Notification_MomList, function (i, v) {
+                    html += '<tr>' +
+                        '<td class="text-center">' +
+                        '<div class="checkbox radio-margin" style="margin-top:2px;">' +
+                        '<label>' +
+                        '<input type="checkbox" name="Action" id="chkNotification_' + tblCount + '" checked="checked" onchange="CheckHeaderCheckbox()" />' +
+                        '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>' +
+                        '</label>' +
+                        '</div>' +
+                        '<input type="hidden" id="hdnNotificationId_' + tblCount + '" value="' + v.NotificationId + '" />' +
+                        '</td>' +
+                        '<td style="width:400px;">' +
+                        '<p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color ">' + v.NotificationNumber + '</a></p>' +
+                        '<p style="word-wrap:break-word; width:400px;">' + v.Title + '</p>' +
+                        '</td>' +
+                        '<td class="text-center">' + v.FinalDateofComments + '</td>' +
+                        '<td class="text-center">' + v.Country + '</td>';
+
+                    //Discussion
+                    if (result.NotificationProcessDots != null) {
+                        var NotificationProcessDot = $.map(result.NotificationProcessDots, function (item, i) {
+                            if (item.NotificationId == v.NotificationId)
+                                return item;
+                        });
+
+                        NotificationProcessDot.sort(function (a, b) {
+                            return a.Sequence - b.Sequence;
+                        });
+
+                        html += '<td class="tooltiprelative">';
+                        $.each(NotificationProcessDot, function (indx, val) {
+                            html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
+                        });
+                        html += '</td>';
+                    }
+                    html += '<td>' +
+                        '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                        '</td>' +
+                        '<td>' +
+                        '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
+                        '</td>' +
+                        '</tr>';
+                    tblCount++;
+                });
+            }
+            else {
+                html += '<tr><td colspan="6"> No record found</td></tr>';
+            }
+            $('[id$=tblNotificationMoM] tr> td').each(function (index, value) {
+
+                if ($(value).attr('id') == 'tdNorecordFound') {
+                    $('#tblNotificationMoM > tbody').html('');
+                }
+            })
+            $('#tblNotificationMoM > tbody').empty();
+            $('#tblNotificationMoM > tbody').append(html);
+            $("#chkSelectAll").prop('checked', false);
+            CheckHeaderCheckbox();
+        },
+        failure: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        complete: function () {
+            HideGlobalLodingPanel();
+            autosize($(".AutoHeight"));
+        }
+    });
+    return false;
 }
 
 function GetAllNotifications(ctrl) {
@@ -111,15 +228,24 @@ function GetAllNotifications(ctrl) {
             HideGlobalLodingPanel();
         }
         else {
-            $("#hdnNId").val($("#hdnNId").val() + NotificationId);
+            var _ExistingNotifications = GetExistingNotifications();
+
+            if ($.trim($('#txtSearch').val()) != "")
+                _ExistingNotifications = $('#hdnExistingNotificationsId').val();
+            else
+                $('#hdnExistingNotificationsId').val(_ExistingNotifications);
+
             var _CallFor = $(ctrl).attr('data-CallFor');
             var _CountryId = 0;
             var _NotificationNumber = $.trim($("#txtNotificationNo").val());
-            var SelectedNotificationId = '';
+
+            $('#txtSearch').val('');
+            $('#txtSearch').next().find('i').attr('class', 'glyphicon glyphicon-search');
 
             var obj = {
                 callFor: _CallFor,
                 NotificationNumber: _NotificationNumber,
+                ExistingNotifications: _ExistingNotifications,
                 SelectedNotifications: _SelectedNotifications
             }
 
@@ -176,7 +302,10 @@ function GetAllNotifications(ctrl) {
                                 html += '</td>';
                             }
                             html += '<td>' +
-                                '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="2" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                                '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                                '</td>' +
+                                '<td>' +
+                                '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
                                 '</td>' +
                                 '</tr>';
                             tblCount++;
@@ -222,11 +351,17 @@ function GetAllNotifications(ctrl) {
 
 function GetFilterNotification(ctrl) {
     ShowGlobalLodingPanel();
+
     var NotificationId = "";
     var _CallFor = $(ctrl).attr('data-CallFor');
     var _CountryId = $("#ddlCountry").val() == "" ? 0 : $("#ddlCountry").val();
     var _NotificationNumber = $.trim($("#txtNotificationNo").val());
     var _ExistingNotifications = GetExistingNotifications();
+
+    if ($.trim($('#txtSearch').val()) != "")
+        _ExistingNotifications = $('#hdnExistingNotificationsId').val();
+    else
+        $('#hdnExistingNotificationsId').val(_ExistingNotifications);
 
     var obj = {
         callFor: _CallFor,
@@ -246,7 +381,7 @@ function GetFilterNotification(ctrl) {
             $('#tblFilterResult').css("display", "block");
             var html = '';
             if (result.Notification_MomList != null) {
-                var arr = $("#hdnNId").val().split(',');
+                //var arr = $("#hdnNId").val().split(',');
                 if (result.Notification_MomList.length > 0) {
                     $.each(result.Notification_MomList, function (i, v) {
                         html += '<tr>';
@@ -279,9 +414,9 @@ function GetFilterNotification(ctrl) {
             else {
                 html += '<tr><td colspan="5"> No record found</td></tr>';
             }
+            $('#chkSelectAll').prop('checked', false);
+            $('#tblFilterResult tbody').empty();
             $('#tblFilterResult tbody').append(html);
-
-
         },
         failure: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
@@ -296,6 +431,98 @@ function GetFilterNotification(ctrl) {
     });
 }
 //***********************Add Meeting End**********************************
+
+function SearchMeetingNotifications(ctrl) {
+    var _Class = $(ctrl).find('i').attr('class');
+    if (_Class.indexOf('glyphicon-search') >= 0 && $.trim($('#txtSearch').val()) != "")
+        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-search', 'glyphicon-remove'));
+    else {
+        $('#txtSearch').val('');
+        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-remove', 'glyphicon-search'));
+    }
+
+    var _SearchText = $.trim($('#txtSearch').val());
+    var obj = {
+        callFor: $.trim($(ctrl).attr('data-CallFor')),
+        SearchText: _SearchText
+    }
+
+    $.ajax({
+        url: "/api/MoM/Edit/" + myWTOAPP.id,
+        async: false,
+        type: "POST",
+        data: JSON.stringify(obj),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            debugger;
+            var html = '';
+            var _MomId = result.MoMId;
+            if (result.Notifications != null && result.Notifications.length > 0) {
+                $.each(result.Notifications, function (i, v) {
+                    html += '<tr>' +
+                        '<td class="width-35">' +
+                        '<a href="/WTO/NotificationView/' + v.NotificationId + '?MOMId=' + _MomId + '&amp;R=' + v.RowNum + '&amp;Total=' + v.TotalRow + '" class="red-color" target="_blank"><p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '">' + v.NotificationNumber + '</p></a>' +
+                        '<p style="word-wrap:break-word; width:450px;">' +
+                        '<b>Title: </b>' + v.Title +
+                        '</p>' +
+                        '<p>';
+
+                    if (v.NotificationGroup != "")
+                        html += '<b>Group : </b><span>' + v.NotificationGroup + '</span>';
+
+                    html += '</p>' +
+                        '<p>';
+
+                    if (v.NotificationGroup != "")
+                        html += '<b><a onclick="OpenAddNote(35)">Note</a></b><span id="MeetingNoteId">: Test Meeting</span>';
+
+                    html += '<input id="hdnNotificationId" name="hdnNotificationId" type="hidden" value="35">' +
+                        '</p>' +
+                        '</td >' +
+                        '<td class="text-center width-10">Brazil</td>';
+
+                    //Discussion
+                    if (result.Actions != null) {
+                        var Action = $.map(result.Actions, function (item, i) {
+                            if (item.NotificationId == v.NotificationId && item.ActionId == v.ActionId)
+                                return item;
+                        });
+
+                        Action.sort(function (a, b) {
+                            return a.Sequence - b.Sequence;
+                        });
+
+                        html += '<td class="text-center width-10">';
+                        $.each(Action, function (indx, val) {
+                            html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
+                        });
+                        html += '</td>';
+                    }
+                    html += '<td class="text-center width-5"><a data-searchfor="35" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>' +
+                        '</tr>';
+                });
+            }
+            else {
+                html += '<tr><td colspan="6"> No record found</td></tr>';
+            }
+
+            $('#tblNotificationMoM > tbody').empty();
+            $('#tblNotificationMoM > tbody').append(html);
+        },
+        failure: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        complete: function () {
+            HideGlobalLodingPanel();
+            autosize($(".AutoHeight"));
+        }
+    });
+    return false;
+}
 
 function OpenPopup() {
     $("#ModalAddNotiFication").modal('show');
@@ -350,7 +577,6 @@ function GetExistingNotifications() {
     var len = $('#tblNotificationMoM tbody td').length;
     if (len > 0) {
         $('#tblNotificationMoM tbody tr').each(function () {
-            debugger;
             var row = $(this);
             if (row.find('[id^=hdnNotificationId_]').val() != undefined)
                 Notifications += (row.find('[id^=hdnNotificationId_]')).val() + ",";
@@ -360,12 +586,13 @@ function GetExistingNotifications() {
 }
 
 function OpenMeetingDatePopup() {
+    $('#txtmeetingdate').val($('#lblMeetingDate').text());
     $("#ModelMeetingDate").modal('show');
     return false;
 }
 
 function CloseMeetingDatepopup() {
-    $('#txtmeetingdate').val($('#txtMeetingNote').val());
+    $('#txtmeetingdate').val($('#lblMeetingDate').text());
     $("#ModelMeetingDate").modal('hide');
     return false;
 }
@@ -422,19 +649,6 @@ function UpdateMeetingDate() {
 }
 
 //===================================================
-
-//function GetSelectedNotification() {
-//    var Notifications = "";
-//    var len = $('#tblNotificationMoM tbody td').length;
-//    if (len > 0) {
-//        $('#tblNotificationMoM tbody tr').each(function () {
-//            var row = $(this);
-//            if (row.find('[id*=hdnNotificationId]').val() != undefined)
-//                Notifications += (row.find('[id*=hdnNotificationId]')).val() + ",";
-//        });
-//    }
-//    return Notifications;
-//}
 
 function closeActionMail(ctrl) {
     var callfor = $(ctrl).attr('data-callfor');

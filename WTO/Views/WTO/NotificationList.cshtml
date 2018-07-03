@@ -3,6 +3,7 @@
     ViewBag.Title = "Notification List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-combobox.js"></script>
 <script src="~/JQuery/NotificationList.js?v=8" type="text/javascript"></script>
@@ -216,18 +217,18 @@ else
                                 <div class="row" id="divContent">
                                     <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
                                         <div class="table-responsive notificationlist">
-                                            <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                                            <table class="table table-bordered display table-fixed" id="notificationlist" cellspacing="0" width="100%">
                                                 <thead class="second-blackbackground">
                                                     <tr>
-                                                        <th class="col-sm-4">Notification</th>
-                                                        <th class="text-center col-sm-1">Notification Date</th>
-                                                        <th class="text-center col-sm-1">Final Date of Comments</th>
-                                                        <th class="text-center col-sm-1">Country</th>
-                                                        <th class="col-sm-1">Pending Discussion</th>
-                                                        <th class="col-sm-1 text-center" style="padding-right:2%;">Stakeholder Responses</th>
-                                                        <th class="col-sm-1" style="width:3%;">Pending Action</th>
-                                                        <th class="col-sm-1" style="width:2%;">Edit</th>
-                                                        <th class="col-sm-1" style="width:2%;">Export</th>
+                                                        <th class="width-30">Notification</th>
+                                                        <th class="text-center width-10">Notification Date</th>
+                                                        <th class="text-center width-10">Final Date of Comments</th>
+                                                        <th class="text-center width-10">Country</th>
+                                                        <th class="width-10">Pending Discussion</th>
+                                                        <th class="text-center width-10" style="padding-right:2%;">Stakeholder Responses</th>
+                                                        <th class="width-10">Pending Action</th>
+                                                        <th class="width-5">Edit</th>
+                                                        <th class="width-5">Export</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="NotificationData" class="whitebackground">
@@ -236,18 +237,18 @@ else
                                                         foreach (BusinessObjects.Notification.Notification item in Model.Notifications)
                                                         {
                                                             <tr class="hoverborder">
-                                                                <td>
+                                                                <td class="width-30">
                                                                     <a href="@Url.Action("NotificationView", "WTO" , new { Id=item.NotificationId })" target="_blank" class="red-color ">
                                                                         <p class="red-color" style="width:450px;">@item.NotificationNumber</p>
                                                                     </a>
-                                                                    <p style="word-wrap:break-word; width:450px;">
+                                                                    <p style="word-wrap:break-word; width:350px;">
                                                                         <b>Title :</b>@item.Title
                                                                     </p>
                                                                 </td>
-                                                                <td class="text-center">@item.NotificationDate</td>
-                                                                <td class="text-center">@item.FinalDateOfComments</td>
-                                                                <td class="text-center">@item.Country</td>
-                                                                <td class="tooltiprelative">
+                                                                <td class="text-center width-10">@item.NotificationDate</td>
+                                                                <td class="text-center width-10">@item.FinalDateOfComments</td>
+                                                                <td class="text-center width-10">@item.Country</td>
+                                                                <td class="tooltiprelative width-10">
                                                                     @if (Model.NotificationProcessDots != null && Model.NotificationProcessDots.Count > 0)
                                                                     {
                                                                         List<BusinessObjects.Notification.NotificationProcessDot> NotificationProcessDot = Model.NotificationProcessDots.Where(x => x.NotificationId == item.NotificationId).Select(m => new BusinessObjects.Notification.NotificationProcessDot { NotificationId = m.NotificationId, ColorCode = m.ColorCode, TooltipText = m.TooltipText, Sequence = m.Sequence }).ToList();
@@ -260,14 +261,14 @@ else
                                                                 </td>
                                                                 @if (item.MailCount > 0)
                                                                 {
-                                                                    <td class="text-center">@item.ResponseCount / @item.MailCount</td>
+                                                                    <td class="text-center width-10">@item.ResponseCount / @item.MailCount</td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td class="text-center">--</td>
+                                                                    <td class="text-center width-10">--</td>
                                                                 }
 
-                                                                <td class="tooltiprelative">
+                                                                <td class="tooltiprelative width-10">
                                                                     @if (Model.NotificationActionDots != null && Model.NotificationActionDots.Count > 0)
                                                                     {
                                                                         List<BusinessObjects.Notification.NotificationActionDot> NotificationActionDot = Model.NotificationActionDots.Where(x => x.NotificationId == item.NotificationId).Select(m => new BusinessObjects.Notification.NotificationActionDot { NotificationId = m.NotificationId, ColorCode = m.ColorCode, TooltipText = m.TooltipText, Sequence = m.Sequence }).ToList();
@@ -282,10 +283,10 @@ else
                                                                         @("--")
                                                                     }
                                                                 </td>
-                                                                <td>
+                                                                <td class="width-5 text-right">
                                                                     <a href="@Url.Action("Edit_Notification", "AddNotification" , new { Id=@item.NotificationId })" data-toggle="tooltip" data-placement="bottom" title="Edit Notification"><img src="~/contents/img/bedit.png" /></a>
                                                                 </td>
-                                                                <td>
+                                                                <td class="width-5 text-right">
                                                                     <a href="@Url.Action("Download","API/AddUpdateNotification",new { Id = @item.NotificationId})" data-toggle="tooltip" data-placement="bottom" title="Export Notification Details"><img src="~/contents/img/export2.png" /></a>
                                                                 </td>
                                                             </tr>
@@ -314,3 +315,12 @@ else
     </div>
 </div>
 <!-- body section End -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("width-10 width-5 width-30 table-fixed");
+            $("td").removeClass("width-10 width-5 text-right width-30 table-fixed");
+        }
+    })
+</script>

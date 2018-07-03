@@ -41,5 +41,14 @@ namespace WTO.Controllers.API.WTO
             MomBusinessService objAM = new MomBusinessService();
             return Ok(objAM.UpdateMeetingDate(Id, MeetingDate));
         }
+
+        [HttpPost]
+        public IHttpActionResult Edit(Nullable<Int64> Id, Search_MoM objS)
+        {
+            if (Id == 0)
+                Id = null;
+            MomBusinessService obj = new MomBusinessService();
+            return Ok(obj.EditMoM(Id, objS));
+        }
     }
 }

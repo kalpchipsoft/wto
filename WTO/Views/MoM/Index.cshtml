@@ -30,30 +30,25 @@
 
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="col-xs-12 col-sm-12 col-md-12 whitebackground" style="box-shadow: 0 0px 0 #fff, 0 1px 6px rgba(0,0,0, 0.1);">
-                    @*<div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-10">
-                            <button href="#" class="btn btn-blue pull-right left-offset-10 hidde)"><img src="/contents/img/export.png" alt="export"> Export </button>
-                            <a href="@Url.Action("Add", "MoM", new { Id = 0 })" class="btn btn-dark-green pull-right hidden"> Plan a Meeting</a>
-                        </div>
-                    </div>*@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="table-responsive notificationlist">
-                                <table class="table table-bordered display top-offset-20" id="notificationlist" cellspacing="0" width="100%">
+                                <table class="table table-bordered display top-offset-20 table-fixed" id="notificationlist" cellspacing="0" width="100%">
                                     <thead class="second-blackbackground">
                                         <tr style="border-bottom: 1px solid transparent !important;">
-                                            <th class="col-md-3" rowspan="2" style="width:15%;">Meeting Date</th>
-                                            <th class="col-md-4" style="width: 15%; padding-left: 3%;" colspan="2">Notifications</th>
-                                            <th class="col-md-5 text-center" colspan="5">Action</th>
+                                            <th class="width-15" rowspan="2">Meeting Date</th>
+                                            <th class="width-25" style="padding-left: 5%;" colspan="2">Notifications</th>
+                                            <th class="width-60 text-center" colspan="5">Action</th>
                                         </tr>
-                                        <tr class="no-border">
-                                            <th>Total</th>
-                                            <th>Pending</th>
+                                        <tr class="no-border padding-left-14">
+
+                                            <th class="width-14">Total</th>
+                                            <th class="width-14">Pending</th>
                                             @if (Model.Actions != null)
                                             {
                                                 foreach (BusinessObjects.MOM.Action item in Model.Actions)
                                                 {
-                                                    <th class="text-center">@item.ActionName</th>
+                                                    <th class="text-center width-14">@item.ActionName</th>
                                                 }
                                             }
                                         </tr>
@@ -64,17 +59,17 @@
                                             foreach (BusinessObjects.MOM.MoM obj in Model.MoMList)
                                             {
                                                 <tr>
-                                                    <td>
+                                                    <td class="width-15">
                                                         @obj.MeetingDate
                                                     </td>
-                                                    <td><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="" })"><div class="span-badge">@obj.NotificationCount</div></a></td>
+                                                    <td class="width-12"><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="" })"><div class="span-badge">@obj.NotificationCount</div></a></td>
                                                     @if (obj.PendingCount > 0)
                                                     {
-                                                        <td><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="Pending" })"><div class="span-badge">@obj.PendingCount</div></a></td>
+                                                        <td class="width-12"><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="Pending" })"><div class="span-badge">@obj.PendingCount</div></a></td>
                                                     }
                                                     else
                                                     {
-                                                        <td><div class="span-badge">@obj.PendingCount</div></td>
+                                                        <td class="width-12"><div class="span-badge">@obj.PendingCount</div></td>
                                                     }
                                                     @foreach (BusinessObjects.MOM.Action item in Model.Actions)
                                                     {
@@ -83,17 +78,17 @@
                                                             var _Action = Model.MoMActionList.FirstOrDefault(x => x.MoMId == obj.MoMId && x.ActionId == item.ActionId);
                                                             if (_Action == null)
                                                             {
-                                                                <td class="text-center">0</td>
+                                                                <td class="text-center width-12">0</td>
                                                             }
                                                             else if (_Action.ActionId == 4 || _Action.ActionId == 5)
                                                             {
-                                                                <td class="text-center">
+                                                                <td class="text-center width-12">
                                                                     <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td class="text-center">
+                                                                <td class="text-center width-12">
                                                                     @if (_Action.PendingCount > 0)
                                                                     {
                                                                         <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionStatus=9,ActionId=_Action.ActionId })"><span class="red-color">@_Action.PendingCount</span></a>
@@ -102,7 +97,6 @@
                                                                     {
                                                                         <span class="red-color">@_Action.PendingCount</span>
                                                                     }
-                                                                    /
                                                                     @if (_Action.TotalCount > 0)
                                                                     {
                                                                         <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
@@ -117,7 +111,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <td class="text-center">0</td>
+                                                            <td class="text-center width-12">0</td>
                                                         }
                                                     }
                                                 </tr>
@@ -140,3 +134,14 @@
     </div>
 </div>
 <!-- body section End -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("width-12 width-14 width-15 width-25 width-60 table-fixed");
+            $("td").removeClass("width-12 width-14 width-15 width-25 width-60 table-fixed");
+            $("tr").removeClass("padding-left-14 table-fixed");
+        }
+
+    })
+</script>

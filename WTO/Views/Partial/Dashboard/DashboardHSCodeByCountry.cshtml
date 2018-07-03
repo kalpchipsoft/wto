@@ -46,37 +46,3 @@
         </div>
     </div>
 </div>
-<script>
-    function drawPieChart() {
-        //var data = google.visualization.arrayToDataTable([
-        //     ['Task', 'HSCode'],
-        //     ['Kuwait', 20],
-        //     ['Nepal', 10],
-        //     ['Yemen', 10],
-        //     ['Mongolia', 100],
-        //     ['Afghanistan', 100],
-        //     ['China', 200],
-        //     ['Cambodia', 300],
-        //     ['India', 500],
-        //     ['Bangladesh', 30],
-        //     ['Oman', 30]
-        //]);
-        var colorpie=[];
-        for(var i=0;i< colors.length;i++)
-        {
-            colorpie.push(colors[i][1]);
-        }        
-        var data = google.visualization.arrayToDataTable(arrayHScode);
-        var options = {
-           // is3D: true,
-            legend: { position: 'none', alignment: 'center' },
-            tooltip:{textStyle: {color: '#FF0000',fontSize:15},fill:'black', showColorCode: true},
-            //  colors: ['#f9c851' ,'#fdd470' ,'#5edca3' ,'#599bff' ,'#fbe1a1' ,'#9fc4fc' ,'#f5707a' ,'#5edca3' ,'#73fdbf' ,'#fd989f' ,'#ffc5c9']
-            //  colors:[colors], 
-            colors:colorpie,
-            };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
-        $('#piechart').fadeIn();
-     }
-</script>

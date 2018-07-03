@@ -34,7 +34,7 @@ namespace WTO.Controllers.WTO
                 return RedirectToAction("Index", "Login");
         }
         // POST: MoM/Edit/5
-        public ActionResult Edit(Nullable<Int64> Id, string CallFor)
+        public ActionResult Edit(Nullable<Int64> Id, Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
@@ -43,7 +43,7 @@ namespace WTO.Controllers.WTO
                 if (Id == 0)
                     Id = null;
                 MomBusinessService obj = new MomBusinessService();
-                return View(obj.EditMoM(Id, CallFor));
+                return View(obj.EditMoM(Id, objS));
             }
             else
                 return RedirectToAction("Index", "Login");
