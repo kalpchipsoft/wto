@@ -408,6 +408,16 @@ namespace WTO.Controllers.API.WTO
                         catch (Exception ex)
                         {
                             File.AppendAllText(HttpContext.Current.Server.MapPath("~/XceptionLog.txt"), ex.Message);
+
+                            ((_Document)wordfile).Close();
+                            if (word.Documents.Count > 0)
+                                word.Documents.Close();
+
+                            ((_Application)word.Application).Quit();
+                            word.Quit();
+
+                            if (File.Exists(filePath))
+                                File.Delete(filePath);
                         }
                         finally
                         {
