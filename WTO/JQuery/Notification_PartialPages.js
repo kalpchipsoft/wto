@@ -406,9 +406,6 @@ function ViewAction(Id, ctrl) {
         },
         error: function (result) {
             Alert("Meeting", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }

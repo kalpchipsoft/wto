@@ -9,18 +9,7 @@
 <link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-multiselect.js"></script>
 
-<script src="~/JQuery/Mom.js?v=4"></script>
-
-<style type="text/css">
-     .fixed{
-		  top:0;
-		  position:fixed;
-		  width:auto;
-		  display:none;
-		  border:none;
-		}
-</style>
-
+<script src="~/JQuery/Mom.js"></script>
 <!-- body section start -->
 <input type="hidden" id="hdnNotificationId" />
 <div>
@@ -99,20 +88,20 @@
                             <div class="table-responsive notificationlist top-offset-20">
                                 @if (Model.Notifications != null && Model.Notifications.Count > 0)
                                 {
-                                    <table class="table display fixedtable" id="tblNotificationMoM" cellspacing="0" style="border:1px solid #ccc;z-index:9;">
+                                    <table class="table display table-fixed" id="tblNotificationMoM" cellspacing="0" style="border:1px solid #ccc; width:99.9%;">
                                         <thead class="second-blackbackground">
                                             <tr style="border-bottom: 1px solid transparent !important;">
-                                                <th rowspan="2">Notification</th>
-                                                <th class="text-center" rowspan="2" >Country</th>
-                                                <th class="text-center" colspan="5">Action</th>
-                                                <th class="text-center" rowspan="2"></th>
+                                                <th rowspan="2" class="width-35">Notification</th>
+                                                <th class="text-center width-10" rowspan="2">Country</th>
+                                                <th class="text-center width-50" colspan="5">Action</th>
+                                                <th class="text-center width-5" rowspan="2"></th>
                                             </tr>
-                                            <tr class="no-border">
+                                            <tr class="no-border padding-left-45">
                                                 @if (Model.Actions != null)
                                                 {
                                                     foreach (BusinessObjects.MOM.Action item in Model.Actions)
                                                     {
-                                                        <th class="text-center">@item.ActionName</th>
+                                                        <th class="text-center width-18">@item.ActionName</th>
                                                     }
                                                 }
                                             </tr>
@@ -122,8 +111,8 @@
                                             {
                                                 foreach (BusinessObjects.MOM.Notification_Mom objMOM in Model.Notifications)
                                                 {
-                                                    <tr >
-                                                        <td>
+                                                    <tr>
+                                                        <td class="width-35">
                                                             <a href="@Url.Action("NotificationView", "WTO", new { Id = objMOM.NotificationId, MOMId = @Model.MoMId,R=objMOM.RowNum,Total=objMOM.TotalRow})" class="red-color" target="_blank"><p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="@Html.Raw(HttpUtility.HtmlDecode(objMOM.Description))">@objMOM.NotificationNumber</p></a>
                                                             <p style="word-wrap:break-word; width:450px;">
                                                                 <b>Title: </b> @objMOM.Title
@@ -145,7 +134,7 @@
                                                                 }
                                                             </p>
                                                         </td>
-                                                        <td class="text-center">@objMOM.Country</td>
+                                                        <td class="text-center width-10">@objMOM.Country</td>
 
                                                         @foreach (BusinessObjects.MOM.Action item in Model.Actions)
                                                         {
@@ -154,38 +143,36 @@
                                                                 var Action = Model.NotificationActions.FirstOrDefault(x => x.NotificationId == objMOM.NotificationId && x.ActionId == item.ActionId);
                                                                 if (Action != null && (Action.ActionId >= 4 || (Convert.ToInt32(Action.MailId) > 0 && Action.ActionId < 4)))
                                                                 {
-                                                                    <td class="text-center">
-                                                                        @*<span class="action-completed dark-green-color" id="span_@objMOM.ItemNumber"></span>*@
+                                                                    <td class="text-center width-10">
                                                                         <span class="glyphicon glyphicon-ok dark-green-color font-20" id="span_@objMOM.ItemNumber"></span>
                                                                     </td>
                                                                 }
                                                                 else if (Action != null)
                                                                 {
-                                                                    <td class="text-center">
-                                                                        @*<span class="action-pending" id="span_@objMOM.ItemNumber"></span>*@
+                                                                    <td class="text-center width-10">
                                                                         <span class="glyphicon glyphicon-hourglass dark-green-color font-20" id="span_@objMOM.ItemNumber"></span>
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td class="text-center">
+                                                                    <td class="text-center width-10">
                                                                         <span id="span_@objMOM.ItemNumber"></span>
                                                                     </td>
                                                                 }
                                                             }
                                                             else
                                                             {
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center width-10"></td>
                                                             }
                                                         }
 
                                                         @if (objMOM.IsUpdate)
                                                         {
-                                                            <td class="text-center"><a data-SearchFor="@objMOM.NotificationId" onclick="EditNotificationActions(this);"><img src="~/contents/img/bedit.png" /></a></td>
+                                                            <td class="text-center width-5"><a data-SearchFor="@objMOM.NotificationId" onclick="EditNotificationActions(this);"><img src="~/contents/img/bedit.png" /></a></td>
                                                         }
                                                         else
                                                         {
-                                                            <td></td>
+                                                            <td class="width-10"></td>
                                                         }
                                                     </tr>
                                                 }
@@ -268,48 +255,14 @@
 </div>
 <!--Meeting note Popup end-->
 
-
 <script type="text/javascript">
-    (function ($) {
-        $.fn.fixMe = function () {
-            return this.each(function () {
-                var $this = $(this),
-                   $t_fixed;
-                function init() {
-                    $this.wrap('<div/>');
-                    $t_fixed = $this.clone();
-                    $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
-                    resizeFixed();
-                }
-                function resizeFixed() {
-                    $t_fixed.find("th").each(function (index) {
-                        $(this).css("width", $this.find("th").eq(index).outerWidth() + "px");
-                    });
-                }
-                function scrollFixed() {
-                    var offset = $(this).scrollTop(),
-                    tableOffsetTop = $this.offset().top,
-                    tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
-                    if (offset < tableOffsetTop || offset > tableOffsetBottom)
-                        $t_fixed.hide();
-                    else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
-                        $t_fixed.show();
-                }
-                $(window).resize(resizeFixed);
-                $(window).scroll(scrollFixed);
-                init();
-            });
-        };
-    })(jQuery);
-
     $(document).ready(function () {
-        if ($(window).width() > 700) {
-            $(".fixedtable").fixMe();
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("width-10 width-5 width-35 width-50 width-18 table-fixed");
+            $("td").removeClass("width-10 width-5 width-35 width-50 width-18 table-fixed");
+            $("tr").removeClass("padding-left-45 table-fixed");
         }
-    });
-    $(window).scroll(function () {
-        if (!$("#toggleOpenClose").hasClass("is-closed")) {
-            $("#toggleOpenClose").click();
-        }
-    });
+
+    })
 </script>

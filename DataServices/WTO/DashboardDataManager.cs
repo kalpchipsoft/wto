@@ -82,5 +82,25 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
+        public DataSet GetNotificationGraphDataWeekly(DashboardSearch obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Dashboards_NotificationGraphDataWeekly;
+                sqlCommand.Parameters.AddWithValue("@StartDate", obj.DateFrom);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataSet GetNotificationGraphDataMonthly(DashboardSearch obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Dashboards_NotificationGraphDataMonthly;
+                sqlCommand.Parameters.AddWithValue("@StartDate", obj.DateFrom);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
     }
 }

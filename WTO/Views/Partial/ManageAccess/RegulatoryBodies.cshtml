@@ -8,15 +8,15 @@
         <label class="table-heading">Regulatory Bodies (@Model.TotalCount)</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddRegulatoryBodies" onclick="AddRegulatoryBodyPopup();" data-toggle="modal">Add Regulatory Body</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
                         <th class="col-sm-1">S.No</th>
-                        <th class="col-sm-3">Name</th>
+                        <th class="col-sm-2">Name</th>
                         <th class="text-center col-sm-2">Email</th>
-                        <th class="text-center col-sm-3">Address</th>
+                        <th class="text-center col-sm-2">Address</th>
                         <th class="text-center col-sm-2">Contact</th>
-                           <th class="col-sm-1">Status</th>
+                        <th class="col-sm-1">Status</th>
                         <th class="text-center col-sm-1">Edit</th>
                         <th class="text-center col-sm-1">Delete</th>
                     </tr>
@@ -27,27 +27,27 @@
                         foreach (var item in @Model.RegulatoryBodiesList)
                         {
                             <tr>
-                                <td>@item.ItemNumber</td>
-                                <td>@item.Name</td>
-                                <td>
+                                <td class="col-sm-1">@item.ItemNumber</td>
+                                <td class="col-sm-2">@item.Name</td>
+                                <td class="col-sm-2">
                                     @item.Emailid
                                 </td>
-                                   <td>
+                                   <td class="col-sm-2">
                                  @item.Address
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center col-sm-2">
                                    @item.Contact
                                 </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-sm-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-sm-1">Inactive</td>
                                 }
-                                <td class="text-center"><a href="#" onclick="EditRegulatoryBodyData(@item.RegulatoryBodyId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteRegulatoryBody(@item.RegulatoryBodyId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" onclick="EditRegulatoryBodyData(@item.RegulatoryBodyId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteRegulatoryBody(@item.RegulatoryBodyId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -136,3 +136,12 @@
     </div>
 </div>
 <!-- Add Regulatory Bodies modal popup End-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-sm-1 col-sm-2 table-fixed");
+            $("td").removeClass("col-sm-1 col-sm-2 table-fixed");
+        }
+    });
+</script>

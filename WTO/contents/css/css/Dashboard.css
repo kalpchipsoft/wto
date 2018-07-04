@@ -220,7 +220,6 @@ a, a:hover, a:active, a:focus{
 }
 .active .hscodebody{
 	background:#17fcdf;
-    
 }
 .active .hscodebody p{
     color:#fff;
@@ -343,6 +342,13 @@ background:#17fcdf;
 	color:#fff;
 	border-radius:20px;
 }
+
+.btngroupactive {
+	background:#5fdca4;
+    color:#fff;
+}
+
+
 .btn-padding{
 	padding:5px 25px 8px 25px;
 }

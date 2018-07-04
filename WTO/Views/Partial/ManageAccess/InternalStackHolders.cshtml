@@ -9,7 +9,7 @@
         <label class="table-heading">Internal StakeHolders (@Model.TotalCount)</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddInternalStakeholder" onclick="AddInternalStackHolderPopup();" data-toggle="modal">Add Internal StakeHolder</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
                         <th class="col-sm-1">S.No</th>
@@ -27,24 +27,24 @@
                         foreach (var item in @Model.InternalStackHolderList)
                         {
                             <tr>
-                                <td>@item.ItemNumber</td>
-                                <td>@item.Name </td>
-                                <td class="text-center">
+                                <td class="col-sm-1">@item.ItemNumber</td>
+                                <td class="col-sm-3">@item.Name </td>
+                                <td class="text-center col-sm-3">
                                   @item.Designation
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center col-sm-2">
                                   @item.Emailid
                                 </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-sm-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-sm-1">Inactive</td>
                                 }   
-                                <td class="text-center"><a href="#" onclick="EditInternalTranslatorData(@item.InternalStakeholdersId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteInternalTranslator(@item.InternalStakeholdersId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" onclick="EditInternalTranslatorData(@item.InternalStakeholdersId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteInternalTranslator(@item.InternalStakeholdersId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -134,3 +134,13 @@
 </div>
 
 <!-- Add Stakeholder modal popup End-->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-sm-1 col-sm-2 col-sm-3 table-fixed");
+            $("td").removeClass("col-sm-1 col-sm-2 col-sm-3 table-fixed");
+        }
+    });
+</script>
