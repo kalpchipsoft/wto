@@ -215,7 +215,6 @@ $(document).ready(function () {
                                         $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
                                     }
 
-                                    debugger;
                                     if (!isNaN(new Date($.trim(result.StakeholderResponseDueBy)).valueOf())) {
                                         var _StakeholderResponseDueBy = new Date($.trim(result.StakeholderResponseDueBy));
                                         $('#hdnStakeholderResponseDueBy').val($.datepicker.formatDate("d M yy", _StakeholderResponseDueBy));
@@ -257,6 +256,7 @@ $(document).ready(function () {
                             failure: function (result) {
                                 Alert("Alert", "Something went wrong.<br/>", "Ok");
                                 ClearNotificationForm();
+                                HideGlobalLodingPanel();
                             },
                             error: function (result) {
                                 if (result.status == "500")
@@ -275,6 +275,7 @@ $(document).ready(function () {
                                     evt.initEvent('autosize:update', true, false);
                                     this.dispatchEvent(evt);
                                 });
+                                HideGlobalLodingPanel();
                             }
                         });
                     };
