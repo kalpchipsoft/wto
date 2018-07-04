@@ -1,4 +1,4 @@
-﻿@model BusinessObjects.Notification.NotificationActions
+﻿@*@model BusinessObjects.Notification.NotificationActions*@
 @{
     Layout = null;
 }
@@ -9,7 +9,7 @@
         <!-- Modal content-->
         <div class="modal-content selecthrcontent">
             <div class="modal-header selecthrheader">
-                <button type="button" class="close selecthrclose" id="btncloseModalAction" data-callfor="close" onclick="closeModalAddAction(this);">
+                <button type="button" class="close selecthrclose closeplanAction" id="btncloseModalAction" data-callfor="close" onclick="closeModalAddAction(this);">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>
@@ -98,7 +98,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <a class="btn btn-red pull-right" id="btncloseModalAction1" data-callfor="close" onclick="closeModalAddAction(this);">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                                        <a class="btn btn-red pull-right closeplanAction" id="btncloseModalAction1" data-callfor="close" onclick="closeModalAddAction(this);">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
                                         <a class="btn btn-dark-green pull-right" id="btnSaveActions" style="margin-right:15px;" onclick="AddNotificationActionOk();"><img src="~/contents/img/save.png" />&nbsp;Save</a>
                                     </div>
                                 </div>
@@ -262,12 +262,12 @@
         var config = {
             // Referencing the new plugin
             toolbar: [
-                    { name: 'clipboard', items: ['Undo', 'Redo'] },
-                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
-                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                    { name: 'links', items: ['Link', 'Unlink'] },
-                    { name: 'insert', items: ['Table'] },
-                    { name: 'styles', items: ['Format'] },
+                { name: 'clipboard', items: ['Undo', 'Redo'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links', items: ['Link', 'Unlink'] },
+                { name: 'insert', items: ['Table'] },
+                { name: 'styles', items: ['Format'] },
             ],
         };
         config.extraPlugins = 'autogrow';
@@ -470,74 +470,74 @@
                     var HTML = '';
                     $.each(result.Actions, function (i, v) {
                         HTML += '<div class="row seprater">' +
-                                '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
-                                '<div class="col-sm-1 pdright">';
+                            '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
+                            '<div class="col-sm-1 pdright">';
 
                         if (v.NotificationActionId > 0) {
                             if (v.UpdatedOn == "") {
                                 HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                            '<label style="padding-left: 0;">' +
-                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                                '</span>' +
-                                            '</label>' +
-                                        '</div>';
+                                    '<label style="padding-left: 0;">' +
+                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
+                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '</div>';
                             }
                             else {
                                 HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                            '<label style="padding-left: 0;">' +
-                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                                '</span>' +
-                                            '</label>' +
-                                        '</div>';
+                                    '<label style="padding-left: 0;">' +
+                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '</div>';
                             }
                         }
                         else {
                             if (result.RetainedForNextDiscussion && v.ActionId == 5) {
                                 HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                           '<label style="padding-left: 0;">' +
-                                               '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                               '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                   '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                               '</span>' +
-                                           '</label>' +
-                                       '</div>';
+                                    '<label style="padding-left: 0;">' +
+                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '</div>';
                             }
                             else if (result.RetainedForNextDiscussion) {
                                 HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                           '<label style="padding-left: 0;">' +
-                                               '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                               '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                   '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                               '</span>' +
-                                           '</label>' +
-                                       '</div>';
+                                    '<label style="padding-left: 0;">' +
+                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
+                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '</div>';
                             }
                             else {
                                 HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                            '<label style="padding-left: 0;">' +
-                                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                                '</span>' +
-                                            '</label>' +
-                                        '</div>';
+                                    '<label style="padding-left: 0;">' +
+                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
+                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
+                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '</div>';
                             }
                         }
 
                         HTML += '</div>' +
-                                '<div class="col-sm-5">' + v.ActionName + '</div>';
+                            '<div class="col-sm-5">' + v.ActionName + '</div>';
 
                         if (v.ActionId < 4) {
                             HTML += '<div class="col-sm-4">' +
                                 '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                                    '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                                    '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
+                                '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
+                                '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
                                 '</div>' +
-                            '</div>';
+                                '</div>';
                             if (v.NotificationActionId != 0 && v.MailId == 0) {
                                 var callfor = "takeaction";
                                 takeaction++;
@@ -565,7 +565,7 @@
                         AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", "window.location.reload();");
                     }
                     else {
-                        $('#btncloseModalAction1').attr('data-callfor', 'reload');
+                        $('.closeplanAction').attr('data-callfor', 'reload');
                         AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", BindNotificationActions());
                     }
                 }
@@ -619,35 +619,33 @@
     }
 
     function AddActionAttachmentOk() {
-        debugger;
         var IsAttachmentSelected = false;
         $.each(TempActionAttachments, function (i, v) {
             if (v.IsSelected)
                 IsAttachmentSelected = true;
         });
 
-        if (TempActionAttachments.length == 0 || !IsAttachmentSelected) {
-            Alert("Alert", "Please choose attachment.<br/>", "Ok");
-            return false;
-        }
-        else {
-            ActionAttachments = [];
-            var Files = "";
-            var FileCount = 0;
-            $.each(TempActionAttachments, function (i, v) {
-                if (v.IsSelected) {
-                    ActionAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
-                    Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
-                    FileCount++;
-                }
-            });
-            $('#txtActionAttachments').empty();
-            $('#txtActionAttachments').append(Files);
-            $('#txtActionAttachments').removeClass("hidden");
-            $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
-
-            CloseActionAddAttachment();
-        }
+        //if (TempActionAttachments.length == 0 || !IsAttachmentSelected) {
+        //    Alert("Alert", "Please choose attachment.<br/>", "Ok");
+        //    return false;
+        //}
+        //else {
+        ActionAttachments = [];
+        var Files = "";
+        var FileCount = 0;
+        $.each(TempActionAttachments, function (i, v) {
+            if (v.IsSelected) {
+                ActionAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
+                Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+                FileCount++;
+            }
+        });
+        $('#txtActionAttachments').empty();
+        $('#txtActionAttachments').append(Files);
+        $('#txtActionAttachments').removeClass("hidden");
+        $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
+        CloseActionAddAttachment();
+        //}
     }
 
     function CloseActionAddAttachment() {
@@ -777,8 +775,8 @@
                         window.location.reload();
                     }
                     else {
-                        $('#btncloseModalAction').attr('data-callfor', 'reload');
-                        $('#btncloseModalAction1').attr('data-callfor', 'reload')
+                        $('.closeplanAction').attr('data-callfor', 'reload');
+                        $('.closeplanAction').attr('data-callfor', 'reload')
                         $('#ActionMail').modal('hide');
                         EditNotificationActions();
                     }
@@ -797,13 +795,13 @@
     function closeActionMail(ctrl) {
         var callfor = $(ctrl).attr('data-callfor');
         if (callfor == "close") {
-            $('#btncloseModalAction').attr('data-callfor', 'close');
+            $('.closeplanAction').attr('data-callfor', 'close');
             $('#ActionMail').modal('hide');
         }
         else {
             $('#ActionMail').modal('hide');
             $('#btnplanAction').click();
-            $('#btncloseModalAction').attr('data-callfor', 'closeaction');
+            $('.closeplanAction').attr('data-callfor', 'closeaction');
 
         }
     }

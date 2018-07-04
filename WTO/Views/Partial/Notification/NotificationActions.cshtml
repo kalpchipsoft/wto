@@ -42,7 +42,7 @@
                                     <thead class="second-blackbackground">
                                         <tr>
                                             <th>Action</th>
-                                            <th class="text-center">Required by</th>
+                                            <th class="text-center @(Model.Actions.FirstOrDefault(x => (x.ActionId==4 && x.UpdatedOn!=""))!=null?"hidden":"")">Required by</th>
                                             <th class="text-center">Completed on</th>
                                             <th>&nbsp;</th>
                                         </tr>
@@ -54,7 +54,7 @@
                                             {
                                                 <tr>
                                                     <td>@ac.Action</td>
-                                                    <td class="text-center" id="tdRequiredOn_@ac.NotificationActionId">@ac.RequiredOn</td>
+                                                    <td class="text-center @(Model.Actions.FirstOrDefault(x => (x.ActionId==4 && x.UpdatedOn!=""))!=null?"hidden":"")" id="tdRequiredOn_@ac.NotificationActionId">@ac.RequiredOn</td>
                                                     <td class="text-center">@((ac.MailId > 0 || ac.ActionId == 4) ? ac.UpdatedOn : "")</td>
                                                     @if (ac.MailId == 0)
                                                     {
@@ -100,7 +100,7 @@
                             <p class="wto-label-bold"><a onclick="OpenAddNote()">Note</a></p>
                         </div>
                         <div class="col-xs-12 col-sm-8 col-md-10">
-                            <p class="wto-label-normal" id="MeetingNoteId">@(Model.MeetingNotes.Length > 40 ? Model.MeetingNotes.Substring(0, 39)+".." : Model.MeetingNotes)</p>
+                            <p class="wto-label-normal" id="MeetingNoteId">@(Model.MeetingNotes.Length > 40 ? Model.MeetingNotes.Substring(0, 39) + ".." : Model.MeetingNotes)</p>
                         </div>
                     }
                 </div>

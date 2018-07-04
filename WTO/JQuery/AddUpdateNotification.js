@@ -788,15 +788,8 @@ function AfterNotificationSaved(NotificationId) {
 
 //GetHSCode popup code
 function SaveHSCode() {
-    var seen = {};
     var HSCodeId = [];
-    var LengthTwo = [];
-    var LengthFour = [];
-    var TotalIdArray = [];
     var FinalArray = [];
-    var index = [];
-    var index2 = [];
-    var i, j, r = [];
     var row = '';
     if ($('.jstree-anchor.jstree-clicked').length == 0 && !$('#cbNoHSCode').is(':Checked')) {
         Alert("Alert", "Please select atleast one HSCode.<br/>", "Ok");
@@ -810,60 +803,27 @@ function SaveHSCode() {
         return false;
     }
     else {
-        debugger;
         $("#HSCodesId tbody > tr").remove();
-        HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
-        //$.each($('.jstree-anchor.jstree-clicked'), function (i, nodeId) {
-        //    HSCodeId.push(($('#HSCodeTree').jstree(true).get_selected()));
-        //});
 
-        $.each(HSCodeId, function (i, nodeId) {
-            for (var x = 0; x < nodeId.length; x++) {
-                var id = $('#HSCodeTree').jstree(true).get_selected(true)[x].id;
-                //var text = $('#HSCodeTree').jstree(true).get_selected(true)[x].text;
-                if (id.length == 2)
-                    if (LengthTwo.indexOf(id) < 0)
-                        LengthTwo.push(id);
-            }
-        });
+        if (!$('#cbNoHSCode').is(':Checked')) {
+            HSCodeId = ($('#HSCodeTree').jstree(true).get_selected());
 
-        $.each(HSCodeId[0], function (j, HSCode) {
-            var IsIndexOf = false;
-            var IsHScodeNodeSame = false;
-            $.each(LengthTwo, function (i, nodeId) {
-                var indx = HSCode.indexOf(nodeId);
-                if (indx == 0) {
-                    IsIndexOf = true;
-                    if (HSCode == nodeId)
-                        IsHScodeNodeSame = true;
-                }
+            $.each(HSCodeId, function (i, nodeId) {
+                var id = $('#HSCodeTree').jstree().get_node(nodeId).parents;
+                var IsExists = false;
+                $.each(id, function (i, v) {
+                    if ($.inArray(v, FinalArray) >= 0 && $('#HSCodeTree').jstree(true).is_selected(v)) {
+                        IsExists = true;
+                        return;
+                    }
+                });
+                if (id == '#')
+                    FinalArray.push(nodeId);
+                else if (!IsExists)
+                    FinalArray.push(nodeId)
             });
-
-            if (!IsIndexOf || IsHScodeNodeSame) {
-                TotalIdArray.push(HSCode);
-                if (HSCode.length == 4)
-                    LengthFour.push(HSCode);
-            }
-        });
-
-        $.each(TotalIdArray, function (j, HSCode) {
-            var IsIndexOf = false;
-            var IsHScodeNodeSame = false;
-            $.each(LengthFour, function (i, nodeId) {
-                var indx = HSCode.indexOf(nodeId);
-                if (indx == 0) {
-                    IsIndexOf = true;
-                    if (HSCode == nodeId)
-                        IsHScodeNodeSame = true;
-                }
-            });
-
-            if (!IsIndexOf || IsHScodeNodeSame)
-                FinalArray.push(HSCode);
-        });
-
+        }
         var items = '';
-
         if (FinalArray.length == 0 && $('#cbNoHSCode').is(':Checked')) {
             var nodeId = "-1";
             items = '-1';
@@ -873,9 +833,13 @@ function SaveHSCode() {
             $("#HSCodesId thead").addClass('hidden');
         }
         else {
+            FinalArray = FinalArray.sort();
             $.each(FinalArray, function (i, nodeId) {
                 items += nodeId + ',';
-                var text = $('#HSCodeTree').jstree().get_node(nodeId).text.split(':')[1].trim();
+                var text = $.trim($('#HSCodeTree').jstree().get_node(nodeId).text);
+                if (text.indexOf(':') >= 0)
+                    text = $.trim(text.substr(text.indexOf(':') + 1));
+
                 var Onclick = 'RemoveHSCodeRow(this)';
                 row += "<tr class='" + nodeId + "'><td>" + nodeId + "</td><td>" + text + "</td><td><a id='" + nodeId + "' onclick='" + Onclick + "' class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a></td></tr>";
             });
@@ -885,31 +849,20 @@ function SaveHSCode() {
         $("#hdnSelectedHSCodes").val(items);
         $("#HSCodesId tbody").append(row);
     }
-
-    $("#HSCodesId tbody > tr").each(function () {
-        var txt = $(this).text();
-        if (seen[txt])
-            $(this).remove();
-        else
-            seen[txt] = true;
-    });
     $(".hs-code-table").removeClass("hidden");
     $('#selecthr').modal('hide');
 }
 
 //Remove HSCode table tr
-function RemoveHSCodeRow(ClassName) {
-    //if (ClassName == "-1")
-    DeselectHSCodeNode(ClassName);
-    //else
-    //    Confirm('Delete', 'Do you want to remove this HS Code among selected HS Codes?', 'Yes', 'No', 'DeselectHSCodeNode("' + ClassName + '")');
+function RemoveHSCodeRow(ctrl) {
+    if (ctrl.id == "-1")
+        DeselectHSCodeNode(ctrl.id);
+    else
+        Confirm('Delete', 'Do you want to remove this HS Code among selected HS Codes?', 'Yes', 'No', 'DeselectHSCodeNode("' + ctrl.id + '")');
 }
 
 //Remove HSCode table tr
-function DeselectHSCodeNode(ctrl) {
-    var id = '';
-    id = ctrl.id;
-    var ClassName = id;
+function DeselectHSCodeNode(ClassName) {
     if (ClassName == "-1")
         $('#cbNoHSCode').prop('checked', false);
     else
@@ -2013,27 +1966,26 @@ function AddAttachmentOk() {
             IsAttachmentSelected = true;
     });
 
-    if (TempMailAttachments.length == 0 || !IsAttachmentSelected) {
-        Alert("Alert", "Please choose attachment.<br/>", "Ok");
-        return false;
-    }
-    else {
-        MailAttachments = [];
-        var Files = "";
-        var FileCount = 0;
-        $.each(TempMailAttachments, function (i, v) {
-            if (v.IsSelected) {
-                MailAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
-                Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveStakeholdersMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
-                FileCount++;
-            }
-        });
-        $('#txtAttachments').empty().append(Files);
-        $('#txtAttachments').removeClass("hidden");
-        $('#txtAttachmentCount').val(FileCount + ' file(s) selected');
-
-        CloseAddAttachment();
-    }
+    //if (TempMailAttachments.length == 0 || !IsAttachmentSelected) {
+    //    Alert("Alert", "Please choose attachment.<br/>", "Ok");
+    //    return false;
+    //}
+    //else {
+    MailAttachments = [];
+    var Files = "";
+    var FileCount = 0;
+    $.each(TempMailAttachments, function (i, v) {
+        if (v.IsSelected) {
+            MailAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
+            Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveStakeholdersMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+            FileCount++;
+        }
+    });
+    $('#txtAttachments').empty().append(Files);
+    $('#txtAttachments').removeClass("hidden");
+    $('#txtAttachmentCount').val(FileCount + ' file(s) selected');
+    CloseAddAttachment();
+    //}
 }
 
 //select/Unselect other attachments in Stakholders mail popup
@@ -2288,7 +2240,7 @@ function RemoveResponseAttachments(ctrl) {
     $.each(ResponseMailAttachments, function (i, v) {
         if (v.FileName != FileName) {
             TempResponseMailAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Selected": true, "Path": "", "IsSelected": true });
-            Files += '<p>' + v.FileName + '<a href="#" onclick="RemoveResponseAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
+            Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveResponseAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
             FileCount++;
         }
     });

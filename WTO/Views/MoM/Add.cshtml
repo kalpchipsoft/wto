@@ -3,7 +3,7 @@
     ViewBag.Title = "Schedule new meeting";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/JQuery/Mom.js?v=4"></script>
+<script src="~/JQuery/Mom.js?v=5"></script>
 <style type="text/css">
     .fixed {
         top: 0;
@@ -82,11 +82,11 @@
                                                         <label>
                                                             @if (Model.Notification_MomList != null && Model.Notification_MomList.Count > 0)
                                                             {
-                                                                <input type="checkbox" id="chkSelectAllNotification" checked="checked" onchange="CheckSelectAll();" />
+                                                                <input type="checkbox" id="chkSelectAllNotification" class="chkSelectAllNotification" onchange="CheckSelectAll(this);" checked/>
                                                             }
                                                             else
                                                             {
-                                                                <input type="checkbox" id="chkSelectAllNotification" onchange="CheckSelectAll();" />
+                                                                <input type="checkbox" class="chkSelectAllNotification" id="chkSelectAllNotification" onchange="CheckSelectAll(this);" />
                                                             }
                                                             <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
                                                         </label>
@@ -109,7 +109,7 @@
                                                         <td class="text-center">
                                                             <div class="checkbox radio-margin" style="margin-top:2px;">
                                                                 <label>
-                                                                    <input type="checkbox" name="Action" id="chkNotification_@objMOM.ItemNumber" checked="checked" onchange="CheckHeaderCheckbox()" />
+                                                                    <input type="checkbox" name="Action" id="chkNotification_@objMOM.ItemNumber" checked onchange="CheckHeaderCheckbox()" />
                                                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
                                                                 </label>
                                                             </div>
