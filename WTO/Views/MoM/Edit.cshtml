@@ -12,13 +12,13 @@
 <script src="~/JQuery/Mom.js?v=5"></script>
 
 <style type="text/css">
-     .fixed{
-		  top:0;
-		  position:fixed;
-		  width:auto;
-		  display:none;
-		  border:none;
-		}
+    .fixed {
+        top: 0;
+        position: fixed;
+        width: auto;
+        display: none;
+        border: none;
+    }
 </style>
 
 <!-- body section start -->
@@ -75,11 +75,12 @@
                                         var id = Request.Url.Segments[3];
                                         if (Convert.ToInt32(id) > 0)
                                         {
-                                            <a class="btn btn-blue pull-right btn-padding addsavenotification " hidden"" style="margin-left:4%" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png"> Back </a>
+                                            <a class="btn btn-blue pull-right btn-padding addsavenotification" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png"> Back </a>
                                         }
-                                        else
+
+                                        if (Model.IsActive)
                                         {
-                                            <a onclick="return EndMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>End meeting</b></a>
+                                            <a onclick="return EndMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>Close meeting</b></a>
                                         }
                                     }
                                     <button id="btnSaveUpdate" class="btn btn-dark-green pull-right btn-padding addsavenotification hidden" onclick="return Validate();"><img src="/contents/img/save.png"> @(Model.MoMId > 0 ? "Update" : "Save")</button>
@@ -103,7 +104,7 @@
                                         <thead class="second-blackbackground">
                                             <tr style="border-bottom: 1px solid transparent !important;">
                                                 <th rowspan="2">Notification</th>
-                                                <th class="text-center" rowspan="2" >Country</th>
+                                                <th class="text-center" rowspan="2">Country</th>
                                                 <th class="text-center" colspan="5">Action</th>
                                                 <th class="text-center" rowspan="2"></th>
                                             </tr>
@@ -122,7 +123,7 @@
                                             {
                                                 foreach (BusinessObjects.MOM.Notification_Mom objMOM in Model.Notifications)
                                                 {
-                                                    <tr >
+                                                    <tr>
                                                         <td>
                                                             <a href="@Url.Action("NotificationView", "WTO", new { Id = objMOM.NotificationId, MOMId = @Model.MoMId,R=objMOM.RowNum,Total=objMOM.TotalRow})" class="red-color" target="_blank"><p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="@Html.Raw(HttpUtility.HtmlDecode(objMOM.Description))">@objMOM.NotificationNumber</p></a>
                                                             <p style="word-wrap:break-word; width:450px;">
@@ -239,7 +240,7 @@
                                             <p class="wto-label-bold dark-blue">Meeting Date <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <input type="text" class="form-control date-picker" style="cursor:pointer" value="@Model.MeetingDate" id="txtmeetingdate" />
+                                            <input type="text" class="form-control date-picker" style="cursor:pointer" value="@Model.MeetingDate" id="txtmeetingdate" onchange="return IsMeetingExists(@Model.MoMId);" />
                                             <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
                                         </div>
                                     </div>
@@ -274,7 +275,7 @@
         $.fn.fixMe = function () {
             return this.each(function () {
                 var $this = $(this),
-                   $t_fixed;
+                    $t_fixed;
                 function init() {
                     $this.wrap('<div/>');
                     $t_fixed = $this.clone();
@@ -288,8 +289,8 @@
                 }
                 function scrollFixed() {
                     var offset = $(this).scrollTop(),
-                    tableOffsetTop = $this.offset().top,
-                    tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
+                        tableOffsetTop = $this.offset().top,
+                        tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
                     if (offset < tableOffsetTop || offset > tableOffsetBottom)
                         $t_fixed.hide();
                     else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
