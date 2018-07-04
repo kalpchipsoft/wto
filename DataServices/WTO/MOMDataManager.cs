@@ -106,16 +106,15 @@ namespace DataServices.WTO
                 return result;
             }
         }
-        public bool CheckIfOpenMeetingExists(string date)
+        public DataTable ValidateMeetingDate(string date, Nullable<Int64> MoMId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.CheckIfOpenMeetingExists;
                 sqlCommand.Parameters.AddWithValue("@date", date);
-                DataTable dt = DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
-                bool result = Convert.ToString(dt.Rows[0]["result"]) == "True" ? true : false;
-                return result;
+                sqlCommand.Parameters.AddWithValue("@MoMId", MoMId);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
     }
