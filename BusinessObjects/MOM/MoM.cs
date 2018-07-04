@@ -108,6 +108,7 @@ namespace BusinessObjects.MOM
     {
         public Int32? IsExistFlag { get; set; }//IsExistFlag
         public Int64 MoMId { get; set; }
+        public bool IsActive { get; set; }
         public string MeetingDate { get; set; }
         public List<Action> Actions { get; set; }
         public List<Notification_Mom> Notifications { get; set; }

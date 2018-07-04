@@ -232,6 +232,7 @@ namespace BusinessService.MOM
                     {
                         objE.MoMId = Convert.ToInt64(dr["MomId"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objE.IsActive = Convert.ToBoolean(dr["IsActive"]);
                     }
                 }
                 #endregion
@@ -355,10 +356,15 @@ namespace BusinessService.MOM
             bool result = objDM.EndMeeting(Id);
             return result;
         }
-        public bool CheckIfOpenMeetingExists(string date)
+        public string ValidateMeetingDate(string date, Nullable<Int64> MoMId)
         {
             MOMDataManager objDM = new MOMDataManager();
-            bool result = objDM.CheckIfOpenMeetingExists(date);
+            DataTable dt = objDM.ValidateMeetingDate(date, MoMId);
+            string result =string.Empty;
+
+            if (dt != null && dt.Rows.Count > 0)
+                result = Convert.ToString(dt.Rows[0]["Message"]);
+
             return result;
         }
     }

@@ -8,7 +8,14 @@
             <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th><input type="checkbox" id="chkSelectAll" onchange="checkstakeholdercheckbox();"></th>
+                        <th>
+                            <div class="checkbox radio-margin" style="margin-top:2px;">
+                                <label>
+                                    <input type="checkbox" id="chkSelectAll" onchange="checkstakeholdercheckbox();">
+                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                </label>
+                            </div>
+                        </th>
                         <th>Organization</th>
                         <th>Contact</th>
                         <th>HS Code</th>
@@ -24,7 +31,12 @@
                         {
                             <tr>
                                 <td>
-                                    <input type="checkbox" value="@item.StakeHolderId" onchange="CheckUncheckSelectAll();">
+                                    <div class="checkbox radio-margin" style="margin-top:2px;">
+                                        <label>
+                                            <input type="checkbox" value="@item.StakeHolderId" onchange="CheckUncheckSelectAll();">
+                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                        </label>
+                                    </div>
                                 </td>
                                 <td><label id="lblStakeHolderName_@item.StakeHolderId">@item.OrgName</label></td>
                                 <td>@item.FullName</td>

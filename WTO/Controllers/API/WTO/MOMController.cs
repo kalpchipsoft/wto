@@ -59,10 +59,10 @@ namespace WTO.Controllers.API.WTO
         }
 
         [HttpPost]
-        public IHttpActionResult CheckIfOpenMeetingExists(string date)
+        public IHttpActionResult ValidateMeetingdate(string date, Nullable<Int64> MoMId)
         {
             MomBusinessService objAM = new MomBusinessService();
-            return Ok(objAM.CheckIfOpenMeetingExists(date));
+            return Ok(objAM.ValidateMeetingDate(date, MoMId));
         }
     }
 }
