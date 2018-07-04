@@ -256,6 +256,7 @@ $(document).ready(function () {
                             failure: function (result) {
                                 Alert("Alert", "Something went wrong.<br/>", "Ok");
                                 ClearNotificationForm();
+                                HideGlobalLodingPanel();
                             },
                             error: function (result) {
                                 if (result.status == "500")
