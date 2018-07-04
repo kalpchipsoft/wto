@@ -195,6 +195,7 @@ function BindNotificationActions() {
                 changeYear: true,
                 dateFormat: 'dd M yy'
             });
+            HideGlobalLodingPanel();
         }
     });
 }
