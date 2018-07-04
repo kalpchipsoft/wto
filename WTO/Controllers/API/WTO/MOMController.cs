@@ -50,5 +50,19 @@ namespace WTO.Controllers.API.WTO
             MomBusinessService obj = new MomBusinessService();
             return Ok(obj.EditMoM(Id, objS));
         }
+
+        [HttpPost]
+        public IHttpActionResult EndMeeting(Int64? Id)
+        {
+            MomBusinessService objAM = new MomBusinessService();
+            return Ok(objAM.EndMeeting(Id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult CheckIfOpenMeetingExists(string date)
+        {
+            MomBusinessService objAM = new MomBusinessService();
+            return Ok(objAM.CheckIfOpenMeetingExists(date));
+        }
     }
 }

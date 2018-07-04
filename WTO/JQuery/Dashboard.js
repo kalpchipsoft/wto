@@ -151,9 +151,6 @@ function GetHSCode() {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }

@@ -1,26 +1,62 @@
 ﻿$(function () {
-    //var len = $('#tblNotificationMoM tbody tr').length;
-    //var Id = "";
-    //if (len > 0) {
-    //    $.each($("#tblNotificationMoM > tbody > tr"), function (index, value) {
-    //        Id += $(this).find("#hdnNotificationId_" + (index + 1)).val() + ",";
-    //    });
-    //    if (Id != "") {
-    //        $("#hdnNId").val(Id);
-    //    }
-    //}
-    $('#chkSelectAll').change(function () {
-        var IsCheckedAll = this.checked;
-        $.each($(this).closest('table').find('tbody > tr > td > input[type=checkbox]'), function () {
-            this.checked = IsCheckedAll;
-        });
+    var _ExistingNotifications = GetExistingNotifications();
+    $('#hdnExistingNotificationsId').val(_ExistingNotifications);
+
+    $('#txtSearch_EditMoM').on("keypress", function (e) {
+        if (e.keyCode == 13) {
+            SearchMeetingNotifications($(this).next('span'));
+            return false; // prevent the button click from happening
+        }
+
+        if ($.trim($(this).val()) == "") {
+            $('[id$=clearSearch_EditMoM]').addClass('hidden');
+        }
+        else
+            $('[id$=clearSearch_EditMoM]').removeClass('hidden');
     });
+
+    $('#txtSearch').on("keypress", function (e) {
+        if (e.keyCode == 13) {
+            SearchNotifications($(this).next('span'));
+            return false; // prevent the button click from happening
+        }
+
+        if ($.trim($(this).val()) == "") {
+            $('[id$=clearSearch]').addClass('hidden');
+        }
+        else
+            $('[id$=clearSearch]').removeClass('hidden');
+    });
+
+    $('[id$=txtmeetingdate]').change(function () {
+        if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
+            $.ajax({
+                url: "/api/MoM/CheckIfOpenMeetingExists/" + $('[id$=txtmeetingdate]').val(),
+                async: false,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result) {
+                        Alert("Alert", "An open meeting on " + date + " already exists. Close previous meeting to schedule a new meeting.<br/>", "Ok");
+                        $('[id$=txtmeetingdate]').val();
+                    }
+                },
+                failure: function (result) {
+                    Alert("Alert", "Something went wrong.<br/>", "Ok");
+                },
+                error: function (result) {
+                    Alert("Alert", "Something went wrong.<br/>", "Ok");
+                }
+            });
+            return false;
+        }
+    });
+
 });
 
 //***********************Add Meeting Start**********************************
 function ValidateMeeting() {
     var msg = "";
-
     if ($.trim($('[id$=txtmeetingdate]').val()) == "")
         msg += "Please enter meeting date. <br/>";
 
@@ -58,23 +94,19 @@ function AddMoM() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != null) {
-                AlertwithFunction("Alert", "Saved successfully<br/>", "Ok", "Afterdsave()");
+                AlertwithFunction("Alert", "Saved successfully<br/>", "Ok", "AfterSave()");
             }
-
         },
         failure: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
 
-function Afterdsave() {
+function AfterSave() {
     location.href = window.location.origin + "/MoM";
 }
 
@@ -98,18 +130,17 @@ function GetMoMDetails() {
 
 function SearchNotifications(ctrl) {
     ShowGlobalLodingPanel();
-    var _ExistingNotifications = GetExistingNotifications();
-
-    var _Class = $(ctrl).find('i').attr('class');
-    if (_Class.indexOf('glyphicon-search') >= 0) {
-        $('#hdnExistingNotificationsId').val(_ExistingNotifications);
-
-        if ($.trim($('#txtSearch').val()) != "")
-            $(ctrl).find('i').attr('class', _Class.replace('glyphicon-search', 'glyphicon-remove'));
+    var _SearchFor = $(ctrl).attr('data-SearchFor');
+    if (_SearchFor == 'Clear') {
+        $('#txtSearch').val('');
+        $('#clearSearch').addClass('hidden')
     }
     else {
-        $('#txtSearch').val('');
-        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-remove', 'glyphicon-search'));
+        var _ExistingNotifications = GetExistingNotifications();
+        _ExistingNotifications = $('#hdnExistingNotificationsId').val() + _ExistingNotifications;
+        $('#hdnExistingNotificationsId').val(_ExistingNotifications);
+
+        $('#clearSearch').removeClass('hidden');
     }
 
     var _SearchText = $.trim($('#txtSearch').val());
@@ -200,7 +231,6 @@ function SearchNotifications(ctrl) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
@@ -328,30 +358,25 @@ function GetAllNotifications(ctrl) {
                     CheckHeaderCheckbox();
                 },
                 failure: function (result) {
-
                     Alert("Alert", "Something went wrong.<br/>", "Ok");
                 },
                 error: function (result) {
-
                     Alert("Alert", "Something went wrong.<br/>", "Ok");
                 },
                 complete: function () {
-
-                    HideGlobalLodingPanel();
                     autosize($(".AutoHeight"));
                     $("#ModalAddNotiFication").modal('hide');
+                    HideGlobalLodingPanel();
                 }
             });
         }
     }
-    else {
+    else
         HideGlobalLodingPanel();
-    }
 }
 
 function GetFilterNotification(ctrl) {
     ShowGlobalLodingPanel();
-
     var NotificationId = "";
     var _CallFor = $(ctrl).attr('data-CallFor');
     var _CountryId = $("#ddlCountry").val() == "" ? 0 : $("#ddlCountry").val();
@@ -381,11 +406,17 @@ function GetFilterNotification(ctrl) {
             $('#tblFilterResult').css("display", "block");
             var html = '';
             if (result.Notification_MomList != null) {
-                //var arr = $("#hdnNId").val().split(',');
                 if (result.Notification_MomList.length > 0) {
                     $.each(result.Notification_MomList, function (i, v) {
                         html += '<tr>';
-                        html += '<td> <input type="hidden" id="hdnNotifId_' + v.ItemNumber + '" value="' + v.NotificationId + '" /><input type="checkbox" name="Action" id="chkNot_' + v.ItemNumber + '" onchange="return CheckList();"/></td>';
+                        html += '<td> <input type="hidden" id="hdnNotifId_' + v.ItemNumber + '" value="' + v.NotificationId + '" />';
+                        html += '<div class="checkbox radio-margin" style="margin-top:2px;">';
+                        html += '<label>';
+                        html += '<input type="checkbox" name="Action" id="chkNot_' + v.ItemNumber + '" onchange="return CheckList();"/>';
+                        html += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>';
+                        html += '</label>';
+                        html += '</div >';
+                        html += '</td>';
                         html += '<td style="cursor:pointer" ><p data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '">' + v.NotificationNumber + '</p></td>';
                         html += '<td>' + v.FinalDateofComments + '</td>';
                         html += '<td>' + v.Country + '</td>';
@@ -430,18 +461,25 @@ function GetFilterNotification(ctrl) {
         }
     });
 }
+
+function SelectAllNotification_Popup(ctrl) {
+    var IsCheckedAll = ctrl.checked;
+    $.each($(ctrl).closest('table').find('tbody > tr > td input[type=checkbox]'), function () {
+        $(this).prop('checked', IsCheckedAll);
+    });
+}
 //***********************Add Meeting End**********************************
 
 function SearchMeetingNotifications(ctrl) {
-    var _Class = $(ctrl).find('i').attr('class');
-    if (_Class.indexOf('glyphicon-search') >= 0 && $.trim($('#txtSearch').val()) != "")
-        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-search', 'glyphicon-remove'));
-    else {
-        $('#txtSearch').val('');
-        $(ctrl).find('i').attr('class', _Class.replace('glyphicon-remove', 'glyphicon-search'));
+    var _SearchFor = $(ctrl).attr('data-SearchFor');
+    if (_SearchFor == 'Clear') {
+        $('#txtSearch_EditMoM').val('');
+        $('#clearSearch_EditMoM').addClass('hidden')
     }
+    else
+        $('#clearSearch_EditMoM').removeClass('hidden')
 
-    var _SearchText = $.trim($('#txtSearch').val());
+    var _SearchText = $.trim($('#txtSearch_EditMoM').val());
     var obj = {
         callFor: $.trim($(ctrl).attr('data-CallFor')),
         SearchText: _SearchText
@@ -454,7 +492,6 @@ function SearchMeetingNotifications(ctrl) {
         data: JSON.stringify(obj),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            debugger;
             var html = '';
             var _MomId = result.MoMId;
             if (result.Notifications != null && result.Notifications.length > 0) {
@@ -483,23 +520,41 @@ function SearchMeetingNotifications(ctrl) {
 
                     //Discussion
                     if (result.Actions != null) {
-                        var Action = $.map(result.Actions, function (item, i) {
-                            if (item.NotificationId == v.NotificationId && item.ActionId == v.ActionId)
-                                return item;
-                        });
+                        $.each(result.Actions, function (indx, val) {
+                            var Action = $.map(result.NotificationActions, function (item, i) {
+                                if (item.NotificationId == v.NotificationId && item.ActionId == val.ActionId)
+                                    return item;
+                            });
 
-                        Action.sort(function (a, b) {
-                            return a.Sequence - b.Sequence;
+                            if (Action.length > 0) {
+                                debugger;
+                                var _Action = Action[0];
+                                if (_Action != null && (_Action.ActionId > 4 || (_Action.MailId > 0 && _Action < 4))) {
+                                    html += '<td class="text-center width-10">' +
+                                        '<span class="glyphicon glyphicon-ok dark-green-color font-20" id="span_' + v.ItemNumber + '"></span>' +
+                                        '</td>';
+                                }
+                                else if (_Action != null) {
+                                    html += '<td class="text-center width-10">' +
+                                        '<span class="glyphicon glyphicon-hourglass dark-green-color font-20" id="span_' + v.ItemNumber + '"></span>' +
+                                        '</td>';
+                                }
+                                else {
+                                    html += '<td class="text-center width-10">' +
+                                        '<span id="span_' + v.ItemNumber + '"></span>' +
+                                        '</td>';
+                                }
+                            }
+                            else
+                                html += '<td class="text-center width-10"></td>';
                         });
-
-                        html += '<td class="text-center width-10">';
-                        $.each(Action, function (indx, val) {
-                            html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
-                        });
-                        html += '</td>';
                     }
-                    html += '<td class="text-center width-5"><a data-searchfor="35" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>' +
-                        '</tr>';
+                    if (v.IsUpdate)
+                        html += '<td class="text-center width-5"><a data-searchfor="35" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>';
+                    else
+                        html += '<td class="width-10"></td>';
+
+                    html += '</tr>';
                 });
             }
             else {
@@ -513,7 +568,6 @@ function SearchMeetingNotifications(ctrl) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         error: function (result) {
-
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
@@ -639,7 +693,6 @@ function UpdateMeetingDate() {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             complete: function () {
-                HideGlobalLodingPanel();
                 CloseMeetingDatepopup();
                 autosize($(".AutoHeight"));
             }
@@ -766,7 +819,6 @@ function GetMeetingNote(NotificationId) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
-            HideGlobalLodingPanel();
         }
     });
 }
@@ -886,7 +938,6 @@ function BindNotificationActions() {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
-            HideGlobalLodingPanel();
             $(".date-picker").datepicker({
                 changeMonth: true,
                 changeYear: true,
@@ -901,4 +952,34 @@ function EditNotificationActions(ctrl) {
     if (typeof ctrl != "undefined")
         $('#hdnNotificationId').val($(ctrl).attr('data-searchfor'));
     BindNotificationActions();
+}
+
+function EndMeeting() {
+    Confirm('End meeting', 'Do you want to end current meeting and retain notifications for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
+}
+
+function SaveEndMeeting() {
+    var MoMId = 0;
+    MoMId = $("#hdnMomId").val();
+    $.ajax({
+        url: "/api/MoM/EndMeeting/" + MoMId,
+        async: false,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result) {
+                Alert("Alert", "Meeting has been successfully ended.<br/>", "Ok");
+                location.href = window.location.origin + "/MoM/Add/0";
+            }
+            else
+                Alert("Alert", "Error occured", "Ok");
+        },
+        failure: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        }
+    });
+    return false;
 }

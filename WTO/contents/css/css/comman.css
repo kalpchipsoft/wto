@@ -1089,9 +1089,9 @@ a, a:hover, a:focus, a:active {
     top: -5px !important;
 }
 
-.tooltiprelative {
+/*.tooltiprelative {
     position: relative;
-}
+}*/
 
 .tooltip.in {
 }

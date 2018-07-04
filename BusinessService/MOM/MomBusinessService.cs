@@ -349,5 +349,17 @@ namespace BusinessService.MOM
             }
             return objE;
         }
+        public bool EndMeeting(Int64? Id)
+        {
+            MOMDataManager objDM = new MOMDataManager();
+            bool result = objDM.EndMeeting(Id);
+            return result;
+        }
+        public bool CheckIfOpenMeetingExists(string date)
+        {
+            MOMDataManager objDM = new MOMDataManager();
+            bool result = objDM.CheckIfOpenMeetingExists(date);
+            return result;
+        }
     }
 }

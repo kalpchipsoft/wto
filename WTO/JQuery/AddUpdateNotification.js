@@ -270,7 +270,6 @@ $(document).ready(function () {
                                 HideGlobalLodingPanel();
                             },
                             complete: function () {
-                                //HideGlobalLodingPanel();
                                 $.each($('.AutoHeight'), function (i, v) {
                                     var evt = document.createEvent('Event');
                                     evt.initEvent('autosize:update', true, false);
@@ -774,9 +773,6 @@ function SaveUpdateNotification() {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
@@ -955,9 +951,6 @@ function GetHSCode() {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
@@ -1154,9 +1147,6 @@ function SendMailToEnquiryDesk() {
             },
             error: function (result) {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
-            },
-            complete: function () {
-                //HideGlobalLodingPanel();
             }
         });
     }
@@ -1381,7 +1371,6 @@ function BindTranslater(LanguageId) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
         },
         complete: function () {
-            //HideGlobalLodingPanel();
             if ($('#ddlTranslater').val() == null)
                 $('#ddlTranslater').val('');
         }
@@ -2131,9 +2120,6 @@ function SendmailToStakeholders() {
             },
             error: function (result) {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
-            },
-            complete: function () {
-                //HideGlobalLodingPanel();
             }
         });
     }
@@ -2234,9 +2220,6 @@ function ViewResponseFromStackHolder(ResponseMailId) {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
@@ -2362,7 +2345,6 @@ function SaveStakeholderResponse() {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             complete: function () {
-                //HideGlobalLodingPanel();
                 TempResponseMailAttachments = [];
                 ResponseMailAttachments = TempResponseMailAttachments;
             }

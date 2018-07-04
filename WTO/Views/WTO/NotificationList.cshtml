@@ -6,7 +6,7 @@
 
 <link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-combobox.js"></script>
-<script src="~/JQuery/NotificationList.js?v=8" type="text/javascript"></script>
+<script src="~/JQuery/NotificationList.js?v=9" type="text/javascript"></script>
 <style>
     .adv {
         position: absolute;
@@ -31,6 +31,13 @@
         border-right: 3px solid transparent !important;
         border-left: 3px solid transparent !important;
     }
+    .fixed{
+		  top:0;
+		  position:fixed;
+		  width:auto;
+		  display:none;
+		  border:none;
+		}
 </style>
 @Html.Hidden("hdnPageIndex", "1")
 @Html.Hidden("hdnNotificationCount", @Model.TotalCount)
@@ -217,20 +224,21 @@ else
                                 <div class="row" id="divContent">
                                     <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
                                         <div class="table-responsive notificationlist">
-                                            <table class="table table-bordered display table-fixed" id="notificationlist" cellspacing="0" width="100%">
+                                            <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
                                                 <thead class="second-blackbackground">
                                                     <tr>
-                                                        <th class="width-30">Notification</th>
-                                                        <th class="text-center width-10">Notification Date</th>
-                                                        <th class="text-center width-10">Final Date of Comments</th>
-                                                        <th class="text-center width-10">Country</th>
-                                                        <th class="width-10">Pending Discussion</th>
-                                                        <th class="text-center width-10" style="padding-right:2%;">Stakeholder Responses</th>
-                                                        <th class="width-10">Pending Action</th>
-                                                        <th class="width-5">Edit</th>
-                                                        <th class="width-5">Export</th>
+                                                        <th>Notification</th>
+                                                        <th>Notification Date</th>
+                                                        <th>Final Date of Comments</th>
+                                                        <th>Country</th>
+                                                        <th>Pending Discussion</th>
+                                                        <th class="text-center" style="padding-right:2%;">Stakeholder Responses</th>
+                                                        <th>Pending Action</th>
+                                                        <th>Edit</th>
+                                                        <th>Export</th>
                                                     </tr>
                                                 </thead>
+
                                                 <tbody id="NotificationData" class="whitebackground">
                                                     @if (@Model.Notifications != null)
                                                     {
@@ -299,7 +307,8 @@ else
                                                         </tr>
                                                     }
                                                 </tbody>
-                                            </table>
+                                           
+                                           </table>
                                         </div>
                                     </div>
                                     <div id="divPaginationLoadingPanel" class="col-md-12 text-center hidden">
@@ -315,12 +324,48 @@ else
     </div>
 </div>
 <!-- body section End -->
+
 <script type="text/javascript">
-    $(document).ready(function () {
-        if ($(window).width() < 700) {
-            $(".table").removeClass("table-fixed");
-            $("th").removeClass("width-10 width-5 width-30 table-fixed");
-            $("td").removeClass("width-10 width-5 text-right width-30 table-fixed");
-        }
-    })
+	(function($) {
+		$.fn.fixMe = function() {
+      return this.each(function() {
+         var $this = $(this),
+            $t_fixed;
+         function init() {
+            $this.wrap('<div/>');
+            $t_fixed = $this.clone();
+            $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
+            resizeFixed();
+         }
+         function resizeFixed() {
+            $t_fixed.find("th").each(function(index) {
+               $(this).css("width",$this.find("th").eq(index).outerWidth()+"px");
+            });
+         }
+         function scrollFixed() {
+            var offset = $(this).scrollTop(),
+            tableOffsetTop = $this.offset().top,
+            tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
+            if(offset < tableOffsetTop || offset > tableOffsetBottom)
+               $t_fixed.hide();
+            else if(offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
+               $t_fixed.show();
+         }
+         $(window).resize(resizeFixed);
+         $(window).scroll(scrollFixed);
+         init();
+      });
+   };
+})(jQuery);
+
+	$(document).ready(function () {
+	    if ($(window).width() > 700) {
+	        $("table").fixMe();
+	    }
+	});
+	$(window).scroll(function () {
+	    if (!$("#toggleOpenClose").hasClass("is-closed")) {
+	        $("#toggleOpenClose").click();
+	    }
+	});
 </script>

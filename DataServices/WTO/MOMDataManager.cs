@@ -94,5 +94,29 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
+        public bool EndMeeting(Int64? Id)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.EndMeeting;
+                sqlCommand.Parameters.AddWithValue("@MomId", Id);
+                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = i > 0 ? true : false;
+                return result;
+            }
+        }
+        public bool CheckIfOpenMeetingExists(string date)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.CheckIfOpenMeetingExists;
+                sqlCommand.Parameters.AddWithValue("@date", date);
+                DataTable dt = DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = Convert.ToString(dt.Rows[0]["result"]) == "True" ? true : false;
+                return result;
+            }
+        }
     }
 }

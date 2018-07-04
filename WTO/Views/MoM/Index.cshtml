@@ -97,6 +97,7 @@
                                                                     {
                                                                         <span class="red-color">@_Action.PendingCount</span>
                                                                     }
+                                                                    /
                                                                     @if (_Action.TotalCount > 0)
                                                                     {
                                                                         <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>

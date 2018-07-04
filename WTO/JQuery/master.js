@@ -24,18 +24,13 @@ $(window).bind("load", function () {
     HideGlobalLodingPanel();
 });
 
-////Temp
-//$(window).unload(function () {
+//$(document).ajaxStart(function () {
 //    ShowGlobalLodingPanel();
 //});
 
-$(document).ajaxStart(function () {
-    ShowGlobalLodingPanel();
-});
-
-$(document).ajaxComplete(function () {
-    HideGlobalLodingPanel();
-});
+//$(document).ajaxComplete(function () {
+//    HideGlobalLodingPanel();
+//});
 
 ////End temp
 

@@ -208,9 +208,6 @@ function UpdatePassword() {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
@@ -249,9 +246,6 @@ function SaveTranslatedDocument() {
             },
             error: function (result) {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
-            },
-            complete: function () {
-                //HideGlobalLodingPanel();
             }
         });
     }
@@ -311,9 +305,6 @@ function SearchDocument() {
         },
         error: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            //HideGlobalLodingPanel();
         }
     });
 }
