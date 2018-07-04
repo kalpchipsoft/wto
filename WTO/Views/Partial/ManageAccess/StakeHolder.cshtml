@@ -8,15 +8,15 @@
         <label class="table-heading">Stakeholders (@Model.TotalCount)</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddStakeholder" onclick="AddStakeHolderPopup()" data-toggle="modal">Add Stakeholder</a>
         <div class="table-responsive nopaging notificationlist top-offset-20">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
                         @*<th>S.No</th>*@
-                        <th>Stakeholder Name</th>
-                        <th>Email Id</th>
-                        <th>Status</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Delete</th>
+                        <th class="col-xs-3">Stakeholder Name</th>
+                        <th class="col-xs-6">Email Id</th>
+                        <th class="col-xs-1">Status</th>
+                        <th class="text-center col-xs-1">Edit</th>
+                        <th class="text-center col-xs-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -26,18 +26,18 @@
                         {
                             <tr>
                                 @*<td>@item.ItemNumber</td>*@
-                                <td>@item.StakeHolderName</td>
-                                <td>@item.Email</td>
+                                <td class="col-xs-3">@item.StakeHolderName</td>
+                                <td class="col-xs-6">@item.Email</td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-xs-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-xs-1">Inactive</td>
                                 }
-                                <td class="text-center"><a href="#" onclick="EditStakeHolderData(@item.StakeHolderId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse ? "hidden" : "")' onclick="Confirm('Delete','Do you want to delete the @item.StakeHolderName ?','Yes', 'No', 'DeleteStakeHolder(@item.StakeHolderId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="EditStakeHolderData(@item.StakeHolderId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" class='@(@item.IsInUse ? "hidden" : "")' onclick="Confirm('Delete','Do you want to delete the @item.StakeHolderName ?','Yes', 'No', 'DeleteStakeHolder(@item.StakeHolderId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }

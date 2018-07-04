@@ -8,13 +8,13 @@ namespace BusinessService.MOM
 {
     public class MomBusinessService
     {
-        public NotificationMOM GetNotificationList_Mom(string callFor, int? CountryId, string NotificationNo, string NotificationId, string SelectedNotificationId)
+        public NotificationMOM GetNotificationList_Mom(Search_MoM obj)
         {
             NotificationMOM NotificationMoMList = new NotificationMOM();
 
             MOMDataManager objDM = new MOMDataManager();
 
-            DataSet ds = objDM.GetNotificationListForMom(callFor, CountryId, NotificationNo, NotificationId, SelectedNotificationId);
+            DataSet ds = objDM.GetNotificationListForMom(obj);
             if (ds != null)
             {
                 int tblIndex = -1;
@@ -37,6 +37,7 @@ namespace BusinessService.MOM
                         objNotification.FinalDateofComments = Convert.ToString(dr["FinalDateOfComment"]);
                         objNotification.Description = Convert.ToString(dr["Description"]);
                         objNotification.MeetingNote = Convert.ToString(dr["MeetingNote"]);
+                        objNotification.NotificationGroup = Convert.ToString(dr["NotificationGroup"]);
                         i++;
                         NotificationList.Add(objNotification);
                     }
@@ -198,11 +199,11 @@ namespace BusinessService.MOM
 
             return objMoM;
         }
-        public EditMeeting EditMoM(Nullable<Int64> Id, string CallFor)
+        public EditMeeting EditMoM(Nullable<Int64> Id, Search_MoM obj)
         {
             EditMeeting objE = new EditMeeting();
             MOMDataManager objDM = new MOMDataManager();
-            DataSet ds = objDM.EditMeeting(Id, CallFor);
+            DataSet ds = objDM.EditMeeting(Id, obj);
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
                 int tblIndex = -1;
@@ -254,6 +255,7 @@ namespace BusinessService.MOM
                         objNotification.Description = Convert.ToString(dr["Description"]);
                         objNotification.RowNum = Convert.ToInt64(dr["ROWNum"]);
                         objNotification.TotalRow = Convert.ToInt64(dr["TotalRow"]);
+                        objNotification.NotificationGroup= Convert.ToString(dr["NotificationGroup"]);
                         i++;
                         NotificationList.Add(objNotification);
                     }
@@ -346,6 +348,18 @@ namespace BusinessService.MOM
                 #endregion
             }
             return objE;
+        }
+        public bool EndMeeting(Int64? Id)
+        {
+            MOMDataManager objDM = new MOMDataManager();
+            bool result = objDM.EndMeeting(Id);
+            return result;
+        }
+        public bool CheckIfOpenMeetingExists(string date)
+        {
+            MOMDataManager objDM = new MOMDataManager();
+            bool result = objDM.CheckIfOpenMeetingExists(date);
+            return result;
         }
     }
 }

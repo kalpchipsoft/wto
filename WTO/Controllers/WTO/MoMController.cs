@@ -23,18 +23,18 @@ namespace WTO.Controllers.WTO
         }
 
         // GET: MoM/Details/5
-        public ActionResult Add(string CallFor, int? CountryId, string NotificationNo, string NotificationId)
+        public ActionResult Add(Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 MomBusinessService obj = new MomBusinessService();
-                return View(obj.GetNotificationList_Mom(CallFor, CountryId, NotificationNo, NotificationId, ""));
+                return View(obj.GetNotificationList_Mom(objS));
             }
             else
                 return RedirectToAction("Index", "Login");
         }
         // POST: MoM/Edit/5
-        public ActionResult Edit(Nullable<Int64> Id, string CallFor)
+        public ActionResult Edit(Nullable<Int64> Id, Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
@@ -43,7 +43,7 @@ namespace WTO.Controllers.WTO
                 if (Id == 0)
                     Id = null;
                 MomBusinessService obj = new MomBusinessService();
-                return View(obj.EditMoM(Id, CallFor));
+                return View(obj.EditMoM(Id, objS));
             }
             else
                 return RedirectToAction("Index", "Login");

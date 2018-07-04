@@ -1523,3 +1523,13 @@ a.fileremove {
         .btn-labeled.right .btn-label {
             right: -12px;
         }
+
+
+.removecrossicon {
+    position: absolute;
+    top: 7px;
+    right: 45px;
+    z-index: 999;
+    font-size: 16px;
+    font-weight: 100;
+}

@@ -85,6 +85,7 @@ namespace BusinessObjects.Notification
     }
     public class NotificationPendingCount_Action
     {
+        public Int32 ActionId { get; set; }
         public string Action { get; set; }
         public Int64 Total { get; set; }
         public Int64 Overdue { get; set; }

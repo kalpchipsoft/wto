@@ -1177,7 +1177,7 @@ function AddTemplatePopup() {
     $('[id$=ddlTemplateFor]').val("");
     $('[id$=txtSubject]').val("");
     CKEDITOR.instances.txtMessage.setData('');
-    $('[id$=ddlTemplateStatus]').val("1");
+    $('[id$=ddlTemplateStatus]').val("true");
     $('[id$=hdnTemplateId]').val('0');
 
     $('.error').removeClass('error');

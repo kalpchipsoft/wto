@@ -9,6 +9,15 @@ using System.Xml.Serialization;
 
 namespace BusinessObjects.MOM
 {
+    public class Search_MoM
+    {
+        public string callFor { get; set; }
+        public Nullable<int> CountryId { get; set; }
+        public string NotificationNumber { get; set; }
+        public string SelectedNotifications { get; set; }
+        public string ExistingNotifications { get; set; }
+        public string SearchText { get; set; }
+    }
     public class Action
     {
         public int ActionId { get; set; }
@@ -26,6 +35,7 @@ namespace BusinessObjects.MOM
     {
         public Int64 NotificationId { get; set; }
         public string MeetingNote { get; set; }
+        public string NotificationGroup { get; set; }
     }
 
     public class MeetingDetail : Meeting
@@ -84,6 +94,7 @@ namespace BusinessObjects.MOM
         public string Description { get; set; }
         public Nullable<Int64> RowNum { get; set; }
         public Nullable<Int64> TotalRow { get; set; }
+        public string NotificationGroup { get; set; }
     }
 
     public class NotificationMOM

@@ -9,17 +9,18 @@ namespace DataServices.WTO
 {
     public class MOMDataManager
     {
-        public DataSet GetNotificationListForMom(string callFor,int? CountryId,string NotificationNo, string NotificationId, string SelectedNotificationId)
+        public DataSet GetNotificationListForMom(Search_MoM obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.GetNotificationListForMom;
-                sqlCommand.Parameters.AddWithValue("@CallFor", callFor);
-                sqlCommand.Parameters.AddWithValue("@CountryId", CountryId);
-                sqlCommand.Parameters.AddWithValue("@NotificationNumber", NotificationNo);
-                sqlCommand.Parameters.AddWithValue("@NotificationId", NotificationId);
-                sqlCommand.Parameters.AddWithValue("@SelectedNotificationId", SelectedNotificationId);
+                sqlCommand.Parameters.AddWithValue("@CallFor", obj.callFor);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@NotificationNumber", obj.NotificationNumber);
+                sqlCommand.Parameters.AddWithValue("@SelectedNotifications", obj.SelectedNotifications);
+                sqlCommand.Parameters.AddWithValue("@ExistingNotifications", obj.ExistingNotifications);
+                sqlCommand.Parameters.AddWithValue("@SearchText", obj.SearchText);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -45,14 +46,15 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public DataSet EditMeeting(Nullable<Int64> Id, string CallFor)
+        public DataSet EditMeeting(Nullable<Int64> Id, Search_MoM obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.EditMeeting;
                 sqlCommand.Parameters.AddWithValue("@MoMId", Id);
-                sqlCommand.Parameters.AddWithValue("@CallFor", CallFor);
+                sqlCommand.Parameters.AddWithValue("@CallFor", obj.callFor);
+                sqlCommand.Parameters.AddWithValue("@SearchText", obj.SearchText);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -90,6 +92,30 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@MoMId", Id);
                 sqlCommand.Parameters.AddWithValue("@MeetingDate", MeetingDate);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public bool EndMeeting(Int64? Id)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.EndMeeting;
+                sqlCommand.Parameters.AddWithValue("@MomId", Id);
+                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = i > 0 ? true : false;
+                return result;
+            }
+        }
+        public bool CheckIfOpenMeetingExists(string date)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.CheckIfOpenMeetingExists;
+                sqlCommand.Parameters.AddWithValue("@date", date);
+                DataTable dt = DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = Convert.ToString(dt.Rows[0]["result"]) == "True" ? true : false;
+                return result;
             }
         }
     }

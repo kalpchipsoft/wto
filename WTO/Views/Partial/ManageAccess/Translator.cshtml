@@ -8,18 +8,18 @@
         <label class="table-heading">Translators (@Model.TotalCount)</label>
         <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddTranslator" data-toggle="modal" onclick="AddTranslatorPopup()">Add Translator</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
-                        <th>S.No</th>
-                        <th>Translator Name</th>
-                        <th>Languages</th>
-                        <th>Email Id</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th></th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Delete</th>
+                        <th class="col-sm-1">S.No</th>
+                        <th class="col-sm-2">Translator Name</th>
+                        <th class="col-sm-2">Languages</th>
+                        <th class="col-sm-2">Email Id</th>
+                        <th class="col-sm-1">Phone</th>
+                        <th class="col-sm-1">Status</th>
+                        <th class="col-sm-1"></th>
+                        <th class="text-center col-sm-1">Edit</th>
+                        <th class="text-center col-sm-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -28,29 +28,29 @@
                         foreach (var item in @Model.TranslatorList)
                         {
                             <tr>
-                                <td>@item.ItemNumber</td>
-                                <td>@item.TranslatorName</td>
-                                <td>@item.Languages</td>
-                                <td>@item.Email</td>
-                                <td>@item.Mobile</td>
+                                <td class="col-sm-1">@item.ItemNumber</td>
+                                <td class="col-sm-2">@item.TranslatorName</td>
+                                <td class="col-sm-2" style="word-break: break-word;">@item.Languages</td>
+                                <td class="col-sm-2">@item.Email</td>
+                                <td class="col-sm-1">@item.Mobile</td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td>Active</td>
+                                    <td class="col-sm-1">Active</td>
                                 }
                                 else
                                 {
-                                    <td>Inactive</td>
+                                    <td class="col-sm-1">Inactive</td>
                                 }
                                 @if (!@item.IsWelcomeMailSent)
                                 {
-                                    <td><a style="cursor:pointer;" onclick="Confirm('Send Mail','Do you want to send welcome mail to @item.TranslatorName ?','Yes', 'No', 'SendWelcomeMail(@item.TranslatorId)');"><img src="~/contents/img/message.png" alt="message" /></a></td>
+                                    <td class="col-sm-1"><a style="cursor:pointer;" onclick="Confirm('Send Mail','Do you want to send welcome mail to @item.TranslatorName ?','Yes', 'No', 'SendWelcomeMail(@item.TranslatorId)');"><img src="~/contents/img/message.png" alt="message" /></a></td>
                                 }
                                 else
                                 {
-                                    <td></td>
+                                    <td class="col-sm-1"></td>
                                 }
-                                <td class="text-center"><a href="#" onclick="EditTranslatorData(@item.TranslatorId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.TranslatorName?','Yes', 'No', 'DeleteTranslator(@item.TranslatorId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" onclick="EditTranslatorData(@item.TranslatorId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.TranslatorName?','Yes', 'No', 'DeleteTranslator(@item.TranslatorId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -158,6 +158,15 @@
         $('#AddTranslator').on('show.bs.modal', function () {
             BindLanguages();
         });
+        
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-sm-1 col-sm-2 table-fixed");
+            $("td").removeClass("col-sm-1 col-sm-2 table-fixed");
+        }
+
     });
 </script>
+
+
 <!-- Add Translator modal popup -->
