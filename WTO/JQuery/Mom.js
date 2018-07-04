@@ -31,14 +31,15 @@
     $('[id$=txtmeetingdate]').change(function () {
         if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
             $.ajax({
-                url: "/api/MoM/CheckIfOpenMeetingExists/" + $('[id$=txtmeetingdate]').val(),
+                url: "/api/MoM/CheckIfOpenMeetingExists?date=" + $.trim($('[id$=txtmeetingdate]').val()),
                 async: false,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
+                    var date = $.trim($('[id$=txtmeetingdate]').val());
                     if (result) {
                         Alert("Alert", "An open meeting on " + date + " already exists. Close previous meeting to schedule a new meeting.<br/>", "Ok");
-                        $('[id$=txtmeetingdate]').val();
+                        $('[id$=txtmeetingdate]').val('');
                     }
                 },
                 failure: function (result) {
@@ -274,7 +275,7 @@ function GetAllNotifications(ctrl) {
 
             var obj = {
                 callFor: _CallFor,
-                NotificationNumber: _NotificationNumber,
+                //NotificationNumber: _NotificationNumber,
                 ExistingNotifications: _ExistingNotifications,
                 SelectedNotifications: _SelectedNotifications
             }
@@ -608,22 +609,23 @@ function CheckList() {
     return false;
 }
 
-function CheckSelectAll() {
-    $('[id$=tblNotificationMoM]').find('[id*=chkNotification]').prop('checked', $('[id$=chkSelectAllNotification]').prop('checked'));
+function CheckSelectAll(ctrl) {
+    $('[id$=tblNotificationMoM]').find('[id^=chkNotification_]').prop('checked', $(ctrl).is(':checked'));
+    $('.chkSelectAllNotification').prop('checked', $(ctrl).is(':checked'));
 }
 
 function CheckHeaderCheckbox() {
     var totalrowcount = 0;
     var checkrowcount = 0;
-    $('[id$=tblNotificationMoM]').find('[id*=chkNotification]').each(function (index, value) {
+    $('[id$=tblNotificationMoM]').find('[id^=chkNotification_]').each(function (index, value) {
         totalrowcount++;
         if ($(value).prop('checked'))
             checkrowcount++;
     })
     if (checkrowcount == totalrowcount)
-        $('[id$=chkSelectAllNotification]').prop('checked', true);
+        $('.chkSelectAllNotification').prop('checked', true);
     else
-        $('[id$=chkSelectAllNotification]').prop('checked', false);
+        $('.chkSelectAllNotification').prop('checked', false);
 }
 
 function GetExistingNotifications() {
@@ -706,13 +708,13 @@ function UpdateMeetingDate() {
 function closeActionMail(ctrl) {
     var callfor = $(ctrl).attr('data-callfor');
     if (callfor == "close") {
-        $('#btncloseModalAction').attr('data-callfor', 'close');
+        $('.closeplanAction').attr('data-callfor', 'close');
         $('#ActionMail').modal('hide');
     }
     else {
         $('#ActionMail').modal('hide');
         BindNotificationActions();
-        $('#btncloseModalAction').attr('data-callfor', 'closeaction');
+        $('.closeplanAction').attr('data-callfor', 'closeaction');
     }
 }
 
@@ -850,7 +852,7 @@ function BindNotificationActions() {
                         if (v.UpdatedOn == "") {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
                                 '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked/>' +
                                 '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
                                 '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
                                 '</span>' +
@@ -860,7 +862,7 @@ function BindNotificationActions() {
                         else {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
                                 '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
+                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked disabled="disabled"/>' +
                                 '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
                                 '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
                                 '</span>' +
@@ -943,6 +945,7 @@ function BindNotificationActions() {
                 changeYear: true,
                 dateFormat: 'dd M yy'
             });
+            HideGlobalLodingPanel();
         }
     });
 }
