@@ -1303,6 +1303,7 @@ span.note {
 .checkbox label input[type="checkbox"],
 .radio label input[type="radio"] {
     display: none;
+    margin-left: -10px;
 }
 
     .checkbox label input[type="checkbox"] + .cr > .cr-icon,

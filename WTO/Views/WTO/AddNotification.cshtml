@@ -9,7 +9,7 @@
 
 <link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-multiselect.js"></script>
-<script src="~/JQuery/AddUpdateNotification.js?v=9"></script>
+<script src="~/JQuery/AddUpdateNotification.js?v=10"></script>
 <!-- body section start -->
 @Html.Hidden("hdnSelectedHSCodes", @Model.HSCodes)
 @Html.Hidden("hdnNotificationId", @Model.NotificationId)
@@ -262,7 +262,7 @@
                                                                                     <tr class='-1'>
                                                                                         <td colspan="2">No HS Code</td>
                                                                                         <td>
-                                                                                            <a id='@Item.HSCode' onclick="DeselectHSCodeNode(this)" class='remove-icon hidden'><span class='glyphicon glyphicon-remove'></span></a>
+                                                                                            <a id='@Item.HSCode' onclick="RemoveHSCodeRow(this)" class='remove-icon hidden'><span class='glyphicon glyphicon-remove'></span></a>
                                                                                         </td>
                                                                                     </tr>
                                                                                 }
@@ -272,7 +272,7 @@
                                                                                         <td>@Item.HSCode</td>
                                                                                         <td>@Item.Text</td>
                                                                                         <td>
-                                                                                            <a id='@Item.HSCode' onclick="DeselectHSCodeNode(this)" class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a>
+                                                                                            <a id='@Item.HSCode' onclick="RemoveHSCodeRow(this)" class='remove-icon'><span class='glyphicon glyphicon-remove'></span></a>
                                                                                         </td>
                                                                                     </tr>
                                                                                 }
