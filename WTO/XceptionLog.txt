@@ -1,1 +1,6 @@
 ﻿
+[04 Jul 2018 15:29:32] - POST, http://localhost:27298/api/MoM/CheckIfOpenMeetingExists?date=25 Jul 2018, , A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.),    at DataServices.DAL.GetDataTable(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 64
+   at DataServices.WTO.MOMDataManager.CheckIfOpenMeetingExists(String date) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\WTO\MOMDataManager.cs:line 116
+   at BusinessService.MOM.MomBusinessService.CheckIfOpenMeetingExists(String date) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\MOM\MomBusinessService.cs:line 361
+   at WTO.Controllers.API.WTO.MoMController.CheckIfOpenMeetingExists(String date) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 65
+   

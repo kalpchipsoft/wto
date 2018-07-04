@@ -27,32 +27,6 @@
         else
             $('[id$=clearSearch]').removeClass('hidden');
     });
-
-    $('[id$=txtmeetingdate]').change(function () {
-        if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
-            $.ajax({
-                url: "/api/MoM/CheckIfOpenMeetingExists?date=" + $.trim($('[id$=txtmeetingdate]').val()),
-                async: false,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    var date = $.trim($('[id$=txtmeetingdate]').val());
-                    if (result) {
-                        Alert("Alert", "An open meeting on " + date + " already exists. Close previous meeting to schedule a new meeting.<br/>", "Ok");
-                        $('[id$=txtmeetingdate]').val('');
-                    }
-                },
-                failure: function (result) {
-                    Alert("Alert", "Something went wrong.<br/>", "Ok");
-                },
-                error: function (result) {
-                    Alert("Alert", "Something went wrong.<br/>", "Ok");
-                }
-            });
-            return false;
-        }
-    });
-
 });
 
 //***********************Add Meeting Start**********************************
@@ -958,7 +932,7 @@ function EditNotificationActions(ctrl) {
 }
 
 function EndMeeting() {
-    Confirm('End meeting', 'Do you want to end current meeting and retain notifications for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
+    Confirm('End meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
 }
 
 function SaveEndMeeting() {
@@ -971,7 +945,7 @@ function SaveEndMeeting() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result) {
-                Alert("Alert", "Meeting has been successfully ended.<br/>", "Ok");
+                Alert("Alert", "Meeting has been successfully closed.<br/>", "Ok");
                 location.href = window.location.origin + "/MoM/Add/0";
             }
             else
@@ -985,4 +959,28 @@ function SaveEndMeeting() {
         }
     });
     return false;
+}
+
+function IsMeetingExists(MoMId) {
+    if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
+        $.ajax({
+            url: "/api/MoM/ValidateMeetingdate?date=" + $.trim($('[id$=txtmeetingdate]').val()) + "&MoMId="+MoMId,
+            async: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != "") {
+                    Alert("Alert", result + "<br/>", "Ok");
+                    $('[id$=txtmeetingdate]').val('');
+                }
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            }
+        });
+        return false;
+    }
 }
