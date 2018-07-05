@@ -560,7 +560,7 @@
                     @if ((Model.StakholderMailFlag > 0 && Model.TranslationFlag > 1 && Model.RegulationFlag > 1) || Model.MeetingFlag > 0)
                     {
                         <div class="col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow top-offset-20 padding-top-bottom" style="border-radius:10px;">
-                            <div class="row top-offset-10">
+                            <div class="row top-offset-10 @((Model.MeetingFlag > 0)?"":"hidden")">
                                 <div class="col-xs-12 col-sm-4 col-md-2">
                                     <p class="wto-label-bold"><a onclick="OpenAddNote()">Note</a></p>
                                 </div>
