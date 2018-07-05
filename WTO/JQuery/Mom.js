@@ -485,8 +485,10 @@ function SearchMeetingNotifications(ctrl) {
                     html += '</p>' +
                         '<p>';
 
-                    if (v.MeetingNote != "")
-                        html += '<b><a onclick="OpenAddNote(' + v.NotificationId + ')">Note</a></b><span id="MeetingNoteId">: ' + v.MeetingNote + '</span>';
+                    if (v.MeetingNote != "") {
+                        var _MeetingNote = v.MeetingNote.length > 40 ? v.MeetingNote.substring(0, 39) + "...." : v.MeetingNote;
+                        html += '<b><a onclick="OpenAddNote(' + v.NotificationId + ')">Note</a></b><span id="MeetingNoteId">: ' + _MeetingNote + '</span>';
+                    }
 
                     html += '<input id="hdnNotificationId" name="hdnNotificationId" type="hidden" value="' + v.NotificationId + '">' +
                         '</p>' +
