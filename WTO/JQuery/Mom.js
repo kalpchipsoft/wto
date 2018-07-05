@@ -485,10 +485,10 @@ function SearchMeetingNotifications(ctrl) {
                     html += '</p>' +
                         '<p>';
 
-                    if (v.NotificationGroup != "")
-                        html += '<b><a onclick="OpenAddNote(35)">Note</a></b><span id="MeetingNoteId">: Test Meeting</span>';
+                    if (v.MeetingNote != "")
+                        html += '<b><a onclick="OpenAddNote(' + v.NotificationId + ')">Note</a></b><span id="MeetingNoteId">: ' + v.MeetingNote + '</span>';
 
-                    html += '<input id="hdnNotificationId" name="hdnNotificationId" type="hidden" value="35">' +
+                    html += '<input id="hdnNotificationId" name="hdnNotificationId" type="hidden" value="' + v.NotificationId + '">' +
                         '</p>' +
                         '</td >' +
                         '<td class="text-center width-10">Brazil</td>';
@@ -502,9 +502,8 @@ function SearchMeetingNotifications(ctrl) {
                             });
 
                             if (Action.length > 0) {
-                                debugger;
                                 var _Action = Action[0];
-                                if (_Action != null && (_Action.ActionId > 4 || (_Action.MailId > 0 && _Action < 4))) {
+                                if (_Action != null && (_Action.ActionId > 4 || (_Action.MailId > 0 && _Action.ActionId < 4))) {
                                     html += '<td class="text-center width-10">' +
                                         '<span class="glyphicon glyphicon-ok dark-green-color font-20" id="span_' + v.ItemNumber + '"></span>' +
                                         '</td>';
@@ -525,7 +524,7 @@ function SearchMeetingNotifications(ctrl) {
                         });
                     }
                     if (v.IsUpdate)
-                        html += '<td class="text-center width-5"><a data-searchfor="35" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>';
+                        html += '<td class="text-center width-5"><a data-searchfor="' + v.NotificationId+'" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>';
                     else
                         html += '<td class="width-10"></td>';
 
@@ -800,6 +799,7 @@ function GetMeetingNote(NotificationId) {
 }
 
 function BindNotificationActions() {
+    debugger;
     var takeaction = 0;
     $.ajax({
         url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val(),
@@ -925,6 +925,7 @@ function BindNotificationActions() {
 }
 
 function EditNotificationActions(ctrl) {
+    debugger;
     ShowGlobalLodingPanel();
     if (typeof ctrl != "undefined")
         $('#hdnNotificationId').val($(ctrl).attr('data-searchfor'));
