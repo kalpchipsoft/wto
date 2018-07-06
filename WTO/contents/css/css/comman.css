@@ -662,9 +662,9 @@ a, a:hover, a:focus, a:active {
         margin-top: 6px;
     }
 
-    .list {
+    /*.list {
         padding-left: 80px;
-    }
+    }*/
 
     .MenuHeading {
         color: #180464 !important;
@@ -679,9 +679,9 @@ a, a:hover, a:focus, a:active {
 }
 
 @media screen and (min-width : 0px) and (max-width : 320px) {
-    .list {
+    /*.list {
         padding-left: 50px;
-    }
+    }*/
 }
 
 @media screen and (min-width : 414px) and (max-width : 736px) {

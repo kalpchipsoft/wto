@@ -99,13 +99,38 @@ namespace WTO.Controllers
             DashboardSearch obj1 = new DashboardSearch();
             return View("~/Views/Partial/Dashboard/DashboardHSCodeByCountry.cshtml", obj.GetHsCodeGraphDataCountryWise(obj1));
         }
-        public ActionResult GetNotificationGraphData(DashboardSearch obj1) 
+        public ActionResult GetNotificationGraphData(DashboardSearch obj1)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 DashboardBusinessService obj = new DashboardBusinessService();
-                obj1.DateFrom = System.DateTime.Now.ToString("dd MMM yyyy");
+                DateTime d = DateTime.Now;
+                d = d.AddMonths(-1);
+                obj1.DateFrom = d.ToString("dd MMM yyyy");
                 return View("~/Views/Partial/Dashboard/DashboardNotificationHistory.cshtml", obj.GetNotificationGraphDataMonthly(obj1));
+            }
+            else
+                return RedirectToAction("Index", "Login");
+        }
+
+        public ActionResult NotificationStakeholderList()
+        {
+            return View();
+        }
+
+        public ActionResult NotifyingMemberList(Search_NotificationCountries obj)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                if (obj.PageIndex == 0)
+                    obj.PageIndex = 1;
+                if (obj.PageSize == 0)
+                    obj.PageSize = 10;
+                ViewBag.FromDate = obj.FromDate;
+                ViewBag.ToDate = obj.ToDate;
+                ViewBag.Hscode = obj.Hscode == "ALL" ? "" : obj.Hscode;
+                NotificationListBusinessService objNBS = new NotificationListBusinessService();
+                return View(objNBS.GetNotificationCountries(obj));
             }
             else
                 return RedirectToAction("Index", "Login");

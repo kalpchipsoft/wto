@@ -386,7 +386,6 @@ namespace BusinessObjects.Notification
         public int TranslationFlag { get; set; }
         public int StakholderMailFlag { get; set; }
         public int MeetingFlag { get; set; }
-        public List<RelatedMaterial> RelatedMaterialList { get; set; }
     }
 
     public class ActionAttachment

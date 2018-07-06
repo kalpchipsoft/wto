@@ -71,7 +71,6 @@
     <Compile Include="Notification\Dashboard.cs" />
     <Compile Include="Notification\Document_Notification.cs" />
     <Compile Include="Notification\NotificationList.cs" />
-    <Compile Include="Notification\RelatedMaterial_Notification.cs" />
     <Compile Include="Notification\Stakeholder_Notification.cs" />
     <Compile Include="Notification\Summary_Notification.cs" />
     <Compile Include="Notification\Template_Notification.cs" />

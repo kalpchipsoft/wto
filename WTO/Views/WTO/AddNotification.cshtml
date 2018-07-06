@@ -9,7 +9,7 @@
 
 <link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-multiselect.js"></script>
-<script src="~/JQuery/AddUpdateNotification.js?v=10"></script>
+<script src="~/JQuery/AddUpdateNotification.js?v=11"></script>
 <!-- body section start -->
 @Html.Hidden("hdnSelectedHSCodes", @Model.HSCodes)
 @Html.Hidden("hdnNotificationId", @Model.NotificationId)
@@ -302,7 +302,7 @@
                                     @if (@Model.NotificationId > 0)
                                     {
 
-                                    <!-- Second Accordian part start -->
+                                        <!-- Second Accordian part start -->
                                         <div class='panel panel-default Accordian-panel'>
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title Accordian-panel-title">
@@ -526,7 +526,7 @@
                                             </div>
                                         </div>
 
-                                    <!-- third Accordian part start -->
+                                        <!-- third Accordian part start -->
                                         <div class='panel panel-default Accordian-panel '>
                                             <div class="panel-heading" role="tab" id="headingThree">
                                                 <h4 class="panel-title Accordian-panel-title">
@@ -570,21 +570,14 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                                 <!--fifth Accordian-->
-
-                                                                <div class='panel panel-default Accordian-panel' id="divNotificationRelatedMatrial">
-                                                                    @{ Html.RenderAction("NotificationRelatedMaterials", "AddNotification", new { Id = @Model.NotificationId }); }
-                                                                </div>
-
-                                    <!-- Fourth Accordian part start -->
-                                                                        if ((Model.StakholderMailFlag > 0 && Model.TranslationFlag > 1 && Model.RegulationFlag > 1) || Model.MeetingFlag > 0)
-                                                                        {
-                                                                            <div class='panel panel-default Accordian-panel' id="divNotificationActions">
-                                                                                @{ Html.RenderAction("GetNotificationActions", "AddNotification", new { Id = @Model.NotificationId }); }
-                                                                            </div>
-                                                                                        }
-                                                                                    }
+                                        <!-- Fourth Accordian part start -->
+                                        if ((Model.StakholderMailFlag > 0 && Model.TranslationFlag > 1 && Model.RegulationFlag > 1) || Model.MeetingFlag > 0)
+                                        {
+                                            <div class='panel panel-default Accordian-panel' id="divNotificationActions">
+                                                @{ Html.RenderAction("GetNotificationActions", "AddNotification", new { Id = @Model.NotificationId }); }
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1257,12 +1250,12 @@
         var config = {
             // Referencing the new plugin
             toolbar: [
-                    { name: 'clipboard', items: ['Undo', 'Redo'] },
-                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
-                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                    { name: 'links', items: ['Link', 'Unlink'] },
-                    { name: 'insert', items: ['Table'] },
-                    { name: 'styles', items: ['Format'] },
+                { name: 'clipboard', items: ['Undo', 'Redo'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links', items: ['Link', 'Unlink'] },
+                { name: 'insert', items: ['Table'] },
+                { name: 'styles', items: ['Format'] },
             ],
         };
         config.extraPlugins = 'autogrow';
