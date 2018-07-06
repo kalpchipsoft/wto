@@ -65,10 +65,6 @@
         //Dates Calculations
         public const string Notification_getCalculatedDate = "proc_CalculateNotificationDates";
         public const string GetMeetingNote = "proc_GetMeetingNote";
-
-        //Notification related materials
-        public const string InsertNotificationRelatedMaterial = "proc_InsertNotificationRelatedMaterial";
-        public const string GetNotificationRelatedMaterials = "proc_GetNotificationRelatedMaterials";
         #endregion
 
         #region "Notification List"
@@ -163,6 +159,10 @@
         public const string GetLanguageDetails = "proc_GetLanguages";
         public const string DeleteLanguage = "proc_DeleteLanguage";
         public const string DuplicateLanguage = "proc_CheckDuplicateLanguage";
+        #endregion
+
+        #region "Notification Country List"
+        public const string GetCountriesNotificationList = "Proc_GetCountriesNotificationCount";
         #endregion
     }
 }

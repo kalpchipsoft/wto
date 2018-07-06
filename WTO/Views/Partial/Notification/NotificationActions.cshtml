@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-<script src="~/JQuery/Notification_PartialPages.js?v=5"></script>
+<script src="~/JQuery/Notification_PartialPages.js?v=6"></script>
 
 <div class="panel-heading" role="tab" id="headingfive">
     <h4 class="panel-title Accordian-panel-title">
@@ -200,10 +200,75 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!--start section For Print Div-->
+                            <div class="col-xs-12 col-sm-12 col-md-12" id="prntDiv" style="display:none;">
+                                <div class="notificationnumber padding-bottom-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <h4 class="selecthrheading2"><span class="ActionName"></span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="top-offset-10">
+                                    <div class="row top-offset-10">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <table id="tblViewAction" class="table-responsive">
+                                                <tr>
+                                                    <td><b>Notification Number</b></td>
+                                                    <td>:</td>
+                                                    <td>@Model.NotificationNumber</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Title</b></td>
+                                                    <td>:</td>
+                                                    <td>@Model.NotificationTitle</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Meeting Date</b></td>
+                                                    <td>:</td>
+                                                    <td><span id="txtMeetingDate1">@Model.MeetingDate</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Action Due on</b></td>
+                                                    <td>:</td>
+                                                    <td><span id="lblActionDueOn1"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Action taken on</b></td>
+                                                    <td>:</td>
+                                                    <td><span id="lblActionTakenOn1"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Recipients</b></td>
+                                                    <td>:</td>
+                                                    <td><span class="WordWrapText" id="lblRecipients1"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Mail Subject</b></td>
+                                                    <td>:</td>
+                                                    <td><span class="WordWrapText" id="lblMailSubject1"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Message</b></td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        <span id="lblMailMessage1"></span>
+                                                        @*<span id="lblMailAttachments1"></span>*@
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End section For Print Div-->
+
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <a class="btn btn-red btn-padding pull-right left-offset-10 " data-dismiss="modal">Close</a>
+                                        <a class="btn btn-red btn-padding pull-right left-offset-10" onclick="return CloseViewAction();" id="lnkClose">Close</a>
+                                        <a class="btn btn-dark-green pull-right btn-padding" onclick="return printDiv('prntDiv');" id="btnPrint">Print</a>
                                     </div>
                                 </div>
                             </div>
@@ -215,6 +280,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <!-- edit meeting note modal popup -->
 <div class="modal fade selecthrmodal" id="AddNote" role="dialog" data-backdrop="static" data-keyboard="false">

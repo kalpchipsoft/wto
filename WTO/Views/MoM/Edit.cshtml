@@ -31,7 +31,22 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-10">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                                <h4 class="black-color" style="margin-top:0px;"><img src="~/contents/img/planameeting.png" alt="" style="margin-right:15px;"><b>@(ViewBag.Id > 0 ? "Plan action" : "Current meeting")</b></h4>
+                                <h4 class="black-color" style="margin-top:0px;">
+                                    @if (ViewBag.Id > 0)
+                                    {
+                                        <img src="~/contents/img/planameeting.png" alt="" style="margin-right:15px;"><b>
+                                            Plan action
+                                        </b>
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/contents/img/CurrentMeeting.png" alt="" style="margin-right:15px;"><b>
+                                            Current meeting
+                                        </b>
+                                    }
+                                </h4>
+                                </h4>
                             </div>
                         </div>
                     </div>

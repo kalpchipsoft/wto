@@ -261,5 +261,44 @@ namespace BusinessService.Notification
             }
             return dt;
         }
+
+        #region "Notification Country List"
+        public NotificationCountries GetNotificationCountries(Search_NotificationCountries obj)
+        {
+            NotificationCountries objNotificationCountries = new NotificationCountries();
+            NotificationListDataManager objDM = new NotificationListDataManager();
+            DataSet ds = objDM.CountriesNotifications(obj);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndx = -1;
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<BusinessObjects.Notification.CountriesNotificationList> ItemsList = new List<BusinessObjects.Notification.CountriesNotificationList>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        CountriesNotificationList objItems = new CountriesNotificationList();
+                        objItems.CountryId = Convert.ToString(dr["CountryId"]);
+                        objItems.NotificationCount = Convert.ToString(dr["NotificationCount"]);
+                        objItems.CountryCode = Convert.ToString(dr["CountryCode"]);
+                        objItems.CountryName = Convert.ToString(dr["Country"]);
+                        ItemsList.Add(objItems);
+                    }
+                    objNotificationCountries.objNotificationCountries = ItemsList;
+                }
+
+                #region "Paging"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    objNotificationCountries.TotalCount = Convert.ToString(ds.Tables[tblIndx].Rows[0]["TotalCount"]);
+                    objNotificationCountries.Pager = new Pager(Convert.ToInt32(objNotificationCountries.TotalCount), Convert.ToInt16(obj.PageIndex));
+                }
+                #endregion
+            }
+            return objNotificationCountries;
+        }
+        #endregion
+
     }
 }

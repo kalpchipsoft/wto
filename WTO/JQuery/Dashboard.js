@@ -43,10 +43,10 @@ function SetCallFor(CallFor) {
 function BindHsCode(startdate, enddate, HSCodes) {
     var month = monthNames[startdate.getMonth()];
     var year = startdate.getFullYear();
-    DateFrom = startdate.getDate() + ' ' + month + ' ' + year;
+    DateFrom = (startdate.getDate() > 10 ? startdate.getDate() : '0'+startdate.getDate()) + ' ' + month + ' ' + year;
     var month = monthNames[enddate.getMonth()];
     var year = enddate.getFullYear();
-    DateTo = enddate.getDate() + ' ' + month + ' ' + year;
+    DateTo =(enddate.getDate() > 10 ? enddate.getDate() : '0'+enddate.getDate())+ ' ' + month + ' ' + year;
     var divHSCode = '';
     $.ajax({
         url: "/api/Dashboard/WTOGetHSCodeData",
@@ -206,7 +206,7 @@ function BindPieChart(HSCode, DateFrom, DateTo) {
                 }
             })
             hscodelegend + ' </div></div>';
-            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp; ' + result.CountryCount + ' &nbsp;&nbsp;&nbsp; Countries  </p>';
+            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp;<a href="/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&FromDate=' + DateFrom + '&ToDate='+DateTo+'"> ' + result.CountryCount + '</a> &nbsp;&nbsp;&nbsp; Countries  </p>';
             $('.hscodecount').html(divhscode);
             $('.hscodelegend').html(hscodelegend);
 
@@ -355,6 +355,7 @@ function GetNotificationGraphDataWeekly()
     $('#btnWeekly').addClass('btngroupactive');
     $('.rightArrow').addClass('hidden');
     var date = new Date();
+    date = new Date(date.getFullYear(), date.getMonth(), 0);
     var month = monthNames[date.getMonth()];
     var year = date.getFullYear();
     DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
@@ -386,7 +387,7 @@ function BindGraphPrevious()
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive'))
     {
         var date = new Date();
-        var month = monthNames[date.getMonth()];
+        var month = monthNames[date.getMonth()-1];
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
@@ -397,7 +398,7 @@ function BindGraphPrevious()
         var date = new Date(myVariable);
         date = new Date(date.setMonth(date.getMonth() - 1));
         var month = monthNames[date.getMonth()];
-        var year = date.getFullYear();
+        var year = date.getFullYear();  
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
     }
@@ -416,18 +417,19 @@ function BindGraphPrevious()
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraph(DateChartFrom);
+        $('.rightArrow').removeClass('hidden');
     }
-    $('.rightArrow').removeClass('hidden');
+    DisplayPrevNext();
 }
 function BindGraphNext()
 {
-
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var date = new Date();
         var month = monthNames[date.getMonth()];
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
+        DisplayPrevNext();
     }
     if (DateChartFrom != '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var myVariable = DateChartFrom;
@@ -437,6 +439,7 @@ function BindGraphNext()
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
+        DisplayPrevNext();
     }
     if (DateChartFrom == '' && $('#btnWeekly').hasClass('btngroupactive')) {
         var date = new Date();
@@ -446,15 +449,32 @@ function BindGraphNext()
         BindNotificationGraph(DateChartFrom);
     }
     if (DateChartFrom != '' && $('#btnWeekly').hasClass('btngroupactive')) {
+        debugger
         var myVariable = DateChartFrom;
         var date = new Date(myVariable);
+        var currentdate = new Date();
         date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
         var month = monthNames[date.getMonth()];
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraph(DateChartFrom);
+
+        var lastdate = new Date();
+        lastdate = new Date(lastdate.getFullYear(), lastdate.getMonth(), 0);
+        var month = monthNames[lastdate.getMonth()];
+        var year = lastdate.getFullYear();
+        lastdate = lastdate.getDate() + ' ' + month + ' ' + year;
+        if (DateChartFrom == lastdate)
+        {
+            $('.rightArrow').addClass('hidden');
+        }
+        else
+        {
+            $('.rightArrow').removeClass('hidden');
+        }
     }
-    $('.rightArrow').removeClass('hidden');
+ 
+ //   $('.rightArrow').removeClass('hidden');
 }
 function GetNotificationGraphDataMonthly() {
     $('#btnMonthly').removeClass('btngroupactive');
@@ -488,6 +508,15 @@ function BindNotificationGraphMonthly(DateFr) {
 }
 function DisplayPrevNext()
 {
-   // $('.leftArrow').addClass('hidden');
-   
+    var datecurrent = new Date();
+    datecurrent.setMonth(datecurrent.getMonth() - 1);
+    var month = monthNames[datecurrent.getMonth()];
+    var year = datecurrent.getFullYear();
+    datecurrent = datecurrent.getDate() + ' ' + month + ' ' + year;
+    var datechartfrom = new Date(DateChartFrom);
+    var month = monthNames[datechartfrom.getMonth()];
+    var year = datechartfrom.getFullYear();
+    datechartfrom = datechartfrom.getDate() + ' ' + month + ' ' + year;
+    if (datecurrent == datechartfrom) { $('.rightArrow').addClass('hidden'); }
+    else { $('.rightArrow').removeClass('hidden'); }
 }
