@@ -83,4 +83,28 @@ namespace BusinessObjects.Notification
         public List<NotificationProcessDot> NotificationProcessDots { get; set; }
         public List<NotificationActionDot> NotificationActionDots { get; set; }
     }
+
+    public class Search_NotificationCountries
+    {
+        public long PageIndex { get; set; }
+        public long PageSize { get; set; }
+        public string Hscode { get; set; }
+        public string CountryName { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+
+    }
+
+    public class NotificationCountries : PagerTotalCount
+    {
+        public List<CountriesNotificationList> objNotificationCountries;
+    }
+    public class CountriesNotificationList
+    {
+        public string CountryCode { get; set; }
+        public string CountryName { get; set; }
+        public string NotificationCount { get; set; }
+        public string CountryId { get; set; }
+
+    }
 }

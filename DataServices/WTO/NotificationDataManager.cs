@@ -355,40 +355,6 @@ namespace DataServices.WTO
         }
         #endregion
 
-        #region "Notification related materials"
-        public DataTable InsertNotificationRelatedMaterial(Int64 UserId, AddRelatedMaterial obj)
-        {
-            using (SqlCommand sqlCommand = new SqlCommand())
-            {
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.InsertNotificationRelatedMaterial;
-                sqlCommand.Parameters.AddWithValue("@UserId", UserId);
-                sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
-                sqlCommand.Parameters.AddWithValue("@MaterialType", obj.MaterialType);
-                sqlCommand.Parameters.AddWithValue("@MaterialNumber", obj.MaterialNumber);
-                sqlCommand.Parameters.AddWithValue("@MaterialDescription", obj.MaterialDescription);
-                sqlCommand.Parameters.AddWithValue("@DateOfMaterial", obj.DateOfMaterial);
-                if (obj.Attachment != null)
-                {
-                    sqlCommand.Parameters.AddWithValue("@Attachment", obj.Attachment.FileName);
-                    sqlCommand.Parameters.AddWithValue("@AttachmentName", obj.Attachment.DisplayName);
-                }
-                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
-            }
-        }
-
-        public DataSet GetNotificationRelatedMaterial(Int64 NotificationId)
-        {
-            using (SqlCommand sqlCommand = new SqlCommand())
-            {
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.GetNotificationRelatedMaterials;
-                sqlCommand.Parameters.AddWithValue("@NotificationId", NotificationId);
-                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
-            }
-        }
-        #endregion
-
         #region "Notification Mail"
         public DataSet MailSMSTemplate(long Id, Notification_Template_Search obj)
         {

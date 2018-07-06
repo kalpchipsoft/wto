@@ -73,5 +73,25 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
+
+        #region "Notification Country List"
+        public DataSet CountriesNotifications(Search_NotificationCountries obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetCountriesNotificationList;
+                sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
+                sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
+                sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryName);
+                sqlCommand.Parameters.AddWithValue("@FromDate", obj.FromDate);
+                sqlCommand.Parameters.AddWithValue("@ToDate", obj.ToDate);
+                sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+
+        #endregion
+
     }
 }

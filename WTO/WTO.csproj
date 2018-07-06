@@ -713,13 +713,14 @@
     <Content Include="Views\Partial\Notification\NotificationNote.cshtml" />
     <Content Include="Views\Partial\Notification\NotificationPlanTakeAction.cshtml" />
     <Content Include="Views\Partial\ManageAccess\Language.cshtml" />
-    <Content Include="Views\Partial\Notification\NotificationRelatedMaterial.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardAction.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardHSCode.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardHSCodeByCountry.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardProcessingStatus.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardRequestResponse.cshtml" />
     <Content Include="Views\Partial\Dashboard\DashboardNotificationHistory.cshtml" />
+    <Content Include="Views\WTO\NotifyingMemberList.cshtml" />
+    <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
