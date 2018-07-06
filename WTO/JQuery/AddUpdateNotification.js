@@ -105,44 +105,44 @@ $(document).ready(function () {
         var NotificationNo = $('#NotificationNumberId').val().trim();
         if (NotificationNo.length > 0) {
             var Notifi_parts = NotificationNo.split('/');
-            if (!(Notifi_parts.length > 3 && Notifi_parts.length <= 5)) {
-                Alert('Alert', 'Please enter valid notification number.<br/>', 'Ok');
-                ClearNotificationForm();
-            }
-            else {
-                $.ajax({
-                    url: "/api/AddUpdateNotification/ValidateNotification",
-                    async: false,
-                    type: "POST",
-                    data: JSON.stringify({
-                        NotificationId: $('#hdnNotificationId').val(),
-                        NotificationNumber: NotificationNo
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        if (result.IsExists) {
-                            Alert("Alert", $.trim($('#NotificationNumberId').val()) + " already exists.<br/>", "Ok");
-                            ClearNotificationForm();
-                            $('#NotificationFile').val('');
-                            $('#NotificationFileName').text('No File Choosen');
+            //if (!(Notifi_parts.length > 3 && Notifi_parts.length <= 5)) {
+            //    Alert('Alert', 'Please enter valid notification number.<br/>', 'Ok');
+            //    ClearNotificationForm();
+            //}
+            //else {
+            $.ajax({
+                url: "/api/AddUpdateNotification/ValidateNotification",
+                async: false,
+                type: "POST",
+                data: JSON.stringify({
+                    NotificationId: $('#hdnNotificationId').val(),
+                    NotificationNumber: NotificationNo
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.IsExists) {
+                        Alert("Alert", $.trim($('#NotificationNumberId').val()) + " already exists.<br/>", "Ok");
+                        ClearNotificationForm();
+                        $('#NotificationFile').val('');
+                        $('#NotificationFileName').text('No File Choosen');
+                    }
+                    else {
+                        if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1) {
+                            Alert("Alert", "No country found in our masters w.r.t. notification country code.", "Ok");
+                            $('#NotifyingCountryId').text('');
+                            $('#NotifyingCountryId').attr('data-SearchFor', 0);
+                            $('#NotificationNumberId').val('');
                         }
                         else {
-                            if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1) {
-                                Alert("Alert", "No country found in our masters w.r.t. notification country code.", "Ok");
-                                $('#NotifyingCountryId').text('');
-                                $('#NotifyingCountryId').attr('data-SearchFor', 0);
-                                $('#NotificationNumberId').val('');
-                            }
-                            else {
-                                $('#NotifyingCountryId').text(result.Country + '(' + $.trim(result.CountryCode) + ')');
-                                $('#NotifyingCountryId').attr('data-SearchFor', result.CountryId);
-                                if ($.trim($('#EnquiryPointId').val()) == "")
-                                    $('#EnquiryPointId').val(result.EnquiryDeskEmail);
-                            }
+                            $('#NotifyingCountryId').text(result.Country + '(' + $.trim(result.CountryCode) + ')');
+                            $('#NotifyingCountryId').attr('data-SearchFor', result.CountryId);
+                            if ($.trim($('#EnquiryPointId').val()) == "")
+                                $('#EnquiryPointId').val(result.EnquiryDeskEmail);
                         }
                     }
-                });
-            }
+                }
+            });
+            //}
         }
     });
 

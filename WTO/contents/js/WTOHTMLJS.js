@@ -5,6 +5,7 @@ $(document).ready(function () {
         changeMonth: true,
         changeYear: true
     });
+
     // <!-- js tree js -->
     $('#html').jstree({
         "checkbox": {
@@ -25,6 +26,7 @@ $(document).ready(function () {
     });
 
     $(".date-picker").attr("readonly", "readonly");
+
     $(".date-picker").css("background-color", "#FFF");
 
     // <!-- datepicker js end-->
@@ -103,7 +105,7 @@ $(document).ready(function () {
         $("#toggleOpenClose").removeClass("is-closed");
         $('#wrapper').toggleClass('toggled');
         var trigger = $('.hamburger'),
-          isClosed = false;
+            isClosed = false;
 
         function buttonSwitch() {
             if (isClosed === true) {
@@ -131,7 +133,7 @@ $(document).ready(function () {
         $("#toggleOpenClose").addClass("is-closed");
 
         var trigger = $('.hamburger'),
-          isClosed = true;
+            isClosed = true;
 
         function buttonSwitch() {
             if (isClosed === true) {
@@ -155,6 +157,31 @@ $(document).ready(function () {
         });
     }
     // <!-- hamburger js -->
+
+    if ($(window).width() < 700) {
+        if (window.location.href.match(/([^\/]*)\/*$/)[1] == "WTODashboard") {
+            $("#toggleOpenClose").addClass("is-closed");
+            $("#toggleOpenClose").removeClass("is-open");
+            $('#wrapper').removeClass('toggled');
+            var trigger = $('.hamburger'),
+                isOpen = true;
+
+            function buttonSwitch() {
+                if (isOpen === true) {
+                    trigger.removeClass('is-closed');
+                    trigger.addClass('is-open');
+                    isOpen = false;
+                } else {
+                    trigger.removeClass('is-open');
+                    trigger.addClass('is-closed');
+                    isOpen = true;
+                }
+            }
+            trigger.click(function () {
+                buttonSwitch();
+            });
+        }
+    }
 
     // <!-- image swaping -->
 
@@ -289,9 +316,9 @@ $(document).ready(function () {
 
 function toggleIcon(e) {
     $(e.target)
-		.prev('.panel-heading')
-		.find(".more-less")
-		.toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+        .prev('.panel-heading')
+        .find(".more-less")
+        .toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
 }
 
 $(function () {

@@ -96,16 +96,5 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
-
-        public ActionResult NotificationRelatedMaterials(Int64 Id)
-        {
-            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
-            {
-                NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationRelatedMaterial.cshtml", obj.GetNotificationRelatedMaterial(Id));
-            }
-            else
-                return RedirectToAction("Index", "Login");
-        }
     }
 }

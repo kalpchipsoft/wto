@@ -523,34 +523,6 @@ namespace BusinessService.Notification
                     objViewDetails.ActionAttachment = objActionAttachmentList;
                 }
                 #endregion
-
-                #region "Notification related materials"
-                tblIndx++;
-                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
-                {
-                    List<RelatedMaterial> RelatedMaterialList = new List<RelatedMaterial>();
-                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
-                    {
-                        RelatedMaterial objRelatedMaterial = new RelatedMaterial();
-                        objRelatedMaterial.MaterialId = Convert.ToInt64(dr["MaterialId"]);
-                        objRelatedMaterial.NotificationId = Convert.ToInt64(dr["NotificationId"]);
-                        objRelatedMaterial.MaterialType = Convert.ToString(dr["MaterialType"]);
-                        objRelatedMaterial.MaterialNumber = Convert.ToString(dr["MaterialNumber"]);
-                        objRelatedMaterial.MaterialDescription = Convert.ToString(dr["MaterialDescription"]);
-                        objRelatedMaterial.DateOfMaterial = Convert.ToString(dr["DateOfMaterial"]);
-                        EditAttachment objE = new EditAttachment();
-                        if (Convert.ToString(dr["Attachment"]) != "")
-                        {
-                            objE.DisplayName = Convert.ToString(dr["AttachmentName"]);
-                            objE.FileName = Convert.ToString(dr["Attachment"]);
-                            objE.Path = Convert.ToString(dr["Path"]);
-                        }
-                        objRelatedMaterial.Attachment = objE;
-                        RelatedMaterialList.Add(objRelatedMaterial);
-                    }
-                    objViewDetails.RelatedMaterialList = RelatedMaterialList;
-                }
-                #endregion
             }
             return objViewDetails;
         }
@@ -3637,59 +3609,6 @@ namespace BusinessService.Notification
             return objNA;
         }
 
-        #endregion
-
-        #region "Notification related materials"
-        public AddRelatedMaterial_Output InsertNotificationRelatedMaterial(Int64 UserId, AddRelatedMaterial obj)
-        {
-            AddRelatedMaterial_Output objO = new AddRelatedMaterial_Output();
-            NotificationDataManager objDM = new NotificationDataManager();
-            DataTable dt = objDM.InsertNotificationRelatedMaterial(UserId, obj);
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                objO.Message = Convert.ToString(dt.Rows[0]["Message"]);
-                objO.MaterialId = Convert.ToInt64(dt.Rows[0]["MaterialId"]);
-            }
-            return objO;
-        }
-
-        public List<RelatedMaterial> GetNotificationRelatedMaterial(Int64 NotificationId)
-        {
-            List<RelatedMaterial> RelatedMaterialList = new List<RelatedMaterial>();
-            NotificationDataManager objDM = new NotificationDataManager();
-            DataSet ds = objDM.GetNotificationRelatedMaterial(NotificationId);
-            if (ds != null)
-            {
-                int tblIndex = -1;
-
-                tblIndex++;
-                if (ds.Tables[tblIndex] != null && ds.Tables[tblIndex].Rows.Count > 0)
-                {
-                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
-                    {
-                        RelatedMaterial objRM = new RelatedMaterial();
-                        objRM.MaterialId = Convert.ToInt64(dr["MaterialId"]);
-                        objRM.NotificationId = Convert.ToInt64(dr["NotificationId"]);
-
-                        objRM.MaterialType = Convert.ToString(dr["MaterialType"]);
-                        objRM.MaterialNumber = Convert.ToString(dr["MaterialNumber"]);
-                        objRM.MaterialDescription = Convert.ToString(dr["MaterialDescription"]);
-                        objRM.DateOfMaterial = Convert.ToString(dr["DateOfMaterial"]);
-
-                        if (Convert.ToString(dr["AttachmentName"]) != "")
-                        {
-                            EditAttachment objA = new EditAttachment();
-                            objA.FileName = Convert.ToString(dr["AttachmentName"]);
-                            objA.Path = "/Attachments/MaterialAttachments/" + Convert.ToInt64(dr["MaterialId"]) + "_" + Convert.ToString(dr["Attachment"]);
-                            objRM.Attachment = objA;
-                        }
-
-                        RelatedMaterialList.Add(objRM);
-                    }
-                }
-            }
-            return RelatedMaterialList;
-        }
         #endregion
 
         #region "Notification Mail"

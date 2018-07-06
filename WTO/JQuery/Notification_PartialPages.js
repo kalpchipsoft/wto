@@ -352,6 +352,8 @@ function BindInternalStakeholders() {
 
 function ViewAction(Id, ctrl) {
     $('[id$=lblMailMessage]').text('');
+    $('[id$=lblMailMessage1]').text('');
+  
     var ActionName = $(ctrl).attr('data-searchfor');
     var ActionId = $(ctrl).attr('data-SearchId');
     $.each($('.ActionName'), function () {
@@ -364,6 +366,11 @@ function ViewAction(Id, ctrl) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
+            
+            $('#tblViewAction tr td:nth-child(1)').css("width", "215px");
+            $('#tblViewAction tr td:nth-child(2)').css("width", "30px");
+            $('#tblViewAction tr td').css("vertical-align", "top");
+
             $('#ViewActionModal').modal('show');
             $('#lblRecipients').text(result.MailTo);
             $('#lblActionDueOn').text(result.RequiredOn);
@@ -374,9 +381,15 @@ function ViewAction(Id, ctrl) {
             $('#lblImplications').text(result.Implications);
             $('#lblReftoInternationalStandards').text(result.ReferencetoInternationalStandards)
 
+            $('#lblRecipients1').text(result.MailTo);
+            $('#lblActionDueOn1').text(result.RequiredOn);
+            $('#lblActionTakenOn1').text(result.UpdatedOn);
+
             if (result.MailDetails != null) {
                 $('[id$=lblMailSubject]').text(result.MailDetails.Subject);
                 $('[id$=lblMailMessage]').append(result.MailDetails.Message);
+                $('[id$=lblMailSubject1]').text(result.MailDetails.Subject);
+                $('[id$=lblMailMessage1]').append(result.MailDetails.Message);
             }
 
             var Files = '';
@@ -385,6 +398,9 @@ function ViewAction(Id, ctrl) {
             })
             $('#lblMailAttachments').empty();
             $('#lblMailAttachments').append(Files);
+
+           // $('#lblMailAttachments1').empty();
+            //$('#lblMailAttachments1').append(Files);
             if (ActionId == "1") {
                 $('#divTradeData').removeClass('hidden');
                 $('.divBriefToRegulators').removeClass('hidden');
@@ -587,3 +603,32 @@ function AfterSaveNotificationRelatedMaterial() {
         $("#divNotificationRelatedMatrial").load('/AddNotification/NotificationRelatedMaterials/' + myWTOAPP.id);
     }, 300);
 }
+
+
+function printDiv(elementId) {
+    debugger;
+    $('#tblViewAction tr td:nth-child(1)').css("width", "215px");
+    $('#tblViewAction tr td:nth-child(2)').css("width", "30px");
+    $('#tblViewAction tr td').css("vertical-align", "top");
+    var printContent = document.getElementById(elementId);
+    var windowUrl = 'about:blank';
+    var uniqueName = new Date();
+    var windowName = 'Print' + uniqueName.getTime();
+    var printWindow = window.open(windowUrl, windowName, 'left=50000,top=50000,width=0,height=0');
+    printWindow.document.write(printContent.innerHTML);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+    return true;
+}
+
+function CloseViewAction() {
+    debugger;
+    $("#ViewActionModal").modal('hide');
+    $('#tblViewAction tr td:nth-child(1)').css("width", "unset");
+    $('#tblViewAction tr td:nth-child(2)').css("width", "unset");
+    $('#tblViewAction tr td').css("vertical-align", "unset");
+    return false;
+}
+
