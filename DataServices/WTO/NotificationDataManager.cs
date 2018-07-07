@@ -51,6 +51,7 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@Role", obj.Role);
                 sqlCommand.Parameters.AddWithValue("@SkippedToDiscussion", obj.SkippedToDiscussion);
                 sqlCommand.Parameters.AddWithValue("@RetainedForNextDiscussion", obj.RetainedforNextDiscussion);
+                sqlCommand.Parameters.AddWithValue("@DocumentTypeId", obj.DocumentTypeId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

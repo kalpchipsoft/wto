@@ -16,6 +16,20 @@ namespace BusinessService.Masters
             MatersDataManager objMDM = new MatersDataManager();
             return objMDM.GetHSCodes();
         }
+        public List<HSCodes> GetHSCodeAutoComplete(string SearchText)
+        {
+            MatersDataManager objMDM = new MatersDataManager();
+            List<HSCodes> objHsCodeList = new List<HSCodes>();
+            foreach (DataRow dr in objMDM.GetHSCodesAutoComplete(SearchText).Rows)
+            {
+                HSCodes obj = new HSCodes();
+                obj.HSCode = Convert.ToString(dr["id"]);
+                obj.Text = Convert.ToString(dr["id"]);
+                objHsCodeList.Add(obj);
+            }
+            return objHsCodeList;
+        }
+
 
         public List<TranslatorInfo> GetTranslater(Int64 LanguageId)
         {

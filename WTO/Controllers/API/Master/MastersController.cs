@@ -47,5 +47,11 @@ namespace WTO.Controllers.API.Master
             MastersBusinessService objMstr = new MastersBusinessService();
             return Ok(objMstr.GetInternalStakeHolder());
         }
+        [HttpGet]
+        public IHttpActionResult GetHSCodeAutoComplete(string SearchText)
+        {
+            MastersBusinessService objMstr = new MastersBusinessService();
+            return Ok(objMstr.GetHSCodeAutoComplete(SearchText));
+        }
     }
 }

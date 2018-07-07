@@ -147,7 +147,6 @@ $(document).ready(function () {
     });
 
     $('#NotificationFile').change(function (e) {
-        ShowGlobalLodingPanel();
         var totfilesize = 0;
         if ($(this)[0].files.length != 0) {
             var fileToLoad = $(this)[0].files[0];
@@ -161,10 +160,8 @@ $(document).ready(function () {
                 Alert("Alert", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
                 $("#Loader").hide();
                 $(this).val('');
-                $('#NotificationFileName').text('No File Choosen');
+                $('#NotificationFileName').val('');
                 NotificationAttachment = [];
-                HideGlobalLodingPanel();
-                ClearNotificationForm();
                 return false;
             }
             else if (ext != "docx" && ext != "doc") {
@@ -172,9 +169,7 @@ $(document).ready(function () {
                 $(this).val('');
                 NotificationAttachment = [];
                 $("#Loader").hide();
-                $('#NotificationFileName').text('No File Choosen');
-                ClearNotificationForm();
-                HideGlobalLodingPanel();
+                $('#NotificationFileName').val('');
                 return false;
             }
             else {
@@ -182,102 +177,7 @@ $(document).ready(function () {
                     var reader = new FileReader();
                     reader.onload = function (e) {
                         NotificationAttachment = { "FileName": value.name, "Content": e.target.result };
-                        $('#NotificationFileName').text(value.name);
-                        $.ajax({
-                            url: "/api/AddUpdateNotification/ReadNotificationDetails/",
-                            async: false,
-                            type: "POST",
-                            data: JSON.stringify(NotificationAttachment),
-                            contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                ClearNotificationForm();
-                                if (result != null) {
-                                    if ($.trim(result.NotificationType) == "1")
-                                        $('#TypeSPS').prop('checked', true);
-                                    else if ($.trim(result.NotificationType) == "2")
-                                        $('#TypeTBT').prop('checked', true);
-
-                                    if ($.trim(result.NotificationNumber) != '' && $.trim(result.NotificationNumber).indexOf('/') > 0)
-                                        $('#NotificationNumberId').val(result.NotificationNumber);
-
-                                    if (!isNaN(new Date($.trim(result.DateofNotification)).valueOf())) {
-                                        var _DateofNotification = new Date($.trim(result.DateofNotification));
-                                        $('#DateofNotificationId').val($.datepicker.formatDate("d M yy", _DateofNotification));
-                                    }
-
-                                    if (!isNaN(new Date($.trim(result.FinalDateOfComments)).valueOf())) {
-                                        var _FinalDateOfComments = new Date($.trim(result.FinalDateOfComments));
-                                        $('#FinalDateforCommentsId').val($.datepicker.formatDate("d M yy", _FinalDateOfComments));
-                                    }
-
-                                    if (!isNaN(new Date($.trim(result.SendResponseBy)).valueOf())) {
-                                        var _SendResponseBy = new Date($.trim(result.SendResponseBy));
-                                        $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
-                                    }
-
-                                    if (!isNaN(new Date($.trim(result.StakeholderResponseDueBy)).valueOf())) {
-                                        var _StakeholderResponseDueBy = new Date($.trim(result.StakeholderResponseDueBy));
-                                        $('#hdnStakeholderResponseDueBy').val($.datepicker.formatDate("d M yy", _StakeholderResponseDueBy));
-                                    }
-
-                                    if ($.trim(result.Articles) != '')
-                                        $('#NotificationUnderArticleId').val($.trim(result.Articles).replace(/,\s*$/, ""));
-
-                                    if ($.trim(result.Title) != '')
-                                        $('#TitleId').val($.trim(result.Title));
-
-                                    if ($.trim(result.ResponsibleAgency) != '')
-                                        $('#AgencyResponsibleId').val($.trim(result.ResponsibleAgency));
-
-                                    if ($.trim(result.ProductsCovered) != '')
-                                        $('#ProductsCoveredId').val($.trim(result.ProductsCovered));
-
-                                    if ($.trim(result.Description) != '')
-                                        $('#DescriptionofContentId').val($.trim(result.Description));
-
-                                    if ($.trim(result.HSCodes) != "") {
-                                        $('[id$=hdnSelectedHSCodes]').val($.trim(result.HSCodes));
-                                        var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
-                                        $('#HSCodeTree').jstree(true).select_node(numbersArray);
-                                        if ($('.jstree-anchor.jstree-clicked').length > 0)
-                                            SaveHSCode();
-                                    }
-
-                                    if ($.trim(result.EnquiryEmailId) != "")
-                                        $("#EnquiryPointId").val($.trim(result.EnquiryEmailId));
-
-                                    $("#NotificationNumberId").trigger("blur");
-                                    $("#AgencyResponsibleId").trigger('keyup');
-                                    $("#DescriptionofContentId").trigger('keyup');
-                                    $("#ProductsCoveredId").trigger('keyup');
-                                    $("#TitleId").trigger('keyup');
-                                }
-                            },
-                            failure: function (result) {
-                                Alert("Alert", "Something went wrong.<br/>", "Ok");
-                                ClearNotificationForm();
-                                HideGlobalLodingPanel();
-                            },
-                            error: function (result) {
-                                if (result.status == "500")
-                                    Alert("Alert", "Please upload valid file.", "Ok");
-                                else
-                                    Alert("Alert", result.status, "Ok");
-                                $(this).val('');
-                                NotificationAttachment = [];
-                                $("#Loader").hide();
-                                $('#NotificationFileName').text('No File Choosen');
-                                HideGlobalLodingPanel();
-                            },
-                            complete: function () {
-                                $.each($('.AutoHeight'), function (i, v) {
-                                    var evt = document.createEvent('Event');
-                                    evt.initEvent('autosize:update', true, false);
-                                    this.dispatchEvent(evt);
-                                });
-                                HideGlobalLodingPanel();
-                            }
-                        });
+                        $('#NotificationFileName').val(value.name);
                     };
                     reader.readAsDataURL(fileToLoad);
                 });
@@ -286,9 +186,7 @@ $(document).ready(function () {
         else {
             $(this).prev().text('Upload File');
             NotificationAttachment = [];
-            $('#NotificationFileName').text('No File Choosen');
-            ClearNotificationForm();
-            HideGlobalLodingPanel();
+            $('#NotificationFileName').val('');
         }
     });
 
@@ -447,6 +345,111 @@ $(document).ready(function () {
 });
 
 //-------------------------------------Basic Details Start---------------------------------------
+function OpenUploadNotificationPopUp() {
+    $('#UploadNotificationPopUp').modal('show');
+    return false;
+}
+
+function ReadDocumentFile() {
+    ShowGlobalLodingPanel();
+    $.ajax({
+        url: "/api/AddUpdateNotification/ReadNotificationDetails/",
+        async: false,
+        type: "POST",
+        data: JSON.stringify(NotificationAttachment),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            ClearNotificationForm();
+            if (result != null) {
+                if ($.trim(result.NotificationType) == "1")
+                    $('#TypeSPS').prop('checked', true);
+                else if ($.trim(result.NotificationType) == "2")
+                    $('#TypeTBT').prop('checked', true);
+
+                if ($.trim(result.NotificationNumber) != '' && $.trim(result.NotificationNumber).indexOf('/') > 0)
+                    $('#NotificationNumberId').val(result.NotificationNumber);
+
+                if (!isNaN(new Date($.trim(result.DateofNotification)).valueOf())) {
+                    var _DateofNotification = new Date($.trim(result.DateofNotification));
+                    $('#DateofNotificationId').val($.datepicker.formatDate("d M yy", _DateofNotification));
+                }
+
+                if (!isNaN(new Date($.trim(result.FinalDateOfComments)).valueOf())) {
+                    var _FinalDateOfComments = new Date($.trim(result.FinalDateOfComments));
+                    $('#FinalDateforCommentsId').val($.datepicker.formatDate("d M yy", _FinalDateOfComments));
+                }
+
+                if (!isNaN(new Date($.trim(result.SendResponseBy)).valueOf())) {
+                    var _SendResponseBy = new Date($.trim(result.SendResponseBy));
+                    $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
+                }
+
+                if (!isNaN(new Date($.trim(result.StakeholderResponseDueBy)).valueOf())) {
+                    var _StakeholderResponseDueBy = new Date($.trim(result.StakeholderResponseDueBy));
+                    $('#hdnStakeholderResponseDueBy').val($.datepicker.formatDate("d M yy", _StakeholderResponseDueBy));
+                }
+
+                if ($.trim(result.Articles) != '')
+                    $('#NotificationUnderArticleId').val($.trim(result.Articles).replace(/,\s*$/, ""));
+
+                if ($.trim(result.Title) != '')
+                    $('#TitleId').val($.trim(result.Title));
+
+                if ($.trim(result.ResponsibleAgency) != '')
+                    $('#AgencyResponsibleId').val($.trim(result.ResponsibleAgency));
+
+                if ($.trim(result.ProductsCovered) != '')
+                    $('#ProductsCoveredId').val($.trim(result.ProductsCovered));
+
+                if ($.trim(result.Description) != '')
+                    $('#DescriptionofContentId').val($.trim(result.Description));
+
+                if ($.trim(result.HSCodes) != "") {
+                    $('[id$=hdnSelectedHSCodes]').val($.trim(result.HSCodes));
+                    var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
+                    $('#HSCodeTree').jstree(true).select_node(numbersArray);
+                    if ($('.jstree-anchor.jstree-clicked').length > 0)
+                        SaveHSCode();
+                }
+
+                if ($.trim(result.EnquiryEmailId) != "")
+                    $("#EnquiryPointId").val($.trim(result.EnquiryEmailId));
+
+                $("#NotificationNumberId").trigger("blur");
+                $("#AgencyResponsibleId").trigger('keyup');
+                $("#DescriptionofContentId").trigger('keyup');
+                $("#ProductsCoveredId").trigger('keyup');
+                $("#TitleId").trigger('keyup');
+            }
+        },
+        failure: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+            ClearNotificationForm();
+            HideGlobalLodingPanel();
+        },
+        error: function (result) {
+            if (result.status == "500")
+                Alert("Alert", "Please upload valid file.", "Ok");
+            else
+                Alert("Alert", result.status, "Ok");
+            $(this).val('');
+            NotificationAttachment = [];
+            $("#Loader").hide();
+            $('#NotificationFileName').text('No File Choosen');
+            HideGlobalLodingPanel();
+        },
+        complete: function () {
+            $.each($('.AutoHeight'), function (i, v) {
+                var evt = document.createEvent('Event');
+                evt.initEvent('autosize:update', true, false);
+                this.dispatchEvent(evt);
+            });
+            HideGlobalLodingPanel();
+        }
+    });
+    $('#UploadNotificationPopUp').modal('hide');
+}
+
 function ClearNotificationForm() {
     $('#TypeSPS').prop('checked', false);
     $('#TypeTBT').prop('checked', false)
@@ -1839,7 +1842,7 @@ function OpenSendMailModelFromStakehoderCount(MailId, Callfor) {
             CKEDITOR.instances.txtMessage.setData(result.MailDetails.Message);
             var htmlstake = '';
             for (var i = 0; i < result.StakeHolders.length; i++) {
-                htmlstake += "<div class='row seprater'> <div class='col-xs-12 col-sm-12 col-md-12'><div class='col-sm-2'>" + parseInt(i + 1) + "</div><div class='col-sm-5'>" + result.StakeHolders[i].OrgName + "</div><div class='col-sm-5'>" + result.StakeHolders[i].FullName + "</div></div></div>";
+                htmlstake += "<tr><td class='col-sm-2'>" + parseInt(i + 1) + "</td><td class='col-sm-5'>" + result.StakeHolders[i].OrgName + "</td><td class='col-sm-5'>" + result.StakeHolders[i].FullName + "</td></tr>";
             }
             //MailAttachmentDetails
             $('#divStakholderSendMailList').append(htmlstake);

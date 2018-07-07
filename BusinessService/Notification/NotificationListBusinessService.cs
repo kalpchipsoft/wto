@@ -263,6 +263,56 @@ namespace BusinessService.Notification
         }
 
         #region "Notification Country List"
+        public NotificationCountries PageLoad_NotificationCountries(Search_NotificationCountries obj)
+        {
+            NotificationCountries objNotificationCountries = new NotificationCountries();
+            NotificationListDataManager objDM = new NotificationListDataManager();
+            DataSet ds = objDM.PageLoad_CountriesNotifications(obj);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndx = -1;
+                #region "Country List"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<Country> CountryList = new List<Country>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        Country objCountry = new Country();
+                        objCountry.CountryId = Convert.ToInt64(dr["CountryId"]);
+                        objCountry.CountryCode = Convert.ToString(dr["CountryCode"]);
+                        objCountry.Name = Convert.ToString(dr["Country"]);
+                        CountryList.Add(objCountry);
+                    }
+                    objNotificationCountries.CountryList = CountryList;
+                }
+                #endregion
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<BusinessObjects.Notification.CountriesNotificationList> ItemsList = new List<BusinessObjects.Notification.CountriesNotificationList>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        CountriesNotificationList objItems = new CountriesNotificationList();
+                        objItems.CountryId = Convert.ToString(dr["CountryId"]);
+                        objItems.NotificationCount = Convert.ToString(dr["NotificationCount"]);
+                        objItems.CountryCode = Convert.ToString(dr["CountryCode"]);
+                        objItems.CountryName = Convert.ToString(dr["Country"]);
+                        ItemsList.Add(objItems);
+                    }
+                    objNotificationCountries.objNotificationCountries = ItemsList;
+                }
+                #region "Paging"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    objNotificationCountries.TotalCount = Convert.ToString(ds.Tables[tblIndx].Rows[0]["TotalCount"]);
+                    objNotificationCountries.Pager = new Pager(Convert.ToInt32(objNotificationCountries.TotalCount), Convert.ToInt16(obj.PageIndex));
+                }
+                #endregion
+            }
+            return objNotificationCountries;
+        }
         public NotificationCountries GetNotificationCountries(Search_NotificationCountries obj)
         {
             NotificationCountries objNotificationCountries = new NotificationCountries();
@@ -297,6 +347,46 @@ namespace BusinessService.Notification
                 #endregion
             }
             return objNotificationCountries;
+        }
+        #endregion
+        #region "Stakeholder Mail sent and Response List"
+        public StakeholderMailSentReceive GetStakeholderMailSentResponse(Search_StakeholderMailSentReceive obj)
+        {
+            StakeholderMailSentReceive objStakeholderMailSentReceive = new StakeholderMailSentReceive();
+            NotificationListDataManager objDM = new NotificationListDataManager();
+            DataSet ds = objDM.GetStakeholderMailSentResponse(obj);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                int tblIndx = -1;
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<RelatedStakeHolders> ItemsList = new List<RelatedStakeHolders>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        RelatedStakeHolders objItems = new RelatedStakeHolders();
+                        objItems.StakeHolderId = Convert.ToInt32(dr["StakeHolderId"]);
+                        objItems.FullName = Convert.ToString(dr["FullName"]);
+                        objItems.OrgName = Convert.ToString(dr["OrgName"]);
+                        objItems.Designation = Convert.ToString(dr["Designation"]);
+                        objItems.MailCount = Convert.ToInt32(dr["MailCount"]);
+                        objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
+                        objItems.HSCodes = Convert.ToString(dr["HSCodes"]);
+                        ItemsList.Add(objItems);
+                    }
+                    objStakeholderMailSentReceive.objRelatedStakeHolders = ItemsList;
+                }
+
+                #region "Paging"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    objStakeholderMailSentReceive.TotalCount = Convert.ToString(ds.Tables[tblIndx].Rows[0]["TotalCount"]);
+                    objStakeholderMailSentReceive.Pager = new Pager(Convert.ToInt32(objStakeholderMailSentReceive.TotalCount), Convert.ToInt16(obj.PageIndex));
+                }
+                #endregion
+            }
+            return objStakeholderMailSentReceive;
         }
         #endregion
 

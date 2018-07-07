@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <label class="table-heading">Stakeholders (@Model.TotalCount)</label>
-        <a href="#" class="btn btn-blue btn-padding pull-right" data-target="#AddStakeholder" onclick="AddStakeHolderPopup()" data-toggle="modal">Add Stakeholder</a>
+        <a href="#" class="btn btn-blue btn-padding pull-right bottom-offset-10 top-offset-10" data-target="#AddStakeholder" onclick="AddStakeHolderPopup()" data-toggle="modal">Add Stakeholder</a>
         <div class="table-responsive nopaging notificationlist top-offset-20">
             <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
@@ -247,5 +247,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         GetStackholderHSCode();
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-xs-1 col-xs-3 col-xs-6 table-fixed");
+            $("td").removeClass("col-xs-1 col-xs-3 col-xs-6 table-fixed");
+        }
     })
 </script>

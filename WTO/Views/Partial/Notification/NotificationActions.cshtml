@@ -202,64 +202,64 @@
                             </div>
 
                             <!--start section For Print Div-->
-                            <div class="col-xs-12 col-sm-12 col-md-12" id="prntDiv" style="display:none;">
-                                <div class="notificationnumber padding-bottom-10">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <h4 class="selecthrheading2"><span class="ActionName"></span></h4>
-                                        </div>
-                                    </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12" id="prntDiv" style="display:none;font-family:Calibri;font-size:16px;">
+                                <div id="header">
+                                    <h5 style="text-align:right;">Print date</h5>
+                                    <h5 style="text-align:right;margin-top:-20px;"><label id="lblHeaderDate"></label></h5>
                                 </div>
-                                <div class="top-offset-10">
-                                    <div class="row top-offset-10">
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <table id="tblViewAction" class="table-responsive">
-                                                <tr>
-                                                    <td><b>Notification Number</b></td>
-                                                    <td>:</td>
-                                                    <td>@Model.NotificationNumber</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Title</b></td>
-                                                    <td>:</td>
-                                                    <td>@Model.NotificationTitle</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Meeting Date</b></td>
-                                                    <td>:</td>
-                                                    <td><span id="txtMeetingDate1">@Model.MeetingDate</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Action Due on</b></td>
-                                                    <td>:</td>
-                                                    <td><span id="lblActionDueOn1"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Action taken on</b></td>
-                                                    <td>:</td>
-                                                    <td><span id="lblActionTakenOn1"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Recipients</b></td>
-                                                    <td>:</td>
-                                                    <td><span class="WordWrapText" id="lblRecipients1"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Mail Subject</b></td>
-                                                    <td>:</td>
-                                                    <td><span class="WordWrapText" id="lblMailSubject1"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Message</b></td>
-                                                    <td>:</td>
-                                                    <td>
-                                                        <span id="lblMailMessage1"></span>
-                                                        @*<span id="lblMailAttachments1"></span>*@
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+                                <div class="top-offset-10" style="padding:8px;margin:10px;">
+                                    <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin-top:-20px;" id="tblPrinthead">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;">
+
+                                                    @*<h4 class="selecthrheading2" style="border:1px solid #ddd;padding:8px;margin:20px;width:96%;">*@
+                                                    <b>    <span class="ActionName"></span></b>
+                                                    @*</h4>*@
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="top-offset-10" style="padding:8px;margin:10px;">
+                                    <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin-top:-20px;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b> Notification Number</b></td>
+                                                <td style="padding:5px;border-color:#ddd;">@Model.NotificationNumber</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Title</b></td>
+                                                <td style="padding:5px;border-color:#ddd;">@Model.NotificationTitle</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Meeting Date</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span id="txtMeetingDate1">@Model.MeetingDate</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Action Due on</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span id="lblActionDueOn1"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Action taken on</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span id="lblActionTakenOn1"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Recipients</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span class="WordWrapText" id="lblRecipients1"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Mail Subject</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span class="WordWrapText" id="lblMailSubject1"></span></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Message</b></td>
+                                                <td style="padding:5px;border-color:#ddd;"><span id="lblMailMessage1"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <!--End section For Print Div-->
