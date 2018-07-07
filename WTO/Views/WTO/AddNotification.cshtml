@@ -57,16 +57,7 @@
                                                         <div class="col-xs-12 col-sm-12 col-md-6 adduploadbutton @(Model.NotificationId > 0 && Model.NotificationAttachment == null ? "hidden" : "")">
                                                             @if (Model.NotificationAttachment == null)
                                                             {
-                                                                <div class="fileinput fileinput-new pull-right" data-provides="fileinput">
-                                                                    <span class="btn btn-blue btn-padding btn-file" style="cursor: pointer;">
-                                                                        <span class="glyphicon glyphicon-open"></span>
-                                                                        <span class="puttext">Upload File</span>
-                                                                        <input type="file" class="fileholder uploadfile" id="NotificationFile" onclick="return ClearFile(this);">
-                                                                    </span>
-                                                                </div>
-                                                                <span class="fileinput-new dark-blue underline pull-right" id="NotificationFileName" style="padding-top: 10px;margin-right: 10px;">No File Choosen</span>
-                                                                <br /><br />
-                                                                <span class="text-danger pull-right" style="margin-right:5%;">Doc file only</span>
+                                                                <button type="button" class="btn btn-blue btn-padding pull-right" onclick="OpenUploadNotificationPopUp();" >Upload document</button>
                                                             }
                                                             else
                                                             {
@@ -755,24 +746,32 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10 bottom-offset-20">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 stackholderlist">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="row">
-                                                <div class="col-sm-1">
-                                                    <div class="checkbox radio-margin" style="margin-top:2px;">
-                                                        <label>
-                                                            <input type="checkbox" id="chkSelectAll_AddStakeholders" />
-                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
-                                                        </label>
-                                                    </div>
+                                                <div class="table-responsive nopaging notificationlist sentmail">
+                                                    <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                                                        <thead class="second-blackbackground">
+                                                            <tr>
+                                                                <th class="col-sm-1">
+                                                                    <div class="checkbox radio-margin" style="margin-top:2px;">
+                                                                        <label>
+                                                                            <input type="checkbox" id="chkSelectAll_AddStakeholders" />
+                                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="col-sm-3">Organization</th>
+                                                                <th class="col-sm-2">Contact</th>
+                                                                <th class="col-sm-4">Designation</th>
+                                                                <th class="col-sm-2">HS Code</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="whitebackground" id="divStakholder">
+                                                            @{ Html.RenderAction("GetStakeHoldersMaster", "AddNotification", new { SearchText = "" }); }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                <div class="col-sm-3">Organization</div>
-                                                <div class="col-sm-2">Contact</div>
-                                                <div class="col-sm-4">Designation</div>
-                                                <div class="col-sm-2">HS Code</div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground" id="divStakholder">
-                                            @{ Html.RenderAction("GetStakeHoldersMaster", "AddNotification", new { SearchText = "" }); }
                                         </div>
                                     </div>
                                 </div>
@@ -841,14 +840,18 @@
                                                 <p class="wto-label-bold dark-blue">Mail(s) Sent To</p>
                                             </div>
                                             <div class="col-xs-12 col-sm-8 col-md-9">
-                                                <div class="col-md-12 stackholderlist">
-                                                    <div class="col-sm-2">S. No.</div>
-                                                    <div class="col-sm-5">Organization</div>
-                                                    <div class="col-sm-5">Contact</div>
+                                                <div class="table-responsive nopaging notificationlist sentmail">
+                                                    <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                                                        <thead class="second-blackbackground">
+                                                            <tr>
+                                                                <th class="col-sm-2">S.No.</th>
+                                                                <th class="col-sm-5">Organization</th>
+                                                                <th class="col-sm-5">Contact</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="whitebackground scrollheight" id="divStakholderSendMailList" style="overflow-y: auto; max-height: 128px;"></tbody>
+                                                    </table>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground scrollheight" id="divStakholderSendMailList" style="overflow-y: auto; max-height: 128px;">
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -1244,7 +1247,55 @@
     </div>
 </div>
 <!-- View Popup for response from stakeholders -->
-
+<!-- Upload Notification Modal popup start -->
+<div id="UploadNotificationPopUp" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="lblModalHeading">Upload document</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top:-25px;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row top-offset-10">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <p class="wto-label-bold">Document Type<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-8">
+                            <p class="wto-label-normal">
+                                @Html.DropDownListFor(m => Model.DocumentTypeList, new SelectList(Model.DocumentTypeList, "DocumentTypeId", "Type"), "Select status", new { Id = "DocumentTypeId", Class = "form-control textboxcontrol" })
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row top-offset-10">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <p class="wto-label-bold">Document <sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-8">
+                            <p class="wto-label-normal">
+                                <div class="input-group" style="margin-top: -15px;">
+                                    <input type="text" class="form-control" style="height:34px;" id="NotificationFileName" readonly>
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary browse">
+                                            Browse&hellip; <input type="file" style="display: none;" id="NotificationFile" onclick="return ClearFile(this);">
+                                        </span>
+                                    </label>
+                                </div>
+                                <span class="note pull-right">Doc file only.</span>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-primary" value="Ok" onclick="ReadDocumentFile()();" />
+                    <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Upload Document Modal popup End-->
 <script>
     $(document).ready(function () {
         var config = {

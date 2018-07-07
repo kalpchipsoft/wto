@@ -6,13 +6,20 @@
 {
     foreach (var item in @Model.StakeHolders)
     {
-        <div class="row seprater">
-            <div class="col-sm-1"><input id="chkStakeholder_@item.StakeHolderId" type="checkbox" class="checked" value="@item.StakeHolderId" onclick="Update_hdnSelected(this);" /></div>
-            <div class="col-sm-3"><b>@item.OrganizationName</b></div>
-            <div class="col-sm-2">@item.FullName</div>
-            <div class="col-sm-4">@item.Designation </div>
-            <div class="col-sm-2">@item.HSCodes</div>
-        </div>
+        <tr>
+            <td class="col-sm-1">
+                <div class="checkbox radio-margin" style="margin-top:2px;">
+                    <label>
+                        <input id="chkStakeholder_@item.StakeHolderId" type="checkbox" class="checked" value="@item.StakeHolderId" onclick="Update_hdnSelected(this);" />
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
+                    </label>
+                </div>
+            </td>
+            <td class="col-sm-3"><b>@item.OrganizationName</b></td>
+            <td class="col-sm-2">@item.FullName</td>
+            <td class="col-sm-4">@item.Designation</td>
+            <td class="col-sm-2">@item.HSCodes</td>
+        </tr>
     }
 }
 else

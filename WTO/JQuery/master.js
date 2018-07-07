@@ -100,3 +100,35 @@ function IsEmailExists(Email, CallFor) {
     return IsExists;
 }
 
+$(function () {
+    $("#txtHscode").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/api/Masters/GetHSCodeAutoComplete",
+                dataType: "json",
+                type: "GET",
+                data: {
+                    SearchText: request.term
+                },
+                success: function (data) {
+                    debugger
+                    if (JSON.stringify(data).length > 2 && $('#txtHscode').val().length > 0) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item["HSCode"],
+                                val: item["HSCode"]
+                            }
+                        }))
+                    }
+                    else
+                        $('#txtHscode').val("");
+                }
+            });
+        },
+        minLength: 2,
+        select: function (event, ui) {
+            debugger
+            $('#txtHscode').val(ui.item.HSCode);
+        }
+    });
+})

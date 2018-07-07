@@ -113,9 +113,28 @@ namespace WTO.Controllers
                 return RedirectToAction("Index", "Login");
         }
 
-        public ActionResult NotificationStakeholderList()
+        public ActionResult NotificationStakeholderList(Search_StakeholderMailSentReceive obj)
         {
-            return View();
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                if (obj.PageIndex == 0)
+                    obj.PageIndex = 1;
+                if (obj.PageSize == 0)
+                    obj.PageSize = 10;
+                if (obj.FromDate == null)
+                    obj.FromDate = "";
+                if (obj.ToDate == null)
+                    obj.ToDate = "";
+                if (obj.Status == null)
+                    obj.Status = "0";
+                ViewBag.FromDate = obj.FromDate;
+                ViewBag.ToDate = obj.ToDate;
+                ViewBag.Status = obj.Status;
+                NotificationListBusinessService objNBS = new NotificationListBusinessService();
+                return View(objNBS.GetStakeholderMailSentResponse(obj));
+            }
+            else
+                return RedirectToAction("Index", "Login");
         }
 
         public ActionResult NotifyingMemberList(Search_NotificationCountries obj)
@@ -126,14 +145,23 @@ namespace WTO.Controllers
                     obj.PageIndex = 1;
                 if (obj.PageSize == 0)
                     obj.PageSize = 10;
+                if (obj.FromDate == null)
+                    obj.FromDate = "";
+                if (obj.ToDate == null)
+                    obj.ToDate = "";
+                if (obj.CountryName == null)
+                    obj.CountryName = "";
+                if (obj.Hscode == null)
+                    obj.Hscode = "";
                 ViewBag.FromDate = obj.FromDate;
                 ViewBag.ToDate = obj.ToDate;
-                ViewBag.Hscode = obj.Hscode == "ALL" ? "" : obj.Hscode;
+                ViewBag.Hscode = obj.Hscode.ToUpper() == "ALL" ? "" : obj.Hscode;
                 NotificationListBusinessService objNBS = new NotificationListBusinessService();
-                return View(objNBS.GetNotificationCountries(obj));
+                return View(objNBS.PageLoad_NotificationCountries(obj));
             }
             else
                 return RedirectToAction("Index", "Login");
         }
+
     }
 }

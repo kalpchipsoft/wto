@@ -16,7 +16,6 @@ namespace WTO.Controllers.API.WTO
             NotificationListBusinessService objBS = new NotificationListBusinessService();
             return Ok(objBS.GetNotifications(obj));
         }
-
         [HttpPost]
         public IHttpActionResult GetNotificationCountryList(Search_NotificationCountries obj)
         {
@@ -27,5 +26,16 @@ namespace WTO.Controllers.API.WTO
             NotificationListBusinessService objBS = new NotificationListBusinessService();
             return Ok(objBS.GetNotificationCountries(obj));
         }
+        [HttpPost]
+        public IHttpActionResult GetStakeholderMailSentResponse(Search_StakeholderMailSentReceive obj)
+        {
+            if (obj.PageIndex == 0)
+                obj.PageIndex = 1;
+            if (obj.PageSize == 0)
+                obj.PageSize = 10;
+            NotificationListBusinessService objBS = new NotificationListBusinessService();
+            return Ok(objBS.GetStakeholderMailSentResponse(obj));
+        }
+
     }
 }
