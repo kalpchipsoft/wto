@@ -61,7 +61,7 @@
                                         <input type="text" class="form-control date-picker" style="cursor:pointer" id="txtmeetingdate" onchange="return IsMeetingExists(0);" />
                                         <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
                                     </div>
-                                    <div class="col-md-7 col-sm-5">
+                                    <div class="col-md-7 col-sm-12">
                                         <a class="btn btn-blue pull-right btn-padding addsavenotification bottom-offset-10" style="margin-left:4%" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png">&nbsp;Back </a>
                                         <button id="btnSaveUpdate" class="btn btn-dark-green pull-right btn-padding addsavenotification bottom-offset-10" onclick="return ValidateMeeting();" style="margin-left:4%"><img src="/contents/img/save.png">&nbsp;Save</button>
                                         <a onclick="return OpenPopup();" class="btn btn-blue pull-right bottom-offset-10"><span class="glyphicon glyphicon-plus"></span>&nbsp;<b>Add more notifications</b></a>
@@ -180,27 +180,25 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
                             <div class="col-md-4">
-                                <strong>Country</strong>
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    @if (Model.CountryList != null)
+                                    {
+                                        @Html.DropDownListFor(m => Model.CountryList, new SelectList(Model.CountryList, "CountryId", "Country"), "Select Country", new { Id = "ddlCountry", Class = "form-control textboxcontrol" })
+                                    }
+                                    else
+                                    {
+                                        <select Id="ddlCountry" Class="form-control textboxcontrol">
+                                            <option value="">Select Country</option>
+                                        </select>
+                                    }
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <strong>Notification Number</strong>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="col-md-4">
-                                @if (Model.CountryList != null)
-                                {
-                                    @Html.DropDownListFor(m => Model.CountryList, new SelectList(Model.CountryList, "CountryId", "Country"), "Select Country", new { Id = "ddlCountry", Class = "form-control textboxcontrol" })
-                                }
-                                else
-                                {
-                                    <select Id="ddlCountry" Class="form-control textboxcontrol">
-                                        <option value="">Select Country</option>
-                                    </select>
-                                }
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" maxlength="20" id="txtNotificationNo" />
+                                <div class="form-group">
+                                    <label>Notification Number</label>
+                                    <input type="text" class="form-control" maxlength="20" id="txtNotificationNo" />
+                                </div>
                             </div>
                             <div class='col-xs-12 col-sm-12 col-md-5'>
                                 <a class="btn btn-red pull-right" onclick="return ClosePopup();">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>

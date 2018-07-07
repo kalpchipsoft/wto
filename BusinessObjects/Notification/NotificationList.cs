@@ -98,6 +98,7 @@ namespace BusinessObjects.Notification
     public class NotificationCountries : PagerTotalCount
     {
         public List<CountriesNotificationList> objNotificationCountries;
+        public List<Country> CountryList { get; set; }
     }
     public class CountriesNotificationList
     {
@@ -106,5 +107,17 @@ namespace BusinessObjects.Notification
         public string NotificationCount { get; set; }
         public string CountryId { get; set; }
 
+    }
+    public class StakeholderMailSentReceive : PagerTotalCount
+    {
+        public List<RelatedStakeHolders> objRelatedStakeHolders;
+    }
+    public class Search_StakeholderMailSentReceive
+    {
+        public long PageIndex { get; set; }
+        public long PageSize { get; set; }
+        public string Status { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
     }
 }

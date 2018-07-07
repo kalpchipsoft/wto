@@ -75,6 +75,21 @@ namespace DataServices.WTO
         }
 
         #region "Notification Country List"
+        public DataSet PageLoad_CountriesNotifications(Search_NotificationCountries obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetPageLoadCountriesNotificationList;
+                sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
+                sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
+                sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryName);
+                sqlCommand.Parameters.AddWithValue("@FromDate", obj.FromDate);
+                sqlCommand.Parameters.AddWithValue("@ToDate", obj.ToDate);
+                sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
         public DataSet CountriesNotifications(Search_NotificationCountries obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
@@ -91,6 +106,23 @@ namespace DataServices.WTO
             }
         }
 
+        #endregion
+
+        #region "Stakeholder Mail sent & Response List"
+        public DataSet GetStakeholderMailSentResponse(Search_StakeholderMailSentReceive obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetStakholdersMailSentResponseList;
+                sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
+                sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
+                sqlCommand.Parameters.AddWithValue("@FromDate", obj.FromDate);
+                sqlCommand.Parameters.AddWithValue("@ToDate", obj.ToDate);
+                sqlCommand.Parameters.AddWithValue("@Status", obj.Status);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
         #endregion
 
     }

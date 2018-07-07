@@ -17,6 +17,7 @@ namespace BusinessObjects.Notification
         public int MailCount { get; set; }
         public int ResponseCount { get; set; }
         public string OrgName { get; set; }
+        public string Designation { get; set; }
     }
 
     public class MailsSentResponses

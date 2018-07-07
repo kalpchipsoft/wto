@@ -17,7 +17,16 @@ namespace DataServices.Masters
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-
+        public DataTable GetHSCodesAutoComplete(string SearchText)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetHSCodeMaster_AutoComplete;
+                sqlCommand.Parameters.AddWithValue("@SearchText", SearchText);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
         public DataSet GetTranslaters(Int64 LanguageId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
