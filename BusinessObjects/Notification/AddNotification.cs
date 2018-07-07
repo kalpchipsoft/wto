@@ -9,6 +9,11 @@ using System.IO;
 
 namespace BusinessObjects.Notification
 {
+    public class DocumentType
+    {
+        public int DocumentTypeId { get; set; }
+        public string Type { get; set; }
+    }
     public class AddNotification
     {
         [Required]
@@ -54,7 +59,8 @@ namespace BusinessObjects.Notification
         public string EnquiryEmail { get; set; }
         public Nullable<bool> SkippedToDiscussion { get; set; }
         public Nullable<bool> RetainedforNextDiscussion { get; set; }
-
+        [Required]
+        public int DocumentTypeId { get; set; }
         public string NotificationDocXML
         {
             get
@@ -166,6 +172,7 @@ namespace BusinessObjects.Notification
 
     public class EditNotification : NotificationDetails
     {
+        public List<DocumentType> DocumentTypeList { get; set; }
         public List<NotificationStatus> NotificationStatusList { get; set; }
         public List<HSCodes> SelectedHSCodes { get; set; }
         public List<Regulations> Regulations { get; set; }

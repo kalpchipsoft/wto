@@ -59,6 +59,22 @@ namespace BusinessService.Notification
             if (ds != null && ds.Tables.Count > 0)
             {
                 int tblIndx = -1;
+                #region "DocumentType Details"
+                tblIndx++;
+                if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
+                {
+                    List<DocumentType> list = new List<DocumentType>();
+                    foreach (DataRow dr in ds.Tables[tblIndx].Rows)
+                    {
+                        DocumentType obj = new DocumentType();
+                        obj.DocumentTypeId = Convert.ToInt32(dr["DocumentTypeId"]);
+                        obj.Type = Convert.ToString(dr["Type"]);
+                        list.Add(obj);
+                    }
+                    objR.DocumentTypeList = list;
+                }
+
+                #endregion
 
                 #region "Notification Details"
                 tblIndx++;

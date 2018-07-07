@@ -85,17 +85,16 @@
                                     <input type="hidden" value="@Model.MoMId" id="hdnMomId" />
                                     <a onclick="return OpenMeetingDatePopup();" style="margin-left:2%; font-size:10px;">Edit</a>
                                 </div>
-                                <div class="col-md-7 col-sm-5">
+                                <div class="col-md-7 col-sm-12">
                                     @{
                                         var id = Request.Url.Segments[3];
                                         if (Convert.ToInt32(id) > 0)
                                         {
-                                            <a class="btn btn-blue pull-right btn-padding addsavenotification" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png"> Back </a>
+                                            <a class="btn btn-blue pull-right btn-padding addsavenotification " hidden"" style="margin-left:4%" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png"> Back </a>
                                         }
-
-                                        if (Model.IsActive)
+                                        else
                                         {
-                                            <a onclick="return EndMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>Close meeting</b></a>
+                                            <a onclick="return EndMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>End meeting</b></a>
                                         }
                                     }
                                     <button id="btnSaveUpdate" class="btn btn-dark-green pull-right btn-padding addsavenotification hidden" onclick="return Validate();"><img src="/contents/img/save.png"> @(Model.MoMId > 0 ? "Update" : "Save")</button>

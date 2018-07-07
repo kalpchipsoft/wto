@@ -11,6 +11,7 @@
 
         public const string GetInternalStakeholderMaster = "proc_getInternalStakeholders";
         public const string GetRegulatoryBodiesMaster = "proc_getRegulatoryBodies";
+        public const string GetHSCodeMaster_AutoComplete = "Proc_GetHSCodeMaster_AutoComplete";
         #endregion
 
         #region "Dashboard"
@@ -162,7 +163,12 @@
         #endregion
 
         #region "Notification Country List"
+        public const string GetPageLoadCountriesNotificationList = "Proc_GetPageLoadCountriesNotificationCount";
         public const string GetCountriesNotificationList = "Proc_GetCountriesNotificationCount";
+        #endregion
+
+        #region "Stakholder Mail Sent and Response List"
+        public const string GetStakholdersMailSentResponseList = "Proc_GetStakholdersMailSentResponseCount";
         #endregion
     }
 }
