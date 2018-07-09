@@ -230,7 +230,7 @@ namespace BusinessService.Notification
             }
             return objNotificationDashboardAction;
         }
-        public NotificationProcessingStatus GetNotificationCountProcessingStatus(Dashboard obj)
+        public NotificationProcessingStatus GetNotificationCountProcessingStatus(DashboardSearch obj)
         {
             NotificationProcessingStatus objNotificationProcessingStatus = new NotificationProcessingStatus();
             DashboardDataManager objDDM = new DashboardDataManager();

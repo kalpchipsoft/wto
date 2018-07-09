@@ -34,7 +34,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/NotificationStakeholders.cshtml", obj.GetNotificationStakeholders(Id));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetStakeHoldersMaster(string SearchText)
@@ -56,7 +56,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/StakeHolderConversation.cshtml", obj.GetConversation(NotificationId, StakeholderId));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetNotificationActions(Int64 Id)
@@ -64,7 +64,7 @@ namespace WTO.Controllers.WTO
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id,0));
+                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id, 0));
             }
             else
                 return RedirectToAction("Index", "Login");
@@ -78,13 +78,18 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/Notification/NotificationMails.cshtml", obj.GetNotificationMails(Id));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetNotificatioNote(string Note)
         {
-            ViewBag.Note = Note;
-            return PartialView("~/Views/Partial/Notification/NotificationNote.cshtml", Note);
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                ViewBag.Note = Note;
+                return PartialView("~/Views/Partial/Notification/NotificationNote.cshtml", Note);
+            }
+            else
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetNotificationPlanTakeAction(Int64 Id)
         {
@@ -94,7 +99,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.GetNotificationActions(Id, 0));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
     }
 }

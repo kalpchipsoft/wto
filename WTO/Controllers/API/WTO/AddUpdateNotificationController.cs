@@ -22,26 +22,26 @@ namespace WTO.Controllers.API.WTO
     public class AddUpdateNotificationController : ApiController
     {
         [HttpPost]
-        public IHttpActionResult ReadNotificationDetails(BusinessObjects.Notification.Attachment file)
+        public IHttpActionResult ReadNotificationDetails(ReadDocument obj)
         {
             NotificationDetails objE = new NotificationDetails();
             try
             {
-                if (file != null && file.Content.Length > 0)
+                if (obj.Document != null && obj.Document.Content.Length > 0)
                 {
                     #region "Get & save Document"
                     byte[] bytes = null;
-                    if (file.Content.IndexOf(',') >= 0)
+                    if (obj.Document.Content.IndexOf(',') >= 0)
                     {
-                        var myString = file.Content.Split(new char[] { ',' });
+                        var myString = obj.Document.Content.Split(new char[] { ',' });
                         bytes = Convert.FromBase64String(myString[1]);
                     }
                     else
-                        bytes = Convert.FromBase64String(file.Content);
+                        bytes = Convert.FromBase64String(obj.Document.Content);
 
-                    string filePath = HttpContext.Current.Server.MapPath("/Attachments/Temp/" + file.FileName);
+                    string filePath = HttpContext.Current.Server.MapPath("/Attachments/Temp/" + obj.Document.FileName);
 
-                    if (file.FileName.Length > 0 && bytes.Length > 0)
+                    if (obj.Document.FileName.Length > 0 && bytes.Length > 0)
                     {
                         if (File.Exists(filePath))
                             File.Delete(filePath);
@@ -50,7 +50,7 @@ namespace WTO.Controllers.API.WTO
                     }
 
                     //Stream st = new MemoryStream(bytes);
-                    string _fileName = System.IO.Path.GetFileName(file.FileName);
+                    string _fileName = System.IO.Path.GetFileName(obj.Document.FileName);
                     string fileExtension = System.IO.Path.GetExtension(_fileName);
                     #endregion
 
@@ -274,7 +274,7 @@ namespace WTO.Controllers.API.WTO
                                     IsMultipleNotificationNumber = true;
                             }
 
-                            if (objE.NotificationNumber.Split('/').Length < 6 || IsMultipleNotificationNumber)
+                            if (obj.DocumentType == 1 || obj.DocumentType == 4)
                             {
                                 #region "Table"
                                 Table t = wordfile.Tables[1];
@@ -460,7 +460,7 @@ namespace WTO.Controllers.API.WTO
 
             if (objE != null && objE.NotificationNumber != null)
             {
-                if (objE.NotificationNumber.Split('/').Length < 6)
+                if (obj.DocumentType == 1 || obj.DocumentType == 4)
                 {
                     CheckNotification objI = new CheckNotification();
                     objI.NotificationNumber = objE.NotificationNumber;

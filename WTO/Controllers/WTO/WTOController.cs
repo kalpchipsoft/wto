@@ -54,50 +54,63 @@ namespace WTO.Controllers
                 return View();
             }
         }
-        public ActionResult WTODashboardRequestResponse()
+        public ActionResult WTODashboardRequestResponse(DashboardSearch obj)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                if (obj.DateFrom == null)
+                    obj.DateFrom = "";
+                if (obj.DateTo == null)
+                    obj.DateTo = "";
+                ViewBag.FromDate = obj.DateFrom;
+                ViewBag.ToDate = obj.DateTo;
+                DashboardBusinessService objDBS = new DashboardBusinessService();
+                return View("~/Views/Partial/Dashboard/DashboardRequestResponse.cshtml", objDBS.GetNotificationCountRequestResponse(obj));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
+        public ActionResult GetDashboardAction(DashboardSearch obj)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 DashboardBusinessService objDBS = new DashboardBusinessService();
-                DashboardSearch obj = new DashboardSearch();
-                return View("~/Views/Partial/Dashboard/DashboardRequestResponse.cshtml", objDBS.GetNotificationCountRequestResponse(obj));
+                return View("~/Views/Partial/Dashboard/DashboardAction.cshtml", objDBS.GetDashboardAction(obj));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
-        public ActionResult GetDashboardAction(DashboardSearch obj1)
+        public ActionResult WTODashboardProcessingStatus(DashboardSearch obj)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                DashboardBusinessService objDBS = new DashboardBusinessService();
+                return View("~/Views/Partial/Dashboard/DashboardProcessingStatus.cshtml", objDBS.GetNotificationCountProcessingStatus(obj));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
+        public ActionResult WTOGetHSCodeGraphData()
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 DashboardBusinessService obj = new DashboardBusinessService();
-                return View("~/Views/Partial/Dashboard/DashboardAction.cshtml", obj.GetDashboardAction(obj1));
+                DashboardSearch obj1 = new DashboardSearch();
+                return View("~/Views/Partial/Dashboard/DashboardHSCode.cshtml", obj.GetHSCodeGraphData(obj1));
             }
             else
-                return RedirectToAction("Index", "Login");
-        }
-        public ActionResult WTODashboardProcessingStatus()
-        {
-            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
-            {
-                DashboardBusinessService objDBS = new DashboardBusinessService();
-                Dashboard obj = new Dashboard();
-                obj.UserId = Convert.ToInt64(Session["UserId"]);
-                return View("~/Views/Partial/Dashboard/DashboardProcessingStatus.cshtml", objDBS.GetNotificationCountProcessingStatus(obj));
-            }
-            else
-                return RedirectToAction("Index", "Login");
-        }
-        public ActionResult WTOGetHSCodeGraphData()
-        {
-            DashboardBusinessService obj = new DashboardBusinessService();
-            DashboardSearch obj1 = new DashboardSearch();
-            return View("~/Views/Partial/Dashboard/DashboardHSCode.cshtml", obj.GetHSCodeGraphData(obj1));
+                return PartialView("RedirectToLogin");
         }
         public ActionResult WTOGetHSCodeDataByCountry()
         {
-            DashboardBusinessService obj = new DashboardBusinessService();
-            DashboardSearch obj1 = new DashboardSearch();
-            return View("~/Views/Partial/Dashboard/DashboardHSCodeByCountry.cshtml", obj.GetHsCodeGraphDataCountryWise(obj1));
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                DashboardBusinessService obj = new DashboardBusinessService();
+                DashboardSearch obj1 = new DashboardSearch();
+                return View("~/Views/Partial/Dashboard/DashboardHSCodeByCountry.cshtml", obj.GetHsCodeGraphDataCountryWise(obj1));
+            }
+            else
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetNotificationGraphData(DashboardSearch obj1)
         {
@@ -110,7 +123,7 @@ namespace WTO.Controllers
                 return View("~/Views/Partial/Dashboard/DashboardNotificationHistory.cshtml", obj.GetNotificationGraphDataMonthly(obj1));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult NotificationStakeholderList(Search_StakeholderMailSentReceive obj)

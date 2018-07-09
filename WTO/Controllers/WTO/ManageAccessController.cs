@@ -25,7 +25,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/User.cshtml", obj.UsersList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetCountryList()
@@ -36,7 +36,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/Country.cshtml", obj.CountriesList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetStakeHolderList()
@@ -47,7 +47,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/StakeHolder.cshtml", obj.StakeHoldersList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetTranslatorList()
@@ -58,7 +58,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/Translator.cshtml", obj.TranslatorsList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetTemplateList()
@@ -69,7 +69,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/Template.cshtml", obj.TemplateList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
 
         public ActionResult GetInternalStackHolderList()
@@ -80,7 +80,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/InternalStackHolders.cshtml", obj.InternalStackholdersList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetRegulatoryBodiesList()
         {
@@ -90,7 +90,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/RegulatoryBodies.cshtml", obj.RegulatoryBodiesList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetLanguageList()
         {
@@ -100,7 +100,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/ManageAccess/Language.cshtml", obj.GetLanguageList());
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
     }
 }
