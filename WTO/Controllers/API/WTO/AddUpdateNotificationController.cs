@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using BusinessObjects.Notification;
 using BusinessService.Notification;
@@ -10,12 +9,10 @@ using System.Web;
 using BusinessObjects.ManageAccess;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.Word;
-using iTextSharp.text;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 
 namespace WTO.Controllers.API.WTO
 {
