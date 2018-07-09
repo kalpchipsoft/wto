@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigKeys.cs" />
+    <Compile Include="GlobalErrorModel.cs" />
     <Compile Include="LoginModel.cs" />
     <Compile Include="ManageAccess\CountryBusinessObject.cs" />
     <Compile Include="ManageAccess\InternalStackHolderBusinessObject.cs" />
