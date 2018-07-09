@@ -721,6 +721,7 @@
     <Content Include="Views\Partial\Dashboard\DashboardNotificationHistory.cshtml" />
     <Content Include="Views\WTO\NotifyingMemberList.cshtml" />
     <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
+    <Content Include="Views\Shared\RedirectToLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

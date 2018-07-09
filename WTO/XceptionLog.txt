@@ -1,1 +1,6 @@
 ﻿
+[09 Jul 2018 11:10:11] - POST, http://localhost:27298/api/Dashboard/WTOGetHSCodeData, {"HSCode":"","DateFrom":"010 Jun 2018","DateTo":"09 Jul 2018"}, Conversion failed when converting date and/or time from character string.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.DashboardDataManager.GetHsCodeGraphData(DashboardSearch obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\WTO\DashboardDataManager.cs:line 42
+   at BusinessService.Notification.DashboardBusinessService.GetHSCodeGraphData(DashboardSearch obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Notification\DashboardBusinessService.cs:line 67
+   at WTO.Controllers.API.WTO.DashboardController.WTOGetHSCodeData(DashboardSearch obj1) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\DashboardController.cs:line 24
+   

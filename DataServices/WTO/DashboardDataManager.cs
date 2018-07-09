@@ -60,6 +60,8 @@ namespace DataServices.WTO
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.Dashboards_NotificationCountRequestResponse;
+                sqlCommand.Parameters.AddWithValue("@FromDate", obj.DateFrom);
+                sqlCommand.Parameters.AddWithValue("@ToDate", obj.DateTo);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -69,16 +71,19 @@ namespace DataServices.WTO
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.Dashboards_NotificationCountByAction;
+                sqlCommand.Parameters.AddWithValue("@DateFrom", obj.DateFrom);
+                sqlCommand.Parameters.AddWithValue("@DateTo", obj.DateTo);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public DataSet GetNotificationCountProcessingStatus(Dashboard obj)
+        public DataSet GetNotificationCountProcessingStatus(DashboardSearch obj)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.Dashboards_PendingCounts_Discussion;
-                sqlCommand.Parameters.AddWithValue("@UserId", obj.UserId);
+                sqlCommand.Parameters.AddWithValue("@FromDate", obj.DateFrom);
+                sqlCommand.Parameters.AddWithValue("@ToDate", obj.DateTo);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
