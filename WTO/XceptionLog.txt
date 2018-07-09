@@ -1,1 +1,16 @@
 ﻿
+[09 Jul 2018 11:10:11] - POST, http://localhost:27298/api/Dashboard/WTOGetHSCodeData, {"HSCode":"","DateFrom":"010 Jun 2018","DateTo":"09 Jul 2018"}, Conversion failed when converting date and/or time from character string.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.DashboardDataManager.GetHsCodeGraphData(DashboardSearch obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\WTO\DashboardDataManager.cs:line 42
+   at BusinessService.Notification.DashboardBusinessService.GetHSCodeGraphData(DashboardSearch obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Notification\DashboardBusinessService.cs:line 67
+   at WTO.Controllers.API.WTO.DashboardController.WTOGetHSCodeData(DashboardSearch obj1) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\DashboardController.cs:line 24
+   Object reference not set to an instance of an object.Object reference not set to an instance of an object.
+[09 Jul 2018 14:29:21] - GET, http://localhost:27298/api/Masters/GetHSCode, , Invalid object name 'tblHSCode'.,    at DataServices.DAL.GetDataTable(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 64
+   at DataServices.Masters.MatersDataManager.GetHSCodes() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\Masters\MatersDataManager.cs:line 17
+   at BusinessService.Masters.MastersBusinessService.GetHSCode() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Masters\MastersBusinessService.cs:line 17
+   at WTO.Controllers.API.Master.MastersController.GetHSCode() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\Master\MastersController.cs:line 13
+   
+[09 Jul 2018 14:29:28] - GET, http://localhost:27298/api/Masters/GetHSCode, , Invalid object name 'tblHSCode'.,    at DataServices.DAL.GetDataTable(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 64
+   at DataServices.Masters.MatersDataManager.GetHSCodes() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\Masters\MatersDataManager.cs:line 17
+   at BusinessService.Masters.MastersBusinessService.GetHSCode() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Masters\MastersBusinessService.cs:line 17
+   at WTO.Controllers.API.Master.MastersController.GetHSCode() in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\Master\MastersController.cs:line 13
+   
