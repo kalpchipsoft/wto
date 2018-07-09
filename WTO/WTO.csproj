@@ -649,10 +649,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attachments\App_Start\BundleConfig.cs" />
+    <Compile Include="Attachments\App_Start\FilterConfig.cs" />
+    <Compile Include="Attachments\App_Start\RouteConfig.cs" />
+    <Compile Include="Attachments\App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\API\ManageAccessController.cs" />
     <Compile Include="Controllers\API\Master\MastersController.cs" />
     <Compile Include="Controllers\API\TranslatorController.cs" />
@@ -663,6 +663,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PartialController.cs" />
     <Compile Include="Controllers\WTO\AddNotificationController.cs" />
+    <Compile Include="Controllers\WTO\GlobalErrorController.cs" />
     <Compile Include="Controllers\WTO\ManageAccessController.cs" />
     <Compile Include="Controllers\WTO\MoMController.cs" />
     <Compile Include="Controllers\WTO\NotificationListController.cs" />
@@ -722,6 +723,7 @@
     <Content Include="Views\WTO\NotifyingMemberList.cshtml" />
     <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
     <Content Include="Views\Shared\RedirectToLogin.cshtml" />
+    <Content Include="Views\GlobalError\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

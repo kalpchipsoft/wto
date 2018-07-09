@@ -3,6 +3,7 @@
     public sealed class Procedures
     {
         public const string Login_Validate = "proc_ValidateUser";
+        public const string SaveGlobalErrorDetail = "proc_SaveGlobalErrorDetail";
 
         #region "Masters"
         public const string GetHSCodeMaster = "proc_GetHSCodeMaster";

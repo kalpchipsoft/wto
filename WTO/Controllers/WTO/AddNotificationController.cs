@@ -16,14 +16,15 @@ namespace WTO.Controllers.WTO
 
         public ActionResult Edit_Notification(Int64 Id)
         {
-            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
-            {
-                NotificationBusinessService obj = new NotificationBusinessService();
-                EditNotification NotificationDetails = new EditNotification();
-                return View("~/Views/WTO/AddNotification.cshtml", obj.PageLoad_EditNotification(Id));
-            }
-            else
-                return RedirectToAction("Index", "Login");
+            throw new Exception("something went wrong");
+            //if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            //{
+            //    NotificationBusinessService obj = new NotificationBusinessService();
+            //    EditNotification NotificationDetails = new EditNotification();
+            //    return View("~/Views/WTO/AddNotification.cshtml", obj.PageLoad_EditNotification(Id));
+            //}
+            //else
+            //    return RedirectToAction("Index", "Login");
         }
 
         public ActionResult GetNotificationStakeholders(Int64 Id)

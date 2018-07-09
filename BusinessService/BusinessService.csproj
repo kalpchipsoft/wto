@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BussinessErrorServices\GlobalErrorBussinessServices.cs" />
     <Compile Include="LoginBusinessService.cs" />
     <Compile Include="ManageAccess\CountryBusinessService.cs" />
     <Compile Include="ManageAccess\InternalStackHolderBusinessService.cs" />
