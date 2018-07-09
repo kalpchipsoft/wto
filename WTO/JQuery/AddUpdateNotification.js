@@ -351,103 +351,121 @@ function OpenUploadNotificationPopUp() {
 }
 
 function ReadDocumentFile() {
-    ShowGlobalLodingPanel();
-    $.ajax({
-        url: "/api/AddUpdateNotification/ReadNotificationDetails/",
-        async: false,
-        type: "POST",
-        data: JSON.stringify(NotificationAttachment),
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            ClearNotificationForm();
-            if (result != null) {
-                if ($.trim(result.NotificationType) == "1")
-                    $('#TypeSPS').prop('checked', true);
-                else if ($.trim(result.NotificationType) == "2")
-                    $('#TypeTBT').prop('checked', true);
+    if ($.trim($('#DocumentTypeId').val()) == "") {
+        Alert("Alert", "Please select document type.<br/>", "Ok");
+        return false;
+    }
+    else if (NotificationAttachment == []) {
+        Alert("Alert", "Please upload document.<br/>", "Ok");
+        return false;
+    }
+    else {
+        ShowGlobalLodingPanel();
+        $('#hdnDocumentType').val($.trim($('#DocumentTypeId').val()));
+        var obj = {
+            Document: NotificationAttachment,
+            DocumentType: $.trim($('#DocumentTypeId').val())
+        };
 
-                if ($.trim(result.NotificationNumber) != '' && $.trim(result.NotificationNumber).indexOf('/') > 0)
-                    $('#NotificationNumberId').val(result.NotificationNumber);
+        $.ajax({
+            url: "/api/AddUpdateNotification/ReadNotificationDetails/",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                ClearNotificationForm();
+                if (result != null) {
+                    if ($.trim(result.NotificationType) == "1")
+                        $('#TypeSPS').prop('checked', true);
+                    else if ($.trim(result.NotificationType) == "2")
+                        $('#TypeTBT').prop('checked', true);
 
-                if (!isNaN(new Date($.trim(result.DateofNotification)).valueOf())) {
-                    var _DateofNotification = new Date($.trim(result.DateofNotification));
-                    $('#DateofNotificationId').val($.datepicker.formatDate("d M yy", _DateofNotification));
+                    if ($.trim(result.NotificationNumber) != '' && $.trim(result.NotificationNumber).indexOf('/') > 0)
+                        $('#NotificationNumberId').val(result.NotificationNumber);
+
+                    if (!isNaN(new Date($.trim(result.DateofNotification)).valueOf())) {
+                        var _DateofNotification = new Date($.trim(result.DateofNotification));
+                        $('#DateofNotificationId').val($.datepicker.formatDate("d M yy", _DateofNotification));
+                    }
+
+                    if (!isNaN(new Date($.trim(result.FinalDateOfComments)).valueOf())) {
+                        var _FinalDateOfComments = new Date($.trim(result.FinalDateOfComments));
+                        $('#FinalDateforCommentsId').val($.datepicker.formatDate("d M yy", _FinalDateOfComments));
+                    }
+
+                    if (!isNaN(new Date($.trim(result.SendResponseBy)).valueOf())) {
+                        var _SendResponseBy = new Date($.trim(result.SendResponseBy));
+                        $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
+                    }
+
+                    if (!isNaN(new Date($.trim(result.StakeholderResponseDueBy)).valueOf())) {
+                        var _StakeholderResponseDueBy = new Date($.trim(result.StakeholderResponseDueBy));
+                        $('#hdnStakeholderResponseDueBy').val($.datepicker.formatDate("d M yy", _StakeholderResponseDueBy));
+                    }
+
+                    if ($.trim(result.Articles) != '')
+                        $('#NotificationUnderArticleId').val($.trim(result.Articles).replace(/,\s*$/, ""));
+
+                    if ($.trim(result.Title) != '')
+                        $('#TitleId').val($.trim(result.Title));
+
+                    if ($.trim(result.ResponsibleAgency) != '')
+                        $('#AgencyResponsibleId').val($.trim(result.ResponsibleAgency));
+
+                    if ($.trim(result.ProductsCovered) != '')
+                        $('#ProductsCoveredId').val($.trim(result.ProductsCovered));
+
+                    if ($.trim(result.Description) != '')
+                        $('#DescriptionofContentId').val($.trim(result.Description));
+
+                    if ($.trim(result.HSCodes) != "") {
+                        $('[id$=hdnSelectedHSCodes]').val($.trim(result.HSCodes));
+                        var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
+                        $('#HSCodeTree').jstree(true).select_node(numbersArray);
+                        if ($('.jstree-anchor.jstree-clicked').length > 0)
+                            SaveHSCode();
+                    }
+
+                    if ($.trim(result.EnquiryEmailId) != "")
+                        $("#EnquiryPointId").val($.trim(result.EnquiryEmailId));
+
+                    $("#NotificationNumberId").trigger("blur");
+                    $("#AgencyResponsibleId").trigger('keyup');
+                    $("#DescriptionofContentId").trigger('keyup');
+                    $("#ProductsCoveredId").trigger('keyup');
+                    $("#TitleId").trigger('keyup');
                 }
-
-                if (!isNaN(new Date($.trim(result.FinalDateOfComments)).valueOf())) {
-                    var _FinalDateOfComments = new Date($.trim(result.FinalDateOfComments));
-                    $('#FinalDateforCommentsId').val($.datepicker.formatDate("d M yy", _FinalDateOfComments));
-                }
-
-                if (!isNaN(new Date($.trim(result.SendResponseBy)).valueOf())) {
-                    var _SendResponseBy = new Date($.trim(result.SendResponseBy));
-                    $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
-                }
-
-                if (!isNaN(new Date($.trim(result.StakeholderResponseDueBy)).valueOf())) {
-                    var _StakeholderResponseDueBy = new Date($.trim(result.StakeholderResponseDueBy));
-                    $('#hdnStakeholderResponseDueBy').val($.datepicker.formatDate("d M yy", _StakeholderResponseDueBy));
-                }
-
-                if ($.trim(result.Articles) != '')
-                    $('#NotificationUnderArticleId').val($.trim(result.Articles).replace(/,\s*$/, ""));
-
-                if ($.trim(result.Title) != '')
-                    $('#TitleId').val($.trim(result.Title));
-
-                if ($.trim(result.ResponsibleAgency) != '')
-                    $('#AgencyResponsibleId').val($.trim(result.ResponsibleAgency));
-
-                if ($.trim(result.ProductsCovered) != '')
-                    $('#ProductsCoveredId').val($.trim(result.ProductsCovered));
-
-                if ($.trim(result.Description) != '')
-                    $('#DescriptionofContentId').val($.trim(result.Description));
-
-                if ($.trim(result.HSCodes) != "") {
-                    $('[id$=hdnSelectedHSCodes]').val($.trim(result.HSCodes));
-                    var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
-                    $('#HSCodeTree').jstree(true).select_node(numbersArray);
-                    if ($('.jstree-anchor.jstree-clicked').length > 0)
-                        SaveHSCode();
-                }
-
-                if ($.trim(result.EnquiryEmailId) != "")
-                    $("#EnquiryPointId").val($.trim(result.EnquiryEmailId));
-
-                $("#NotificationNumberId").trigger("blur");
-                $("#AgencyResponsibleId").trigger('keyup');
-                $("#DescriptionofContentId").trigger('keyup');
-                $("#ProductsCoveredId").trigger('keyup');
-                $("#TitleId").trigger('keyup');
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+                ClearNotificationForm();
+                HideGlobalLodingPanel();
+            },
+            error: function (result) {
+                if (result.status == "500")
+                    Alert("Alert", "Please upload valid file.", "Ok");
+                else
+                    Alert("Alert", result.status, "Ok");
+                $(this).val('');
+                NotificationAttachment = [];
+                $("#Loader").hide();
+                $('#NotificationFileName').text('No File Choosen');
+                HideGlobalLodingPanel();
+            },
+            complete: function () {
+                $.each($('.AutoHeight'), function (i, v) {
+                    var evt = document.createEvent('Event');
+                    evt.initEvent('autosize:update', true, false);
+                    this.dispatchEvent(evt);
+                });
+                HideGlobalLodingPanel();
             }
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-            ClearNotificationForm();
-            HideGlobalLodingPanel();
-        },
-        error: function (result) {
-            if (result.status == "500")
-                Alert("Alert", "Please upload valid file.", "Ok");
-            else
-                Alert("Alert", result.status, "Ok");
-            $(this).val('');
-            NotificationAttachment = [];
-            $("#Loader").hide();
-            $('#NotificationFileName').text('No File Choosen');
-            HideGlobalLodingPanel();
-        },
-        complete: function () {
-            $.each($('.AutoHeight'), function (i, v) {
-                var evt = document.createEvent('Event');
-                evt.initEvent('autosize:update', true, false);
-                this.dispatchEvent(evt);
-            });
-            HideGlobalLodingPanel();
-        }
-    });
-    $('#UploadNotificationPopUp').modal('hide');
+        });
+
+        $('#UploadNotificationPopUp').modal('hide');
+        return false;
+    }
 }
 
 function ClearNotificationForm() {
@@ -704,7 +722,8 @@ function SaveUpdateNotification() {
             Description: $('[id$=DescriptionofContentId]').val(),
             NotificationAttachment: NotificationAttachment,
             EnquiryEmail: $.trim($('[id$=EnquiryPointId]').val()),
-            StakeholderResponseDueBy: $("#hdnStakeholderResponseDueBy").val()
+            StakeholderResponseDueBy: $("#hdnStakeholderResponseDueBy").val(),
+            DocumentTypeId: $.trim($('#hdnDocumentType').val())
         };
     }
     else {
@@ -2330,9 +2349,8 @@ function BindNotificationActions() {
                 $('#divTakeActionHeader').addClass('hidden');
                 var HTML = '';
                 $.each(result.Actions, function (i, v) {
-                    HTML += '<div class="row seprater">' +
-                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
-                        '<div class="col-sm-1 pdright">';
+                    HTML += ' <tr><td class="col-sm-1 pdright">' +
+                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />';
 
                     if (v.NotificationActionId > 0) {
                         if (v.UpdatedOn == "") {
@@ -2390,22 +2408,25 @@ function BindNotificationActions() {
                     }
 
                     HTML += '</div>' +
-                        '<div class="col-sm-5">' + v.ActionName + '</div>';
+                        '<td class="col-sm-5">' + v.ActionName + '</td>';
 
                     if (v.ActionId < 4) {
-                        HTML += '<div class="col-sm-4">' +
+                        HTML += '<td class="col-sm-4">' +
                             '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
                             '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
                             '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
                             '</div>' +
-                            '</div>';
+                            '</td>';
                         if (v.NotificationActionId != 0 && v.MailId == 0) {
                             var callfor = "takeaction";
                             takeaction++;
-                            HTML += "<div class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></div>";
+                            HTML += "<td class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></td>";
+                        }
+                        else {
+                            HTML += "<td class='col-sm-2'></td>'";
                         }
                     }
-                    HTML += '</div>';
+                    HTML += '</tr>';
                     if (takeaction > 0) {
                         $('#divTakeActionHeader').removeClass('hidden');
                     }

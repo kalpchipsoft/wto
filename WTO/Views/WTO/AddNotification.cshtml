@@ -21,6 +21,7 @@
 @Html.Hidden("hdnSelected", "")
 @Html.Hidden("hdnLanguageId", "")
 @Html.Hidden("hdnStakeholderResponseDueBy", "")
+@Html.Hidden("hdnDocumentType", "")
 <style>
     input[type=file]::-webkit-file-upload-button {
         cursor: pointer;
@@ -57,7 +58,7 @@
                                                         <div class="col-xs-12 col-sm-12 col-md-6 adduploadbutton @(Model.NotificationId > 0 && Model.NotificationAttachment == null ? "hidden" : "")">
                                                             @if (Model.NotificationAttachment == null)
                                                             {
-                                                                <button type="button" class="btn btn-blue btn-padding pull-right" onclick="OpenUploadNotificationPopUp();" >Upload document</button>
+                                                                <button type="button" class="btn btn-blue btn-padding pull-right" onclick="OpenUploadNotificationPopUp();">Upload document</button>
                                                             }
                                                             else
                                                             {
@@ -624,7 +625,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <h4 class="selecthrheading">HSCodes description</h4>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="col-xs-12 col-sm-12 col-md-6">
                                 <div class="input-group">
                                     <input type="text" id="HSCodeSearchTxt" class="form-control selecthrsearchtextbox" placeholder="HSCode/Description">
                                     <span class="input-group-btn">
@@ -632,10 +633,10 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-2 col-md-2">
-                                <a class="btn btn-dark-red bottom-offset-10" onclick="clearSearchtxt();">Clear <span class="glyphicon glyphicon-remove"></span></a>
+                            <div class="col-xs-12 col-sm-6 col-md-2">
+                                <a class="btn btn-dark-red bottom-offset-10 pull-right" onclick="clearSearchtxt();">Clear <span class="glyphicon glyphicon-remove"></span></a>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-md-4 ">
+                            <div class="col-xs-12 col-sm-6 col-md-4 ">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <a class="btn btn-dark-green btn-block bottom-offset-10" onclick="SaveHSCode();"><img src="~/contents/img/save.png" /> Save</a>
@@ -645,6 +646,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- jstree start -->
                             <div class="col-xs-12 col-sm-12 col-md-12s">
                                 <div class="row mail-count-height top-offset-16">
@@ -727,7 +729,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20" style="display:none">
                                 <h4 class="selecthrheading">Select Stakeholders</h4>
                             </div>
-                            <div class="col-xs-12 col-sm-8 col-md-8 top-offset-10">
+                            <div class="col-xs-12 col-sm-12 col-md-8 top-offset-10">
                                 <div class="input-group">
                                     <input id="txtSearchStakeHolder" type="text" class="form-control selecthrsearchtextbox" placeholder="Search Stakeholder by Organisation, Name or HS Code" ng-model="search">
                                     <span class="input-group-btn">
@@ -735,7 +737,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-md-4 top-offset-10">
+                            <div class="col-xs-12 col-sm-12 col-md-4 top-offset-10">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                         <a class="btn btn-red  pull-right bottom-offset-10" data-dismiss="modal">Close <span class="glyphicon glyphicon-remove"></span></a>
@@ -1263,7 +1265,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-8">
                             <p class="wto-label-normal">
-                                @Html.DropDownListFor(m => Model.DocumentTypeList, new SelectList(Model.DocumentTypeList, "DocumentTypeId", "Type"), "Select status", new { Id = "DocumentTypeId", Class = "form-control textboxcontrol" })
+                                @Html.DropDownListFor(m => Model.DocumentTypeList, new SelectList(Model.DocumentTypeList, "DocumentTypeId", "Type"), "Select document type", new { Id = "DocumentTypeId", Class = "form-control textboxcontrol" })
                             </p>
                         </div>
                     </div>
@@ -1288,7 +1290,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-primary" value="Ok" onclick="ReadDocumentFile()();" />
+                    <input type="button" class="btn btn-primary" value="Ok" onclick="ReadDocumentFile();" />
                     <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
                 </div>
             </form>
