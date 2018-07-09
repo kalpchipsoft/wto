@@ -24,13 +24,11 @@ namespace BusinessService.Masters
             {
                 HSCodes obj = new HSCodes();
                 obj.HSCode = Convert.ToString(dr["id"]);
-                obj.Text = Convert.ToString(dr["id"]);
+                obj.Text = Convert.ToString(dr["text"]);
                 objHsCodeList.Add(obj);
             }
             return objHsCodeList;
         }
-
-
         public List<TranslatorInfo> GetTranslater(Int64 LanguageId)
         {
             List<TranslatorInfo> TranslatorList = new List<TranslatorInfo>();
@@ -79,7 +77,7 @@ namespace BusinessService.Masters
         public bool CheckIsEmailExists(string Email, string callFor)
         {
             MatersDataManager objMDM = new MatersDataManager();
-            DataTable dt = objMDM.CheckIsEmailExists(Email,callFor);
+            DataTable dt = objMDM.CheckIsEmailExists(Email, callFor);
             return Convert.ToBoolean(dt.Rows[0][0]);
         }
 

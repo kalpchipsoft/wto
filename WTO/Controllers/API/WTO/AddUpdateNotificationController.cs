@@ -271,7 +271,7 @@ namespace WTO.Controllers.API.WTO
                                     IsMultipleNotificationNumber = true;
                             }
 
-                            if (obj.DocumentType == 1 || obj.DocumentType == 4)
+                            if (objE.NotificationNumber.Split('/').Length < 6 || IsMultipleNotificationNumber)
                             {
                                 #region "Table"
                                 Table t = wordfile.Tables[1];
@@ -287,8 +287,34 @@ namespace WTO.Controllers.API.WTO
                                                 objE.Country = s.Replace("Notifying Member", "").Trim();
                                         }
                                     }
+                                    else if (str.Contains("Miembro que notifica"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Miembro que notifica"))
+                                                objE.Country = s.Replace("Miembro que notifica", "").Trim();
+                                        }
+                                    }
+                                    else if (str.Contains("Membre notifiant"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Membre notifiant"))
+                                                objE.Country = s.Replace("Membre notifiant", "").Trim();
+                                        }
+                                    }
 
                                     if (str.Contains("Agency responsible"))
+                                    {
+                                        string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
+                                    }
+                                    else if (str.Contains("Organismo responsable"))
+                                    {
+                                        string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
+                                    }
+                                    else if (str.Contains("Organisme responsable"))
                                     {
                                         string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
@@ -320,6 +346,58 @@ namespace WTO.Controllers.API.WTO
                                             }
                                         }
                                     }
+                                    else if (str.Contains("Productos abarcados"))
+                                    {
+                                        string _Products = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        int startIndex = _Products.IndexOf(":", 0);
+                                        if (startIndex >= 0)
+                                        {
+                                            _Products = _Products.Substring(startIndex + 1);
+                                            objE.ProductsCovered = _Products;
+
+                                            string hs = "";
+                                            if (_Products.Contains("(SA "))
+                                            {
+                                                hs = _Products.Remove(0, _Products.IndexOf("(SA"));
+                                                hs = hs.Substring(0, hs.IndexOf(')'));
+                                                hs = hs.Replace("(SA", "").Trim();
+                                                objE.HSCodes = hs;
+                                            }
+                                            else if (_Products.Contains("(SA:"))
+                                            {
+                                                hs = _Products.Substring(_Products.IndexOf("(SA:") + 1).Replace(")", "");
+                                                hs = hs.Substring(0, hs.IndexOf(","));
+                                                hs = hs.Replace("SA:", "").Trim();
+                                                objE.HSCodes = hs.Replace('.', ',');
+                                            }
+                                        }
+                                    }
+                                    else if (str.Contains("Produits visés"))
+                                    {
+                                        string _Products = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        int startIndex = _Products.IndexOf(":", 0);
+                                        if (startIndex >= 0)
+                                        {
+                                            _Products = _Products.Substring(startIndex + 1);
+                                            objE.ProductsCovered = _Products;
+
+                                            string hs = "";
+                                            if (_Products.Contains("(SH "))
+                                            {
+                                                hs = _Products.Remove(0, _Products.IndexOf("(SH"));
+                                                hs = hs.Substring(0, hs.IndexOf(')'));
+                                                hs = hs.Replace("(SH", "").Trim();
+                                                objE.HSCodes = hs;
+                                            }
+                                            else if (_Products.Contains("(SH:"))
+                                            {
+                                                hs = _Products.Substring(_Products.IndexOf("(SH:") + 1).Replace(")", "");
+                                                hs = hs.Substring(0, hs.IndexOf(","));
+                                                hs = hs.Replace("SH:", "").Trim();
+                                                objE.HSCodes = hs.Replace('.', ',');
+                                            }
+                                        }
+                                    }
 
                                     if (str.Contains("Title"))
                                     {
@@ -328,6 +406,27 @@ namespace WTO.Controllers.API.WTO
                                             objE.Title = _Title.Replace("Title of the notified document:", "").Trim();
                                         else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Title, number of pages and language(s) of the notified document:"))
                                             objE.Title = _Title.Replace("Title, number of pages and language(s) of the notified document:", "").Trim();
+
+                                        objE.Title = objE.Title.Replace("5.", "");
+                                    }
+
+                                    else if (str.Contains("Título"))
+                                    {
+                                        string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Título del documento notificado:"))
+                                            objE.Title = _Title.Replace("Título del documento notificado:", "").Trim();
+                                        else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Título, número de páginas e idioma(s) del documento notificado:"))
+                                            objE.Title = _Title.Replace("Título, número de páginas e idioma(s) del documento notificado:", "").Trim();
+
+                                        objE.Title = objE.Title.Replace("5.", "");
+                                    }
+                                    else if (str.Contains("Intitulé"))
+                                    {
+                                        string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Intitulé du texte notifié:"))
+                                            objE.Title = _Title.Replace("Intitulé du texte notifié:", "").Trim();
+                                        else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Intitulé, nombre de pages et langue(s) du textenotifié:"))
+                                            objE.Title = _Title.Replace("Intitulé, nombre de pages et langue(s) du textenotifié:", "").Trim();
 
                                         objE.Title = objE.Title.Replace("5.", "");
                                     }
@@ -341,6 +440,28 @@ namespace WTO.Controllers.API.WTO
                                         }
                                         var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         objE.Description = _Desc.Replace("Description of content", "").Trim();
+                                        objE.Description = objE.Description.Replace("6.", "");
+                                    }
+                                    else if (str.Contains("Descripción del contenido"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Descripción del contenido"))
+                                                objE.Description = s.Replace("Descripción del contenido", "").Trim();
+                                        }
+                                        var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        objE.Description = _Desc.Replace("Descripción del contenido", "").Trim();
+                                        objE.Description = objE.Description.Replace("6.", "");
+                                    }
+                                    else if (str.Contains("Teneur"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Teneur"))
+                                                objE.Description = s.Replace("Teneur", "").Trim();
+                                        }
+                                        var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
+                                        objE.Description = _Desc.Replace("Teneur", "").Trim();
                                         objE.Description = objE.Description.Replace("6.", "");
                                     }
 
@@ -365,6 +486,34 @@ namespace WTO.Controllers.API.WTO
                                             if (s.Contains("Notified under Article"))
                                             {
                                                 foreach (string ar in s.Replace("Notified under Article ", "").Split(','))
+                                                {
+                                                    if (ar.Contains("X"))
+                                                        objE.Articles += ar.Replace("X", "").Trim() + ",";
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (str.Contains("Notificación hecha en virtud del artículo"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Notificación hecha en virtud del artículo"))
+                                            {
+                                                foreach (string ar in s.Replace("Notificación hecha en virtud del artículo", "").Split(','))
+                                                {
+                                                    if (ar.Contains("X"))
+                                                        objE.Articles += ar.Replace("X", "").Trim() + ",";
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (str.Contains("Notification au titre de l'article"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Notification au titre de larticle"))
+                                            {
+                                                foreach (string ar in s.Replace("Notification au titre de larticle", "").Split(','))
                                                 {
                                                     if (ar.Contains("X"))
                                                         objE.Articles += ar.Replace("X", "").Trim() + ",";
@@ -406,6 +555,32 @@ namespace WTO.Controllers.API.WTO
                                             }
                                         }
                                     }
+                                    else if (str.Contains("Textos disponibles en"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Correo electrónico"))
+                                            {
+                                                string email = s.Replace("Correo electrónico", "").Replace(":", "").Trim();
+                                                if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                    objE.EnquiryEmailId = email;
+                                            }
+                                        }
+                                    }
+                                    else if (str.Contains("Entité auprès de laquelle les textes peuvent être obtenus"))
+                                    {
+                                        foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        {
+                                            if (s.Contains("Courrier électronique"))
+                                            {
+                                                string email = s.Replace("Courrier électronique", "").Replace(":", "").Trim();
+                                                if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                    objE.EnquiryEmailId = email;
+                                            }
+                                        }
+                                    }
+
+
                                 }
 
                                 Marshal.ReleaseComObject(t);

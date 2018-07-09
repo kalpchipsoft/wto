@@ -16,6 +16,7 @@
             overflow-y: auto;
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
+            width:60% !important;
         }
         /* IE 6 doesn't support max-height
         * we use height instead, but this forces the menu to always be this tall
@@ -59,6 +60,7 @@
                                         <div class="form-group">
                                             <label>HSCode</label>
                                             <input type="text" class="form-control textboxcontrol" id="txtHscode" placeholder="Hscode" value="@ViewBag.Hscode">
+                                            <input type="hidden" id="hdnHsCode" value="@ViewBag.Hscode" />
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-3">
@@ -157,10 +159,10 @@ else
 <script>
     $(function () {
         $('#ddlCountry').combobox();
-    
     })
     var IsScrollingOnce = true;
     function Search(PageIndx) {
+        $('#hdnPageIndex').val(PageIndx);
         ShowGlobalLodingPanel();
         var DateFrom = $('#txtfromdate').val().trim();
         var DateTo = $('#txttodate').val().trim();
@@ -168,11 +170,13 @@ else
             var to = new Date(DateTo);
             var from = new Date(DateFrom);
             if (to < from) {
-                Alert("Alert", "To date can not less than from date.<br/>", "Ok");
+                Alert("Alert", "To date can not be less than From date.<br/>", "Ok");
+                HideGlobalLodingPanel();
+                return false;
             }
         }
         var obj = {
-            Hscode: $('#txtHscode').val().trim(),
+            Hscode: $('#hdnHsCode').val().trim(),
             CountryName: $('[id$=ddlCountry]').val(),
             FromDate: $('#txtfromdate').val().trim(),
             ToDate: $('#txttodate').val().trim(),
@@ -201,10 +205,10 @@ else
                         $('#lblCount').text(parseInt(result.TotalCount));
                         $('#NotificationData').empty();
                     }
+                    debugger;
                     var NewRow = '';
                     if (result.objNotificationCountries != null && result.objNotificationCountries.length > 0) {
                         $.each(result.objNotificationCountries, function (i, v) {
-                            debugger
                             NewRow += '<tr>';
                             NewRow += '<td>' + v.CountryName + '</td>';
                             NewRow += '<td class="text-center">' + v.CountryCode + '</td>';
@@ -212,10 +216,20 @@ else
                         })
                     }
                     else
-                        NewRow += '<tr><td colspan="3">No Record Found ...</td></tr>';
+                    {
+                        if ($('#NotificationData tr').length > 0)
+                        {
+                            NewRow = '';
+                        }
+                        else
+                        {
+                            NewRow += '<tr id="divNorecord"><td colspan="3">No Record Found ...</td></tr>';
+                        }
+                    }                 
                     $('#NotificationCount').text('(' + result.TotalCount + ')');
                     $('#hdnNotificationCount').val(result.TotalCount);
                     $('#NotificationData').append(NewRow);
+                    $('.dropdown-menu').css('display','none');
                 }
                 HideGlobalLodingPanel();
                 IsScrollingOnce = true;
@@ -232,11 +246,13 @@ else
     }
     function Clear() {
         $('#txtHscode').val('');
+        $('#hdnHsCode').val('');
         $('[id$=ddlCountry]').val('');
         $('.combobox-container').find('.glyphicon-remove').click();
-        $('#txtfromdate').val('');
-        $('#txttodate').val('');
+        $('#txtfromdate').val('@ViewBag.FromDate');
+        $('#txttodate').val('@ViewBag.ToDate');
         Search(1);
+       
     }
     $(window).on("scroll", function (e) {
         var $o = $(e.currentTarget);
@@ -248,7 +264,7 @@ else
             var MaxVal = parseInt($('#hdnMaxPageIndex').val());
             if (NewVal <= MaxVal) {
                 Search(NewVal);
-                $('#hdnPageIndex').val(NewVal);
+                $('#divPaginationLoadingPanel').addClass('hidden');
             }
             else
                 $('#divPaginationLoadingPanel').addClass('hidden');
