@@ -14,6 +14,12 @@ namespace BusinessObjects.Notification
         public int DocumentTypeId { get; set; }
         public string Type { get; set; }
     }
+
+    public class ReadDocument
+    {
+        public int DocumentType { get; set; }
+        public Attachment Document { get; set; }
+    }
     public class AddNotification
     {
         [Required]
