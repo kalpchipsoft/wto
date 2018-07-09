@@ -154,9 +154,9 @@ function SearchNotifications(ctrl) {
                         '</div>' +
                         '<input type="hidden" id="hdnNotificationId_' + tblCount + '" value="' + v.NotificationId + '" />' +
                         '</td>' +
-                        '<td style="width:400px;">' +
+                        '<td>' +
                         '<p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color ">' + v.NotificationNumber + '</a></p>' +
-                        '<p style="word-wrap:break-word; width:400px;">' + v.Title + '</p>' +
+                        '<p>' + v.Title + '</p>' +
                         '</td>' +
                         '<td class="text-center">' + v.FinalDateofComments + '</td>' +
                         '<td class="text-center">' + v.Country + '</td>';
@@ -172,7 +172,7 @@ function SearchNotifications(ctrl) {
                             return a.Sequence - b.Sequence;
                         });
 
-                        html += '<td class="tooltiprelative">';
+                        html += '<td class="tooltiprelative" style="padding:0px;">';
                         $.each(NotificationProcessDot, function (indx, val) {
                             html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
                         });
@@ -282,9 +282,9 @@ function GetAllNotifications(ctrl) {
                                 '</div>' +
                                 '<input type="hidden" id="hdnNotificationId_' + tblCount + '" value="' + v.NotificationId + '" />' +
                                 '</td>' +
-                                '<td style="width:400px;">' +
+                                '<td>' +
                                 '<p class="red-color NotiNumber" data-toggle="tooltip" data-placement="bottom" title="' + v.Description + '"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color ">' + v.NotificationNumber + '</a></p>' +
-                                '<p style="word-wrap:break-word; width:400px;">' + v.Title + '</p>' +
+                                '<p>' + v.Title + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' + v.FinalDateofComments + '</td>' +
                                 '<td class="text-center">' + v.Country + '</td>';
@@ -300,7 +300,7 @@ function GetAllNotifications(ctrl) {
                                     return a.Sequence - b.Sequence;
                                 });
 
-                                html += '<td class="tooltiprelative">';
+                                html += '<td class="tooltiprelative" style="padding:0px;">';
                                 $.each(NotificationProcessDot, function (indx, val) {
                                     html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
                                 });
@@ -407,7 +407,7 @@ function GetFilterNotification(ctrl) {
                                 return a.Sequence - b.Sequence;
                             });
 
-                            html += '<td class="tooltiprelative">';
+                            html += '<td class="tooltiprelative" style="padding:0px;">';
                             $.each(NotificationProcessDot, function (indx, val) {
                                 html += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
                             });
