@@ -649,10 +649,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attachments\App_Start\BundleConfig.cs" />
+    <Compile Include="Attachments\App_Start\FilterConfig.cs" />
+    <Compile Include="Attachments\App_Start\RouteConfig.cs" />
+    <Compile Include="Attachments\App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\API\ManageAccessController.cs" />
     <Compile Include="Controllers\API\Master\MastersController.cs" />
     <Compile Include="Controllers\API\TranslatorController.cs" />

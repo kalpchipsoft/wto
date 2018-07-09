@@ -26,8 +26,9 @@ namespace WTO
 
             GlobalErrorController objGlobalError = new GlobalErrorController();
             LoginController objloginController = new LoginController();
-            var excepMsg = "";
-            var source = "";
+            BusinessObjects.GlobalErrorModel objE = new BusinessObjects.GlobalErrorModel();
+            var excepMsg = objE.Detail;
+            var source = objE.Subject;
 
 
             Exception exception = Server.GetLastError();
@@ -49,8 +50,8 @@ namespace WTO
 
 
             // RouteConfig.RegisterRoutes1(RouteTable.Routes);
-            App_Start.FilterConfig.RegisterGlobalFilters1(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes1(RouteTable.Routes);
+            App_Start.FilterConfig.RegisterGlobalFilters__WithGlobalError(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes_WithGlobalError(RouteTable.Routes);
             Response.RedirectToRoute("404-PageNotFound");
         }
 
