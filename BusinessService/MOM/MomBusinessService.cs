@@ -104,7 +104,7 @@ namespace BusinessService.MOM
                     {
                         objE.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objE.Title = Convert.ToString(dr["Title"]);
-                        objE.Status = Convert.ToString(dr["Stage"]);
+                        //objE.Status = Convert.ToString(dr["Stage"]);
                         objE.MeetingNote = Convert.ToString(dr["MeetingNote"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         objE.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
@@ -299,7 +299,7 @@ namespace BusinessService.MOM
                     {
                         objE.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objE.Title = Convert.ToString(dr["Title"]);
-                        objE.Status = Convert.ToString(dr["Stage"]);
+                        //objE.Status = Convert.ToString(dr["Stage"]);
                         objE.MeetingNote = Convert.ToString(dr["MeetingNote"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         objE.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);

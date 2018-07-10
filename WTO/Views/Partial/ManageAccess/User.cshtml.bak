@@ -1,0 +1,170 @@
+﻿@model BusinessObjects.ManageAccess.PageLoad_UserList
+@{
+    Layout = null;
+}
+<input id="hdnUserId" type="hidden" value="0" />
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <label class="table-heading">Users (@Model.TotalCount)</label>
+        <a href="#" class="btn btn-blue btn-padding pull-right bottom-offset-10" data-target="#AddUser" onclick="AddUserPopup();" data-toggle="modal">Add User</a>
+        <div class="table-responsive nopaging notificationlist top-offset-20">
+            <table class="table table-bordered table-fixed">
+                <thead class="second-blackbackground">
+                    <tr>
+                        <th class="col-xs-1">S.No</th>
+                        <th class="col-xs-3">User Name</th>
+                        <th class="col-xs-3">Email Id</th>
+                        <th class="col-xs-1">Phone</th>
+                        <th class="col-xs-1">Status</th>
+                        <th class="text-center col-xs-1">View Password</th>
+                        <th class="text-center col-xs-1">Edit</th>
+                        <th class="text-center col-xs-1">Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="whitebackground">
+                    @if (@Model.UserList != null)
+                    {
+                        foreach (var item in @Model.UserList)
+                        {
+                            <tr>
+                                <td class="col-xs-1">@item.ItemNumber</td>
+                                <td class="col-xs-3">@item.UserName</td>
+                                <td class="col-xs-3">@item.Email</td>
+                                <td class="col-xs-1">@item.Mobile</td>
+                                @if (@item.Status == 1)
+                                {
+                                    <td class="col-xs-1">Active</td>
+                                }
+                                else
+                                {
+                                    <td class="col-xs-1">Inactive</td>
+                                }
+                                <td class="text-center col-xs-1"><a href="#"><span class="glyphicon glyphicon-eye-open eye"></span><span class="hidden pwd">@item.Password</span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="EditUserData(@item.UserId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-xs-1"><a href="#" onclick="Confirm('Delete','Do you want to delete the @item.UserName ?','Yes', 'No', 'DeleteUser(@item.UserId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">No Record Found ...</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add user modal popup -->
+
+<div class="modal fade selecthrmodal" id="AddUser" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog selecthrdialog">
+        <div class="modal-content selecthrcontent">
+            <div class="modal-header selecthrheader">
+                <button type="button" class="close selecthrclose" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="modal-body selecthrbody">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4 class="selecthrheading" id="AddUserpopupHead">Add User</h4>
+                                <hr>
+                            </div>
+                            <form class="form-horizontal top-offset-10">
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <img id="ImgPhotograph" src="~/contents/img/Add-Image.jpg" onerror="setNoImage(this)"
+                                             alt="Photograph" height="120px" width="120px" />
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="#" id="lnkUploadImage" onclick="UploadImage();">Upload</a>
+                                        &nbsp;
+                                        <a href="#" id="lnkRemoveImage" onclick="RemoveImage();" Style="display: none;">Remove</a>
+                                        <input type="file" id="fileUploadId" style="display:none;" onchange="ChangeFile(this);" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">First Name<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <input id="UserFirstName" type="text" class="form-control" maxlength="50" onkeypress="return isAlpha(event);">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Last Name<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <input id="UserLastName" type="text" class="form-control" maxlength="50" onkeypress="return isAlpha(event);">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Email<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <input id="UserEmailId" type="Email" class="form-control" maxlength="70">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Phone<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <input id="UserMobileNo" type="text" class="form-control" onkeypress="return isNumeric(event);" maxlength="10">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Status<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <select id="UserSelectActiveInactive" class="form-control">
+                                            <option value="-1">---Select Status---</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Role<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => Model.UserRoles, new SelectList(Model.UserRoles, "RoleId", "RoleName"), "---select role---", new { Id = "UserRoleId", Class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a id="UserSaveUpdate" href="#" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="Uservalidate();">Save</a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add user modal popup -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("td a").click(function (ctrl) {
+            $(this).find(".eye").addClass("hidden");
+            $(this).find(".pwd").css("padding", "5px").removeClass("hidden").mouseout(function () {
+                $(this).addClass("hidden");
+                $(".eye").removeClass("hidden");
+            });
+        })
+
+        if ($(window).width() < 700) {
+            $(".table").removeClass("table-fixed");
+            $("th").removeClass("col-xs-1 col-xs-3 table-fixed");
+            $("td").removeClass("col-xs-1 col-xs-3 table-fixed");
+        }
+
+    })
+</script>

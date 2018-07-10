@@ -317,7 +317,6 @@ $(document).ready(function () {
 
     if ($('[id$=hdnNotificationId]').val() > 0) {
         //$("#FinalDateforCommentsId").trigger("change");
-
         $("#AgencyResponsibleId").trigger('keyup');
         $("#DescriptionofContentId").trigger('keyup');
         $("#ProductsCoveredId").trigger('keyup');
@@ -466,6 +465,20 @@ function ReadDocumentFile() {
         $('#UploadNotificationPopUp').modal('hide');
         return false;
     }
+}
+
+function CloseUploadNotificationPopUp() {
+    if (NotificationAttachment == []) {
+        $('#NotificationFileName').val('');
+        $('#DocumentTypeId').val('');
+        $('#NotificationFile').val('');
+    }
+    else {
+        $('#NotificationFileName').val(NotificationAttachment.FileName);
+        $('#DocumentTypeId').val($.trim($('#hdnDocumentType').val()));
+    }
+    $('#UploadNotificationPopUp').modal('hide');
+    return false;
 }
 
 function ClearNotificationForm() {
@@ -2426,6 +2439,11 @@ function BindNotificationActions() {
                             HTML += "<td class='col-sm-2'></td>'";
                         }
                     }
+                    else {
+                        HTML += '<td class="col-sm-4"></td > ';
+                        HTML += "<td class='col-sm-2'></td>'";
+                    }
+
                     HTML += '</tr>';
                     if (takeaction > 0) {
                         $('#divTakeActionHeader').removeClass('hidden');
