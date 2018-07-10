@@ -102,7 +102,6 @@ namespace BusinessService.Notification
                         objItems.Title = Convert.ToString(dr["Title"]);
                         objItems.MailCount = Convert.ToInt32(dr["MailCount"]);
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
-                        objItems.DiscussionStatus = Convert.ToInt32(dr["DiscussionStatus"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
                         ItemsList.Add(objItems);
                     }
@@ -182,7 +181,6 @@ namespace BusinessService.Notification
                         objItems.Title = Convert.ToString(dr["Title"]);
                         objItems.MailCount = Convert.ToInt32(dr["MailCount"]);
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
-                        objItems.DiscussionStatus = Convert.ToInt32(dr["DiscussionStatus"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
                         ItemsList.Add(objItems);
                     }

@@ -170,6 +170,10 @@ function BindNotificationActions() {
                             HTML += "<td class='col-sm-2'></td>'";
                         }
                     }
+                    else {
+                        HTML += '<td class="col-sm-4"></td > ';
+                        HTML += "<td class='col-sm-2'></td>'";
+                    }
                     HTML += '</tr>';
                     if (takeaction > 0) {
                         $('#divTakeActionHeader').removeClass('hidden');

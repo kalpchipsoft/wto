@@ -3,6 +3,7 @@
     public sealed class Procedures
     {
         public const string Login_Validate = "proc_ValidateUser";
+        public const string SaveGlobalErrorDetail = "proc_SaveGlobalErrorDetail";
 
         #region "Masters"
         public const string GetHSCodeMaster = "proc_GetHSCodeMaster";
@@ -126,8 +127,10 @@
         public const string InsertMeeting = "Proc_InsertNotificationMom";
         public const string GetMeetingList = "Proc_GetNotificationMOMList";
         public const string EditMeeting = "Proc_GetEditNotificationMeeting";
-        public const string AddUpdateNotificationAction = "proc_AddRemoveNotificationAction";
         public const string UpdateMeetingDate = "Proc_UpdateMeetingDate";
+
+        public const string AddUpdateNotificationAction = "proc_AddRemoveNotificationAction";
+        
         public const string EndMeeting = "proc_EndCurrentMeeting";
         public const string CheckIfOpenMeetingExists = "proc_CheckIfOpenMeetingExists";
         #endregion

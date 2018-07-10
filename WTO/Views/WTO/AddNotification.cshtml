@@ -9,7 +9,7 @@
 
 <link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-multiselect.js"></script>
-<script src="~/JQuery/AddUpdateNotification.js?v=11"></script>
+<script src="~/JQuery/AddUpdateNotification.js?v=12"></script>
 <!-- body section start -->
 @Html.Hidden("hdnSelectedHSCodes", @Model.HSCodes)
 @Html.Hidden("hdnNotificationId", @Model.NotificationId)
@@ -577,7 +577,7 @@
                     <!-- external part -->
                     <div class="row top-offset-50 bottom-offset-40">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <a href="@Url.Action("Index", "NotificationList" , new { PageIndex=1, PageSize=15 })" class='btn btn-gray pull-right btn-padding left-offset-20 @(@Model.NotificationId <= 0 ? "hidden" : "")'><span class="glyphicon glyphicon-arrow-left"></span> <b>Back To List</b></a>
+                            <a href="@Url.Action("Index", "NotificationList" , new { PageIndex=1, PageSize=15 })" class='btn btn-gray pull-right btn-padding left-offset-20 bottom-offset-10 @(@Model.NotificationId <= 0 ? "hidden" : "")'><span class="glyphicon glyphicon-arrow-left"></span> <b>Back To List</b></a>
                             <button class="btn btn-dark-green pull-right btn-padding addsavenotification" onclick="return Validate();"><img src="~/contents/img/save.png" /> Save</button>
                         </div>
                     </div>
@@ -646,7 +646,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- jstree start -->
                             <div class="col-xs-12 col-sm-12 col-md-12s">
                                 <div class="row mail-count-height top-offset-16">
@@ -1256,7 +1255,7 @@
             <form>
                 <div class="modal-header">
                     <h4 class="modal-title" id="lblModalHeading">Upload document</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top:-25px;">&times;</button>
+                    <button type="button" class="close" aria-hidden="true" style="margin-top:-25px;" onclick="CloseUploadNotificationPopUp();">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="row top-offset-10">
@@ -1291,7 +1290,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-primary" value="Ok" onclick="ReadDocumentFile();" />
-                    <input type="submit" class="btn btn-danger" value="Cancel" data-dismiss="modal" />
+                    <input type="submit" class="btn btn-danger" value="Cancel" onclick="CloseUploadNotificationPopUp();" />
                 </div>
             </form>
         </div>

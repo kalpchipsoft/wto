@@ -33,7 +33,6 @@ namespace BusinessObjects.Notification
         public string Country { get; set; }
         public int MailCount { get; set; }
         public int ResponseCount { get; set; }
-        public int DiscussionStatus { get; set; }
         public string Actions { get; set; }
     }
 
