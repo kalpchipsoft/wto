@@ -147,6 +147,8 @@ namespace BusinessObjects.MOM
         public string UpdatedOn { get; set; }
     }
 
+    
+
     public class EditNotificationMeeting
     {
         public string NotificationNumber { get; set; }
@@ -205,4 +207,11 @@ namespace BusinessObjects.MOM
         public int? CountryId { get; set; }
         public string Country { get; set; }
     }
+
+    public class NotificationMeetings
+    {
+        public Int64 MeetingId { get; set; }
+        public string MeetingDate { get; set; }
+    }
+
 }

@@ -226,6 +226,7 @@
     <Content Include="contents\img\document.png" />
     <Content Include="contents\img\download.png" />
     <Content Include="contents\img\edit.png" />
+    <Content Include="contents\img\ErrorImage.png" />
     <Content Include="contents\img\export.png" />
     <Content Include="contents\img\export2.png" />
     <Content Include="contents\img\humbergur.png" />
@@ -691,7 +692,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Partial\UserInfo.cshtml" />
-    <Content Include="Views\Partial\Partial_NotificationList.cshtml" />
     <Content Include="Views\Partial\ManageAccess\User.cshtml" />
     <Content Include="Views\Partial\ManageAccess\StakeHolder.cshtml" />
     <Content Include="Views\Partial\ManageAccess\Translator.cshtml" />
@@ -724,14 +724,6 @@
     <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
     <Content Include="Views\Shared\RedirectToLogin.cshtml" />
     <Content Include="Views\GlobalError\Index.cshtml" />
-    <Content Include="Views\Partial\ManageAccess\Country.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\InternalStackHolders.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\Language.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\RegulatoryBodies.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\StakeHolder.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\Template.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\Translator.cshtml.bak" />
-    <Content Include="Views\Partial\ManageAccess\User.cshtml.bak" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

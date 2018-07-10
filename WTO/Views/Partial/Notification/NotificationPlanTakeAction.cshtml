@@ -1,7 +1,7 @@
-﻿@*@model BusinessObjects.Notification.NotificationActions*@
-@{
+﻿@{
     Layout = null;
 }
+@Html.Hidden("hdnMeetingId", "0")
 @Html.Hidden("hdnNotificationActionId", "0")
 @Html.Hidden("hdnActionId", "0")
 <div class="modal fade selecthrmodal" id="ModalAddAction" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -48,9 +48,51 @@
                                             <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationStage"></p>
                                         </div>
                                     </div>
+                                    <div class="row top-offset-10" id="divMeetingNote">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Meeting History<span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <div class="table-responsive nopaging notificationlist sentmail">
+                                                <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                                                    <thead class="second-blackbackground">
+                                                        <tr>
+                                                            <th class="col-sm-3">Meeting Date</th>
+                                                            <th class="col-sm-6">Action(s)</th>
+                                                            <th class="col-sm-3">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="whitebackground">
+                                                        <tr>
+                                                            <td class="col-sm-3">13 Jul 2018</td>
+                                                            <td class="col-sm-6">
+                                                                <p class="wto-label-normal">Responce to notifying country</p>
+                                                                <p class="wto-label-normal">Brief to regulators</p>
+                                                            </td>
+                                                            <td class="col-sm-3">
+                                                                <p class="wto-label-normal">Pending</p>
+                                                                <p class="wto-label-normal">Completed</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-sm-3">13 Jul 2018</td>
+                                                            <td class="col-sm-6">
+                                                                <p class="wto-label-normal">Responce to notifying country</p>
+                                                                <p class="wto-label-normal">Policy brief to DoC</p>
+                                                            </td>
+                                                            <td class="col-sm-3">
+                                                                <p class="wto-label-normal">Pending</p>
+                                                                <p class="wto-label-normal">Completed</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-bold dark-blue">Meeting Date<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                            <p class="wto-label-bold dark-blue">Current meeting date<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4">
                                             <input type="text" class="form-control date-picker @(Model.MeetingDate == ""? "" : "disabled")" id="MeetingDateId" value="@(Model.MeetingDate == ""? "" : Model.MeetingDate)" onchange="return IsMeetingExists(0);" />
@@ -63,6 +105,14 @@
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
                                             <textarea class="form-control AutoHeight" cols="30" rows="2" id="txtMeetingNote">@Model.MeetingNotes</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row top-offset-10" id="divMeetingNote">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Group <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <input type="text" maxlength="5" class="form-control" id="txtNotificationGroup" />
                                         </div>
                                     </div>
                                 </div>
@@ -81,11 +131,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="whitebackground" id="divPlanActions">
+                                                    <input type="hidden" id="hdnNotificationActionId" value="ac.NotificationActionId" />
                                                     <tr>
-                                                        <td class="col-sm-1 pdright">
-                                                            <input type="checkbox" value="ac.ActionId" onchange="AddRemoveActions(this);" />
-                                                            <input type="hidden" id="hdnNotificationActionId" value="" />
-                                                        </td>
+                                                        <td class="col-sm-1 pdright"><input type="checkbox" value="ac.ActionId" onchange="AddRemoveActions(this);" /></td>
                                                         <td class="col-sm-5">Action</td>
                                                         <td class="col-sm-4">
                                                             <div class="form-group has-feedback" style="margin-bottom:0px;">
