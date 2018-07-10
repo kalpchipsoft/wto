@@ -62,6 +62,7 @@
 .wto-label-normal {
     font-size: 14px;
     font-weight: normal;
+    word-wrap: break-word;
 }
 
 .exportdropdown {
@@ -649,6 +650,7 @@ a:hover, a:focus {
 
 .adnotificationtable {
     max-height: 400px;
+    overflow-y: auto;
 }
 
     .adnotificationtable thead th, .adnotificationtable tbody td {

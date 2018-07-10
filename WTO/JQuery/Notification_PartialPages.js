@@ -540,7 +540,6 @@ function AfterSaveNotificationRelatedMaterial() {
     }, 300);
 }
 
-
 function printDiv(elementId) {
     debugger;
     var date = new Date();

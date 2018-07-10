@@ -75,7 +75,7 @@
                                                             }
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Notification type<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Notification type<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-3">
                                                             <p class="wto-label-bold" id="NotificationTypeId">
@@ -103,7 +103,7 @@
 
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Notification number<sup class="mandetory">*</sup> <span class="pull-right  hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Notification number<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-bold">
@@ -113,7 +113,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Notification status<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Notification status<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -123,7 +123,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Date of notification<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Date of notification<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -134,7 +134,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Final date of comments<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Final date of comments<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -150,7 +150,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Send response by<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Send response by<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -176,7 +176,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Enquiry point<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Enquiry point<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -186,7 +186,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Title<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Title<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-9">
                                                             <p class="wto-label-normal">
@@ -197,7 +197,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Agency responsible<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Agency responsible<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-9">
                                                             <p class="wto-label-normal">
@@ -208,7 +208,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Notification under article<span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Notification under article<span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
                                                             <p class="wto-label-normal">
@@ -218,7 +218,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Products covered<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Products covered<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-9">
                                                             <p class="wto-label-normal">
@@ -229,7 +229,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">HS codes<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">HS codes<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-9">
                                                             <p class="wto-label-normal">
@@ -277,7 +277,7 @@
                                                     </div>
                                                     <div class="row top-offset-10">
                                                         <div class="col-xs-12 col-sm-4 col-md-3">
-                                                            <p class="wto-label-bold">Description of content<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                            <p class="wto-label-bold">Description of content<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-8 col-md-9">
                                                             <p class="wto-label-normal">
@@ -309,7 +309,7 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10" style="box-shadow: 0 0px 0 #fff, 0 1px 6px rgba(0,0,0, 0.1);">
                                                         <div class="row top-offset-10">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Do you have the full text(s) of regulation?<sup class="mandetory">*</sup> <span class="pull-right  hidden-xs">:</span></p>
+                                                                <p class="wto-label-bold">Do you have the full text(s) of regulation?<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-8 col-md-9">
                                                                 <p class="wto-label-normal top-offset-10">
@@ -370,7 +370,7 @@
                                                                 </div>
                                                             }
                                                             <div id="divRegulations" class="col-xs-12 col-sm-offset-4 col-md-offset-3 col-sm-8 col-md-9 @(Model.Regulations != null && Model.Regulations.Count > 0 ? " " : " hidden")">
-                                                                <div class="table-responsive nopaging notificationlist sentmail">
+                                                                <div class="nopaging notificationlist sentmail">
                                                                     <table class="table table-bordered display" id="Regulationlist" cellspacing="0" width="100%">
                                                                         <thead class="second-blackbackground">
                                                                             <tr>
@@ -434,7 +434,7 @@
                                                         </div>
                                                         <div class="row top-offset-10 translatDoc duedate @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null && x.SentForTranslation!="") != null ? "" : "hidden")">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Reminder for translation<sup class="mandetory">*</sup> <span class="pull-right  hidden-xs">:</span></p>
+                                                                <p class="wto-label-bold">Reminder for translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <p class="wto-label-normal">
@@ -458,7 +458,7 @@
                                                         </div>
                                                         <div class="row top-offset-10 translatDoc @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null && x.SentForTranslation!="") != null ? "" : "hidden")">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Due Date for Translation<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                                <p class="wto-label-bold">Due Date for Translation<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <p class="wto-label-normal">
@@ -494,7 +494,7 @@
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <div>
-                                                                    <div class="checkbox col-xs-1 col-sm-2 col-md-2 radio-margin" style="margin-top:10px;">
+                                                                    <div class="checkbox col-xs-12 col-sm-2 col-md-2 radio-margin" style="margin-top:10px;">
                                                                         <label class="no-padding">
                                                                             @if (Convert.ToBoolean(Model.SkippedToDiscussion) == false)
                                                                             {
@@ -507,7 +507,7 @@
                                                                             <span class="cr"><i class="cr-icon glyphicon glyphicon-ok cr-small"></i></span>
                                                                         </label>
                                                                     </div>
-                                                                    <div class="checkbox col-xs-11 col-sm-10 col-md-10" style="margin-top: 8px;">
+                                                                    <div class="checkbox col-xs-12 col-sm-10 col-md-10" style="margin-top: 8px;">
                                                                         Skip to discussion
                                                                     </div>
                                                                 </div>
