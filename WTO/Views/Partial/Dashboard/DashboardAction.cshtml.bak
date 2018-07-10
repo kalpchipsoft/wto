@@ -1,0 +1,82 @@
+﻿@model List<BusinessObjects.Notification.NotificationPendingCount_Action>
+@{
+    Layout = null;
+}
+<div class="row top-offset-20">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 shadowbox">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                    <p class="texthead">Action</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <hr class="customehr" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6"></div>
+                <div class="col-xs-12 col-sm-6 col-md-6"></div>
+            </div>
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="table-responsive">
+                        <table class="table newdashboardtable">
+                            <thead class="head fulltext font-size-18">
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="text-center">Notifications</th>
+                                    <th class="text-center">Completed</th>
+                                    <th class="text-center">Pending</th>
+                                    <th class="text-center">Overdue</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-size-18">
+                                @foreach (BusinessObjects.Notification.NotificationPendingCount_Action ac in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="divsquar pink" style="background:@ac.ColorCode"></div>
+                                            @ac.Action
+                                        </td>
+                                        @if (@ac.Total > 0)
+                                        {
+                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId })">@ac.Total</a></span></td>  @*class="sky-blue"*@
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center"><span>@ac.Total</span></td>  @*class="sky-blue"*@
+                                        }
+                                        @if (@ac.Completed > 0)
+                                        {
+                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId, ActionStatus=11 })">@ac.Completed</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">@ac.Completed</td>
+                                        }
+                                        @if (@ac.Pending > 0)
+                                        {
+                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId,ActionStatus=9 })">@ac.Pending</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">@ac.Pending</td>
+                                        }
+                                        @if (@ac.Overdue > 0)
+                                        {
+                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10,ActionId = ac.ActionId,ActionStatus=10 })">@ac.Overdue</a></span></td>  @*class="light-golden-yellow"*@
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center"><span>@ac.Overdue</span></td>  @*class="light-golden-yellow"*@
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

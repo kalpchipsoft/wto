@@ -15,6 +15,9 @@ $(function () {
         start = new Date(start);
         end = new Date(end);
         BindHsCode(start, end, HSCodes);
+        BindProcessingStatus();
+        BindActions();
+        BindRequestResponse();
     }
     $('#reportrange').daterangepicker({
         startDate: start,
@@ -43,10 +46,10 @@ function SetCallFor(CallFor) {
 function BindHsCode(startdate, enddate, HSCodes) {
     var month = monthNames[startdate.getMonth()];
     var year = startdate.getFullYear();
-    DateFrom = (startdate.getDate() > 10 ? startdate.getDate() : '0'+startdate.getDate()) + ' ' + month + ' ' + year;
+    DateFrom = (startdate.getDate() > 9 ? startdate.getDate() : '0'+startdate.getDate()) + ' ' + month + ' ' + year;
     var month = monthNames[enddate.getMonth()];
     var year = enddate.getFullYear();
-    DateTo =(enddate.getDate() > 10 ? enddate.getDate() : '0'+enddate.getDate())+ ' ' + month + ' ' + year;
+    DateTo =(enddate.getDate() > 9 ? enddate.getDate() : '0'+enddate.getDate())+ ' ' + month + ' ' + year;
     var divHSCode = '';
     $.ajax({
         url: "/api/Dashboard/WTOGetHSCodeData",
@@ -381,7 +384,6 @@ function BindNotificationGraph(DateFr)
         }
     });
 }
-
 function BindGraphPrevious()
 {
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive'))
@@ -519,4 +521,58 @@ function DisplayPrevNext()
     datechartfrom = datechartfrom.getDate() + ' ' + month + ' ' + year;
     if (datecurrent == datechartfrom) { $('.rightArrow').addClass('hidden'); }
     else { $('.rightArrow').removeClass('hidden'); }
+}
+function BindProcessingStatus()
+{
+    $.ajax({
+        url: "/WTO/WTODashboardProcessingStatus",
+        async: false,
+        type: "POST",
+        data: JSON.stringify({
+            DateFrom: DateFrom,
+            DateTo:DateTo
+        }),
+        dataType: 'html',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            $('#divProcessingStatus').html('');
+            $('#divProcessingStatus').html(result);
+        }
+    });
+}
+function BindActions()
+{
+    $.ajax({
+        url: "/WTO/GetDashboardAction",
+        async: false,
+        type: "POST",
+        data: JSON.stringify({
+            DateFrom: DateFrom,
+            DateTo: DateTo
+        }),
+        dataType: 'html',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            $('#divAction').html('');
+            $('#divAction').html(result);
+        }
+    });
+}
+function BindRequestResponse()
+{
+    $.ajax({
+        url: "/WTO/WTODashboardRequestResponse",
+        async: false,
+        type: "POST",
+        data: JSON.stringify({
+            DateFrom: DateFrom,
+            DateTo: DateTo
+        }),
+        dataType: 'html',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            $('#divRequestResponse').html('');
+            $('#divRequestResponse').html(result);
+        }
+    });
 }

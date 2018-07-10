@@ -403,6 +403,7 @@ a, a:hover, a:active, a:focus {
         background: #5fdca4;
         color: #fff;
         border-radius: 20px;
+        outline: none !important;
     }
 
 .btngroupactive {
@@ -473,4 +474,10 @@ btn, btn:hover, btn:active, btn:focus {
     text-decoration: none;
     outline: none;
     color: #555;
+}
+
+@media screen and (min-width : 768px) and (max-width : 1023px) {
+    .sm-top-offset-20 {
+        margin-bottom: 20px;
+    }
 }

@@ -14,6 +14,12 @@ namespace BusinessObjects.Notification
         public int DocumentTypeId { get; set; }
         public string Type { get; set; }
     }
+
+    public class ReadDocument
+    {
+        public int DocumentType { get; set; }
+        public Attachment Document { get; set; }
+    }
     public class AddNotification
     {
         [Required]
@@ -153,11 +159,8 @@ namespace BusinessObjects.Notification
         public string Stakeholders { get; set; }
         public string TotalResponses { get; set; }
         public string StakeholderResponseDueBy { get; set; }
-        public string NotificationDiscussedOn { get; set; }
         public Nullable<bool> SkippedToDiscussion { get; set; }
-        public int Status { get; set; }
         public string TotalMails { get; set; }
-        public string MeetingNotes { get; set; }
         public int RegulationFlag { get; set; }
         public int TranslationFlag { get; set; }
         public int StakholderMailFlag { get; set; }

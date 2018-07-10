@@ -68,29 +68,37 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20 bottom-offset-20">
-                                <div class="col-xs-12 col-sm-12 col-md-12 stackholderlist">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="row">
-                                        <div class="col-sm-1 pdright"></div>
-                                        <div class="col-sm-5">Action</div>
-                                        <div class="col-sm-4">Required On</div>
-                                        <div class="col-sm-2" id="divTakeActionHeader">Take Action</div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 full-border whitebackground" id="divPlanActions">
-                                    <div class="row seprater">
-                                        <input type="hidden" id="hdnNotificationActionId" value="ac.NotificationActionId" />
-                                        <div class="col-sm-1 pdright">
-                                            <input type="checkbox" value="ac.ActionId" onchange="AddRemoveActions(this);" />
-                                        </div>
-                                        <div class="col-sm-5">Action</div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group has-feedback" style="margin-bottom:0px;">
-                                                <input type="text" id="RequiredOnId_ActionId" class="form-control date-picker" onkeydown="return false;" data-SearchFor="ActionId" value="RequiredOn" />
-                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <a>Take Action</a>
+                                        <div class="table-responsive nopaging notificationlist sentmail">
+                                            <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
+                                                <thead class="second-blackbackground">
+                                                    <tr>
+                                                        <th class="col-sm-1 pdright"></th>
+                                                        <th class="col-sm-5">Action</th>
+                                                        <th class="col-sm-4">Required On</th>
+                                                        <th class="col-sm-2"><span id="divTakeActionHeader">Take Action</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="whitebackground" id="divPlanActions">
+                                                    <tr>
+                                                        <td class="col-sm-1 pdright">
+                                                            <input type="checkbox" value="ac.ActionId" onchange="AddRemoveActions(this);" />
+                                                            <input type="hidden" id="hdnNotificationActionId" value="" />
+                                                        </td>
+                                                        <td class="col-sm-5">Action</td>
+                                                        <td class="col-sm-4">
+                                                            <div class="form-group has-feedback" style="margin-bottom:0px;">
+                                                                <input type="text" id="RequiredOnId_ActionId" class="form-control date-picker" onkeydown="return false;" data-SearchFor="ActionId" value="RequiredOn" />
+                                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-sm-2">
+                                                            <a>Take Action</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

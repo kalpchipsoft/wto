@@ -1,0 +1,285 @@
+﻿@model BusinessObjects.Notification.NotificationProcessingStatus
+@{
+    Layout = null;
+}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                    <p class="texthead">Processing Status</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <hr class="customehr" />
+                </div>
+            </div>
+            <div class="row top-offset-20">
+                @if (Model.objPendingFullText != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="col-xs-12 col-sm-12 shadowbox Processingbox">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-center head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">Pending Full Text (s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                @if (Convert.ToInt64(@Model.objPendingFullText.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) > 0)
+                                {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@(Model.objPendingFullText.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))</a> <sub class="subtext">Total</sub></h1>
+                                }
+                                else
+                                {
+                                    <h1 class="totaltext">@(Model.objPendingFullText.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                                }
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objPendingFullText.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objPendingFullText[0].Text</p></div>
+                                            if (Convert.ToInt32(Model.objPendingFullText[0].Count) > 0)
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objPendingFullText[0].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objPendingFullText[0].Count</p></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Mail not sent</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objPendingFullText.Count > 1)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objPendingFullText[1].Text</p></div>
+                                            if (Convert.ToInt32(Model.objPendingFullText[1].Count) > 0)
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objPendingFullText[1].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objPendingFullText[1].Count</p></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Response not received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                @if (Model.objPendingTranslation != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-3 sm-top-offset-20">
+                        <div class="col-xs-12 col-sm-12 shadowbox Processingbox">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-center head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">Pending Translation</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                @if (Convert.ToInt64(@Model.objPendingTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) > 0)
+                                {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 2 })">@(Model.objPendingTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))</a> <sub class="subtext">Total</sub></h1>
+
+                                }
+                                else
+                                {
+                                    <h1 class="totaltext">@(Model.objPendingTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))<sub class="subtext">Total</sub></h1>
+                                }
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objPendingTranslation.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objPendingTranslation[0].Text</p></div>
+                                            if (Convert.ToInt32(Model.objPendingTranslation[0].Count) > 0)
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 2 })">@Model.objPendingTranslation[0].Count</a> </p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objPendingTranslation[0].Count</p></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Mail not sent</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Convert.ToInt32(Model.objPendingTranslation[0].Count) > 1)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objPendingTranslation[1].Text</p></div>
+                                            if (Convert.ToInt32(Model.objPendingTranslation[0].Count) > 0)
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 2 })">@Model.objPendingTranslation[1].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objPendingTranslation[1].Count</p></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Response not received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.objToSendtoStakeholder != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-3 sm-top-offset-20">
+                        <div class="col-xs-12 col-sm-12 shadowbox Processingbox">
+                            <div class="row text-center">
+                                <div class="col-xs-12 col-sm-12 col-md-12 head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">To Send to Stakeholders</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                @if (Convert.ToInt64(@Model.objToSendtoStakeholder.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) > 0)
+                                {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 3 })">@(Model.objToSendtoStakeholder.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))</a> <sub class="subtext">Total</sub></h1>
+
+                                }
+                                else
+                                {
+                                    <h1 class="totaltext">@(Model.objToSendtoStakeholder.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))<sub class="subtext">Total</sub></h1>
+
+                                }
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objToSendtoStakeholder.Count > 0)
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objToSendtoStakeholder[0].Text</p></div>
+                                            if (Convert.ToInt32(Model.objToSendtoStakeholder[0].Count) > 0)
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 3 })">@Model.objToSendtoStakeholder[0].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objToSendtoStakeholder[0].Count</p></div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-8 col-sm-8"><p>Response received</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objToSendtoStakeholder.Count > 1)
+                                        {
+                                            if (Convert.ToInt32(Model.objToSendtoStakeholder[1].Count) > 0)
+                                            {
+                                                <div class="col-xs-8 col-sm-8"><p>@Model.objToSendtoStakeholder[1].Text</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 3 })">@Model.objToSendtoStakeholder[1].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-8 col-sm-8"><p>Response not received</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                @if (Model.objToDiscuss != null)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-3 sm-top-offset-20">
+                        <div class="col-xs-12 col-sm-12 shadowbox Processingbox">
+                            <div class="row text-center">
+                                <div class="col-xs-12 col-sm-12 col-md-12 head">
+                                    <p class="font-size-16 top-offset-10 font-weight-600">To Discuss</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                @if (Convert.ToInt64(@Model.objToDiscuss.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) > 0)
+                                {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 4 })">@(Model.objToDiscuss.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")))</a> <sub class="subtext">Total</sub></h1>
+                                }
+                                else
+                                {
+                                    <h1 class="totaltext">@(Model.objToDiscuss.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                                }
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                        @if (Model.objToDiscuss.Count > 0)
+                                        {
+                                            if (Convert.ToInt32(Model.objToDiscuss[0].Count) > 0)
+                                            {
+                                                <div class="col-xs-8 col-sm-8"><p>@Model.objToDiscuss[0].Text</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 4 })">@Model.objToDiscuss[0].Count</a></p></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-8 col-sm-8"><p>Meeting not planned</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row bottom-border">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="row top-offset-10">
+                                     @if (Model.objToDiscuss.Count > 1)
+                                     {
+                                         if (Convert.ToInt32(Model.objToDiscuss[1].Count) > 0)
+                                         {
+                                        <div class="col-xs-8 col-sm-8"><p>@Model.objToDiscuss[1].Text</p></div>
+                                        <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 4 })">@Model.objToDiscuss[1].Count</a></p></div>
+                                         }
+                                         else
+                                         {
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objToDiscuss[1].Text</p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                         }
+                                     }
+                                     else
+                                     {
+                                        <div class="col-xs-8 col-sm-8"><p>Meeting planned</p></div>
+                                        <div class="col-xs-4 col-sm-4 text-right processingcount"><p>0</p></div>
+                                     }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>

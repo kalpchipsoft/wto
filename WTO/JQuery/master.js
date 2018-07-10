@@ -1,11 +1,11 @@
 ﻿var myWTOAPP = {
     id: null,
     UserId: null,
-    UserRole:null
+    UserRole: null
 };
 
 (function (myWTOAPP) {
-    myWTOAPP.init = function (id, uid,role) {
+    myWTOAPP.init = function (id, uid, role) {
         myWTOAPP.id = (id == "" ? null : id);
         myWTOAPP.UserId = (uid == "" ? null : uid);
         myWTOAPP.UserRole = (role == "" ? null : role);
@@ -111,24 +111,23 @@ $(function () {
                     SearchText: request.term
                 },
                 success: function (data) {
-                    debugger
                     if (JSON.stringify(data).length > 2 && $('#txtHscode').val().length > 0) {
                         response($.map(data, function (item) {
                             return {
-                                label: item["HSCode"],
+                                label: item["Text"],
                                 val: item["HSCode"]
                             }
                         }))
                     }
                     else
-                        $('#txtHscode').val("");
+                        $('#hdnHsCode').val("");
                 }
             });
         },
         minLength: 2,
         select: function (event, ui) {
-            debugger
-            $('#txtHscode').val(ui.item.HSCode);
+            $('#hdnHsCode').val(ui.item.val);
         }
     });
 })
+

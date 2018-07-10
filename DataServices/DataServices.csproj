@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL.cs" />
+    <Compile Include="GlobalErrorDataServices.cs" />
     <Compile Include="LoginDataManger.cs" />
     <Compile Include="ManageAccess\CountryDataService.cs" />
     <Compile Include="ManageAccess\InternalStackHolderDataService.cs" />

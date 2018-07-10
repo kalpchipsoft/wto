@@ -151,7 +151,7 @@ namespace BusinessObjects.MOM
     {
         public string NotificationNumber { get; set; }
         public string Title { get; set; }
-        public string Status { get; set; }
+        //public string Status { get; set; }
         public string MeetingNote { get; set; }
         public List<EditAction> Actions { get; set; }
         public string MeetingDate { get; set; }

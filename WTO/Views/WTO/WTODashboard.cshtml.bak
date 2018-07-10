@@ -1,0 +1,71 @@
+﻿@model BusinessObjects.Notification.Dashboard_PendingCounts
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/contents/css/css/daterangepicker.css">
+<link rel="stylesheet" href="~/contents/css/css/Dashboard.css" />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="~/contents/js/moment.min.js"></script>
+<script src="~/contents/js/daterangepicker.js"></script>
+<script src="~/JQuery/Dashboard.js"></script>
+<style>
+  .NoDataAvailable{
+	width: 74.2%;
+}
+     /*path {
+        fill: yellow;
+    }*/
+</style>
+<!-- body section start -->
+<div>
+    <div class="container-fluid">
+
+        <!-- Notification History  start ---->
+        @{ Html.RenderAction("GetNotificationGraphData", "WTO", new { CallFor = "Monthly" }); }
+        <!-- Notification History  End ---->
+        <div class="col-xs-12 col-sm-12 col-md-12 shadowbox top-offset-20 bottom-offset-20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-md-10 top-offset-20">
+                    <p class="texthead" style="font-size:30px">Analysis for &nbsp;&nbsp;<span style="font-size:16px;">June 1 - June 30, 2018</span></p>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-2 top-offset-20">
+                    <p>
+                        <span class="pull-right texthead" id="reportrange" style="cursor:pointer;" ><img src="~/contents/img/humbergur.png" onchange="callfunction()"></span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- HSCode start ---->
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    @{ Html.RenderAction("WTOGetHSCodeGraphData", "WTO"); }
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-8 top-offset-10">
+                                <p class="texthead">By Country</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <hr class="customehr" />
+                            </div>
+                        </div>
+                        @{ Html.RenderAction("WTOGetHSCodeDataByCountry", "WTO"); }
+                    </div>
+                </div>
+            </div>
+            <!-- HSCode End ------>
+            <!-- Processing Status start ---->
+            @{ Html.RenderAction("WTODashboardProcessingStatus", "WTO"); }
+            <!-- Processing Status End ------>
+            <!-- Action section start -->
+            @{ Html.RenderAction("GetDashboardAction", "WTO"); }
+            <!-- Action section End ---->
+            <!-- Requests & Responses start ---->
+            @{ Html.RenderAction("WTODashboardRequestResponse", "WTO"); }
+            <!-- Requests & Responses End ------>
+        </div>
+    </div>
+</div>
+<!-- body section End -->

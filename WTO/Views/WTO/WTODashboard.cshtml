@@ -10,10 +10,10 @@
 <script src="~/contents/js/daterangepicker.js"></script>
 <script src="~/JQuery/Dashboard.js"></script>
 <style>
-  .NoDataAvailable{
-	width: 74.2%;
-}
-     /*path {
+    .NoDataAvailable {
+        width: 74.2%;
+    }
+    /*path {
         fill: yellow;
     }*/
 </style>
@@ -31,11 +31,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-2 col-md-2 top-offset-20">
                     <p>
-                        <span class="pull-right texthead" id="reportrange" style="cursor:pointer;" ><img src="~/contents/img/humbergur.png" onchange="callfunction()"></span>
+                        <span class="pull-right texthead" id="reportrange" style="cursor:pointer;"><img src="~/contents/img/humbergur.png" onchange="callfunction()"></span>
                     </p>
                 </div>
             </div>
-
             <!-- HSCode start ---->
             <div class="row top-offset-20">
                 <div class="col-xs-12 col-sm-12 col-md-6">
@@ -57,13 +56,27 @@
             </div>
             <!-- HSCode End ------>
             <!-- Processing Status start ---->
-            @{ Html.RenderAction("WTODashboardProcessingStatus", "WTO"); }
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 shadowbox padding-bottom-20" id="divProcessingStatus">
+                        @*@{ Html.RenderAction("WTODashboardProcessingStatus", "WTO"); }*@
+                    </div>
+                </div>
+            </div>
             <!-- Processing Status End ------>
             <!-- Action section start -->
-            @{ Html.RenderAction("GetDashboardAction", "WTO"); }
+            <div class="row top-offset-20">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 shadowbox" id="divAction">
+                        @*@{ Html.RenderAction("GetDashboardAction", "WTO"); }*@
+                    </div>
+                </div>
+            </div>
             <!-- Action section End ---->
             <!-- Requests & Responses start ---->
-            @{ Html.RenderAction("WTODashboardRequestResponse", "WTO"); }
+            <div class="row top-offset-20 bottom-offset-20" id="divRequestResponse">
+                @*@{ Html.RenderAction("WTODashboardRequestResponse", "WTO"); }*@
+            </div>
             <!-- Requests & Responses End ------>
         </div>
     </div>
