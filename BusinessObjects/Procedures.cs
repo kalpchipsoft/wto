@@ -127,8 +127,10 @@
         public const string InsertMeeting = "Proc_InsertNotificationMom";
         public const string GetMeetingList = "Proc_GetNotificationMOMList";
         public const string EditMeeting = "Proc_GetEditNotificationMeeting";
-        public const string AddUpdateNotificationAction = "proc_AddRemoveNotificationAction";
         public const string UpdateMeetingDate = "Proc_UpdateMeetingDate";
+
+        public const string AddUpdateNotificationAction = "proc_AddRemoveNotificationAction";
+        
         public const string EndMeeting = "proc_EndCurrentMeeting";
         public const string CheckIfOpenMeetingExists = "proc_CheckIfOpenMeetingExists";
         #endregion

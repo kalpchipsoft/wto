@@ -1,39 +1,42 @@
-﻿
-@model BusinessObjects.ManageAccess.PageLoad_InternalStackHolderList
+﻿@model BusinessObjects.ManageAccess.PageLoad_RegulatoryBodyList
 @{
     Layout = null;
 }
-<input id="hdnInternalStackHolderId" type="hidden" value="0" />
+<input id="hdnRegulatoryBodiesId" type="hidden" value="0" />
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <label class="table-heading">Internal StakeHolders (@Model.TotalCount)</label>
-        <a href="#" class="btn btn-blue btn-padding pull-right bottom-offset-10 top-offset-10" data-target="#AddInternalStakeholder" onclick="AddInternalStackHolderPopup();" data-toggle="modal">Add Internal StakeHolder</a>
+        <label class="table-heading">Regulatory Bodies (@Model.TotalCount)</label>
+        <a href="#" class="btn btn-blue btn-padding pull-right bottom-offset-10" data-target="#AddRegulatoryBodies" onclick="AddRegulatoryBodyPopup();" data-toggle="modal">Add Regulatory Body</a>
         <div class="table-responsive nopaging notificationlist top-offset-20" st>
             <table class="table table-bordered table-fixed">
                 <thead class="second-blackbackground">
                     <tr>
                         <th class="col-sm-1">S.No</th>
-                        <th class="col-sm-3"> Name</th>
-                        <th class="text-center col-sm-3">Designation</th>
-                        <th class="text-center col-sm-2">Email Id</th>
+                        <th class="col-sm-2">Name</th>
+                        <th class="text-center col-sm-2">Email</th>
+                        <th class="text-center col-sm-2">Address</th>
+                        <th class="text-center col-sm-2">Contact</th>
                         <th class="col-sm-1">Status</th>
                         <th class="text-center col-sm-1">Edit</th>
                         <th class="text-center col-sm-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
-                    @if (@Model.InternalStackHolderList != null)
+                    @if (@Model.RegulatoryBodiesList != null)
                     {
-                        foreach (var item in @Model.InternalStackHolderList)
+                        foreach (var item in @Model.RegulatoryBodiesList)
                         {
                             <tr>
                                 <td class="col-sm-1">@item.ItemNumber</td>
-                                <td class="col-sm-3">@item.Name </td>
-                                <td class="text-center col-sm-3">
-                                  @item.Designation
+                                <td class="col-sm-2">@item.Name</td>
+                                <td class="col-sm-2">
+                                    @item.Emailid
+                                </td>
+                                   <td class="col-sm-2">
+                                 @item.Address
                                 </td>
                                 <td class="text-center col-sm-2">
-                                  @item.Emailid
+                                   @item.Contact
                                 </td>
                                 @if (@item.Status == 1)
                                 {
@@ -42,9 +45,9 @@
                                 else
                                 {
                                     <td class="col-sm-1">Inactive</td>
-                                }   
-                                <td class="text-center col-sm-1"><a href="#" onclick="EditInternalTranslatorData(@item.InternalStakeholdersId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteInternalTranslator(@item.InternalStakeholdersId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                }
+                                <td class="text-center col-sm-1"><a href="#" onclick="EditRegulatoryBodyData(@item.RegulatoryBodyId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteRegulatoryBody(@item.RegulatoryBodyId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -59,9 +62,9 @@
         </div>
     </div>
 </div>
-<!-- Add Internal Stakeholder modal popup Start-->
+<!-- Add Regulatory Bodies modal popup Start-->
 
-<div class="modal fade selecthrmodal" id="AddInternalStakeholder" role="dialog" data-backdrop="static" data-keyboard="false">
+<div class="modal fade selecthrmodal" id="AddRegulatoryBodies" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog selecthrdialog">
         <div class="modal-content selecthrcontent" style="height:auto">
             <div class="modal-header selecthrheader">
@@ -74,38 +77,38 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                                <h4 class="selecthrheading" id="AddInternalStackholderpopupHead">Add Internal Stakeholder</h4>
+                                <h4 class="selecthrheading" id="AddRegulatoryBodiespopupHead">Add Regulatory Body</h4>
                                 <hr>
                             </div>
                             <form class="form-horizontal top-offset-20" action="/action_page.php">
                                 <div class="form-group">
                                     <label class="control-label col-sm-3"> Name<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="internalstakeholderName" maxlength="100" onkeypress="return isAlpha(event);">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3"> Designation:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="internalstakeholderdesignation" maxlength="100" onkeypress="return isAlpha(event);">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-3"> Org. Name:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="internalstakeholderorganizationname" maxlength="200" onkeypress="return isAlpha(event);">
+                                        <input type="text" class="form-control" id="RegulatoryBodyName" onkeypress="return ValidateBodyName(this);" maxlength="100">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Email<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
-                                        <input type="Email" class="form-control" id="internalstackholderEmailId" maxlength="100">
+                                        <input type="Email" class="form-control" id="RegulatoryBodyEmailId" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3"> Contact:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="RegulatoryBodyContact" onkeypress="return ValidateBodyContact(this);" maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3"> Address:</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" rows="3" id="RegulatoryBodyAddress" maxlength="500" ></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Status<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="internalstakeholderselectstatus">
+                                        <select class="form-control" id="RegulatoryBodyselectstatus">
                                             <option value="">---Select Status---</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
@@ -116,7 +119,7 @@
                                     <div class="col-sm-offset-3 col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="#" id="InternalStakeholderSaveUpdate" class="btn btn-dark-green btn-block btn-padding" onclick="internalstakeholdervalidate();">Save</a>
+                                                <a href="#" id="RegulatoryBodySaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="RegulatoryBodiesvalidate();">Save</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
@@ -132,15 +135,13 @@
         </div>
     </div>
 </div>
-
-<!-- Add Stakeholder modal popup End-->
-
+<!-- Add Regulatory Bodies modal popup End-->
 <script type="text/javascript">
     $(document).ready(function () {
         if ($(window).width() < 700) {
             $(".table").removeClass("table-fixed");
-            $("th").removeClass("col-sm-1 col-sm-2 col-sm-3 table-fixed");
-            $("td").removeClass("col-sm-1 col-sm-2 col-sm-3 table-fixed");
+            $("th").removeClass("col-sm-1 col-sm-2 table-fixed");
+            $("td").removeClass("col-sm-1 col-sm-2 table-fixed");
         }
     });
 </script>

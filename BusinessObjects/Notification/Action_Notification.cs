@@ -22,16 +22,11 @@ namespace BusinessObjects.Notification
     }
     public class NotificationActionDetail : NotificationAction
     {
-        public string DraftRegulationBrief { get; set; }
-        public string ReferencetoInternationalStandards { get; set; }
-        public string TradeData { get; set; }
-        public string Implications { get; set; }
         public string EnteredOn { get; set; }
         public string UpdatedOn { get; set; }
         public Int64 MailId { get; set; }
         public string MailTo { get; set; }
         public Notification_Template MailDetails { get; set; }
-
         public List<EditAttachment> Attachments { get; set; }
 
     }
@@ -39,10 +34,10 @@ namespace BusinessObjects.Notification
     public class NotificationActions
     {
         public Int64 NotificationId { get; set; }
+        public Int64 MeetingId { get; set; }
         public string NotificationNumber { get; set; }
         public string NotificationTitle { get; set; }
         public string MeetingDate { get; set; }
-        public int Status { get; set; }
         public bool IsUpdate { get; set; }
         public string MeetingNotes { get; set; }
         public bool RetainedForNextDiscussion { get; set; }
@@ -62,6 +57,8 @@ namespace BusinessObjects.Notification
 
         [Required]
         public string MeetingNote { get; set; }
+
+        public string NotificationGroup { get; set; }
         public string ActionXML
         {
             get

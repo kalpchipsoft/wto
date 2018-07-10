@@ -178,69 +178,6 @@ $(document).ready(function () {
     });
 });
 
-//Open Modal for edit action
-function _EditAction(Id, ctrl) {
-    //var ActionName = $(ctrl).attr('data-searchfor');
-    //var ActionId = $('[id=hdnActionId_' + Id + ']').val();
-    //var DueOn = $('[id=tdRequiredOn_' + Id + ']').text();
-    //var DraftRegulationBrief = $('[id=hdnDraftRegulationBrief_' + Id + ']').val();
-    //var ReferencetoInternationalStandards = $('[id=hdnReferencetoInternationalStandards_' + Id + ']').val();
-    //var TradeData = $('[id=hdnTradeData_' + Id + ']').val();
-    //var Implications = $('[id=hdnImplications_' + Id + ']').val();
-    //var AttachmentName = $('[id=linkAttachment_' + Id + ']').text();
-    //var AttachmentPath = $('[id=linkAttachment_' + Id + ']').attr('href');
-
-    //$.each($('.ActionName'), function () {
-    //    $(this).text(ActionName);
-    //});
-    //$('[id$=txtActionDueOn]').text(DueOn);
-    //$('[id$=txtDraftRegulationBrief]').text(DraftRegulationBrief);
-    //$('[id$=txtReftoInternationalStandards]').text(ReferencetoInternationalStandards);
-    //$('[id$=txtTradeData]').text(TradeData);
-    //$('[id$=txtImplications]').text(Implications);
-    //if (AttachmentName == "") {
-    //    $('[id$=ActionAttachmenName]').empty();
-    //    $('[id$=ActionAttachmenName]').text('No File Choosen');
-    //}
-    //else {
-    //    $('[id$=ActionAttachmenName]').empty();
-    //    $('[id$=ActionAttachmenName]').append('<a href="' + AttachmentPath + '" download="' + AttachmentName + '">' + AttachmentName + '</a>')
-    //    ActionAttachment = { "FileName": AttachmentName, "Content": "" };
-    //}
-    //$('[id$=hdnNotificationActionId]').val(Id);
-    //$('[id$=hdnActionId]').val(ActionId);
-    //$('#UpdateActionModal').modal('show');
-
-    //if (ActionId == "1") {
-    //    $('#divDraftRegulationBrief').removeClass('hidden');
-    //    $('.divBriefToRegulators').removeClass('hidden');
-    //    $('.divPolicyBrief').addClass('hidden');
-    //}
-    //else if (ActionId == '2') {
-    //    $('#divDraftRegulationBrief').removeClass('hidden');
-    //    $('.divPolicyBrief').removeClass('hidden');
-    //    $('.divBriefToRegulators').addClass('hidden');
-    //}
-    //else {
-    //    $('#divDraftRegulationBrief').addClass('hidden');
-    //    $('.divPolicyBrief').addClass('hidden');
-    //    $('.divBriefToRegulators').addClass('hidden');
-    //}
-
-    //if (ActionId == 4) {
-    //    $('#btnCloseAction').addClass('hidden');
-    //}
-    //else if (ActionId == 3) {
-    //    $('#spnbtntxt').text('Send response to notifying country');
-    //    $('#btnCloseAction').removeClass('hidden');
-    //    $('#btnUpdateStatus').addClass('hidden');
-    //}
-    //else {
-    //    $('#spnbtntxt').text('Update & Send ' + ActionName);
-    //    $('#btnCloseAction').removeClass('hidden');
-    //}
-}
-
 function ValidateActionStatus(Status) {
     var ErrorMsg = '';
     var _ActionId = $('[id$=hdnActionId]').val();

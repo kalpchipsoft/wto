@@ -114,13 +114,10 @@ namespace BusinessService.Notification
                         objR.TranslationDueOn = Convert.ToString(dr["TranslationDueBy"]);
 
                         objR.SkippedToDiscussion = dr["SkippedToDiscussion"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(dr["SkippedToDiscussion"]);
-                        objR.Status = Convert.ToInt32(dr["Status"]);
                         objR.Stakeholders = Convert.ToString(dr["SelectedStakeholders"]);
                         objR.TotalResponses = Convert.ToString(dr["ResponseCount"]);
                         objR.StakeholderResponseDueBy = Convert.ToString(dr["StakeholderResponseDueBy"]);
-                        objR.NotificationDiscussedOn = Convert.ToString(dr["NotificationDiscussedOn"]);
                         objR.TotalMails = Convert.ToString(dr["MailCount"]);
-                        objR.MeetingNotes = Convert.ToString(dr["MeetingNote"]);
                         objR.RegulationFlag = Convert.ToInt32(dr["RegulationFlag"]);
                         objR.TranslationFlag = Convert.ToInt32(dr["TranslationFlag"]);
                         objR.StakholderMailFlag = Convert.ToInt32(dr["StakholderMailFlag"]);
@@ -3434,7 +3431,6 @@ namespace BusinessService.Notification
                         objNA.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objNA.NotificationTitle = Convert.ToString(dr["Title"]);
                         objNA.MeetingDate = Convert.ToString(dr["MeetingDate"]);
-                        objNA.Status = Convert.ToInt32(dr["Status"]);
                         objNA.IsUpdate = Convert.ToBoolean(dr["IsUpdate"]);
                         objNA.MeetingNotes = Convert.ToString(dr["MeetingNote"]);
                         objNA.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
@@ -3454,10 +3450,6 @@ namespace BusinessService.Notification
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
                         objNotificationAction.EnteredOn = Convert.ToString(dr["EnteredOn"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
-                        objNotificationAction.DraftRegulationBrief = Convert.ToString(dr["DraftRegulationBrief"]);
-                        objNotificationAction.TradeData = Convert.ToString(dr["TradeData"]);
-                        objNotificationAction.ReferencetoInternationalStandards = Convert.ToString(dr["ReferencetoInternationalStandards"]);
-                        objNotificationAction.Implications = Convert.ToString(dr["Implications"]);
                         objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
                         objNotificationAction.MailTo = Convert.ToString(dr["MailTo"]);
                         NotificationActionList.Add(objNotificationAction);
@@ -3593,10 +3585,6 @@ namespace BusinessService.Notification
                         objNA.RequiredOn = Convert.ToString(dr["RequiredOn"]);
                         objNA.EnteredOn = Convert.ToString(dr["EnteredOn"]);
                         objNA.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
-                        objNA.DraftRegulationBrief = Convert.ToString(dr["DraftRegulationBrief"]);
-                        objNA.TradeData = Convert.ToString(dr["TradeData"]);
-                        objNA.ReferencetoInternationalStandards = Convert.ToString(dr["ReferencetoInternationalStandards"]);
-                        objNA.Implications = Convert.ToString(dr["Implications"]);
                         objNA.MailId = Convert.ToInt64(dr["MailId"]);
                         objNA.MailTo = Convert.ToString(dr["MailTo"]);
 
@@ -3719,10 +3707,6 @@ namespace BusinessService.Notification
                             objT.Message = objT.Message.Replace("#TranslationReminder#", Convert.ToString(dr["TranslationReminder"]));
 
                             objT.Message = objT.Message.Replace("#HSCodes#", Convert.ToString(dr["HSCodes"]));
-                            objT.Message = objT.Message.Replace("#DraftRegulationBrief#", Convert.ToString(dr["DraftRegulationBrief"]));
-                            objT.Message = objT.Message.Replace("#TradeData#", Convert.ToString(dr["TradeData"]));
-                            objT.Message = objT.Message.Replace("#Implications#", Convert.ToString(dr["Implications"]));
-                            objT.Message = objT.Message.Replace("#ReferencetoInternationalStandards#", Convert.ToString(dr["ReferencetoInternationalStandards"]));
 
                             #endregion
                         }

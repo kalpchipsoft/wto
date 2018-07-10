@@ -724,6 +724,14 @@
     <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
     <Content Include="Views\Shared\RedirectToLogin.cshtml" />
     <Content Include="Views\GlobalError\Index.cshtml" />
+    <Content Include="Views\Partial\ManageAccess\Country.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\InternalStackHolders.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\Language.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\RegulatoryBodies.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\StakeHolder.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\Template.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\Translator.cshtml.bak" />
+    <Content Include="Views\Partial\ManageAccess\User.cshtml.bak" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -403,6 +403,7 @@ a, a:hover, a:active, a:focus {
         background: #5fdca4;
         color: #fff;
         border-radius: 20px;
+        outline: none !important;
     }
 
 .btngroupactive {

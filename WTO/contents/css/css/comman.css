@@ -320,11 +320,15 @@ a, a:hover, a:focus, a:active {
 
         .sidebar-nav li.active a {
             background-color: transparent;
-            color: #fff !important;
+            /*color: #fff !important;*/
             text-decoration: none;
         }
 
     .sidebar-nav .list:hover, .sidebar-nav .list:focus, .sidebar-nav .list:active {
+        background-color: #1edec5 !important;
+    }
+
+    .sidebar-nav .list a:hover, .sidebar-nav .list a:focus, .sidebar-nav .list a:active {
         background-color: #1edec5 !important;
     }
 
