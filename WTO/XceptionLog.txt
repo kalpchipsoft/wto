@@ -44,3 +44,8 @@
    at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\MOM\MomBusinessService.cs:line 302
    at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
    
+[10 Jul 2018 12:37:35] - POST, http://localhost:27298/api/NotificationList/GetNotificationsList, {"PageIndex":2,"PageSize":10,"NotificationNumber":"","CountryId":"","FinalDateOfComments_From":"","FinalDateOfComments_To":"","NotificationType":"0","StatusId":"","ActionId":"","ActionStatus":"","MeetingDate":""}, A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.),    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.NotificationListDataManager.Notifications(Search_Notification obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\DataServices\WTO\NotificationListDataManager.cs:line 51
+   at BusinessService.Notification.NotificationListBusinessService.GetNotifications(Search_Notification obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Notification\NotificationListBusinessService.cs:line 164
+   at WTO.Controllers.API.WTO.NotificationListController.GetNotificationsList(Search_Notification obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\NotificationListController.cs:line 17
+   
