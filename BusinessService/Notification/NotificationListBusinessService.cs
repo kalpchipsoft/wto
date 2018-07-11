@@ -182,6 +182,7 @@ namespace BusinessService.Notification
                         objItems.MailCount = Convert.ToInt32(dr["MailCount"]);
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
+                        objItems.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         ItemsList.Add(objItems);
                     }
                     objR.ItemsList = ItemsList;
@@ -387,6 +388,16 @@ namespace BusinessService.Notification
             return objStakeholderMailSentReceive;
         }
         #endregion
+
+        #region "Add Notification in Meeting"
+        public bool SaveMeetingNotification(Int32 Id, string MeetingDate, string CreatedBy)
+        {
+            bool result = false;
+            NotificationDataManager objDM = new NotificationDataManager();
+            result = objDM.SaveMeetingNotification(Id, MeetingDate, CreatedBy);
+            return result;
+        }
+        #endregion "Add Notification in Meeting"
 
     }
 }

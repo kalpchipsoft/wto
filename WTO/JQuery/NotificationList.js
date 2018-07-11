@@ -133,10 +133,10 @@ function SearchNotification(PageIndx) {
                 if (result.ItemsList != null && result.ItemsList.length > 0) {
                     $.each(result.ItemsList, function (i, v) {
                         NewRow += '<tr class="hoverborder">';
-                        NewRow += '<td><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color "><p class="red-color" style="width:450px;">' + v.NotificationNumber + '</p></a><p style="word-wrap: break-word; width:450px;"><b>Title :</b>' + v.Title + '</p></td>';
-                        NewRow += '<td class="text-center">' + v.NotificationDate + '</td>';
-                        NewRow += '<td class="text-center">' + v.FinalDateOfComments + '</td>';
-                        NewRow += '<td class="text-center">' + v.Country + '</td>';
+                        NewRow += '<td class="width-30"><a href="/WTO/NotificationView/' + v.NotificationId + '" target="_blank" class="red-color "><p class="red-color" style="width:450px;">' + v.NotificationNumber + '</p></a><p style="word-wrap: break-word; width:450px;"><b>Title :</b>' + v.Title + '</p></td>';
+                        NewRow += '<td class="text-center width-10">' + v.NotificationDate + '</td>';
+                        NewRow += '<td class="text-center width-10">' + v.FinalDateOfComments + '</td>';
+                        NewRow += '<td class="text-center width-10">' + v.Country + '</td>';
 
                         //Discussion
                         if (result.NotificationProcessDots != null) {
@@ -149,7 +149,7 @@ function SearchNotification(PageIndx) {
                                 return a.Sequence - b.Sequence;
                             });
 
-                            NewRow += '<td class="tooltiprelative">';
+                            NewRow += '<td class="tooltiprelative width-10">';
                             $.each(NotificationProcessDot, function (indx, val) {
                                 NewRow += '<div class="small-circle" style="background:' + val.ColorCode + '" data-toggle="tooltip" data-placement="bottom" title="' + val.TooltipText + '"></div>';
                             });
@@ -157,9 +157,9 @@ function SearchNotification(PageIndx) {
                         }
 
                         if (v.MailCount > 0)
-                            NewRow += '<td class="text-center">' + v.ResponseCount + '/' + v.MailCount + '</td>';
+                            NewRow += '<td class="text-center width-10">' + v.ResponseCount + '/' + v.MailCount + '</td>';
                         else
-                            NewRow += '<td class="text-center">--</td>';
+                            NewRow += '<td class="text-center width-10">--</td>';
 
                         //Actions
                         if (result.NotificationActionDots != null) {
@@ -179,16 +179,16 @@ function SearchNotification(PageIndx) {
                             NewRow += '</td>';
                         }
                         else {
-                            NewRow += '<td class="tooltiprelative">--</td>';
+                            NewRow += '<td class="tooltiprelative width-10">--</td>';
                         }
-
-                        NewRow += '<td><a href="../AddNotification/Edit_Notification/' + v.NotificationId + '" onclick="StoreHTML();"><img src="../contents/img/bedit.png" /></a></td>';
-                        NewRow += '<td><a href="/API/AddUpdateNotification/Download/' + v.NotificationId + '" title="Export Details"><img src="/contents/img/export2.png"></a></td>';
+                        NewRow += '<td class="width-5 text-right hidden" > <a  data-callfor="' + v.MeetingDate + '" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, ' + v.NotificationId + ');"><img src="/contents/img/MeetingIcon.png" style="width:25px;" /></a></td>';
+                        NewRow += '<td class="width-5 text-right"><a href="../AddNotification/Edit_Notification/' + v.NotificationId + '" onclick="StoreHTML();"><img src="../contents/img/bedit.png" /></a></td>';
+                        NewRow += '<td class="width-5 text-right"><a href="/API/AddUpdateNotification/Download/' + v.NotificationId + '" title="Export Details"><img src="/contents/img/export2.png"></a></td>';
                         NewRow += '</tr>';
                     });
                 }
                 else
-                    NewRow += '<tr><td colspan="9">No Record Found ...</td></tr>';
+                    NewRow += '<tr><td colspan="10">No Record Found ...</td></tr>';
 
                 $('#NotificationCount').text('(' + result.TotalCount + ')');
                 $('#hdnNotificationCount').val(result.TotalCount);
@@ -347,4 +347,90 @@ function ExportToExcelNotification() {
     else {
         Alert('Alert', 'No Record for Export', 'Ok');
     }
+}
+
+
+function CheckNotificationExistMOM(ctrl, NotificationId) {
+    debugger;
+    var MeetingDate = $(ctrl).attr('data-callfor');
+    $("#hdnNotificationId").val(NotificationId);
+    if (MeetingDate != "") {
+        Confirm('Alert', 'Do you want to add notification in ' + MeetingDate + '', 'Yes', 'No', 'AddNotiMeeting("' + MeetingDate + '")');
+    }
+    else {
+        $("#ModelNotificationMeeting").modal('show');
+    }
+    return false;
+}
+function CloseMeetingDatepopup() {
+    $("#ModelNotificationMeeting").modal('hide');
+    return false;
+}
+
+function AddNotiMeeting(MeetingDate) {
+    debugger;
+    var NotificationId = $("#hdnNotificationId").val();
+    $.ajax({
+        url: "/api/NotificationList/SaveMeetingNotification?Id=" + NotificationId + "&MeetingDate=" + MeetingDate + "&CreatedBy=" + myWTOAPP.UserId,
+        async: false,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            debugger;
+            if (result == true) {
+                Alert("Alert", "Notification has been added successfully", "Ok");
+                $("#ModelNotificationMeeting").modal('hide');
+            }
+            else {
+                Alert("Alert", "Notification already exist", "Ok");
+                $("#ModelNotificationMeeting").modal('hide');
+            }
+            $("#hdnNotificationId").val('');
+            $('#txtmeetingdate').val('');
+        },
+        failure: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        error: function (result) {
+            Alert("Alert", "Something went wrong.<br/>", "Ok");
+        },
+        complete: function () {
+
+        }
+    });
+}
+
+function IsMeetingExists(MoMId) {
+    if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
+        $.ajax({
+            url: "/api/MoM/ValidateMeetingdate?date=" + $.trim($('[id$=txtmeetingdate]').val()) + "&MoMId=" + MoMId,
+            async: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != "") {
+                    Alert("Alert", result + "<br/>", "Ok");
+                    $('[id$=txtmeetingdate]').val('');
+                }
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            }
+        });
+        return false;
+    }
+}
+
+function SaveMeetingAndNotification() {
+    var MeetingDate = $.trim($('#txtmeetingdate').val());
+    if (MeetingDate == "") {
+        Alert('Alert', 'Select Meeting Date<br/>', 'Ok');
+    }
+    else {
+        AddNotiMeeting(MeetingDate);
+    }
+    return false;
 }

@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using BusinessObjects.Notification;
 using BusinessService.Notification;
 
@@ -35,6 +36,13 @@ namespace WTO.Controllers.API.WTO
                 obj.PageSize = 10;
             NotificationListBusinessService objBS = new NotificationListBusinessService();
             return Ok(objBS.GetStakeholderMailSentResponse(obj));
+        }
+
+        [HttpPost]
+        public IHttpActionResult SaveMeetingNotification(Int32 Id, string MeetingDate, string CreatedBy)
+        {
+            NotificationListBusinessService objBS = new NotificationListBusinessService();
+            return Ok(objBS.SaveMeetingNotification(Id, MeetingDate, CreatedBy));
         }
 
     }

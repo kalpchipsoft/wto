@@ -244,6 +244,7 @@
     <Content Include="contents\img\loginmap.png" />
     <Content Include="contents\img\manageB.png" />
     <Content Include="contents\img\manageW.png" />
+    <Content Include="contents\img\MeetingIcon.png" />
     <Content Include="contents\img\message.png" />
     <Content Include="contents\img\mettings.png" />
     <Content Include="contents\img\MOMlistB.png" />
