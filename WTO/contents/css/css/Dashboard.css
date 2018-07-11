@@ -143,8 +143,12 @@ a, a:hover, a:active, a:focus {
 }
 
 .sky-blue {
-    background: #b3ebfe;
+    /*background: #b3ebfe;
     padding: 5px;
+    border-radius: 5px;*/
+    background: #015998;
+    color: #fff;
+    border-color: #015998;
     border-radius: 5px;
 }
 
