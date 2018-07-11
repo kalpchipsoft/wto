@@ -20,6 +20,9 @@ namespace BusinessObjects.ManageAccess
         public string Subject { get; set; }
         [Required]
         public string Body { get; set; }
+
+        [Required]
+        public string NotificationType { get; set; }
     }
     public class Template
     {
@@ -27,6 +30,7 @@ namespace BusinessObjects.ManageAccess
         public string TemplateFor { get; set; }
         public string TemplateType { get; set; }
         public bool TemplateStatus { get; set; }
+        public string NotificationType { get; set; }
     }
 
     public class TemplateDetails : Template

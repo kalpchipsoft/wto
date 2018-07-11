@@ -29,6 +29,7 @@ namespace BusinessService.ManageAccess
                         objT.TemplateType = Convert.ToString(dr["TemplateType"]);
                         objT.TemplateFor = Convert.ToString(dr["TemplateFor"]);
                         objT.TemplateStatus = Convert.ToBoolean(dr["IsActive"]);
+                        objT.NotificationType = Convert.ToString(dr["NotificationType"]);
                         TemplateList.Add(objT);
                     }
                     objTL.Templates = TemplateList;
@@ -68,6 +69,7 @@ namespace BusinessService.ManageAccess
                     obj.Subject = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Subject"]);
                     obj.Body = Convert.ToString(ds.Tables[tblIndx].Rows[0]["Body"]);
                     obj.TemplateStatus = Convert.ToBoolean(ds.Tables[tblIndx].Rows[0]["IsActive"]);
+                    obj.NotificationType = Convert.ToString(ds.Tables[tblIndx].Rows[0]["NotificationType"]);
                 }
             }
             return obj;
