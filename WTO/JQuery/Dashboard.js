@@ -32,7 +32,7 @@ $(function () {
         }
     }, cb);
     cb(start, end);
-    
+
 });
 google.charts.load("visualization", "1", { packages: ["corechart"] });
 google.charts.load('current', { 'packages': ['corechart'] });
@@ -46,10 +46,10 @@ function SetCallFor(CallFor) {
 function BindHsCode(startdate, enddate, HSCodes) {
     var month = monthNames[startdate.getMonth()];
     var year = startdate.getFullYear();
-    DateFrom = (startdate.getDate() > 9 ? startdate.getDate() : '0'+startdate.getDate()) + ' ' + month + ' ' + year;
+    DateFrom = (startdate.getDate() > 9 ? startdate.getDate() : '0' + startdate.getDate()) + ' ' + month + ' ' + year;
     var month = monthNames[enddate.getMonth()];
     var year = enddate.getFullYear();
-    DateTo =(enddate.getDate() > 9 ? enddate.getDate() : '0'+enddate.getDate())+ ' ' + month + ' ' + year;
+    DateTo = (enddate.getDate() > 9 ? enddate.getDate() : '0' + enddate.getDate()) + ' ' + month + ' ' + year;
     var divHSCode = '';
     $.ajax({
         url: "/api/Dashboard/WTOGetHSCodeData",
@@ -63,23 +63,29 @@ function BindHsCode(startdate, enddate, HSCodes) {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             $(result).each(function (index, value) {
-                
-                    if (index % 3 == 0) {
-                        divHSCode += "<div class='row top-offset-20'>";
+
+                if (index % 3 == 0) {
+                    divHSCode += "<div class='row top-offset-20'>";
+                }
+                divHSCode += '<div class="col-xs-12 col-ms-6 col-md-4 sm-top-offset-20">';
+                var Hscode = value.HSCode;
+                if (value.NotificationCount > 0) {
+                    if (Hscode == "0") {
+                        divHSCode += '<a class="hscodelink active" data-HScode="' + Hscode + '" onclick="callpiechart(this);">';
                     }
-                    divHSCode += '<div class="col-xs-12 col-ms-6 col-md-4 sm-top-offset-20">';
-                    var Hscode = value.HSCode;
-                    if (value.NotificationCount > 0) {
-                    divHSCode += '<a class="hscodelink " data-HScode="' + Hscode + '" onclick="callpiechart(this);">';
+                    else {
+                        divHSCode += '<a class="hscodelink " data-HScode="' + Hscode + '" onclick="callpiechart(this);">';
                     }
-                    divHSCode += '<div class="hscodeheader text-center">';
-                    divHSCode += '<p>' + value.Text + '</p></div>';
-                    divHSCode += '<div class="hscodebody text-center">';
-                    divHSCode += '<p>' + value.NotificationCount + '</p></div> </a></div>';
-                    if (index % 3 == 2) {
-                        divHSCode += "</div>";
-                    }
-              
+                }
+
+                divHSCode += '<div class="hscodeheader text-center">';
+                divHSCode += '<p>' + value.Text + '</p></div>';
+                divHSCode += '<div class="hscodebody text-center">';
+                divHSCode += '<p>' + value.NotificationCount + '</p></div> </a></div>';
+                if (index % 3 == 2) {
+                    divHSCode += "</div>";
+                }
+
             })
             if (divHSCode.length > 0)
                 $('#divHSCode').html(divHSCode);
@@ -96,7 +102,7 @@ function drawChart() {
     var data = google.visualization.arrayToDataTable(arrayNotificationGraph);
     var options = {
         chartArea: { left: 50, top: 20, width: "100%", height: "65%" },
-        colors:['#666766','#f9c851','#599bff','#0b9a41'],
+        colors: ['#666766', '#f9c851', '#599bff', '#0b9a41'],
         //legend: {position: 'top', alignment: 'end', maxLines: 3, textStyle: {color: 'black', fontSize: 16 } },
         legend: 'none',
         isStacked: true,
@@ -209,7 +215,7 @@ function BindPieChart(HSCode, DateFrom, DateTo) {
                 }
             })
             hscodelegend + ' </div></div>';
-            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp;<a href="/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&FromDate=' + DateFrom + '&ToDate='+DateTo+'"> ' + result.CountryCount + '</a> &nbsp;&nbsp;&nbsp; Countries  </p>';
+            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp;<a href="/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&FromDate=' + DateFrom + '&ToDate=' + DateTo + '"> ' + result.CountryCount + '</a> &nbsp;&nbsp;&nbsp; Countries  </p>';
             $('.hscodecount').html(divhscode);
             $('.hscodelegend').html(hscodelegend);
 
@@ -314,16 +320,16 @@ function SaveHSCode() {
         if (hdnSelectedHscode[i].length > 0)
             hscodecount++;
     }
-    
+
     if (hscodecount > 10) {
         Alert('Alert', 'You can select only 10 hs code.<br/>', 'Ok');
     }
     else {
         $(".hs-code-table").removeClass("hidden");
         $('#selecthr').modal('hide');
-       var start = new Date(DateFrom);
-       var end = new Date(DateTo);
-       BindHsCode(start, end, $('#hdnSelectedHSCodes').val());
+        var start = new Date(DateFrom);
+        var end = new Date(DateTo);
+        BindHsCode(start, end, $('#hdnSelectedHSCodes').val());
     }
 }
 //Remove HSCode table tr
@@ -351,8 +357,7 @@ function DeselectHSCodeNode(ctrl) {
         return false;
     }
 }
-function GetNotificationGraphDataWeekly()
-{
+function GetNotificationGraphDataWeekly() {
     $('#btnMonthly').removeClass('btngroupactive');
     $('#btnWeekly').removeClass('btngroupactive');
     $('#btnWeekly').addClass('btngroupactive');
@@ -364,8 +369,7 @@ function GetNotificationGraphDataWeekly()
     DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
     BindNotificationGraph(DateChartFrom);
 }
-function BindNotificationGraph(DateFr)
-{
+function BindNotificationGraph(DateFr) {
     $.ajax({
         url: "/api/Dashboard/WTOGetNotificationGraphDataWeekly",
         async: false,
@@ -384,23 +388,20 @@ function BindNotificationGraph(DateFr)
         }
     });
 }
-function BindGraphPrevious()
-{
-    if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive'))
-    {
+function BindGraphPrevious() {
+    if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var date = new Date();
-        var month = monthNames[date.getMonth()-1];
+        var month = monthNames[date.getMonth() - 1];
         var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
     }
-    if (DateChartFrom != '' && $('#btnMonthly').hasClass('btngroupactive'))
-    {
+    if (DateChartFrom != '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var myVariable = DateChartFrom;
         var date = new Date(myVariable);
         date = new Date(date.setMonth(date.getMonth() - 1));
         var month = monthNames[date.getMonth()];
-        var year = date.getFullYear();  
+        var year = date.getFullYear();
         DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
         BindNotificationGraphMonthly(DateChartFrom);
     }
@@ -423,8 +424,7 @@ function BindGraphPrevious()
     }
     DisplayPrevNext();
 }
-function BindGraphNext()
-{
+function BindGraphNext() {
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var date = new Date();
         var month = monthNames[date.getMonth()];
@@ -466,17 +466,15 @@ function BindGraphNext()
         var month = monthNames[lastdate.getMonth()];
         var year = lastdate.getFullYear();
         lastdate = lastdate.getDate() + ' ' + month + ' ' + year;
-        if (DateChartFrom == lastdate)
-        {
+        if (DateChartFrom == lastdate) {
             $('.rightArrow').addClass('hidden');
         }
-        else
-        {
+        else {
             $('.rightArrow').removeClass('hidden');
         }
     }
- 
- //   $('.rightArrow').removeClass('hidden');
+
+    //   $('.rightArrow').removeClass('hidden');
 }
 function GetNotificationGraphDataMonthly() {
     $('#btnMonthly').removeClass('btngroupactive');
@@ -508,8 +506,7 @@ function BindNotificationGraphMonthly(DateFr) {
         }
     });
 }
-function DisplayPrevNext()
-{
+function DisplayPrevNext() {
     var datecurrent = new Date();
     datecurrent.setMonth(datecurrent.getMonth() - 1);
     var month = monthNames[datecurrent.getMonth()];
@@ -522,15 +519,14 @@ function DisplayPrevNext()
     if (datecurrent == datechartfrom) { $('.rightArrow').addClass('hidden'); }
     else { $('.rightArrow').removeClass('hidden'); }
 }
-function BindProcessingStatus()
-{
+function BindProcessingStatus() {
     $.ajax({
         url: "/WTO/WTODashboardProcessingStatus",
         async: false,
         type: "POST",
         data: JSON.stringify({
             DateFrom: DateFrom,
-            DateTo:DateTo
+            DateTo: DateTo
         }),
         dataType: 'html',
         contentType: "application/json; charset=utf-8",
@@ -540,8 +536,7 @@ function BindProcessingStatus()
         }
     });
 }
-function BindActions()
-{
+function BindActions() {
     $.ajax({
         url: "/WTO/GetDashboardAction",
         async: false,
@@ -558,8 +553,7 @@ function BindActions()
         }
     });
 }
-function BindRequestResponse()
-{
+function BindRequestResponse() {
     $.ajax({
         url: "/WTO/WTODashboardRequestResponse",
         async: false,
