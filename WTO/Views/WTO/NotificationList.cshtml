@@ -167,7 +167,6 @@ else
                                                             }
                                                             else
                                                             {
-                                                                <option value="0" class="optionGroup">Parent Tag</option>
                                                                 if (Request["StatusId"] != null && Convert.ToInt32(Request["StatusId"]) == @item.StatusId)
                                                                 {
                                                                     <option value="@item.StatusId" selected="selected" class="optionGroup">@item.Status</option>
@@ -259,6 +258,7 @@ else
                                                         <th>Pending Discussion</th>
                                                         <th class="text-center" style="padding-right:2%;">Stakeholder Responses</th>
                                                         <th>Pending Action</th>
+                                                        <th class="hidden"></th>
                                                         <th>Edit</th>
                                                         <th>Export</th>
                                                     </tr>
@@ -316,6 +316,9 @@ else
                                                                         @("--")
                                                                     }
                                                                 </td>
+                                                                <td class="width-5 text-right hidden">
+                                                                    <a data-callfor="@item.MeetingDate" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, '@item.NotificationId');"><img src="~/contents/img/MeetingIcon.png" style="width:25px;" /></a>
+                                                                </td>
                                                                 <td class="width-5 text-right">
                                                                     <a href="@Url.Action("Edit_Notification", "AddNotification" , new { Id=@item.NotificationId })" data-toggle="tooltip" data-placement="bottom" title="Edit Notification"><img src="~/contents/img/bedit.png" /></a>
                                                                 </td>
@@ -328,7 +331,7 @@ else
                                                     else
                                                     {
                                                         <tr>
-                                                            <td colspan="9">No Record Found ...</td>
+                                                            <td colspan="10">No Record Found ...</td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -349,6 +352,50 @@ else
     </div>
 </div>
 <!-- body section End -->
+<!--Meeting Date Popup start-->
+<div class="modal fade selecthrmodal" id="ModelNotificationMeeting" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content selecthrcontent">
+            <div class="modal-header selecthrheader">
+                <button type="button" class="close selecthrclose" onclick="return CloseMeetingDatepopup();">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="modal-body selecthrbody">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner" style="min-height:150px;">
+                            <div class='col-xs-12 col-sm-12 col-md-12 top-offset-30'>
+                                <div class="padding-bottom-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                            <p class="wto-label-bold dark-blue">Meeting Date<sup class="mandetory">*</sup> <span class="pull-right">:</span></p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                            <input type="hidden" id="hdnNotificationId" value="" />
+                                            <input type="text" class="form-control date-picker" style="cursor:pointer" id="txtmeetingdate" onchange="return IsMeetingExists(0);" />
+                                            <i class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <a class="btn btn-red pull-right" onclick="return CloseMeetingDatepopup();">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                                        <a class="btn btn-dark-green pull-right" style="margin-right:15px;" onclick="return SaveMeetingAndNotification();"><img src="~/contents/img/save.png" />&nbsp;Save</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     (function ($) {

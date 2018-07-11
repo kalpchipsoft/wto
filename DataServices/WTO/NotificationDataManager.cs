@@ -399,5 +399,22 @@ namespace DataServices.WTO
             }
         }
         #endregion
+
+        #region "Add Notification in Meeting"
+        public bool SaveMeetingNotification(Int64 Id, string MeetingDate, string CreatedBy)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.CheckNotificationExistMOM;
+                sqlCommand.Parameters.AddWithValue("@MeetingDate", MeetingDate);
+                sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
+                sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = i > 0 ? true : false;
+                return result;
+            }
+        }
+        #endregion "Add Notification in Meeting"
     }
 }
