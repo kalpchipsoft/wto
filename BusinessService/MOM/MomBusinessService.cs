@@ -283,11 +283,11 @@ namespace BusinessService.MOM
             }
             return objE;
         }
-        public EditNotificationMeeting EditMeetingActions(Int64 Id)
+        public EditNotificationMeeting EditMeetingActions(Int64 Id, Int64 MeetingId)
         {
             EditNotificationMeeting objE = new EditNotificationMeeting();
             MOMDataManager objDM = new MOMDataManager();
-            DataSet ds = objDM.EditActions(Id);
+            DataSet ds = objDM.EditActions(Id, MeetingId);
             if (ds != null)
             {
                 int tblIndex = -1;
@@ -299,10 +299,11 @@ namespace BusinessService.MOM
                     {
                         objE.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objE.Title = Convert.ToString(dr["Title"]);
-                        //objE.Status = Convert.ToString(dr["Stage"]);
+                        objE.Status = Convert.ToString(dr["Stage"]);
                         objE.MeetingNote = Convert.ToString(dr["MeetingNote"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         objE.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
+                        objE.NotificationGroup= Convert.ToString(dr["NotificationGroup"]);
                     }
                 }
 
@@ -322,6 +323,36 @@ namespace BusinessService.MOM
                         ActionList.Add(objNotificationAction);
                     }
                     objE.Actions = ActionList;
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<PrevioiusMeeting> PrevioiusMeetingList = new List<PrevioiusMeeting>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        PrevioiusMeeting PrevioiusMeeting = new PrevioiusMeeting();
+                        PrevioiusMeeting.MeetingId = Convert.ToInt64(dr["MeetingId"]);
+                        PrevioiusMeeting.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        PrevioiusMeetingList.Add(PrevioiusMeeting);
+                    }
+                    objE.PrevioiusMeetings = PrevioiusMeetingList;
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<PrevioiusMeetingAction> PrevioiusMeetingActionList = new List<PrevioiusMeetingAction>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        PrevioiusMeetingAction PrevioiusMeetingAction = new PrevioiusMeetingAction();
+                        PrevioiusMeetingAction.MeetingId = Convert.ToInt64(dr["MeetingId"]);
+                        PrevioiusMeetingAction.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
+                        PrevioiusMeetingAction.Action = Convert.ToString(dr["Action"]);
+                        PrevioiusMeetingAction.ActionStatus = Convert.ToString(dr["ActionStatus"]);
+                        PrevioiusMeetingActionList.Add(PrevioiusMeetingAction);
+                    }
+                    objE.PrevioiusMeetingActions = PrevioiusMeetingActionList;
                 }
             }
 

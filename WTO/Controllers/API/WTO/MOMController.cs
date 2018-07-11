@@ -29,10 +29,10 @@ namespace WTO.Controllers.API.WTO
         }
 
         [HttpGet]
-        public IHttpActionResult EditAction(Int64 Id)
+        public IHttpActionResult EditAction(Int64 Id, Int64 MeetingId)
         {
             MomBusinessService objAM = new MomBusinessService();
-            return Ok(objAM.EditMeetingActions(Id));
+            return Ok(objAM.EditMeetingActions(Id, MeetingId));
         }
 
         [HttpPost]

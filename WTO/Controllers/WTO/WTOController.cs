@@ -162,8 +162,8 @@ namespace WTO.Controllers
                     obj.FromDate = "";
                 if (obj.ToDate == null)
                     obj.ToDate = "";
-                if (obj.CountryName == null)
-                    obj.CountryName = "";
+                if (obj.CountryId == null)
+                    obj.CountryId = "";
                 if (obj.Hscode == null)
                     obj.Hscode = "";
                 ViewBag.FromDate = obj.FromDate;

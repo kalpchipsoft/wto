@@ -1133,29 +1133,38 @@ a:hover, a:focus {
         border-radius: 3px;
         overflow: hidden;
     }
-	.addstackholderdialog {
-		width: 96%;
-	}
 
-	.table-responsive > #notificationlist > tbody > tr > td,
-	.table-responsive > #notificationlist > tbody > tr > th, 
-	.table-responsive > #notificationlist > tfoot > tr > td, 
-	.table-responsive > #notificationlist > tfoot > tr > th, 
-	.table-responsive > #notificationlist > thead > tr > td, 
-	.table-responsive > #notificationlist > thead > tr > th {
-		 white-space: inherit;
-	}
+    .addstackholderdialog {
+        width: 96%;
+    }
 
-	.table-responsive > .table > tbody > tr > td,
-	.table-responsive > .table > tbody > tr > th, 
-	.table-responsive > .table > tfoot > tr > td, 
-	.table-responsive > .table > tfoot > tr > th, 
-	.table-responsive > .table > thead > tr > td, 
-	.table-responsive > .table > thead > tr > th {
-		 white-space: inherit;
-	}
+    .table-responsive > #notificationlist > tbody > tr > td,
+    .table-responsive > #notificationlist > tbody > tr > th,
+    .table-responsive > #notificationlist > tfoot > tr > td,
+    .table-responsive > #notificationlist > tfoot > tr > th,
+    .table-responsive > #notificationlist > thead > tr > td,
+    .table-responsive > #notificationlist > thead > tr > th {
+        white-space: inherit;
+    }
 
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > td,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > thead > tr > th {
+        white-space: inherit;
+    }
+
+    .shareback {
+        right: 22%;
+    }
+
+    .date-picker {
+        width: 150px;
+    }
 }
+
 
 
 
@@ -1589,21 +1598,25 @@ a.fileremove {
     font-size: 16px;
     font-weight: 100;
 }
+
 .sidebar-nav .dropdown-menu li {
-	padding-left: 30px;
+    padding-left: 30px;
 }
 
-table td
-{
-	word-wrap: break-word;
+table td {
+    word-wrap: break-word;
 }
-table td p
-{
-	word-wrap: break-word;
+
+    table td p {
+        word-wrap: break-word;
+    }
+
+.multiselect-native-select .caret {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
-.multiselect-native-select .caret
-{
-	position:absolute;
-	top: 10px;
-	right: 10px;
+
+.multiselect-container {
+    position: relative !important;
 }

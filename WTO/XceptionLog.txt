@@ -49,3 +49,63 @@
    at BusinessService.Notification.NotificationListBusinessService.GetNotifications(Search_Notification obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\BusinessService\Notification\NotificationListBusinessService.cs:line 164
    at WTO.Controllers.API.WTO.NotificationListController.GetNotificationsList(Search_Notification obj) in D:\Projects\VSTS\WTO\1 Ashvini\WTO\WTO\Controllers\API\WTO\NotificationListController.cs:line 17
    
+[11 Jul 2018 10:21:33] - GET, http://localhost:27298/api/MoM/EditAction/19, , Column 'NotificationActionId' does not belong to table Table3.,    at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 349
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 10:22:02] - GET, http://localhost:27298/api/MoM/EditAction/19, , Column 'ActionStatus' does not belong to table Table3.,    at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 351
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 11:36:07] - POST, http://localhost:27298/api/MOM/AddUpdateNotificationAction/1, {"Meetingdate":"03 Jul 2018","NotificationId":"19","Actions":[{"NotificationActionId":null,"ActionId":null,"RequiredOn":"RequiredOn"}],"MeetingNote":""}, Conversion failed when converting date and/or time from character string.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.MOMDataManager.InsertRemoveActions(Int64 UserId, AddNotificationAction obj) in D:\Projects\VSTS\WTO\WTO\DataServices\WTO\MOMDataManager.cs:line 82
+   at BusinessService.MOM.MomBusinessService.InsertRemoveActions(Int64 UserId, AddNotificationAction objAdd) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 95
+   at WTO.Controllers.API.WTO.MoMController.AddUpdateNotificationAction(Int64 Id, AddNotificationAction obj) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 21
+   
+[11 Jul 2018 11:46:29] - GET, http://localhost:27298/api/MoM/EditAction/19, , Object cannot be cast from DBNull to other types.,    at System.DBNull.System.IConvertible.ToInt64(IFormatProvider provider)
+   at System.Convert.ToInt64(Object value)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 349
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 11:46:44] - GET, http://localhost:27298/api/MoM/EditAction/19, , Object cannot be cast from DBNull to other types.,    at System.DBNull.System.IConvertible.ToInt64(IFormatProvider provider)
+   at System.Convert.ToInt64(Object value)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 349
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 11:52:42] - POST, http://localhost:27298/api/AddUpdateNotification/GetMailSMSTemplate/19, {"TemplateType":"Mail","TemplateFor":"StakeholderMail","StakeHolderResponseDate":"11 Jul 2018"}, Invalid object name 'tblNotificationMom'.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.NotificationDataManager.MailSMSTemplate(Int64 Id, Notification_Template_Search obj) in D:\Projects\VSTS\WTO\WTO\DataServices\WTO\NotificationDataManager.cs:line 371
+   at BusinessService.Notification.NotificationBusinessService.GetNotificationSMSMailTemplate(Int64 Id, Notification_Template_Search obj) in D:\Projects\VSTS\WTO\WTO\BusinessService\Notification\NotificationBusinessService.cs:line 3624
+   at WTO.Controllers.API.WTO.AddUpdateNotificationController.GetMailSMSTemplate(Int64 Id, Notification_Template_Search obj) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\AddUpdateNotificationController.cs:line 993
+   
+[11 Jul 2018 12:56:17] - GET, http://localhost:27298/api/MoM/EditAction/19, , String was not recognized as a valid Boolean.,    at System.Boolean.Parse(String value)
+   at System.String.System.IConvertible.ToBoolean(IFormatProvider provider)
+   at System.Convert.ToBoolean(Object value)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 305
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 12:56:48] - GET, http://localhost:27298/api/MoM/EditAction/19, , String was not recognized as a valid Boolean.,    at System.Boolean.Parse(String value)
+   at System.String.System.IConvertible.ToBoolean(IFormatProvider provider)
+   at System.Convert.ToBoolean(Object value)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 305
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 12:58:36] - GET, http://localhost:27298/api/MoM/EditAction/19, , String was not recognized as a valid Boolean.,    at System.Boolean.Parse(String value)
+   at System.String.System.IConvertible.ToBoolean(IFormatProvider provider)
+   at System.Convert.ToBoolean(Object value)
+   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 305
+   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
+   
+[11 Jul 2018 14:52:52] - POST, http://localhost:27298/api/MOM/AddUpdateNotificationAction/1, {"Meetingdate":"03 Jul 2018","NotificationId":"19","Actions":[{"NotificationActionId":29,"ActionId":3,"RequiredOn":"26 Jul 2018"},{"NotificationActionId":27,"ActionId":1,"RequiredOn":"10 Jul 2018"},{"NotificationActionId":28,"ActionId":2,"RequiredOn":"10 Jul 2018"},{"NotificationActionId":0,"ActionId":5,"RequiredOn":""}],"MeetingNote":"Test","NotificationGroup":"T1","MeetingId":"2"}, The INSERT statement conflicted with the FOREIGN KEY constraint "FK__tblNotifi__Actio__56B3DD81". The conflict occurred in database "WTO", table "dbo.tblActions", column 'ActionId'.
+The statement has been terminated.
+AFTER UPDATE Trigger fired.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\WTO\DataServices\DAL.cs:line 35
+   at DataServices.WTO.MOMDataManager.InsertRemoveActions(Int64 UserId, AddNotificationAction obj) in D:\Projects\VSTS\WTO\WTO\DataServices\WTO\MOMDataManager.cs:line 85
+   at BusinessService.MOM.MomBusinessService.InsertRemoveActions(Int64 UserId, AddNotificationAction objAdd) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 95
+   at WTO.Controllers.API.WTO.MoMController.AddUpdateNotificationAction(Int64 Id, AddNotificationAction obj) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 21
+   
+[11 Jul 2018 15:12:41] - GET, http://localhost:27298/api/AddUpdateNotification/ViewAction/2, , Column 'ResponseId' does not belong to table Table.,    at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at BusinessService.Notification.NotificationBusinessService.ViewAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\Notification\NotificationBusinessService.cs:line 3597
+   at WTO.Controllers.API.WTO.AddUpdateNotificationController.ViewAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\AddUpdateNotificationController.cs:line 1075
+   
