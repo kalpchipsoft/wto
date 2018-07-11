@@ -1133,6 +1133,7 @@ a:hover, a:focus {
         border-radius: 3px;
         overflow: hidden;
     }
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Staging
 
     .addstackholderdialog {
         width: 96%;
@@ -1160,6 +1161,42 @@ a:hover, a:focus {
         right: 22%;
     }
 
+========================================================================
+
+    .addstackholderdialog {
+        width: 96%;
+    }
+
+    .table-responsive > #notificationlist > tbody > tr > td,
+    .table-responsive > #notificationlist > tbody > tr > th,
+    .table-responsive > #notificationlist > tfoot > tr > td,
+    .table-responsive > #notificationlist > tfoot > tr > th,
+    .table-responsive > #notificationlist > thead > tr > td,
+    .table-responsive > #notificationlist > thead > tr > th {
+        white-space: inherit;
+    }
+
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > td,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > thead > tr > th {
+        white-space: inherit;
+    }
+
+    .shareback {
+        right: 22%;
+    }
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DevelopmentNew
+
+    .date-picker {
+        width: 150px;
+    }
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Staging
+}
+========================================================================
+
     .date-picker {
         width: 150px;
     }
@@ -1168,6 +1205,12 @@ a:hover, a:focus {
         width: 150px !important;
     }
 }
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DevelopmentNew
+
+
+
+
+
 
 .disabled {
     cursor: not-allowed !important;
