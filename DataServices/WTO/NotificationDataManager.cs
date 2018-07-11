@@ -383,6 +383,7 @@ namespace DataServices.WTO
         }
         #endregion
 
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Staging
         #region "Response Action Mail"
         public DataTable SaveResponseActionMail(StakeholderResponse obj)
         {
@@ -399,5 +400,40 @@ namespace DataServices.WTO
             }
         }
         #endregion
+========================================================================
+        #region "Response Action Mail"
+        public DataTable SaveResponseActionMail(StakeholderResponse obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_SaveResponseActionMail;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
+                sqlCommand.Parameters.AddWithValue("@MailId", obj.MailId);
+                sqlCommand.Parameters.AddWithValue("@ResponseReceivedOn", obj.ResponseReceivedOn);
+                sqlCommand.Parameters.AddWithValue("@Message", obj.Message);
+                sqlCommand.Parameters.AddWithValue("@Attachments", obj.ResponseAttachmentXML);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        #endregion
+
+        #region "Add Notification in Meeting"
+        public bool SaveMeetingNotification(Int64 Id, string MeetingDate, string CreatedBy)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.CheckNotificationExistMOM;
+                sqlCommand.Parameters.AddWithValue("@MeetingDate", MeetingDate);
+                sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
+                sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = i > 0 ? true : false;
+                return result;
+            }
+        }
+        #endregion "Add Notification in Meeting"
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DevelopmentNew
     }
 }

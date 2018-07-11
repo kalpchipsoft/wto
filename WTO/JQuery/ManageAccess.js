@@ -1174,6 +1174,7 @@ function AddTemplatePopup() {
     $("#TemplateSaveUpdate").text('Save');
     $("#AddTemplatepopupHead").text('Add Template');
     $('[id$=ddlTemplateType]').val("");
+    $('[id$=ddlNotificationType]').val("0");
     $('[id$=ddlTemplateFor]').val("");
     $('[id$=txtSubject]').val("");
     CKEDITOR.instances.txtMessage.setData('');
@@ -1200,6 +1201,12 @@ function TemplateValidate() {
     }
     else
         $('[id$=ddlTemplateFor]').removeClass("error");
+    if ($.trim($('[id$=ddlNotificationType]').val().toString()) == "0") {
+        msg += "Please select notification type.<br/>";
+        $('[id$=ddlNotificationType]').addClass("error");
+    }
+    else
+        $('[id$=ddlNotificationType]').removeClass("error");
 
     if ($('[id$=txtSubject]').val().trim() == "" && $.trim($('[id$=ddlTemplateType]').val()) != "SMS") {
         $('[id$=txtSubject]').addClass("error");
@@ -1235,6 +1242,7 @@ function AddUpdateTemplate() {
     var obj = {
         TemplateId: id,
         TemplateFor: $.trim($('[id$=ddlTemplateFor]').val()),
+        NotificationType: $.trim($('[id$=ddlNotificationType]').val()),
         TemplateType: $.trim($('[id$=ddlTemplateFor]').val()).toLowerCase() == 'sms' ? '' : $.trim($('[id$=ddlTemplateType]').val()),
         TemplateStatus: $.trim($('[id$=ddlTemplateStatus]').val()),
         Subject: $.trim($('[id$=txtSubject]').val()),
@@ -1279,6 +1287,7 @@ function EditTemplate(id) {
         success: function (result) {
             $('[id$=hdnTemplateId]').val(result.TemplateId);
             $('[id$=ddlTemplateType]').val(result.TemplateType);
+            $('[id$=ddlNotificationType]').val(result.NotificationType);
             $('[id$=ddlTemplateFor]').val(result.TemplateFor);
             $('[id$=txtSubject]').val(result.Subject);
             CKEDITOR.instances.txtMessage.setData(result.Body);

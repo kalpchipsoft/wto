@@ -74,6 +74,7 @@
         public const string GetNotificationList_PageLoadData = "proc_PageLoadDataNotificationList";
         public const string GetNotificationsList = "proc_GetNotificationList";
         public const string ExportNotificationList = "proc_ExportNotificationList";
+        public const string CheckNotificationExistMOM = "Proc_CheckNotificationExistMOM";
         #endregion
 
         #region "View notification"

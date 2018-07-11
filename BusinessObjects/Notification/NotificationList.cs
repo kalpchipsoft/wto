@@ -34,6 +34,7 @@ namespace BusinessObjects.Notification
         public int MailCount { get; set; }
         public int ResponseCount { get; set; }
         public string Actions { get; set; }
+        public string MeetingDate { get; set; }
     }
 
     public class NotificationList
