@@ -109,8 +109,3 @@ AFTER UPDATE Trigger fired.,    at DataServices.DAL.GetDataSet(String connection
    at BusinessService.Notification.NotificationBusinessService.ViewAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\BusinessService\Notification\NotificationBusinessService.cs:line 3597
    at WTO.Controllers.API.WTO.AddUpdateNotificationController.ViewAction(Int64 Id) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\AddUpdateNotificationController.cs:line 1075
    
-[11 Jul 2018 16:29:35] - GET, http://localhost:27298/api/MoM/EditAction/19/?MeetingId=1, , @MeetingId is not a parameter for procedure proc_GetNotificationActions.,    at DataServices.DAL.GetDataSet(String connectionString, SqlCommand sqlCommand) in D:\Projects\VSTS\WTO\WTO\DataServices\DAL.cs:line 35
-   at DataServices.WTO.MOMDataManager.EditActions(Int64 Id, Int64 MeetingId) in D:\Projects\VSTS\WTO\WTO\DataServices\WTO\MOMDataManager.cs:line 69
-   at BusinessService.MOM.MomBusinessService.EditMeetingActions(Int64 Id, Int64 MeetingId) in D:\Projects\VSTS\WTO\WTO\BusinessService\MOM\MomBusinessService.cs:line 290
-   at WTO.Controllers.API.WTO.MoMController.EditAction(Int64 Id, Int64 MeetingId) in D:\Projects\VSTS\WTO\WTO\WTO\Controllers\API\WTO\MoMController.cs:line 35
-   
