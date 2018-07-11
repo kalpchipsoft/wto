@@ -47,6 +47,7 @@ namespace DataServices.ManageAccess
                 sqlCommand.Parameters.AddWithValue("@Subject", obj.Subject);
                 sqlCommand.Parameters.AddWithValue("@Body", obj.Body);
                 sqlCommand.Parameters.AddWithValue("@IsActive", obj.TemplateStatus);
+                sqlCommand.Parameters.AddWithValue("@NotificationType", obj.NotificationType);
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

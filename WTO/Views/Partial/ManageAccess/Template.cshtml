@@ -15,7 +15,8 @@
                     <tr>
                         <th class="col-xs-1">S.No</th>
                         <th class="col-xs-2">Template Type</th>
-                        <th class="col-xs-6">Template For</th>
+                        <th class="col-xs-4">Template For</th>
+                        <th class="col-xs-2">Notification Type</th>
                         <th class="col-xs-1">Status</th>
                         <th class="text-center col-xs-1">Edit</th>
                         <th class="text-center col-xs-1">Delete</th>
@@ -30,7 +31,19 @@
                             <tr>
                                 <td class="col-xs-1">@(i++)</td>
                                 <td class="col-xs-2">@item.TemplateType</td>
-                                <td class="col-xs-6">@item.TemplateFor</td>
+                                <td class="col-xs-4">@item.TemplateFor</td>
+                                @if (item.NotificationType == "1")
+                                {
+                                    <td class="col-xs-2">SPS</td>
+                                }
+                                else if (item.NotificationType == "2")
+                                {
+                                    <td class="col-xs-2">TBT</td>
+                                }
+                                else
+                                {
+                                    <td class="col-xs-2"></td>
+                                }
                                 @if (@item.TemplateStatus)
                                 {
                                     <td class="col-xs-1">Active</td>
@@ -89,6 +102,16 @@
                                     <label class="control-label col-sm-3">Template For<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
                                         @Html.DropDownListFor(m => Model.TemplateForList, new SelectList(Model.TemplateForList, "Value", "Text"), "--Select Template For--", new { Id = "ddlTemplateFor", Class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Notification Type<sup class="mandetory">*</sup>:</label>
+                                    <div class="col-sm-9">
+                                        <select id="ddlNotificationType" class="form-control">
+                                            <option value="0">--Select Notification Type--</option>
+                                            <option value="1">SPS</option>
+                                            <option value="2">TBT</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group" id="divSubject">
