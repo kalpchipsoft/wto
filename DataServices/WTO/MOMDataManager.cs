@@ -58,13 +58,14 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public DataSet EditActions(Int64 Id)
+        public DataSet EditActions(Int64 Id,Int64 MeetingId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.Notification_Actions;
                 sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
+                sqlCommand.Parameters.AddWithValue("@MeetingId", MeetingId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -79,6 +80,8 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@MeetingDate", obj.Meetingdate);
                 sqlCommand.Parameters.AddWithValue("@NotificationActions", obj.ActionXML);
                 sqlCommand.Parameters.AddWithValue("@MeetingNote", obj.MeetingNote);
+                sqlCommand.Parameters.AddWithValue("@NotificationGroup", obj.NotificationGroup);
+                sqlCommand.Parameters.AddWithValue("@MeetingId", obj.MeetingId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
 

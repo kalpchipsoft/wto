@@ -147,19 +147,25 @@ namespace BusinessObjects.MOM
         public string UpdatedOn { get; set; }
     }
 
+
+
     public class EditNotificationMeeting
     {
         public string NotificationNumber { get; set; }
         public string Title { get; set; }
-        //public string Status { get; set; }
+        public string Status { get; set; }
         public string MeetingNote { get; set; }
+        public string NotificationGroup { get; set; }
         public List<EditAction> Actions { get; set; }
         public string MeetingDate { get; set; }
         public bool RetainedForNextDiscussion { get; set; }
+        public List<PrevioiusMeeting> PrevioiusMeetings { get; set; }
+        public List<PrevioiusMeetingAction> PrevioiusMeetingActions { get; set; }
     }
 
     public class AddNotificationAction
     {
+        public Int64 MeetingId { get; set; }
         [Required]
         public DateTime Meetingdate { get; set; }
 
@@ -171,6 +177,9 @@ namespace BusinessObjects.MOM
 
         [Required]
         public string MeetingNote { get; set; }
+
+        [Required]
+        public string NotificationGroup { get; set; }
         public string ActionXML
         {
             get
@@ -205,4 +214,19 @@ namespace BusinessObjects.MOM
         public int? CountryId { get; set; }
         public string Country { get; set; }
     }
+
+    public class PrevioiusMeeting
+    {
+        public Int64 MeetingId { get; set; }
+        public string MeetingDate { get; set; }
+    }
+
+    public class PrevioiusMeetingAction
+    {
+        public Int64 MeetingId { get; set; }
+        public Int64 NotificationActionId { get; set; }
+        public string Action { get; set; }
+        public string ActionStatus { get; set; }
+    }
+
 }

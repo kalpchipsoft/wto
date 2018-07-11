@@ -88,7 +88,7 @@ namespace BusinessObjects.Notification
         public long PageIndex { get; set; }
         public long PageSize { get; set; }
         public string Hscode { get; set; }
-        public string CountryName { get; set; }
+        public string CountryId { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
 

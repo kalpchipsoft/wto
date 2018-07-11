@@ -14,7 +14,7 @@
         top: 45px;
     }
 
-    .input-group span{
+    .input-group span {
         background-color: #fff !important;
     }
 
@@ -31,13 +31,22 @@
         border-right: 3px solid transparent !important;
         border-left: 3px solid transparent !important;
     }
-    .fixed{
-		  top:0;
-		  position:fixed;
-		  width:auto;
-		  display:none;
-		  border:none;
-		}
+
+    .fixed {
+        top: 0;
+        position: fixed;
+        width: auto;
+        display: none;
+        border: none;
+    }
+
+    .optionGroup {
+        font-weight: bold !important;
+    }
+
+    .optionChild {
+        padding-left: 15px !important;
+    }
 </style>
 @Html.Hidden("hdnPageIndex", "1")
 @Html.Hidden("hdnNotificationCount", @Model.TotalCount)
@@ -145,15 +154,31 @@ else
                                                         <option value="">All</option>
                                                         @foreach (BusinessObjects.Notification.StatusMaster item in Model.StatusList)
                                                         {
-                                                            if (Request["StatusId"] != null && Convert.ToInt32(Request["StatusId"]) == @item.StatusId)
+                                                            if (item.StatusId > 11)
                                                             {
-                                                                <option value="@item.StatusId" selected="selected">@item.Status</option>
+                                                                if (Request["StatusId"] != null && Convert.ToInt32(Request["StatusId"]) == @item.StatusId)
+                                                                {
+                                                                    <option value="@item.StatusId" selected="selected" class="optionChild">@item.Status</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.StatusId" class="optionChild">@item.Status</option>
+                                                                }
                                                             }
                                                             else
                                                             {
-                                                                <option value="@item.StatusId">@item.Status</option>
+                                                                <option value="0" class="optionGroup">Parent Tag</option>
+                                                                if (Request["StatusId"] != null && Convert.ToInt32(Request["StatusId"]) == @item.StatusId)
+                                                                {
+                                                                    <option value="@item.StatusId" selected="selected" class="optionGroup">@item.Status</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.StatusId" class="optionGroup">@item.Status</option>
+                                                                }
                                                             }
                                                         }
+
                                                     </select>
                                                 }
                                             </div>
@@ -307,8 +332,8 @@ else
                                                         </tr>
                                                     }
                                                 </tbody>
-                                           
-                                           </table>
+
+                                            </table>
                                         </div>
                                     </div>
                                     <div id="divPaginationLoadingPanel" class="col-md-12 text-center hidden">
@@ -326,46 +351,46 @@ else
 <!-- body section End -->
 
 <script type="text/javascript">
-	(function($) {
-		$.fn.fixMe = function() {
-      return this.each(function() {
-         var $this = $(this),
-            $t_fixed;
-         function init() {
-            $this.wrap('<div/>');
-            $t_fixed = $this.clone();
-            $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
-            resizeFixed();
-         }
-         function resizeFixed() {
-            $t_fixed.find("th").each(function(index) {
-               $(this).css("width",$this.find("th").eq(index).outerWidth()+"px");
+    (function ($) {
+        $.fn.fixMe = function () {
+            return this.each(function () {
+                var $this = $(this),
+                    $t_fixed;
+                function init() {
+                    $this.wrap('<div/>');
+                    $t_fixed = $this.clone();
+                    $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
+                    resizeFixed();
+                }
+                function resizeFixed() {
+                    $t_fixed.find("th").each(function (index) {
+                        $(this).css("width", $this.find("th").eq(index).outerWidth() + "px");
+                    });
+                }
+                function scrollFixed() {
+                    var offset = $(this).scrollTop(),
+                        tableOffsetTop = $this.offset().top,
+                        tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
+                    if (offset < tableOffsetTop || offset > tableOffsetBottom)
+                        $t_fixed.hide();
+                    else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
+                        $t_fixed.show();
+                }
+                $(window).resize(resizeFixed);
+                $(window).scroll(scrollFixed);
+                init();
             });
-         }
-         function scrollFixed() {
-            var offset = $(this).scrollTop(),
-            tableOffsetTop = $this.offset().top,
-            tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
-            if(offset < tableOffsetTop || offset > tableOffsetBottom)
-               $t_fixed.hide();
-            else if(offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
-               $t_fixed.show();
-         }
-         $(window).resize(resizeFixed);
-         $(window).scroll(scrollFixed);
-         init();
-      });
-   };
-})(jQuery);
+        };
+    })(jQuery);
 
-	$(document).ready(function () {
-	    if ($(window).width() > 700) {
-	        $("table").fixMe();
-	    }
-	});
-	$(window).scroll(function () {
-	    if (!$("#toggleOpenClose").hasClass("is-closed")) {
-	        $("#toggleOpenClose").click();
-	    }
-	});
+    $(document).ready(function () {
+        if ($(window).width() > 700) {
+            $("table").fixMe();
+        }
+    });
+    $(window).scroll(function () {
+        if (!$("#toggleOpenClose").hasClass("is-closed")) {
+            $("#toggleOpenClose").click();
+        }
+    });
 </script>

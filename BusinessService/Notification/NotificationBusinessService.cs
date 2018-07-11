@@ -6,6 +6,7 @@ using BusinessObjects;
 using BusinessObjects.Masters;
 using BusinessObjects.Notification;
 using DataServices.WTO;
+
 using System.IO;
 using System.Web;
 using iTextSharp.text;
@@ -3592,6 +3593,8 @@ namespace BusinessService.Notification
                         objT.Subject = Convert.ToString(dr["Subject"]);
                         objT.Message = Convert.ToString(dr["Message"]);
                         objNA.MailDetails = objT;
+
+                        objNA.ResponseId = Convert.ToInt64(dr["ResponseId"]);
                     }
                 }
 
@@ -3731,6 +3734,24 @@ namespace BusinessService.Notification
                 }
             }
             return objE;
+        }
+        #endregion
+
+        #region "Response Action Mail"
+        public SendMailStakeholders_Output SaveResponseActionMail(StakeholderResponse obj)
+        {
+            SendMailStakeholders_Output objOutput = new SendMailStakeholders_Output();
+            NotificationDataManager objNDM = new NotificationDataManager();
+            using (DataTable dt = objNDM.SaveResponseActionMail(obj))
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    StakeholderResponse objS = new StakeholderResponse();
+                    objS.StakeholderResponseId = Convert.ToInt64(dt.Rows[0]["ResponseId"]);
+                    objOutput.SRId = objS;
+                }
+            }
+            return objOutput;
         }
         #endregion
     }
