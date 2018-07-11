@@ -382,5 +382,22 @@ namespace DataServices.WTO
             }
         }
         #endregion
+
+        #region "Response Action Mail"
+        public DataTable SaveResponseActionMail(StakeholderResponse obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_SaveResponseActionMail;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
+                sqlCommand.Parameters.AddWithValue("@MailId", obj.MailId);
+                sqlCommand.Parameters.AddWithValue("@ResponseReceivedOn", obj.ResponseReceivedOn);
+                sqlCommand.Parameters.AddWithValue("@Message", obj.Message);
+                sqlCommand.Parameters.AddWithValue("@Attachments", obj.ResponseAttachmentXML);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        #endregion
     }
 }

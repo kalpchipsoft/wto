@@ -29,6 +29,7 @@ namespace BusinessObjects.Notification
         public Notification_Template MailDetails { get; set; }
         public List<EditAttachment> Attachments { get; set; }
 
+        public Int64 ResponseId { get; set; }
     }
 
     public class NotificationActions

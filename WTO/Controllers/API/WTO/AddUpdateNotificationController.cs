@@ -1107,5 +1107,44 @@ namespace WTO.Controllers.API.WTO
             NotificationBusinessService objBS = new NotificationBusinessService();
             return Ok(objBS.GetMeetingNotes(Id));
         }
+
+        [HttpPost]
+        public IHttpActionResult SaveResponseActionMail(StakeholderResponse obj)
+        {
+            NotificationBusinessService objAN = new NotificationBusinessService();
+            SendMailStakeholders_Output objOutput = objAN.SaveResponseActionMail(obj);
+
+            if (objOutput != null)
+            {
+                #region "Response Attachments"
+                if (obj.ResponseDocuments != null)
+                {
+                    foreach (ResponseAttachment objA in obj.ResponseDocuments)
+                    {
+                        try
+                        {
+                            byte[] bytes = null;
+                            if (objA.Content.IndexOf(',') >= 0)
+                            {
+                                var myString = objA.Content.Split(new char[] { ',' });
+                                bytes = Convert.FromBase64String(myString[1]);
+                            }
+                            else
+                                bytes = Convert.FromBase64String(objA.Content);
+
+                            if (objA.FileName.Length > 0 && bytes.Length > 0)
+                            {
+                                string filePath = HttpContext.Current.Server.MapPath("/Attachments/ResponseAttachment/" + objOutput.SRId.StakeholderResponseId + "_" + objA.FileName);
+                                File.WriteAllBytes(filePath, bytes);
+                            }
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+                #endregion
+            }
+            return Ok();
+
+        }
     }
 }

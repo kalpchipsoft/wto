@@ -59,6 +59,7 @@
         public const string Notification_EditAction = "proc_EditNotificationAction";
         public const string Notification_SendActionMail = "proc_SendActionMail";
         public const string Notification_ViewActionDetails = "proc_GetNotificationActionDetails";
+        public const string Notification_SaveResponseActionMail = "Proc_SaveResponseActionMail";
 
         //Mail Templates
         public const string Notification_GetTemplate = "proc_GetTemplates_Notification";

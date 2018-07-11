@@ -182,7 +182,7 @@ function SearchNotifications(ctrl) {
                         '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
                         '</td>' +
                         '<td>' +
-                        '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
+                        '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + $.trim(v.NotificationGroup) + '" />' +
                         '</td>' +
                         '</tr>';
                     tblCount++;
@@ -310,7 +310,7 @@ function GetAllNotifications(ctrl) {
                                 '<textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
                                 '</td>' +
                                 '<td>' +
-                                '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
+                                '<input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + $.trim(v.NotificationGroup) + '" />' +
                                 '</td>' +
                                 '</tr>';
                             tblCount++;
@@ -480,7 +480,7 @@ function SearchMeetingNotifications(ctrl) {
                         '<p>';
 
                     if (v.NotificationGroup != "")
-                        html += '<b>Group : </b><span>' + v.NotificationGroup + '</span>';
+                        html += '<b>Group : </b><span>' + $.trim(v.NotificationGroup) + '</span>';
 
                     html += '</p>' +
                         '<p>';
@@ -526,7 +526,7 @@ function SearchMeetingNotifications(ctrl) {
                         });
                     }
                     if (v.IsUpdate)
-                        html += '<td class="text-center width-5"><a data-searchfor="' + v.NotificationId+'" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>';
+                        html += '<td class="text-center width-5"><a data-searchfor="' + v.NotificationId + '" onclick="EditNotificationActions(this);"><img src="/contents/img/bedit.png"></a></td>';
                     else
                         html += '<td class="width-10"></td>';
 
@@ -801,10 +801,9 @@ function GetMeetingNote(NotificationId) {
 }
 
 function BindNotificationActions() {
-    debugger;
     var takeaction = 0;
     $.ajax({
-        url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val(),
+        url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val() + "/?MeetingId=" + myWTOAPP.id,
         async: false,
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -813,8 +812,42 @@ function BindNotificationActions() {
                 $('#lblNotificationNumber').text(result.NotificationNumber);
                 $('#lblNotificationTitle').text(result.Title);
                 $('#lblNotificationStage').text(result.Status);
-                $('#lblMeetingDate').text($('#txtmeetingdate').val());
+                $('#MeetingDateId').val(result.MeetingDate);
+                //$('#lblMeetingDate').text($('#txtmeetingdate').val());
                 $('#txtMeetingNote').val(result.MeetingNote);
+                $('#txtNotificationGroup').val($.trim(result.NotificationGroup));
+                if (result.PrevioiusMeetings != null) {
+                    var _PrevioiusMeetings = '';
+                    $.each(result.PrevioiusMeetings, function (i, v) {
+                        _PrevioiusMeetings += '<tr><td class="col-sm-3" > ' + v.MeetingDate + '</td >';
+                        _PrevioiusMeetings += '<td class="col-sm-6">';
+
+                        if (result.PrevioiusMeetingActions != null) {
+                            $.each(result.PrevioiusMeetingActions, function (indx, val) {
+                                if (val.MeetingId == v.MeetingId) {
+                                    _PrevioiusMeetings += '<p class="wto-label-normal">' + val.Action + '</p>';
+                                }
+                            });
+                        }
+                        _PrevioiusMeetings += '</td>';
+                        _PrevioiusMeetings += '<td class="col-sm-3">';
+                        if (result.PrevioiusMeetingActions != []) {
+                            $.each(result.PrevioiusMeetingActions, function (indx, val) {
+                                if (val.MeetingId == v.MeetingId) {
+                                    _PrevioiusMeetings += '<p class="wto-label-normal">' + val.ActionStatus + '</p>';
+                                }
+                            });
+                        }
+                        _PrevioiusMeetings += '</td>';
+                        _PrevioiusMeetings += '</tr >';
+                    });
+
+                    $('#divMeetingHistory').removeClass('hidden');
+                    $('#tblMeetingHistory > tbody').empty();
+                    $('#tblMeetingHistory > tbody').append(_PrevioiusMeetings);
+                }
+                else
+                    $('#divMeetingHistory').addClass('hidden');
 
                 $('#divPlanActions').empty();
                 $('#divTakeActionHeader').addClass('hidden');
@@ -910,10 +943,10 @@ function BindNotificationActions() {
                 $('#divPlanActions').append(HTML);
                 $('#ModalAddAction').modal('show');
 
-                if (result.RetainedForNextDiscussion)
-                    $("#btnSaveActions").addClass("hidden");
-                else
-                    $("#btnSaveActions").removeClass("hidden");
+                //if (result.RetainedForNextDiscussion)
+                //    $("#btnSaveActions").addClass("hidden");
+                //else
+                //    $("#btnSaveActions").removeClass("hidden");
             }
         },
         failure: function (result) {
@@ -974,7 +1007,7 @@ function SaveEndMeeting() {
 function IsMeetingExists(MoMId) {
     if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
         $.ajax({
-            url: "/api/MoM/ValidateMeetingdate?date=" + $.trim($('[id$=txtmeetingdate]').val()) + "&MoMId="+MoMId,
+            url: "/api/MoM/ValidateMeetingdate?date=" + $.trim($('[id$=txtmeetingdate]').val()) + "&MoMId=" + MoMId,
             async: false,
             type: "POST",
             contentType: "application/json; charset=utf-8",
