@@ -135,10 +135,10 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <textarea class="form-control textboxcontrol AutoHeight txtsmalllength" cols="30" rows="1" id="txtMeetingNote_@objMOM.ItemNumber">@objMOM.MeetingNote</textarea>
+                                                            <textarea class="form-control textboxcontrol AutoHeight" cols="30" rows="1" id="txtMeetingNote_@objMOM.ItemNumber">@objMOM.MeetingNote</textarea>
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control textboxcontrol txtsmalllength" maxlength="5" id="txtNotificationGroup_@objMOM.ItemNumber" value="@(objMOM.NotificationGroup.Trim())" />
+                                                            <input type="text" class="form-control textboxcontrol" maxlength="5" id="txtNotificationGroup_@objMOM.ItemNumber" value="@objMOM.NotificationGroup" />
                                                         </td>
                                                     </tr>
                                                 }

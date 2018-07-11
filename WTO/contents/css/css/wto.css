@@ -1163,12 +1163,11 @@ a:hover, a:focus {
     .date-picker {
         width: 150px;
     }
+
+    .txtsmalllength {
+        width: 150px !important;
+    }
 }
-
-
-
-
-
 
 .disabled {
     cursor: not-allowed !important;
