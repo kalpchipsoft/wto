@@ -1420,7 +1420,9 @@ function BindRelatedTranslators(ctrl) {
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
+                debugger;
                 if (result != null) {
+                    debugger;
                     $('#remainder').val(result.TranslationReminder);
                     $('#duedate').val(result.TranslationDueBy);
                 }
@@ -1432,7 +1434,8 @@ function BindRelatedTranslators(ctrl) {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             complete: function () {
-                setReminderDays('DueDate');
+                if ($('#duedate').val() != "")
+                    setReminderDays('DueDate');
             }
         });
     }
@@ -1478,6 +1481,12 @@ function OpenMailToTranslatorModel() {
         if (v.LanguageId == "")
             IsSelected = false;
     });
+
+    if ($.trim($('#duedate').val()) == "") {
+        Alert("Alert", "Please provide due date for translation", "Ok");
+        return false;
+    }
+        
 
     if (IsSelected) {
         $('#UploadedReg').empty();

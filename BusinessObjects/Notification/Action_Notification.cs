@@ -119,8 +119,6 @@ namespace BusinessObjects.Notification
         public string Body { get; set; }
         public string MailTo { get; set; }
         public List<Attachement_Action> Attachments { get; set; }
-        //public string AttachmentsXML { get; set; }
-
         public string AttachmentsXML
         {
             get

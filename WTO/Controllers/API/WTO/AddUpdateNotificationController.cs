@@ -271,7 +271,7 @@ namespace WTO.Controllers.API.WTO
                                     IsMultipleNotificationNumber = true;
                             }
 
-                            if (objE.NotificationNumber.Split('/').Length < 6 || IsMultipleNotificationNumber)
+                            if (obj.DocumentType==1|| obj.DocumentType == 4)
                             {
                                 #region "Table"
                                 Table t = wordfile.Tables[1];

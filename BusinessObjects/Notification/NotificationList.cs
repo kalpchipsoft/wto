@@ -21,6 +21,8 @@ namespace BusinessObjects.Notification
         public int ActionId { get; set; }
         public string ActionStatus { get; set; }
         public Nullable<DateTime> MeetingDate { get; set; }
+        public Nullable<DateTime> DateofNotification_From { get; set; }
+        public Nullable<DateTime> DateofNotification_To { get; set; }
     }
     public class Notification : CommonResponseModel
     {

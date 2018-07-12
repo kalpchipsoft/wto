@@ -185,6 +185,7 @@ namespace BusinessService.Notification
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
                         objItems.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objItems.IsInMeeting = Convert.ToBoolean(dr["IsInMeeting"]);
                         ItemsList.Add(objItems);
                     }
                     objR.ItemsList = ItemsList;

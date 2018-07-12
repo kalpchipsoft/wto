@@ -1,7 +1,6 @@
 ﻿@{
     Layout = null;
 }
-@Html.Hidden("hdnMeetingId", "0")
 @Html.Hidden("hdnNotificationActionId", "0")
 @Html.Hidden("hdnActionId", "0")
 <div class="modal fade selecthrmodal" id="ModalAddAction" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -514,7 +513,7 @@
             Actions: GetActionDetails(),
             MeetingNote: $.trim($('#txtMeetingNote').val()),
             NotificationGroup: $.trim($('#txtNotificationGroup').val()),
-            MeetingId: myWTOAPP.id
+            MeetingId: $('#hdnMeetingId').val()
         };
 
         $.ajax({
@@ -609,9 +608,13 @@
                             if (v.NotificationActionId != 0 && v.MailId == 0) {
                                 var callfor = "takeaction";
                                 takeaction++;
-                                HTML += "<div class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></div>";
+                                HTML += "<td class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></td>";
                             }
+                            else
+                                HTML += "<td class='col-sm-2'></td>";
                         }
+                        else
+                            HTML += "<td class='col-sm-4'><td class='col-sm-2'></td>";
                         HTML += '</td>';
                         if (takeaction > 0) {
                             $('#divTakeActionHeader').removeClass('hidden');
