@@ -223,15 +223,15 @@ else
                                                 {
                                                     <select id="ddlActionStatus" class="form-control textboxcontrol">
                                                         <option value="" selected="selected">All</option>
-                                                        @foreach (BusinessObjects.Notification.ActionStatus item in Model.ActionStatusList)
+                                                        @foreach (BusinessObjects.Notification.Status item in Model.ActionStatusList)
                                                         {
                                                             if (Request["ActionStatus"] != null && Convert.ToInt32(Request["ActionStatus"]) == @item.StatusId)
                                                             {
-                                                                <option value="@item.StatusId" selected="selected">@item.Status</option>
+                                                                <option value="@item.StatusId" selected="selected">@item.StatusName</option>
                                                             }
                                                             else
                                                             {
-                                                                <option value="@item.StatusId">@item.Status</option>
+                                                                <option value="@item.StatusId">@item.StatusName</option>
                                                             }
                                                         }
                                                     </select>
@@ -258,9 +258,9 @@ else
                                                         <th>Pending Discussion</th>
                                                         <th class="text-center" style="padding-right:2%;">Stakeholder Responses</th>
                                                         <th>Pending Action</th>
-                                                        <th class="hidden"></th>
-                                                        <th>Edit</th>
-                                                        <th>Export</th>
+                                                        <th></th>
+                                                        @*<th>Edit</th>
+                                                            <th>Export</th>*@
                                                     </tr>
                                                 </thead>
 
@@ -316,13 +316,9 @@ else
                                                                         @("--")
                                                                     }
                                                                 </td>
-                                                                <td class="width-5 text-right hidden">
-                                                                    <a data-callfor="@item.MeetingDate" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, '@item.NotificationId');"><img src="~/contents/img/MeetingIcon.png" style="width:25px;" /></a>
-                                                                </td>
-                                                                <td class="width-5 text-right">
+                                                                <td class="width-10 text-right">
+                                                                    <a class="@(item.IsInMeeting?"hidden":"")" data-callfor="@item.MeetingDate" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, '@item.NotificationId');"><img src="~/contents/img/MeetingIcon.png" style="width:25px;" /></a>
                                                                     <a href="@Url.Action("Edit_Notification", "AddNotification" , new { Id=@item.NotificationId })" data-toggle="tooltip" data-placement="bottom" title="Edit Notification"><img src="~/contents/img/bedit.png" /></a>
-                                                                </td>
-                                                                <td class="width-5 text-right">
                                                                     <a href="@Url.Action("Download","API/AddUpdateNotification",new { Id = @item.NotificationId})" data-toggle="tooltip" data-placement="bottom" title="Export Notification Details"><img src="~/contents/img/export2.png" /></a>
                                                                 </td>
                                                             </tr>

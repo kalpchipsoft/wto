@@ -70,63 +70,6 @@ $(document).ready(function () {
         });
     });
 
-    $('#AddAttachment_UploadDocumentId').change(function (e) {
-        var totfilesize = 0;
-        if ($(this)[0].files.length != 0) {
-            var fileToLoad = $(this)[0].files[0];
-            var ext = $(this)[0].files[0].name.split(".")[$(this)[0].files[0].name.split(".").length - 1];
-            ext = ext.toLowerCase();
-            $.each($(this)[0].files, function (index, value) {
-                totfilesize += value.size;
-            });
-
-            if (totfilesize > 10485760) {
-                Alert("Alert", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
-                $("#Loader").hide();
-                return false;
-            }
-            else if (ext != "docx" && ext != "doc" && ext != "pdf") {
-                Alert("Alert", "You can upload only word and pdf files.<br/>", "Ok");
-                $(this).val('');
-                $("#Loader").hide();
-                return false;
-            }
-            else {
-                $.each($(this)[0].files, function (index, value) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var IsExist = false;
-                        $.each($('[id$=tblAttachments] input[type=checkbox]'), function () {
-                            var FileName = $.trim($(this).closest('td').next().text());
-                            if (FileName.toLowerCase() == value.name.toLowerCase())
-                                IsExist = true;
-                        });
-                        if (IsExist) {
-                            Alert("Alert", "An attachment with same name has been already added.<br/>", "Ok")
-                        }
-                        else {
-                            TempMailAttachments.push({ "FileName": value.name, "Content": e.target.result, "Selected": true, "Path": "", "IsSelected": true });
-                            var HTML = '';
-                            HTML += '<tr>';
-                            HTML += '<td style="width: 4%; width:50px;">';
-                            HTML += '<div class="checkbox radio-margin">';
-                            HTML += '<label>';
-                            HTML += '<input type="checkbox" checked="checked" val="" onchange="AddRemoveMailAttachement(this);">';
-                            HTML += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
-                            HTML += '</label>';
-                            HTML += '</div>';
-                            HTML += '</td>';
-                            HTML += '<td style="width: 96%">' + value.name + '</td>';
-                            HTML += '</tr>';
-                            $('[id$=tblAttachments]').append(HTML);
-                        }
-                    }
-                    reader.readAsDataURL(fileToLoad);
-                });
-            }
-        }
-    });
-
     $('#UploadMaterialAttachmentId').change(function (e) {
         var totfilesize = 0;
         if ($(this)[0].files.length != 0) {
@@ -365,7 +308,7 @@ function ViewAction(Id, ctrl) {
             Alert("Meeting", "Something went wrong.<br/>", "Ok");
         }
     });
-}``
+} ``
 
 ///-------------------------------------------------------------Attachments
 
@@ -570,14 +513,14 @@ function CloseViewAction() {
 function FormatDate(val) {
     debugger;
     //if (val.length > 10) {
-        var dt1 = val.split('T')[0];
-        var mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var d = dt1.split('-')[2];
-        var m = dt1.split('-')[1];
-        var y = dt1.split('-')[0];
-        var MyDate = d + ' ' + mon[parseInt(m) - 1] + ' ' + y;
-        return MyDate;
-   // }
+    var dt1 = val.split('T')[0];
+    var mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var d = dt1.split('-')[2];
+    var m = dt1.split('-')[1];
+    var y = dt1.split('-')[0];
+    var MyDate = d + ' ' + mon[parseInt(m) - 1] + ' ' + y;
+    return MyDate;
+    // }
 }
 
 //--------------------------------- Action Response Start --------------------------------------

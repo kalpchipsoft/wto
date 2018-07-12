@@ -35,6 +35,7 @@ namespace BusinessObjects.Notification
         public int ResponseCount { get; set; }
         public string Actions { get; set; }
         public string MeetingDate { get; set; }
+        public Boolean IsInMeeting { get; set; }
     }
 
     public class NotificationList
@@ -43,7 +44,7 @@ namespace BusinessObjects.Notification
         public List<StatusMaster> StatusList { get; set; }
         public List<ActionMaster> ActionList { get; set; }
         public List<Notification> Notifications { get; set; }
-        public List<ActionStatus> ActionStatusList { get; set; }
+        public List<Status> ActionStatusList { get; set; }
         public long TotalCount { get; set; }
 
         public List<NotificationProcessDot> NotificationProcessDots { get; set; }
@@ -66,9 +67,9 @@ namespace BusinessObjects.Notification
         public int Sequence { get; set; }
     }
 
-    public class ActionStatus
+    public class Status
     {
-        public string Status { get; set; }
+        public string StatusName { get; set; }
         public int StatusId { get; set; }
     }
     public class StatusMaster
