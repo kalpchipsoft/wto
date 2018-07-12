@@ -9,7 +9,7 @@
 <link href="~/contents/css/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/contents/js/bootstrap-multiselect.js"></script>
 
-<script src="~/JQuery/Mom.js?v=5"></script>
+<script src="~/JQuery/Mom.js?v=6"></script>
 
 <style type="text/css">
     .fixed {
@@ -22,6 +22,7 @@
 </style>
 
 <!-- body section start -->
+<input type="hidden" id="hdnMeetingId" value="@Model.MoMId" />
 <input type="hidden" id="hdnNotificationId" />
 <div>
     <div class="container-fluid">
@@ -170,14 +171,12 @@
                                                                 if (Action != null && (Action.ActionId >= 4 || (Convert.ToInt32(Action.MailId) > 0 && Action.ActionId < 4)))
                                                                 {
                                                                     <td class="text-center">
-                                                                        @*<span class="action-completed dark-green-color" id="span_@objMOM.ItemNumber"></span>*@
                                                                         <span class="glyphicon glyphicon-ok dark-green-color font-20" id="span_@objMOM.ItemNumber"></span>
                                                                     </td>
                                                                 }
                                                                 else if (Action != null)
                                                                 {
                                                                     <td class="text-center">
-                                                                        @*<span class="action-pending" id="span_@objMOM.ItemNumber"></span>*@
                                                                         <span class="glyphicon glyphicon-hourglass dark-green-color font-20" id="span_@objMOM.ItemNumber"></span>
                                                                     </td>
                                                                 }

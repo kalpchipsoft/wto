@@ -1420,7 +1420,9 @@ function BindRelatedTranslators(ctrl) {
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
+                debugger;
                 if (result != null) {
+                    debugger;
                     $('#remainder').val(result.TranslationReminder);
                     $('#duedate').val(result.TranslationDueBy);
                 }
@@ -1432,7 +1434,8 @@ function BindRelatedTranslators(ctrl) {
                 Alert("Alert", "Something went wrong.<br/>", "Ok");
             },
             complete: function () {
-                setReminderDays('DueDate');
+                if ($('#duedate').val() != "")
+                    setReminderDays('DueDate');
             }
         });
     }
@@ -1478,6 +1481,12 @@ function OpenMailToTranslatorModel() {
         if (v.LanguageId == "")
             IsSelected = false;
     });
+
+    if ($.trim($('#duedate').val()) == "") {
+        Alert("Alert", "Please provide due date for translation", "Ok");
+        return false;
+    }
+        
 
     if (IsSelected) {
         $('#UploadedReg').empty();
@@ -1802,11 +1811,11 @@ function OpenSendMailModel() {
     $('#divStakeHolderCounts').css('display', '');
     $('#ddlAttachments').find('input[type=checkbox]').prop('checked', false);
     var stakeholderId = [];
-    if ($('#notificationlist tbody').find('input[type=checkbox]:checked').length == 0) {
+    if ($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked').length == 0) {
         Alert("Alert", "Please select stakeholders to send mail.<br/>", "Ok");
     }
     else {
-        $.each($('#notificationlist tbody').find('input[type=checkbox]:checked'), function () {
+        $.each($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked'), function () {
             if (this.id.toLowerCase() != 'chkselectall')
                 stakeholderId.push($(this).val());
         });
@@ -1962,10 +1971,9 @@ function RemoveStakeholdersMailAttachments(ctrl) {
 
 //Open popup of add other attachments in Stakholders mail popup
 function AddAttachment() {
-    debugger;
     var HTML = '';
-    $.each(TempMailAttachments, function (i, v) {
-        //TempMailAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path, "IsSelected": v.IsSelected });
+    $.each(MailAttachments, function (i, v) {
+        TempMailAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path, "IsSelected": v.IsSelected });
         HTML += '<tr>';
         HTML += '<td style="width: 4%; width:50px;">';
         HTML += '<div class="checkbox radio-margin">';
@@ -2160,7 +2168,7 @@ function CheckUncheckSelectAll() {
 
 function checkstakeholdercheckbox() {
     var IsSelectedAll = $('#chkSelectAll').prop('checked');
-    $.each($('#notificationlist > tbody').find('input[type=checkbox]'), function () {
+    $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]'), function () {
         this.checked = IsSelectedAll;
     });
 }
@@ -2479,4 +2487,63 @@ function EditNotificationActions(ctrl) {
     ShowGlobalLodingPanel();
     $('#hdnNotificationId').val(myWTOAPP.id);
     BindNotificationActions();
+}
+
+function AddMailAttachment(ctrl) {
+    debugger;
+    var totfilesize = 0;
+    if ($(ctrl)[0].files.length != 0) {
+        var fileToLoad = $(ctrl)[0].files[0];
+        var ext = $(ctrl)[0].files[0].name.split(".")[$(ctrl)[0].files[0].name.split(".").length - 1];
+        ext = ext.toLowerCase();
+        $.each($(ctrl)[0].files, function (index, value) {
+            totfilesize += value.size;
+        });
+
+        if (totfilesize > 10485760) {
+            Alert("Alert", "Total attachment files size should not be greater than 10 MB.<br/>", "Ok");
+            $("#Loader").hide();
+            return false;
+        }
+        else if (ext != "docx" && ext != "doc" && ext != "pdf") {
+            Alert("Alert", "You can upload only word and pdf files.<br/>", "Ok");
+            $(ctrl).val('');
+            $("#Loader").hide();
+            return false;
+        }
+        else {
+            $.each($(ctrl)[0].files, function (index, value) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var IsExist = false;
+                    $.each($('[id$=tblAttachments] input[type=checkbox]'), function () {
+                        var FileName = $.trim($(this).closest('td').next().text());
+                        if (FileName.toLowerCase() == value.name.toLowerCase())
+                            IsExist = true;
+                    });
+                    if (IsExist) {
+                        Alert("Alert", "An attachment with same name has been already added.<br/>", "Ok")
+                    }
+                    else {
+                        debugger;
+                        TempMailAttachments.push({ "FileName": value.name, "Content": e.target.result, "Selected": true, "Path": "", "IsSelected": true });
+                        var HTML = '';
+                        HTML += '<tr>';
+                        HTML += '<td style="width: 4%; width:50px;">';
+                        HTML += '<div class="checkbox radio-margin">';
+                        HTML += '<label>';
+                        HTML += '<input type="checkbox" checked="checked" val="" onchange="AddRemoveMailAttachement(this);">';
+                        HTML += '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+                        HTML += '</label>';
+                        HTML += '</div>';
+                        HTML += '</td>';
+                        HTML += '<td style="width: 96%">' + value.name + '</td>';
+                        HTML += '</tr>';
+                        $('[id$=tblAttachments]').append(HTML);
+                    }
+                }
+                reader.readAsDataURL(fileToLoad);
+            });
+        }
+    }
 }

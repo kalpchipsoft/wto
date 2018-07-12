@@ -130,6 +130,7 @@ function SearchNotification(PageIndx) {
                     $('#NotificationData').empty();
                 }
                 var NewRow = '';
+                debugger;
                 if (result.ItemsList != null && result.ItemsList.length > 0) {
                     $.each(result.ItemsList, function (i, v) {
                         NewRow += '<tr class="hoverborder">';
@@ -181,10 +182,13 @@ function SearchNotification(PageIndx) {
                         else {
                             NewRow += '<td class="tooltiprelative width-10">--</td>';
                         }
-                        NewRow += '<td class="width-5 text-right hidden" > <a  data-callfor="' + v.MeetingDate + '" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, ' + v.NotificationId + ');"><img src="/contents/img/MeetingIcon.png" style="width:25px;" /></a></td>';
-                        NewRow += '<td class="width-5 text-right"><a href="../AddNotification/Edit_Notification/' + v.NotificationId + '" onclick="StoreHTML();"><img src="../contents/img/bedit.png" /></a></td>';
-                        NewRow += '<td class="width-5 text-right"><a href="/API/AddUpdateNotification/Download/' + v.NotificationId + '" title="Export Details"><img src="/contents/img/export2.png"></a></td>';
-                        NewRow += '</tr>';
+                        NewRow += '<td class="width-10 text-right" >';
+                        debugger;
+                        if (!v.IsInMeeting)
+                            NewRow += '<a data-callfor="' + v.MeetingDate + '" title="Add Meeting" onclick="return CheckNotificationExistMOM(this, ' + v.NotificationId + ');"><img src="/contents/img/MeetingIcon.png" style="width:25px;" /></a>';
+                        NewRow += '<a href="../AddNotification/Edit_Notification/' + v.NotificationId + '" onclick="StoreHTML();"><img src="../contents/img/bedit.png" /></a>';
+                        NewRow += '<a href="/API/AddUpdateNotification/Download/' + v.NotificationId + '" title="Export Details"><img src="/contents/img/export2.png"></a></td>';
+                        NewRow += '</td></tr>';
                     });
                 }
                 else
