@@ -1270,7 +1270,8 @@ a, a:hover, a:focus, a:active {
     background: #016eac;
     padding: 0px 8px 2px 8px;
     color: #fff;
-    width: 40px;
+    min-width: 40px;
+    max-width: 100px;
     text-align: center;
 }
 

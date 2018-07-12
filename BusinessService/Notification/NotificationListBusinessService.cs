@@ -72,16 +72,16 @@ namespace BusinessService.Notification
                 tblIndx++;
                 if (ds.Tables.Count > tblIndx && ds.Tables[tblIndx] != null && ds.Tables[tblIndx].Rows.Count > 0)
                 {
-                    List<ActionStatus> ActionStatusList = new List<ActionStatus>();
+                    List<Status> StatusList = new List<Status>();
                     foreach (DataRow dr in ds.Tables[tblIndx].Rows)
                     {
-                        ActionStatus objActionStatus = new ActionStatus();
-                        objActionStatus.StatusId = Convert.ToInt32(dr["StatusId"]);
-                        objActionStatus.Status = Convert.ToString(dr["Status"]);
-                        ActionStatusList.Add(objActionStatus);
+                        Status objStatus = new Status();
+                        objStatus.StatusId = Convert.ToInt32(dr["StatusId"]);
+                        objStatus.StatusName = Convert.ToString(dr["Status"]);
+                        StatusList.Add(objStatus);
                     }
 
-                    objR.ActionStatusList = ActionStatusList;
+                    objR.ActionStatusList = StatusList;
                 }
                 #endregion
 
@@ -103,6 +103,8 @@ namespace BusinessService.Notification
                         objItems.MailCount = Convert.ToInt32(dr["MailCount"]);
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
+                        objItems.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objItems.IsInMeeting = Convert.ToBoolean(dr["IsInMeeting"]);
                         ItemsList.Add(objItems);
                     }
                     objR.Notifications = ItemsList;
@@ -183,6 +185,7 @@ namespace BusinessService.Notification
                         objItems.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
                         objItems.Actions = Convert.ToString(dr["Actions"]);
                         objItems.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objItems.IsInMeeting = Convert.ToBoolean(dr["IsInMeeting"]);
                         ItemsList.Add(objItems);
                     }
                     objR.ItemsList = ItemsList;
