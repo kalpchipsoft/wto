@@ -23,6 +23,7 @@ namespace BusinessObjects.Notification
         public Nullable<DateTime> MeetingDate { get; set; }
         public Nullable<DateTime> DateofNotification_From { get; set; }
         public Nullable<DateTime> DateofNotification_To { get; set; }
+        public string Hscode { get; set; }
     }
     public class Notification : CommonResponseModel
     {

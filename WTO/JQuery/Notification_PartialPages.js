@@ -349,145 +349,6 @@ function GetMeetingNote() {
     });
 }
 
-////------------------------------------------------------------------------Notification related materials
-//Open popup of add attachments in add material popup
-function AddMaterialAttachment() {
-    $('[id$=divAddMaterialAttachmentOverlay]').show();
-    $('[id$=divAddMaterialAttachment]').show();
-
-    $("[id$=MaterialAttachmentNameId]").val($.trim(MaterialAttachment.DisplayName));
-    $("#FileMaterialAttachmentId").val(MaterialAttachment.FileName);
-    $('#lblMaterialAttachment').text($.trim(MaterialAttachment.DisplayName));
-}
-
-//Close popup of add attachments in add material popup
-function CloseMaterialAttachment() {
-    TempMaterialAttachment = [];
-    $('[id$=divAddMaterialAttachmentOverlay]').hide();
-    $('[id$=divAddMaterialAttachment]').hide();
-
-    $("[id$=MaterialAttachmentNameId]").val('');
-    $("#FileMaterialAttachmentId").val('');
-    $('#lblMaterialAttachment').text($.trim(MaterialAttachment.DisplayName));
-    return false;
-}
-
-//ok function of add attachments in add material popup
-function UploadMaterialAttachmentOk() {
-    var ErrorMsg = '';
-    if (TempMaterialAttachment.length == 0)
-        ErrorMsg += 'Please provide attachment.<br/>';
-
-    if ($.trim($('[id$=MaterialAttachmentNameId]').val()) == "") {
-        ErrorMsg += "Please provide attachment name. <br/>";
-        $("[id$=MaterialAttachmentNameId]").addClass('Error');
-    }
-    else
-        $("[id$=MaterialAttachmentNameId]").removeClass('Error');
-
-    if (ErrorMsg.length > 0) {
-        Alert("Alert", ErrorMsg, "Ok");
-        return false;
-    }
-    else {
-        MaterialAttachment = TempMaterialAttachment;
-        MaterialAttachment.DisplayName = $.trim($('[id$=MaterialAttachmentNameId]').val());
-        $('#lblMaterialAttachment').text($.trim(MaterialAttachment.DisplayName));
-        CloseMaterialAttachment();
-    }
-}
-
-function OpenAddNotificationRelatedModal() {
-    $('#AddNotificationRelatedModal').modal('show');
-    return false;
-}
-
-function CloseAddNotificationRelatedModal() {
-    $('#AddNotificationRelatedModal').modal('hide');
-    $('[name$=MaterialType]:checked').prop('checked', false);
-    $('.divRelatedMatrialDetails').addClass('hidden');
-    $('#txtMaterialNumber').val('');
-    $('#txtDateOfMaterial').val('');
-    $('#txtMaterialDescription').val('');
-    MaterialAttachment = [];
-    $('#lblMaterialAttachment').text('');
-    $('#MaterialAttachmentNameId').val('');
-    $('#FileMaterialAttachmentId').val('');
-    $('#UploadMaterialAttachmentId').val('');
-    return false;
-}
-
-function ValidateNotificationRelatedMaterial() {
-    ShowGlobalLodingPanel();
-    var ErrorMsg = '';
-    var NotificationNumber = $.trim($('#NotificationNumberId').val());
-    var MaterialNumber = $.trim($('#txtMaterialNumber').val());
-    var MaterialType = $.trim($('[name$=MaterialType]:checked').val());
-
-    if (MaterialNumber == "")
-        ErrorMsg += "Please enter " + MaterialType + " number.<br/>";
-    else {
-        if (MaterialNumber.indexOf('/') < 0)
-            ErrorMsg += "Please enter valid " + MaterialType + " number.<br/>";
-        else if (MaterialNumber.indexOf(NotificationNumber) < 0)
-            ErrorMsg += "Please enter valid " + MaterialType + " number.<br/>";
-    }
-
-    if ($.trim($('#txtDateOfMaterial').val()) == "")
-        ErrorMsg += "Please enter date of " + MaterialType + ".<br/>";
-
-    if ($.trim($('#txtMaterialDescription').val()) == "")
-        ErrorMsg += "Please enter " + MaterialType + " description.<br/>";
-
-    if (MaterialAttachment.length == 0)
-        ErrorMsg += "Please choose " + MaterialType + " attachment.<br/>";
-
-    if (ErrorMsg.length > 0) {
-        HideGlobalLodingPanel();
-        Alert("Alert", ErrorMsg, "Ok");
-        return false;
-    }
-    else
-        SaveNotificationRelatedMaterial();
-}
-
-function SaveNotificationRelatedMaterial() {
-    var obj = {
-        NotificationId: myWTOAPP.id,
-        MaterialType: $.trim($('[name$=MaterialType]:checked').val()),
-        MaterialNumber: $.trim($('#txtMaterialNumber').val()),
-        MaterialDescription: $.trim($('#txtMaterialDescription').val()),
-        DateOfMaterial: $.trim($('#txtDateOfMaterial').val()),
-        Attachment: MaterialAttachment
-    }
-
-    $.ajax({
-        url: "/api/AddUpdateNotification/InsertNotificationRelatedMaterial/" + myWTOAPP.UserId,
-        async: false,
-        type: "POST",
-        data: JSON.stringify(obj),
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            AlertwithFunction("Alert", result.Message + "<br/>", "Ok", "AfterSaveNotificationRelatedMaterial()");
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-    });
-}
-
-function AfterSaveNotificationRelatedMaterial() {
-    HideGlobalLodingPanel();
-    $('#AddNotificationRelatedModal').modal('hide');
-    MaterialAttachment = [];
-    setTimeout(function () {
-        $("#divNotificationRelatedMatrial").load('/AddNotification/NotificationRelatedMaterials/' + myWTOAPP.id);
-    }, 300);
-}
-
 function printDiv(elementId) {
     debugger;
     var date = new Date();
@@ -532,9 +393,11 @@ function OpenActionResponse() {
     $('#DivActionResponseAttachments').empty();
     ResponseActionMailAttachments = [];
 }
+
 function ClearActionResponse() {
     $('#ActionResponseModal').modal('hide');
 }
+
 function SaveActionResponse() {
     ShowGlobalLodingPanel();
     var NotificationId = $('[id$=hdnNotificationId]').val();
@@ -588,6 +451,7 @@ function SaveActionResponse() {
     HideGlobalLodingPanel();
     return false;
 }
+
 function UploadResponseAttachment() {
     $('#UploadActionResponseDoc').click();
     return false;

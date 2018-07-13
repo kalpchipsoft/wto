@@ -28,6 +28,7 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@PendingStatusFrom", obj.PendingFrom);
                 sqlCommand.Parameters.AddWithValue("@DateofNotification_From", obj.DateofNotification_From);
                 sqlCommand.Parameters.AddWithValue("@DateofNotification_To", obj.DateofNotification_To);
+                sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -52,6 +53,7 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@PendingStatusFrom", obj.PendingFrom);
                 sqlCommand.Parameters.AddWithValue("@DateofNotification_From", obj.DateofNotification_From);
                 sqlCommand.Parameters.AddWithValue("@DateofNotification_To", obj.DateofNotification_To);
+                sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

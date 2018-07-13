@@ -1127,8 +1127,6 @@ a:hover, a:focus {
         border-radius: 3px;
         overflow: hidden;
     }
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Staging
-
     .addstackholderdialog {
         width: 96%;
     }
@@ -1155,41 +1153,24 @@ a:hover, a:focus {
         right: 22%;
     }
 
-    .addstackholderdialog {
-        width: 96%;
-    }
-
-    .table-responsive > #notificationlist > tbody > tr > td,
-    .table-responsive > #notificationlist > tbody > tr > th,
-    .table-responsive > #notificationlist > tfoot > tr > td,
-    .table-responsive > #notificationlist > tfoot > tr > th,
-    .table-responsive > #notificationlist > thead > tr > td,
-    .table-responsive > #notificationlist > thead > tr > th {
-        white-space: inherit;
-    }
-
-    .table-responsive > .table > tbody > tr > td,
-    .table-responsive > .table > tbody > tr > th,
-    .table-responsive > .table > tfoot > tr > td,
-    .table-responsive > .table > tfoot > tr > th,
-    .table-responsive > .table > thead > tr > td,
-    .table-responsive > .table > thead > tr > th {
-        white-space: inherit;
-    }
-
-    .shareback {
-        right: 22%;
-    }
-
-    .date-picker {
-        width: 150px;
-    }
-    .date-picker {
+    .sm-date-picker {
         width: 150px;
     }
 
     .txtsmalllength {
         width: 150px !important;
+    }
+
+    .bottom-offset-10-sm{
+        margin-bottom:10px;
+    }
+
+    element.style {
+    }
+
+    .remove-icon, .remove-icon:hover, .remove-icon:active, .remove-icon:focus {
+        padding: 1px 3px 0px 4px;
+        float: left;
     }
 }
 
@@ -1622,8 +1603,8 @@ a.fileremove {
     font-weight: 100;
 }
 
-.sidebar-nav .dropdown-menu li {
-    padding-left: 30px;
+.sidebar-nav .dropdown-menu li a img{
+    margin-left: 30px;
 }
 
 table td {

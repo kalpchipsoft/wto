@@ -519,7 +519,7 @@ function ClearFile(ctrl) {
 }
 
 //Validate Notification Section
-function Validate() {
+function Validate(CallFor) {
     var MSG = "";
     //Notification Type Id validation
     if ($('#NotificationTypeId').find('input[type=checkbox]:checked').length == 0) {
@@ -690,11 +690,11 @@ function Validate() {
         $($('.error')).eq(0).focus();
     }
     else
-        SaveUpdateNotification();
+        SaveUpdateNotification(CallFor);
 }
 
 //Save Notification Section
-function SaveUpdateNotification() {
+function SaveUpdateNotification(CallFor) {
     ShowGlobalLodingPanel();
     var NotficationType = '';
     var Id = $('[id$=hdnNotificationId]').val();
@@ -797,9 +797,9 @@ function SaveUpdateNotification() {
         success: function (result) {
             if (result.NotificationId > 0) {
                 if ($.trim(Id) == 0)
-                    AlertwithFunction("Alert", "Notification has been saved successfully.<br/>", "Ok", "AfterNotificationSaved(" + result.NotificationId + ")");
+                    AlertwithFunction("Alert", "Notification has been saved successfully.<br/>", "Ok", "AfterNotificationSaved(" + result.NotificationId + ",'" + CallFor + "')");
                 else
-                    AlertwithFunction("Alert", "Notification has been saved successfully.<br/>", "Ok", "AfterNotificationSaved(0)");
+                    AlertwithFunction("Alert", "Notification has been saved successfully.<br/>", "Ok", "AfterNotificationSaved(0,'" + CallFor + "')");
             }
             else if (result.Status == 'failure')
                 Alert("Alert", "Something went wrong. Please try again.<br/>", "Ok");
@@ -814,8 +814,10 @@ function SaveUpdateNotification() {
 }
 
 //Function execute after notification save
-function AfterNotificationSaved(NotificationId) {
-    if (NotificationId != 0)
+function AfterNotificationSaved(NotificationId, CallFor) {
+    if (CallFor.toLowerCase() == "saveandnext")
+        location.href = window.location.origin + "/AddNotification/Edit_Notification/0";
+    else if (NotificationId != 0)
         location.href = window.location.origin + "/AddNotification/Edit_Notification/" + NotificationId;
     else
         location.reload();
@@ -1372,26 +1374,36 @@ function RemoveNotificationDoc(ctrl) {
     var FileName = $(ctrl).closest('tr').find('a[id^=lblRegulation]').attr('download');
     var _NotificationDoc = [];
     var IsNewFile = false;
+    var IsForiegnLanguageDoc = false;
     $.each(NotificationDoc, function (i, v) {
-
         if (!(v.DisplayName == DocDisplayName && FileName == v.FileName)) {
             _NotificationDoc.push(v);
-
-            if (v.Content != "")
-                IsNewFile = true;
         }
     });
     NotificationDoc = _NotificationDoc;
     $(ctrl).closest('tr').remove();
+
     if ($('#RegulationsBody > tr').length == 0) {
         $('#divRegulations').addClass('hidden');
     }
 
+    $.each(NotificationDoc, function (i, v) {
+        if (v.LanguageId > 1)
+            IsForiegnLanguageDoc = true;
 
-    if (IsNewFile)
-        $('#btnSendToTranslator').removeClass('hidden');
+        if (v.Content != "")
+            IsNewFile = true;
+    });
+
+    if (IsForiegnLanguageDoc && NotificationDoc != []) {
+        $('.translatDoc').removeClass('hidden');
+        if (IsNewFile)
+            $('#btnSendToTranslator').removeClass('hidden');
+        else
+            $('#btnSendToTranslator').addClass('hidden');
+    }
     else
-        $('#btnSendToTranslator').addClass('hidden');
+        $('.translatDoc').addClass('hidden');
 }
 
 //On change Fuunction of language dropdown
@@ -1420,9 +1432,7 @@ function BindRelatedTranslators(ctrl) {
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                debugger;
                 if (result != null) {
-                    debugger;
                     $('#remainder').val(result.TranslationReminder);
                     $('#duedate').val(result.TranslationDueBy);
                 }
@@ -1486,7 +1496,7 @@ function OpenMailToTranslatorModel() {
         Alert("Alert", "Please provide due date for translation", "Ok");
         return false;
     }
-        
+
 
     if (IsSelected) {
         $('#UploadedReg').empty();
@@ -1681,14 +1691,13 @@ function clearStakhCheckbox() {
     $("#txtSearchStakeHolder").val('');
     $("#divStakholder").load('/AddNotification/GetStakeHoldersMaster', { SearchText: "" });
     $(".checked").prop("checked", false);
-    if ($("#hdnSelectedStakeHolders").val() != null && $("#hdnSelectedStakeHolders").val() != '') {
-        var hdnId = $("#hdnSelectedStakeHolders").val().split(',');
-        var str = '';
-        for (var i = 0; hdnId.length > i; i++) {
-            str = hdnId[i];
-            $("#" + str).prop("checked", true);
-        }
-    }
+    var stakeholderId = [];
+    $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]'), function () {
+        if ($(this).val() != "on")
+            stakeholderId.push($(this).val());
+    });
+    $("#hdnSelectedStakeHolders").val('');
+    $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
 }
 
 //Add Stakeholder Popup
@@ -1755,7 +1764,7 @@ function SaveStakeholder() {
 
 //Remove Stakeholder button click function
 function RemoveStakeholder() {
-    if ($('#notificationlist tbody').find('input[type=checkbox]:checked').length == 0)
+    if ($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked').length == 0)
         Alert("Alert", "Please select stakeholders to remove.<br/>", "Ok");
     else
         Confirm('Delete', 'Do you want to remove selected stakholders?', 'Yes', 'No', 'RemoveStakeholderOk()');
@@ -1764,15 +1773,10 @@ function RemoveStakeholder() {
 function RemoveStakeholderOk() {
     var Id = $('[id$=hdnNotificationId]').val();
     var stakeholderId = [];
-    var ToRemove = [];
-    $.each($('#notificationlist').find('input[type=checkbox]:checked'), function () {
+    $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]:checked'), function () {
         if ($(this).val() != "on")
             stakeholderId.push($(this).val());
     });
-    $.each($('#notificationlist').find('input:checkbox:not(:checked)'), function () {
-        ToRemove.push($(this).val());
-    })
-    $("#hdnSelectedStakeHolders").val(ToRemove);
     $.ajax({
         url: "/api/AddUpdateNotification/RemoveRelatedStackholders/" + Id,
         async: false,
@@ -1783,7 +1787,7 @@ function RemoveStakeholderOk() {
         }),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result)
+            if (result.Status == "success")
                 Alert("Alert", "Selected Stakeholders have been removed successfully.<br/>", "Ok");
             else
                 Alert("Alert", "Something went wrong. Please try again.<br/>", "Ok");
@@ -2155,7 +2159,7 @@ function AfterResponseSaved() {
 
 function CheckUncheckSelectAll() {
     var IsSelectedAll = true;
-    $.each($('#notificationlist > tbody').find('input[type=checkbox]'), function () {
+    $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]'), function () {
         if (!this.checked)
             IsSelectedAll = false;
     });

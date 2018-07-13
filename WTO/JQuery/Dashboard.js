@@ -39,10 +39,12 @@ google.charts.load('current', { 'packages': ['corechart'] });
 google.charts.setOnLoadCallback(drawChart);
 google.charts.setOnLoadCallback(drawPieChart);
 $('#google-visualization-errors-0').css('display', 'none');
+
 function SetCallFor(CallFor) {
     localStorage.setItem("CallFrom", "Dashboard");
     localStorage.setItem("Status", CallFor);
 }
+
 function BindHsCode(startdate, enddate, HSCodes) {
     var month = monthNames[startdate.getMonth()];
     var year = startdate.getFullYear();
@@ -98,6 +100,7 @@ function BindHsCode(startdate, enddate, HSCodes) {
         }
     });
 }
+
 function drawChart() {
     var data = google.visualization.arrayToDataTable(arrayNotificationGraph);
     var options = {
@@ -115,8 +118,45 @@ function drawChart() {
         // tooltip: { trigger: 'selection' },
     };
     var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    function GotoNotificationList() {
+        var selectedItem = chart.getSelection()[0];
+        if (selectedItem) {
+            var value = data.getValue(selectedItem.row, selectedItem.column);
+            var FromDate = arrayNotificationGraphDate[selectedItem.row + 1][1];
+
+            var date = new Date(FromDate);
+            var month = monthNames[date.getMonth() - 1];
+            var year = date.getFullYear();
+            FromDate = (date.getDate() > 10 ? date.getDate() : '0' + date.getDate()) + ' ' + month + ' ' + year;
+
+            var ToDate = arrayNotificationGraphDate[selectedItem.row + 1][2];
+
+            var date = new Date(ToDate);
+            var month = monthNames[date.getMonth() - 1];
+            var year = date.getFullYear();
+            ToDate = date.getDate() + ' ' + month + ' ' + year;
+            if (selectedItem.column == 1)
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=20';
+            if (selectedItem.column == 2)
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=8';
+            if (selectedItem.column == 3)
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=5';
+            if (selectedItem.column == 4)
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=7';
+        }
+    }
+    function AddHandlerCursor() {
+        $('#chart_div').css('cursor', 'pointer')
+    }
+    function RemoveHandlerCursor() {
+        $('#chart_div').css('cursor', 'default')
+    }
+    google.visualization.events.addListener(chart, 'click', GotoNotificationList);
+    google.visualization.events.addListener(chart, 'onmouseover', AddHandlerCursor);
+    google.visualization.events.addListener(chart, 'onmouseout', RemoveHandlerCursor);
     chart.draw(data, options);
 }
+
 function drawPieChart() {
     var colorpie = [];
     for (var i = 0; i < colors.length; i++) {
@@ -135,6 +175,7 @@ function drawPieChart() {
     chart.draw(data, options);
     $('#piechart').fadeIn();
 }
+
 //Bind HSCode Api Below
 function GetHSCode() {
     $.ajax({
@@ -163,28 +204,33 @@ function GetHSCode() {
         }
     });
 }
+
 //Bind HSCode on Edit Mode
 function bindhscodeUId() {
     document.getElementById('HSCodeSearchTxt').value = '';
     var numbersArray = $('[id$=hdnSelectedHSCodes]').val().trim().split(',');
     $('#HSCodeTree').jstree(true).select_node(numbersArray);
 }
+
 //JSTree Search function
 function SearchHSCode() {
     var searchString = $("#HSCodeSearchTxt").val();
     $('#HSCodeTree').jstree('search', searchString);
 }
+
 //JSTree clear Search function
 function clearSearchtxt() {
     document.getElementById('HSCodeSearchTxt').value = '';
     $('#searchhscodebtn').click();
 }
+
 function callpiechart(ctrl) {
     $('.hscodelink').removeClass('active');
     $(ctrl).addClass('active');
 
     BindPieChart($(ctrl).attr('data-HScode'), DateFrom, DateTo);
 }
+
 function BindPieChart(HSCode, DateFrom, DateTo) {
     $.ajax({
         url: "/api/Dashboard/WTOGetHSCodeDataByCountry",
@@ -223,6 +269,7 @@ function BindPieChart(HSCode, DateFrom, DateTo) {
         }
     });
 }
+
 //GetHSCode popup code
 function SaveHSCode() {
     var seen = {};
@@ -332,10 +379,12 @@ function SaveHSCode() {
         BindHsCode(start, end, $('#hdnSelectedHSCodes').val());
     }
 }
+
 //Remove HSCode table tr
 function RemoveHSCodeRow(ClassName) {
     DeselectHSCodeNode(ClassName);
 }
+
 //Remove HSCode table tr
 function DeselectHSCodeNode(ctrl) {
     var id = '';
@@ -357,6 +406,7 @@ function DeselectHSCodeNode(ctrl) {
         return false;
     }
 }
+
 function GetNotificationGraphDataWeekly() {
     $('#btnMonthly').removeClass('btngroupactive');
     $('#btnWeekly').removeClass('btngroupactive');
@@ -369,6 +419,7 @@ function GetNotificationGraphDataWeekly() {
     DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
     BindNotificationGraph(DateChartFrom);
 }
+
 function BindNotificationGraph(DateFr) {
     $.ajax({
         url: "/api/Dashboard/WTOGetNotificationGraphDataWeekly",
@@ -381,13 +432,17 @@ function BindNotificationGraph(DateFr) {
         success: function (result) {
             arrayNotificationGraph = [];
             arrayNotificationGraph.push(['Notification', 'Lapsed', 'In Process', 'Under Action', 'Closed', { role: 'annotation' }]);
+            arrayNotificationGraphDate = [];
+            arrayNotificationGraphDate.push(['SrNo', 'StartDate', 'EndDate']);
             $(result).each(function (index, value) {
                 BindArrayNotificationGraph(value.MonthName, value.LapsedCount, value.InProcessCount, value.UnderActionCount, value.ClosedCount);
+                BindarrayNotificationGraphDate(index, value.StartDate, value.EndDate);
             })
             google.charts.setOnLoadCallback(drawChart);
         }
     });
 }
+
 function BindGraphPrevious() {
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var date = new Date();
@@ -424,6 +479,7 @@ function BindGraphPrevious() {
     }
     DisplayPrevNext();
 }
+
 function BindGraphNext() {
     if (DateChartFrom == '' && $('#btnMonthly').hasClass('btngroupactive')) {
         var date = new Date();
@@ -476,6 +532,7 @@ function BindGraphNext() {
 
     //   $('.rightArrow').removeClass('hidden');
 }
+
 function GetNotificationGraphDataMonthly() {
     $('#btnMonthly').removeClass('btngroupactive');
     $('#btnWeekly').removeClass('btngroupactive');
@@ -487,6 +544,7 @@ function GetNotificationGraphDataMonthly() {
     DateChartFrom = date.getDate() + ' ' + month + ' ' + year;
     BindNotificationGraphMonthly(DateChartFrom);
 }
+
 function BindNotificationGraphMonthly(DateFr) {
     $.ajax({
         url: "/api/Dashboard/WTOGetNotificationGraphDataMonthly",
@@ -499,13 +557,17 @@ function BindNotificationGraphMonthly(DateFr) {
         success: function (result) {
             arrayNotificationGraph = [];
             arrayNotificationGraph.push(['Notification', 'Lapsed', 'In Process', 'Under Action', 'Closed', { role: 'annotation' }]);
+            arrayNotificationGraphDate = [];
+            arrayNotificationGraphDate.push(['SrNo', 'StartDate', 'EndDate']);
             $(result).each(function (index, value) {
                 BindArrayNotificationGraph(value.MonthName, value.LapsedCount, value.InProcessCount, value.UnderActionCount, value.ClosedCount);
+                BindarrayNotificationGraphDate(index, value.StartDate, value.EndDate);
             })
             google.charts.setOnLoadCallback(drawChart);
         }
     });
 }
+
 function DisplayPrevNext() {
     var datecurrent = new Date();
     datecurrent.setMonth(datecurrent.getMonth() - 1);
@@ -519,6 +581,7 @@ function DisplayPrevNext() {
     if (datecurrent == datechartfrom) { $('.rightArrow').addClass('hidden'); }
     else { $('.rightArrow').removeClass('hidden'); }
 }
+
 function BindProcessingStatus() {
     $.ajax({
         url: "/WTO/WTODashboardProcessingStatus",
@@ -536,6 +599,7 @@ function BindProcessingStatus() {
         }
     });
 }
+
 function BindActions() {
     $.ajax({
         url: "/WTO/GetDashboardAction",
@@ -553,6 +617,7 @@ function BindActions() {
         }
     });
 }
+
 function BindRequestResponse() {
     $.ajax({
         url: "/WTO/WTODashboardRequestResponse",

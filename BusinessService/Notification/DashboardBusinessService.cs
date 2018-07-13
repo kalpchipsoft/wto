@@ -313,6 +313,8 @@ namespace BusinessService.Notification
                         objD.ClosedCount = Convert.ToInt32(dr["ClosedCount"]);
                         objD.LapsedCount = Convert.ToInt32(dr["LapsedCount"]);
                         objD.MonthName = Convert.ToString(dr["WeekName"]);
+                        objD.StartDate = Convert.ToString(dr["StartDate"]);
+                        objD.EndDate = Convert.ToString(dr["EndDate"]);
                         objNotificationGraphList.Add(objD);
                     }
                 }
@@ -339,6 +341,8 @@ namespace BusinessService.Notification
                         objD.ClosedCount = Convert.ToInt32(dr["ClosedCount"]);
                         objD.LapsedCount = Convert.ToInt32(dr["LapsedCount"]);
                         objD.MonthName = Convert.ToString(dr["MONTHNAME"]);
+                        objD.StartDate = Convert.ToString(dr["StartDate"]);
+                        objD.EndDate = Convert.ToString(dr["EndDate"]);
                         objNotificationGraphList.Add(objD);
                     }
                 }
