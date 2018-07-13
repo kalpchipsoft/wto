@@ -26,6 +26,8 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@ActionStatus", obj.ActionStatus);
                 sqlCommand.Parameters.AddWithValue("@MeetingDate", obj.MeetingDate);
                 sqlCommand.Parameters.AddWithValue("@PendingStatusFrom", obj.PendingFrom);
+                sqlCommand.Parameters.AddWithValue("@DateofNotification_From", obj.DateofNotification_From);
+                sqlCommand.Parameters.AddWithValue("@DateofNotification_To", obj.DateofNotification_To);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
@@ -48,6 +50,8 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@ActionStatus", obj.ActionStatus);
                 sqlCommand.Parameters.AddWithValue("@MeetingDate", obj.MeetingDate);
                 sqlCommand.Parameters.AddWithValue("@PendingStatusFrom", obj.PendingFrom);
+                sqlCommand.Parameters.AddWithValue("@DateofNotification_From", obj.DateofNotification_From);
+                sqlCommand.Parameters.AddWithValue("@DateofNotification_To", obj.DateofNotification_To);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

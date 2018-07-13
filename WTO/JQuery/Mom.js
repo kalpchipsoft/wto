@@ -179,10 +179,10 @@ function SearchNotifications(ctrl) {
                         html += '</td>';
                     }
                     html += '<td>' +
-                        '<textarea class="form-control textboxcontrol AutoHeight txtsmalllength" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                        '<textarea class="form-control textboxcontrol AutoHeight txtsmalllength" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '">' + $.trim(v.MeetingNote) + '</textarea>' +
                         '</td>' +
                         '<td>' +
-                        '<input type="text" class="form-control textboxcontrol txtsmalllength" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
+                        '<input type="text" class="form-control textboxcontrol txtsmalllength" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + $.trim(v.NotificationGroup) + '" />' +
                         '</td>' +
                         '</tr>';
                     tblCount++;
@@ -307,10 +307,10 @@ function GetAllNotifications(ctrl) {
                                 html += '</td>';
                             }
                             html += '<td>' +
-                                '<textarea class="form-control textboxcontrol AutoHeight txtsmalllength" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '"></textarea>' +
+                                '<textarea class="form-control textboxcontrol AutoHeight txtsmalllength" cols="30" rows="1" id="txtMeetingNote_' + tblCount + '">' + $.trim(v.MeetingNote) + '</textarea>' +
                                 '</td>' +
                                 '<td>' +
-                                '<input type="text" class="form-control textboxcontrol txtsmalllength" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + v.NotificationGroup + '" />' +
+                                '<input type="text" class="form-control textboxcontrol txtsmalllength" maxlength="5" id="txtNotificationGroup_' + tblCount + '" value="' + $.trim(v.NotificationGroup) + '" />' +
                                 '</td>' +
                                 '</tr>';
                             tblCount++;
@@ -479,7 +479,7 @@ function SearchMeetingNotifications(ctrl) {
                         '</p>' +
                         '<p>';
 
-                    if (v.NotificationGroup != "")
+                    if ($.trim(v.NotificationGroup) != "")
                         html += '<b>Group : </b><span>' + $.trim(v.NotificationGroup) + '</span>';
 
                     html += '</p>' +
@@ -803,7 +803,7 @@ function GetMeetingNote(NotificationId) {
 function BindNotificationActions() {
     var takeaction = 0;
     $.ajax({
-        url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val() + "/?MeetingId=" + myWTOAPP.id,
+        url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val() + "/?MeetingId=" + $('#hdnMeetingId').val(),
         async: false,
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -889,7 +889,7 @@ function BindNotificationActions() {
                                 '</label>' +
                                 '</div>';
                         }
-                        else if (result.RetainedForNextDiscussion && v.ActionId==4) {
+                        else if (result.RetainedForNextDiscussion && v.ActionId == 4) {
                             HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
                                 '<label style="padding-left: 0;">' +
                                 '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +

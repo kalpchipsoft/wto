@@ -31,74 +31,6 @@ $(document).ready(function () {
 
     // <!-- datepicker js end-->
 
-    //Calculate some cutoff dates based on Final date for comments 
-    //$("#FinalDateforCommentsId").change(function () {
-    //    var FinalDateforComments = $(this).val();
-    //    if (!isNaN(new Date($.trim(FinalDateforComments)).valueOf())) {
-    //        var _FinalDate = new Date(FinalDateforComments);
-    //        var DateofNotification = $('#DateofNotificationId').val();
-    //        var _DateofNotification = new Date(DateofNotification);
-
-    //        //Set Send Response due date i.e. Final date for comments – 20 days 
-    //        var ResponseOn = new Date(FinalDateforComments);
-    //        ResponseOn.setDate(ResponseOn.getDate() - 20);
-    //        var _ResponseOn = ResponseOn.getDate() + ' ' + Months[ResponseOn.getMonth()] + ' ' + ResponseOn.getFullYear();
-    //        $("#SendResponseById").val(_ResponseOn);
-    //        if (_DateofNotification > ResponseOn) {
-    //            $("#SendResponseError").removeClass("hidden");
-    //            return false;
-    //        }
-    //        else {
-    //            $("#SendResponseError").addClass("hidden");
-    //            return true;
-    //        }
-    //    }
-    //    else {
-    //        $("#SendResponseById").val('');
-    //    }
-
-    //});
-
-    //$("#SendResponseById").change(function () {
-    //    var FinalDateforComments = $('#FinalDateforCommentsId').val();
-    //    var _FinalDate = new Date(FinalDateforComments);
-    //    var DateofNotification = $('#DateofNotificationId').val();
-    //    var _DateofNotification = new Date(DateofNotification);
-
-    //    //Set Send Response due date i.e. Final date for comments – 20 days 
-    //    var ResponseOn = new Date($(this).val());
-    //    if (_DateofNotification > ResponseOn) {
-    //        $("#SendResponseError").removeClass("hidden");
-    //        return false;
-    //    }
-    //    else if (_FinalDate < ResponseOn) {
-    //        $("#SendResponseError").removeClass("hidden");
-    //        return false;
-    //    }
-    //    else {
-    //        $("#SendResponseError").addClass("hidden");
-    //        return true;
-    //    }
-    //});
-
-    //$("#DateofNotificationId").change(function () {
-    //    var DateofNotification = $('#DateofNotificationId').val();
-    //    DateofNotification = new Date(DateofNotification);
-
-    //    var FinalDateforComments = new Date($('#FinalDateforCommentsId').val());
-    //    FinalDateforComments = new Date(FinalDateforComments);
-    //    FinalDateforComments.setDate(ResponseOn.getDate() - 60);
-
-    //    if (_DateofNotification > FinalDateforComments) {
-    //        $("#DateofNotificationId").removeClass("hidden");
-    //        return false;
-    //    }
-    //    else {
-    //        $("#SendResponseError").addClass("hidden");
-    //        return true;
-    //    }
-    //});
-
     // <!-- hamburger js -->
     if (window.location.href.match(/([^\/]*)\/*$/)[1] == "WTODashboard") {
         $("#toggleOpenClose").addClass("is-open");
@@ -150,6 +82,7 @@ $(document).ready(function () {
         trigger.click(function () {
             buttonSwitch();
         });
+
         $('[data-toggle="offcanvas"]').click(function () {
             $('#wrapper').toggleClass('toggled');
             $('#wrapper').addClass('transitioncss');
@@ -183,30 +116,10 @@ $(document).ready(function () {
         }
     }
 
-    // <!-- image swaping -->
-
-    var dashboardblack = "/contents/img/dashboard.png";
-    var dashboardwhite = "/contents/img/dashboard1.png";
-    var notificationblack = "/contents/img/notification1.png";
-    var notificationwhite = "/contents/img/notification.png";
-    var Addnotificationblack = "/contents/img/Addnotification.png";
-    var Addnotificationwhite = "/contents/img/Addnotification1.png";
-    var AddMOMListWhite = "/contents/img/MOMlistW.png";
-    var AddMOMListBlack = "/contents/img/MOMlistB.png";
-    var AddMOMWhite = "/contents/img/AddMOM.png";
-    var AddMOMBlack = "/contents/img/AddMOMB.png";
-    var ManageAccessB = "/contents/img/manageB.png";
-    var ManageAccessW = "/contents/img/manageW.png";
-
     var location = document.location.href;
 
     if (location.indexOf("WTODashboard") >= 1) {
         $('.dashboard').addClass("active");
-        //if ($('.dashboard img').attr('src') == dashboardwhite) {
-        //    $('.dashboard img').attr('src', dashboardblack);
-        //} else {
-        //    $('.dashboard img').attr('src', dashboardwhite);
-        //}
     }
     else {
         $('.dashboard').removeClass("active");

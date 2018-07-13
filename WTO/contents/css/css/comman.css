@@ -315,7 +315,7 @@ a, a:hover, a:focus, a:active {
     }
 
     .sidebar-nav li.active {
-        background-color: #1edec5 !important;
+        background-color: #81fbeb !important;
     }
 
         .sidebar-nav li.active a {
@@ -325,7 +325,7 @@ a, a:hover, a:focus, a:active {
         }
 
     .sidebar-nav .list:hover, .sidebar-nav .list:focus, .sidebar-nav .list:active {
-        background-color: #1edec5 !important;
+        background-color: #77e6d7 !important;
     }
 
     .sidebar-nav .list a:hover, .sidebar-nav .list a:focus, .sidebar-nav .list a:active {
@@ -1270,7 +1270,8 @@ a, a:hover, a:focus, a:active {
     background: #016eac;
     padding: 0px 8px 2px 8px;
     color: #fff;
-    width: 40px;
+    min-width: 40px;
+    max-width: 100px;
     text-align: center;
 }
 
