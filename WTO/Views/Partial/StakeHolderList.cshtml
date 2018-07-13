@@ -30,26 +30,18 @@ else
 }
 <script>
     function Update_hdnSelected(ctrl) {
-        var SelectedIds = $('#hdnSelected').val();
+        var SelectedIds = $('#hdnSelectedStakeHolders').val();
         var id = ctrl.id;
-        if ($('#chkStakeholder_' + id).is(':checked')) {
-            $('#hdnSelected').val(SelectedIds + ',' + id.replace('chkStakeholder_', ''));
+        if ($('#' + id).is(':checked')) {
+            $('#hdnSelectedStakeHolders').val(SelectedIds + ',' + id.replace('chkStakeholder_', ''));
         }
         else {
-            $('#hdnSelected').val(SelectedIds.replace(',' + id.replace('chkStakeholder_', ''), ''));
+            $('#hdnSelectedStakeHolders').val(SelectedIds.replace(',' + id.replace('chkStakeholder_', ''), ''));
         }
         CheckHeaderAll();
     }
 
     $(document).ready(function () {
-        if ($('#hdnSelected').val() != null && $('#hdnSelected').val().trim() != '') {
-            var SelectedIds = $('#hdnSelected').val().trim().split(',');
-            for (var i = 0; i < SelectedIds.length; i++) {
-                if (SelectedIds[i] != null && SelectedIds[i] != '')
-                    $('#chkStakeholder_' + SelectedIds[i]).prop('checked', true);
-            }
-        }
-
         $(".checked").prop("checked", false);
         if ($("#hdnSelectedStakeHolders").val() != null && $("#hdnSelectedStakeHolders").val() != '') {
             var hdnId = $("#hdnSelectedStakeHolders").val().split(',');

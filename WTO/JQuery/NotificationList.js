@@ -35,6 +35,8 @@ $(document).ready(function () {
             $("#Meetingdatecross").removeClass("hidden");
         }
     })
+
+    //If Redirect from dashboard with search parameters then open advance search panel
     var ActionId = GetParameterValues1('ActionId');
     var ActionStatus = GetParameterValues1('ActionStatus');
     if (ActionId == "" && ActionStatus == "") {
@@ -91,6 +93,15 @@ function SearchNotification(PageIndx) {
         }
     }
 
+    var NotificationDateFrom = $('[id$=txtNotificationfromdate]').val();
+    var NotificationDateTo = $('[id$=txtNotificationtodate]').val();
+    if (NotificationDateFrom != null && NotificationDateFrom != '' && NotificationDateTo != null && NotificationDateTo != '') {
+        if (new Date(NotificationDateFrom) > new Date(NotificationDateTo)) {
+            Alert('Alert', 'From date cannnot be greater than To date.<br/>', 'Ok');
+            return false;
+        }
+    }
+
     if (PageIndx == null || PageIndx == 0)
         PageIndx = 1;
     var obj = {
@@ -104,7 +115,10 @@ function SearchNotification(PageIndx) {
         StatusId: $('[id$=ddlStage]').val(),
         ActionId: $('[id$=ddlAction]').val(),
         ActionStatus: $('[id$=ddlActionStatus]').val(),
-        MeetingDate: $('[id$=txtMeetingDate]').val()
+        MeetingDate: $('[id$=txtMeetingDate]').val(),
+        DateofNotification_From: $('[id$=txtNotificationfromdate]').val(),
+        DateofNotification_To: $('[id$=txtNotificationtodate]').val(),
+        Hscode: $('[id$=hdnHsCode]').val()
     }
     $.ajax({
         url: "/api/NotificationList/GetNotificationsList",
@@ -248,18 +262,22 @@ function Clear() {
     $('[id$=txtMeetingDate]').val('');
     $("#Meetingdateclender").removeClass("hidden");
     $("#Meetingdatecross").addClass("hidden");
+    $('[id$=txtNotificationfromdate]').val('');
+    $('[id$=txtNotificationtodate]').val('');
+    $('[id$=txtHscode]').val('');
+    $('[id$=hdnHsCode]').val('');
 
-    localStorage.setItem("NotificationList", '');
-    localStorage.setItem("PageIndex", 1);
-    localStorage.setItem("MaxPageIndex", 1);
-    localStorage.setItem("TotalCount", 0);
+    //localStorage.setItem("NotificationList", '');
+    //localStorage.setItem("PageIndex", 1);
+    //localStorage.setItem("MaxPageIndex", 1);
+    //localStorage.setItem("TotalCount", 0);
 
-    localStorage.setItem("Noti_Num", '');
-    localStorage.setItem("Noti_Country", '');
-    localStorage.setItem("Noti_fromdate", '');
-    localStorage.setItem("Noti_todate", '');
-    localStorage.setItem("Noti_Type", 0);
-    localStorage.setItem("Noti_Stage", '');
+    //localStorage.setItem("Noti_Num", '');
+    //localStorage.setItem("Noti_Country", '');
+    //localStorage.setItem("Noti_fromdate", '');
+    //localStorage.setItem("Noti_todate", '');
+    //localStorage.setItem("Noti_Type", 0);
+    //localStorage.setItem("Noti_Stage", '');
 
     SearchNotification(1);
     HideGlobalLodingPanel();

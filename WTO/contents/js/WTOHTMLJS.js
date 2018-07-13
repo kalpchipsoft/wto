@@ -116,112 +116,48 @@ $(document).ready(function () {
         }
     }
 
+    debugger;
+    // <!-- Active menu binding start-->
+    var _PageName = $.trim($('.topbg').text());
+    //_PageName = _PageName.toLocaleLowerCase().replace(/ /g, '')
     var location = document.location.href;
 
-    if (location.indexOf("WTODashboard") >= 1) {
+    if (location.indexOf("WTODashboard") >= 1)
         $('.dashboard').addClass("active");
-    }
-    else {
+    else
         $('.dashboard').removeClass("active");
-        //$('.dashboard').on('mouseenter mouseleave', function () {
-        //    if ($('.dashboard img').attr('src') == dashboardwhite) {
-        //        $('.dashboard img').attr('src', dashboardblack);
-        //    } else {
-        //        $('.dashboard img').attr('src', dashboardwhite);
-        //    }
-        //});
-    }
+
     if (location.indexOf("NotificationList") > -1) {
         $('.notification').addClass("active");
-        //if ($('.notification img').attr('src') == notificationwhite) {
-        //    $('.notification img').attr('src', notificationblack);
-        //} else {
-        //    $('.notification img').attr('src', notificationwhite);
-        //}
     }
     else {
         $('.notification').removeClass("active");
-        //$('.notification').on('mouseenter mouseleave', function () {
-        //    if ($('.notification img').attr('src') == notificationwhite) {
-        //        $('.notification img').attr('src', notificationblack);
-        //    } else {
-        //        $('.notification img').attr('src', notificationwhite);
-        //    }
-        //});
     }
     if (location.indexOf("AddNotification") > -1) {
         $('.Addnotification').addClass("active");
-        //if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
-        //    $('.Addnotification img').attr('src', Addnotificationblack);
-        //} else {
-        //    $('.Addnotification img').attr('src', Addnotificationwhite);
-        //}
     }
     else {
         $('.Addnotification').removeClass("active");
-        //$('.Addnotification').on('mouseenter mouseleave', function () {
-        //    if ($('.Addnotification img').attr('src') == Addnotificationwhite) {
-        //        $('.Addnotification img').attr('src', Addnotificationblack);
-        //    } else {
-        //        $('.Addnotification img').attr('src', Addnotificationwhite);
-        //    }
-        //});
     }
     if (location.indexOf("MOMList") > -1) {
         $('.AddMOMList').addClass("active");
-        //if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
-        //    $('.AddMOMList img').attr('src', AddMOMListBlack);
-        //} else {
-        //    $('.AddMOMList img').attr('src', AddMOMListWhite);
-        //}
     }
     else {
         $('.AddMOMList').removeClass("active");
-        //$('.AddMOMList').on('mouseenter mouseleave', function () {
-        //    if ($('.AddMOMList img').attr('src') == AddMOMListWhite) {
-        //        $('.AddMOMList img').attr('src', AddMOMListBlack);
-        //    } else {
-        //        $('.AddMOMList img').attr('src', AddMOMListWhite);
-        //    }
-        //});
     }
     if (location.indexOf("AddMOM") > -1) {
         $('.AddMOM').addClass("active");
-        //if ($('.AddMOM img').attr('src') == AddMOMWhite) {
-        //    $('.AddMOM img').attr('src', AddMOMBlack);
-        //} else {
-        //    $('.AddMOM img').attr('src', AddMOMWhite);
-        //}
     }
     else {
         $('.AddMOM').removeClass("active");
-        //$('.AddMOM').on('mouseenter mouseleave', function () {
-        //    if ($('.AddMOM img').attr('src') == AddMOMWhite) {
-        //        $('.AddMOM img').attr('src', AddMOMBlack);
-        //    } else {
-        //        $('.AddMOM img').attr('src', AddMOMWhite);
-        //    }
-        //});
     }
     if (location.indexOf("ManageAccess") > -1) {
         $('.ManageAccess').addClass("active");
-        //if ($('.ManageAccess img').attr('src') == ManageAccessW) {
-        //    $('.ManageAccess img').attr('src', ManageAccessB);
-        //} else {
-        //    $('.ManageAccess img').attr('src', ManageAccessW);
-        //}
     }
     else {
         $('.ManageAccess').removeClass("active");
-        //$('.ManageAccess').on('mouseenter mouseleave', function () {
-        //    if ($('.ManageAccess img').attr('src') == ManageAccessW) {
-        //        $('.ManageAccess img').attr('src', ManageAccessB);
-        //    } else {
-        //        $('.ManageAccess img').attr('src', ManageAccessW);
-        //    }
-        //});
     }
-    // <!-- image swaping End-->
+    // <!-- Active menu binding end-->
 
     $('.panel-group').on('hidden.bs.collapse', toggleIcon);
     $('.panel-group').on('shown.bs.collapse', toggleIcon);
