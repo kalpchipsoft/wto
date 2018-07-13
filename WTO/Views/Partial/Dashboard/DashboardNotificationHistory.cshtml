@@ -4,10 +4,16 @@
 }
 <script>
     var arrayNotificationGraph = [];
+    var arrayNotificationGraphDate=[];
     arrayNotificationGraph.push(['Notification', 'Lapsed', 'In Process', 'Under Action', 'Closed', { role: 'annotation' }]);
+    arrayNotificationGraphDate.push(['SrNo','StartDate','EndDate']);
     function BindArrayNotificationGraph(Notification,Lapsed,InProcess,UnderAction,Closed)
     {
         arrayNotificationGraph.push([Notification,Lapsed,InProcess,UnderAction,Closed,'']);
+    }
+    function BindarrayNotificationGraphDate(SrNo,StartDate,EndDate)
+    {
+        arrayNotificationGraphDate.push([SrNo,StartDate,EndDate]);
     }
 </script>
 <div class="row top-offset-20">
@@ -59,12 +65,15 @@
                     <a class="rightArrow"><img src="~/contents/img/rightArrow.png" alt="rightArrow" onclick="BindGraphNext();" /></a>
                     <div id="chart_div" style="width:100%;height:450px;"></div>
                 </div>
+                @{ int i = 0;}
              @foreach (BusinessObjects.Notification.NotificationGraphData ac in Model)
              {
                     <script>
                         BindArrayNotificationGraph('@ac.MonthName',@ac.LapsedCount,@ac.InProcessCount,@ac.UnderActionCount,@ac.ClosedCount);
-                    </script>
-                }
+                        BindarrayNotificationGraphDate(@i,'@ac.StartDate','@ac.EndDate');
+                     </script>
+                 i++;
+             }
             </div>
         </div>
     </div>

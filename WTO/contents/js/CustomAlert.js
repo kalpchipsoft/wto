@@ -68,6 +68,7 @@ function Alert(title, msg, $true) {
 }
 
 function AlertwithFunction(title, msg, $true, $link) {
+    debugger;
     var $content = "<div class='dialog-ovelay'>" +
                      "<div class='dialog'><header>" +
                       " <h4> " + title + " </h4> " +

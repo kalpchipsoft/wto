@@ -69,6 +69,8 @@ namespace BusinessObjects.Notification
         public Int32 UnderActionCount { get; set; }
         public Int32 ClosedCount { get; set; }
         public Int32 LapsedCount { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
     public class NotificationRequestResponse
     {
