@@ -52,6 +52,7 @@ namespace BusinessObjects.Notification
         public string UserId { get; set; }
         public string Stakeholders { get; set; }
         public List<MailAttachment> Attachments { get; set; }
+        public string StakeholderResponseDueBy { get; set; }
         public string AttachmentXML
         {
             get

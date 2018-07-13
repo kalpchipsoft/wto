@@ -182,6 +182,7 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@Subject", obj.Subject);
                 sqlCommand.Parameters.AddWithValue("@Message", obj.Message);
                 sqlCommand.Parameters.AddWithValue("@Attachments", obj.AttachmentXML);
+                sqlCommand.Parameters.AddWithValue("@StakeholdersResponseDueBy", obj.StakeholderResponseDueBy);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
