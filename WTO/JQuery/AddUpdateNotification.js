@@ -39,10 +39,23 @@ $(document).ready(function () {
     });
 
     $('#chkSelectAll_AddStakeholders').change(function () {
-        var IsCheckedAll = this.checked;
-        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
-            this.checked = IsCheckedAll;
-        });
+        if (this.checked) {
+            var stakeholderId = [];
+            $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+                if ($(this).val() != "on") {
+                    stakeholderId.push($(this).val());
+                    this.checked = true;
+                }
+            });
+            $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
+        }
+        else {
+            $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+                this.checked = false;
+            });
+
+            $("#hdnSelectedStakeHolders").val('');
+        }
     });
 
     $('#divStakholder').find('input[type=checkbox]').change(function () {
@@ -124,7 +137,8 @@ $(document).ready(function () {
                         Alert("Alert", $.trim($('#NotificationNumberId').val()) + " already exists.<br/>", "Ok");
                         ClearNotificationForm();
                         $('#NotificationFile').val('');
-                        $('#NotificationFileName').text('No File Choosen');
+                        $('#NotificationFileName').val('');
+                        $('#DocumentTypeId').val('');
                     }
                     else {
                         if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1) {
@@ -611,15 +625,6 @@ function Validate(CallFor) {
         $('[id$=AgencyResponsibleId]').removeClass("error");
     }
 
-    //Notification under Artical validation
-    //if ($('[id$=NotificationUnderArticleId]').val().trim().length == 0) {
-    //    $('[id$=NotificationUnderArticleId]').addClass("error");
-    //    MSG += "Please enter notification under article.<br/>";
-    //}
-    //else {
-    //    $('[id$=NotificationUnderArticleId]').removeClass("error");
-    //}
-
     //Products Covered Id validation
     if ($('[id$=ProductsCoveredId]').val().trim().length == 0) {
         $('[id$=ProductsCoveredId]').addClass("error");
@@ -674,14 +679,23 @@ function Validate(CallFor) {
 
                 if (!IsLanguageSelected)
                     MSG += "Please select the language of the document.<br/>";
+                //else if ($.trim($('#duedate').val()) == "") {
+                //    MSG += "Please specify the date by when the translator will upload/send translated document.<br/>";
+                //    $("#duedate").addClass('error');
+                //    $("#remainder").addClass('error');
+                //}
+                //else {
+                //    $("#duedate").removeClass('error');
+                //    $("#remainder").removeClass('error');
+                //}
             }
 
-            if ($('#Notifi_Attach_Name').text() != '' && !$('[id$=chkSkipToDiscussion]').is(':checked') && $.trim($("#txtStakeholderResponseDueBy").val()) == '') {
-                MSG += "Please specify the date by when the stakeholders will send response.<br/>";
-                $("#txtStakeholderResponseDueBy").addClass('error');
-            }
-            else
-                $("#txtStakeholderResponseDueBy").removeClass('error');
+            //if ($('#Notifi_Attach_Name').text() != '' && !$('[id$=chkSkipToDiscussion]').is(':checked') && $.trim($("#txtStakeholderResponseDueBy").val()) == '') {
+            //    MSG += "Please specify the date by when the stakeholders will send response.<br/>";
+            //    $("#txtStakeholderResponseDueBy").addClass('error');
+            //}
+            //else
+            //    $("#txtStakeholderResponseDueBy").removeClass('error');
         }
     }
 
@@ -1453,22 +1467,24 @@ function BindRelatedTranslators(ctrl) {
 }
 
 function setReminderDays(CallFor) {
-    var start = $('#remainder').datepicker("getDate");
-    var end = $('#duedate').datepicker("getDate");
+    if ($.trim($('#duedate').val()) != "") {
+        var start = $('#remainder').datepicker("getDate");
+        var end = $('#duedate').datepicker("getDate");
 
-    if (CallFor != null && CallFor != '' && CallFor == 'DueDate') {
-        var newdate = new Date(end);
-        newdate.setDate(newdate.getDate() - 2); // minus the date
-        start = newdate;
-        $("#remainder").val($.datepicker.formatDate('dd M yy', newdate));
+        if (CallFor != null && CallFor != '' && CallFor == 'DueDate') {
+            var newdate = new Date(end);
+            newdate.setDate(newdate.getDate() - 2); // minus the date
+            start = newdate;
+            $("#remainder").val($.datepicker.formatDate('dd M yy', newdate));
+        }
+
+        // end - start returns difference in milliseconds 
+        var diff = new Date(end - start);
+
+        // get days
+        var days = diff / 1000 / 60 / 60 / 24;
+        $('#reminderdaysId').text(days);
     }
-
-    // end - start returns difference in milliseconds 
-    var diff = new Date(end - start);
-
-    // get days
-    var days = diff / 1000 / 60 / 60 / 24;
-    $('#reminderdaysId').text(days);
 }
 
 function SetTranslatorName() {
@@ -1637,13 +1653,12 @@ function SendMailToTranslator() {
                             }
                         });
                     });
-
                     $.each($('#RegulationsBody > tr'), function () {
                         var $row = $(this);
                         var _Filename = $row.find('a[id^=lblRegulation_]').attr('download');
                         $.each(NotificationDoc, function (indx, val) {
                             if (val.FileName == _Filename) {
-                                if ($row.find('.remove-icon').length > 0 && val.IsSelected == "1") {
+                                if (val.IsSelected == "1") {//$row.find('.remove-icon').length > 0 && 
                                     $row.find('.remove-icon').addClass('hidden');
                                     $row.find('input[id^=hdnDocId_]').val(val.DocumentId);
                                     $row.find('a[id^=lblRegulation_]').attr('download', val.DisplayName);
@@ -1657,7 +1672,7 @@ function SendMailToTranslator() {
                                         $row.find('label[id^=lblTranslator_]').text($.trim($('#ddlTranslater option:selected').text()));
                                     }
 
-                                    $('.translateddoc').removeClass('hidden');
+
                                 }
                             }
                         });
@@ -1691,6 +1706,7 @@ function clearStakhCheckbox() {
     $("#txtSearchStakeHolder").val('');
     $("#divStakholder").load('/AddNotification/GetStakeHoldersMaster', { SearchText: "" });
     $(".checked").prop("checked", false);
+    $("#chkSelectAll_AddStakeholders").prop("checked", false);
     var stakeholderId = [];
     $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]'), function () {
         if ($(this).val() != "on")
@@ -1699,7 +1715,25 @@ function clearStakhCheckbox() {
     $("#hdnSelectedStakeHolders").val('');
     $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
 }
+$('#chkSelectAll_AddStakeholders').change(function () {
+    if (this.checked) {
+        var stakeholderId = [];
+        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+            if ($(this).val() != "on") {
+                stakeholderId.push($(this).val());
+                this.checked = true;
+            }
+        });
+        $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
+    }
+    else {
+        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+            this.checked = false;
+        });
 
+        $("#hdnSelectedStakeHolders").val('');
+    }
+});
 //Add Stakeholder Popup
 function SaveStakeholder() {
     var Id = $('[id$=hdnNotificationId]').val();
@@ -1818,10 +1852,14 @@ function OpenSendMailModel() {
     if ($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked').length == 0) {
         Alert("Alert", "Please select stakeholders to send mail.<br/>", "Ok");
     }
+    else if ($.trim($('#txtStakeholderResponseDueBy').val()) == "") {
+        Alert("Alert", "Please select stakeholder response by date.<br/>", "Ok");
+    }
     else {
         $.each($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked'), function () {
-            if (this.id.toLowerCase() != 'chkselectall')
+            if (this.id.toLowerCase() != 'chkselectall') {
                 stakeholderId.push($(this).val());
+            }
         });
         $("#SelectedStackholdersCount").text(stakeholderId.length);
         $('#txtAttachments').addClass("hidden");
@@ -1829,8 +1867,7 @@ function OpenSendMailModel() {
         MailAttachments = [];
         var obj = {
             TemplateType: "Mail",
-            TemplateFor: "StakeholderMail",
-            StakeHolderResponseDate: $('[id$=txtStakeholderResponseDueBy]').val()
+            TemplateFor: "StakeholderMail"
         }
         $.ajax({
             url: "/api/AddUpdateNotification/GetMailSMSTemplate/" + myWTOAPP.id,
@@ -1839,8 +1876,11 @@ function OpenSendMailModel() {
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                $('[id$=txtSubject]').val(result.Subject);
-                CKEDITOR.instances.txtMessage.setData(result.Message);
+                debugger;
+                var _MailSubject = result.Subject.replace("#StakeholderResponseDueBy#", $.trim($('#txtStakeholderResponseDueBy').val()));
+                $('[id$=txtSubject]').val(_MailSubject);
+                var _MailBody = result.Message.replace("#StakeholderResponseDueBy#", $.trim($('#txtStakeholderResponseDueBy').val()));
+                CKEDITOR.instances.txtMessage.setData(_MailBody);
                 CKEDITOR.instances.txtMessage.focus();
             },
             failure: function (result) {
@@ -2067,7 +2107,7 @@ function SendmailToStakeholders() {
     ShowGlobalLodingPanel();
     var NotificationId = $('[id$=hdnNotificationId]').val();
     var StackHolders = '';
-    $.each($('#notificationlist tbody').find('input[type=checkbox]:checked'), function () {
+    $.each($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked'), function () {
         if (this.id.toLowerCase() != 'chkselectall')
             StackHolders += $(this).val() + ',';
     });
@@ -2102,7 +2142,8 @@ function SendmailToStakeholders() {
             Stakeholders: StackHolders,
             Attachments: _Attachments,
             Subject: Subject,
-            Message: Message
+            Message: Message,
+            StakeholderResponseDueBy: $('[id$=txtStakeholderResponseDueBy]').val()
         }
         $.ajax({
             url: "/api/AddUpdateNotification/SendMailToStakeholders",
@@ -2355,142 +2396,13 @@ function SaveStakeholderResponse() {
 }
 //-------------------------------------Stakeholders End---------------------------------------
 
-function BindNotificationActions() {
-    var takeaction = 0;
-    $.ajax({
-        url: "/api/MoM/EditAction/" + myWTOAPP.id,
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != null) {
-                $('#lblNotificationNumber').text(result.NotificationNumber);
-                $('#lblNotificationTitle').text(result.Title);
-                $('#lblNotificationStage').text(result.Status);
-                $('#lblMeetingDate').text($('#txtmeetingdate').val());
-                $('#txtMeetingNote').val(result.MeetingNote);
+function EditNotificationActions(MeetingId) {
+    var NotificationId = myWTOAPP.id;
 
-                $('#divPlanActions').empty();
-                $('#divTakeActionHeader').addClass('hidden');
-                var HTML = '';
-                $.each(result.Actions, function (i, v) {
-                    HTML += ' <tr><td class="col-sm-1 pdright">' +
-                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />';
-
-                    if (v.NotificationActionId > 0) {
-                        if (v.UpdatedOn == "") {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                    }
-                    else {
-                        if (result.RetainedForNextDiscussion && v.ActionId == 5) {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else if (result.RetainedForNextDiscussion) {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                    }
-
-                    HTML += '</div>' +
-                        '<td class="col-sm-5">' + v.ActionName + '</td>';
-
-                    if (v.ActionId < 4) {
-                        HTML += '<td class="col-sm-4">' +
-                            '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                            '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                            '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
-                            '</div>' +
-                            '</td>';
-                        if (v.NotificationActionId != 0 && v.MailId == 0) {
-                            var callfor = "takeaction";
-                            takeaction++;
-                            HTML += "<td class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></td>";
-                        }
-                        else {
-                            HTML += "<td class='col-sm-2'></td>'";
-                        }
-                    }
-                    else {
-                        HTML += '<td class="col-sm-4"></td > ';
-                        HTML += "<td class='col-sm-2'></td>'";
-                    }
-
-                    HTML += '</tr>';
-                    if (takeaction > 0) {
-                        $('#divTakeActionHeader').removeClass('hidden');
-                    }
-                });
-                $('#divPlanActions').append(HTML);
-                $('#ModalAddAction').modal('show');
-
-                if (result.RetainedForNextDiscussion)
-                    $("#btnSaveActions").addClass("hidden");
-                else
-                    $("#btnSaveActions").removeClass("hidden");
-            }
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            HideGlobalLodingPanel();
-            $(".date-picker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'dd M yy'
-            });
-        }
+    $('#divNotificationPlanTakeAction').load('/MoM/NotificationPlanTakeAction?Id=' + NotificationId + '&MeetingId=' + MeetingId, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success")
+            $('#ModalAddAction').modal('show');
     });
-}
-
-function EditNotificationActions(ctrl) {
-    ShowGlobalLodingPanel();
-    $('#hdnNotificationId').val(myWTOAPP.id);
-    BindNotificationActions();
 }
 
 function AddMailAttachment(ctrl) {

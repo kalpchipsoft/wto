@@ -97,18 +97,6 @@ namespace DataServices.WTO
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public bool EndMeeting(Int64? Id)
-        {
-            using (SqlCommand sqlCommand = new SqlCommand())
-            {
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.EndMeeting;
-                sqlCommand.Parameters.AddWithValue("@MomId", Id);
-                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
-                bool result = i > 0 ? true : false;
-                return result;
-            }
-        }
         public DataTable ValidateMeetingDate(string date, Nullable<Int64> MoMId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
@@ -118,6 +106,29 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@date", date);
                 sqlCommand.Parameters.AddWithValue("@MoMId", MoMId);
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public bool EndMeeting(Int64? Id, string Observation)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.EndMeeting;
+                sqlCommand.Parameters.AddWithValue("@MomId", Id);
+                sqlCommand.Parameters.AddWithValue("@Observation", Observation);
+                int i = DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand);
+                bool result = i > 0 ? true : false;
+                return result;
+            }
+        }
+        public DataSet MeetingSummary(Int64 Id)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.MeetingSummary;
+                sqlCommand.Parameters.AddWithValue("@MOMId", Id);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
     }

@@ -374,7 +374,7 @@
                                                                         <thead class="second-blackbackground">
                                                                             <tr>
                                                                                 <th>Regulation</th>
-                                                                                <th>Language</th>
+                                                                                <th>Language<sup class="mandetory">*</sup></th>
                                                                                 <th class="translateddoc @((Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.SentForTranslation != "") != null) ? " " : " hidden")">Sent on</th>
                                                                                 <th class="translateddoc @((Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.SentForTranslation != "") != null) ? " " : " hidden")">Sent to</th>
                                                                                 <th class="translateddoc @((Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.SentForTranslation != "") != null) ? " " : " hidden")">Translated Regulation</th>
@@ -403,7 +403,7 @@
                                                                                             <label data-SearchFor="@Model.Regulations[i].TranslatorId" id="lblTranslator_@(i + 1)">@Model.Regulations[i].Translator</label>
                                                                                         </td>
                                                                                         <td class="translateddoc  @(Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.SentForTranslation != "") != null ? " " : " hidden")">
-                                                                                            <span id="btnUploadTranslatedDoc_@(i + 1)" onclick="OpenModelForUploadDocument('translateddoc',this);" style="color:#E34724; text-decoration: underline; cursor:pointer;" class="@(@Model.Regulations[i].LanguageId > 1 && @Model.Regulations[i].SentForTranslation!="" && @Model.Regulations[i].TranslatedDoc == null ? "" : "hidden" )">
+                                                                                            <span id="btnUploadTranslatedDoc_@(i + 1)" onclick="OpenModelForUploadDocument('translateddoc',this);" style="color:#E34724; text-decoration: underline; cursor:pointer;" class="forTranslation @(@Model.Regulations[i].LanguageId > 1 && @Model.Regulations[i].SentForTranslation!="" && @Model.Regulations[i].TranslatedDoc == null ? "" : "hidden" )">
                                                                                                 <span id="btntxtTranslatedDoc_@(i + 1)">Upload</span>
                                                                                             </span>
                                                                                             @if (@Model.Regulations[i].LanguageId > 1 && @Model.Regulations[i].TranslatedDocName == "" && @Model.Regulations[i].TranslatedDoc == null)
@@ -428,12 +428,12 @@
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <a style="margin-top: 5px; margin-right: 15px;" class="btn sky-blue @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.SentForTranslation=="" && x.TranslatedDoc == null ) != null ? "" : "hidden")" id="btnSendToTranslator" onclick="return OpenMailToTranslatorModel();">Send to Translator</a>
+                                                                <a style="margin-top: 5px; margin-right: 15px;" class="btn sky-blue" id="btnSendToTranslator" onclick="return OpenMailToTranslatorModel();">Send to Translator</a>
                                                             </div>
                                                         </div>
-                                                        <div class="row top-offset-10 translatDoc duedate @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null && x.SentForTranslation!="") != null ? "" : "hidden")">
+                                                        <div class="row top-offset-10 translatDoc duedate @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null) != null ? "" : "hidden")">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Reminder for translation<sup class="mandetory">*</sup> <span class="pull-right  hidden-xs">:</span></p>
+                                                                <p class="wto-label-bold">Reminder for translation<span class="pull-right  hidden-xs">:</span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <p class="wto-label-normal">
@@ -447,7 +447,7 @@
                                                                 <p class="text-danger hidden" id="RemainderforTranslationError" style="font-size:12px;">Date of reminder to translator is smaller than date of notificaton.Please check !</p>
                                                             </div>
                                                         </div>
-                                                        <div class="row top-offset-10 translatDoc @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null && x.SentForTranslation!="") != null ? "" : "hidden")">
+                                                        <div class="row top-offset-10 translatDoc @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null) != null ? "" : "hidden")">
                                                             <div class="col-xs-12 col-sm-4 col-md-3"></div>
                                                             <div class="col-xs-12 col-sm-8 col-md-9">
                                                                 <p class="wto-label-normal">
@@ -455,9 +455,9 @@
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div class="row top-offset-10 translatDoc @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null && x.SentForTranslation!="") != null ? "" : "hidden")">
+                                                        <div class="row top-offset-10 translatDoc @(Model.Regulations != null && Model.Regulations.FirstOrDefault(x => x.LanguageId > 1 && x.TranslatedDoc == null) != null ? "" : "hidden")">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Due Date for Translation<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
+                                                                <p class="wto-label-bold">Due Date for Translation<span class="pull-right hidden-xs">:</span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <p class="wto-label-normal">
@@ -544,7 +544,7 @@
                                                         </div>
                                                         <div class="row top-offset-10">
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
-                                                                <p class="wto-label-bold">Stakeholder response by<sup class="mandetory">*</sup> <span class="pull-right"></span></p>
+                                                                <p class="wto-label-bold">Stakeholder response by<span class="pull-right"></span></p>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-4 col-md-3">
                                                                 <p class="wto-label-normal">

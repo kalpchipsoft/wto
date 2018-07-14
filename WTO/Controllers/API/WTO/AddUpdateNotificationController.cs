@@ -271,7 +271,7 @@ namespace WTO.Controllers.API.WTO
                                     IsMultipleNotificationNumber = true;
                             }
 
-                            if (obj.DocumentType==1|| obj.DocumentType == 4)
+                            if (obj.DocumentType == 1 || obj.DocumentType == 4)
                             {
                                 #region "Table"
                                 Table t = wordfile.Tables[1];
@@ -287,7 +287,7 @@ namespace WTO.Controllers.API.WTO
                                                 objE.Country = s.Replace("Notifying Member", "").Trim();
                                         }
                                     }
-                                    else if (str.Contains("Miembro que notifica"))
+                                    else if (str.Contains("Miembro que notifica"))//Spanish Document
                                     {
                                         foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                         {
@@ -295,7 +295,7 @@ namespace WTO.Controllers.API.WTO
                                                 objE.Country = s.Replace("Miembro que notifica", "").Trim();
                                         }
                                     }
-                                    else if (str.Contains("Membre notifiant"))
+                                    else if (str.Contains("Membre notifiant"))//French Document
                                     {
                                         foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                         {
@@ -665,7 +665,7 @@ namespace WTO.Controllers.API.WTO
             {
                 SendMail objMail = new SendMail();
                 objOutput.MailDetails.Body = objOutput.MailDetails.Body;
-                objMail.SendAsyncEMail(objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.MailDetails.Subject, objOutput.MailDetails.Body, null);
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.MailDetails.Subject, objOutput.MailDetails.Body, null);
             }
 
             return Ok();
@@ -827,7 +827,7 @@ namespace WTO.Controllers.API.WTO
                     }
                 }
 
-                objMail.SendAsyncEMail(objOutput.TranslaterEmailId, "", "atul.chipsoft@gmail.com", "", "Department of commerce", obj.MailDetails.Subject, obj.MailDetails.Message, Attachment.ToArray());
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.TranslaterEmailId, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", obj.MailDetails.Subject, obj.MailDetails.Message, Attachment.ToArray());
                 return Ok(objOutput);
             }
             else
@@ -895,8 +895,7 @@ namespace WTO.Controllers.API.WTO
                 {
                     foreach (StakeHolder s in objOutput.StakeHolders)
                     {
-                        string MailBody = objAN.MailbodyForStakeholders(objOutput.MailDetails);
-                        MailBody = MailBody.Replace("#Stakeholder#", s.StakeHolderName);
+                        string MailBody = objOutput.MailDetails.Message.Replace("#Stakeholder#", s.StakeHolderName);
                         List<string> Attachment = new List<string>();
                         foreach (MailAttachment att in obj.Attachments)
                         {
@@ -905,7 +904,7 @@ namespace WTO.Controllers.API.WTO
                             else
                                 Attachment.Add(HttpContext.Current.Server.MapPath("/Attachments/MailAttachment/" + objOutput.MailDetails.MailId + "_" + att.FileName));
                         }
-                        objMail.SendAsyncEMail(s.Email, "", "atul.chipsoft@gmail.com", "", "Department of commerce", "WTO Notifications : Document for Translation", MailBody, Attachment.ToArray());
+                        objMail.SendAsyncEMail(MailType.smtp_WTO, s.Email, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", objOutput.MailDetails.Subject, MailBody, Attachment.ToArray());
                     }
                 }
             }
@@ -1062,7 +1061,7 @@ namespace WTO.Controllers.API.WTO
                 {
                     Attachment.Add(HttpContext.Current.Server.MapPath(objAttach.Path));
                 }
-                objMail.SendAsyncEMail(objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.Subject, objOutput.Body, Attachment.ToArray());
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.Subject, objOutput.Body, Attachment.ToArray());
             }
 
             return Ok();

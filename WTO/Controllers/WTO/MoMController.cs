@@ -48,6 +48,27 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
+        public ActionResult GetMOMSummary(Int64 Id)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                //ViewBag.Note = Note;
+                MomBusinessService objAM = new MomBusinessService();
+                return PartialView("~/Views/Partial/MOMSummary.cshtml", objAM.MeetingSummary(Id));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
 
+        public ActionResult NotificationPlanTakeAction(Int64 Id, Int64 MeetingId)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                MomBusinessService obj = new MomBusinessService();
+                return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.EditMeetingActions(Id, MeetingId));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
     }
 }

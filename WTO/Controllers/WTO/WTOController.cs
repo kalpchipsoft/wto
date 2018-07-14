@@ -131,7 +131,6 @@ namespace WTO.Controllers
             else
                 return PartialView("RedirectToLogin");
         }
-
         public ActionResult NotificationStakeholderList(Search_StakeholderMailSentReceive obj)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -155,7 +154,6 @@ namespace WTO.Controllers
             else
                 return RedirectToAction("Index", "Login");
         }
-
         public ActionResult NotifyingMemberList(Search_NotificationCountries obj)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
