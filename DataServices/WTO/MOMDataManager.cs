@@ -108,7 +108,6 @@ namespace DataServices.WTO
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-
         public bool EndMeeting(Int64? Id, string Observation)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
@@ -129,6 +128,73 @@ namespace DataServices.WTO
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.MeetingSummary;
                 sqlCommand.Parameters.AddWithValue("@MOMId", Id);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataSet SendActionMail(long Id, ActionMailDetails obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_SendActionMail;
+                sqlCommand.Parameters.AddWithValue("@UserId", obj.UserId);
+                sqlCommand.Parameters.AddWithValue("@NotificationActionId", Id);
+                sqlCommand.Parameters.AddWithValue("@Subject", obj.Subject);
+                sqlCommand.Parameters.AddWithValue("@Message", obj.Body);
+                sqlCommand.Parameters.AddWithValue("@MailTo", obj.MailTo);
+                sqlCommand.Parameters.AddWithValue("@Attachments", obj.AttachmentsXML);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataTable GetMeetingNotes(int NotificationId)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.GetMeetingNote;
+                sqlCommand.Parameters.AddWithValue("@NoteId", NotificationId);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataTable UpdateMeetingNote(SaveNote obj)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.InsertUpdateNote;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", obj.NotificationId);
+                sqlCommand.Parameters.AddWithValue("@Note", obj.MeetingNote);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataTable EditNotificationAction(Int64 NotificationActionId)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_EditAction;
+                sqlCommand.Parameters.AddWithValue("@NotificationActionId", NotificationActionId);
+                return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataSet EditActions(Int64 Id, int ActionId)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_Actions;
+                sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
+                sqlCommand.Parameters.AddWithValue("@ActionId", ActionId);
+                return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
+            }
+        }
+        public DataSet ViewActions(Int64 Id)
+        {
+            using (SqlCommand sqlCommand = new SqlCommand())
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = Procedures.Notification_ViewActionDetails;
+                sqlCommand.Parameters.AddWithValue("@NotificationActionId", Id);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

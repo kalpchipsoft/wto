@@ -67,7 +67,7 @@
     <Compile Include="Masters\MastersBussinessObject.cs" />
     <Compile Include="Masters\UserInfo.cs" />
     <Compile Include="MOM\MoM.cs" />
-    <Compile Include="Notification\Action_Notification.cs" />
+    <Compile Include="MOM\Action_Notification.cs" />
     <Compile Include="Notification\AddNotification.cs" />
     <Compile Include="Notification\Dashboard.cs" />
     <Compile Include="Notification\Document_Notification.cs" />

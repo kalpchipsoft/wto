@@ -61,13 +61,14 @@ namespace DataServices.ManageAccess
             }
         }
 
-        public DataSet SendWelcomeMail(Int64 Id)
+        public DataSet SendWelcomeMail(Int64 Id, Int32 UserId)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.CommandText = Procedures.SendMailToTranslator;
                 sqlCommand.Parameters.AddWithValue("@TranslatorId", Id);
+                sqlCommand.Parameters.AddWithValue("@UserId", UserId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

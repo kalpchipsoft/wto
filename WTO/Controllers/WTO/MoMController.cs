@@ -10,7 +10,7 @@ namespace WTO.Controllers.WTO
 {
     public class MoMController : Controller
     {
-        // GET: MoM
+        //Meeting List
         public ActionResult Index()
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -22,7 +22,7 @@ namespace WTO.Controllers.WTO
                 return RedirectToAction("Index", "Login");
         }
 
-        // GET: MoM/Details/5
+        // Add new meeting
         public ActionResult Add(Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -33,7 +33,8 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
-        // POST: MoM/Edit/5
+        
+        // Edit meeting
         public ActionResult Edit(Nullable<Int64> Id, Search_MoM objS)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -48,6 +49,8 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
+
+        //Get Meeting Summary
         public ActionResult GetMOMSummary(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -55,6 +58,18 @@ namespace WTO.Controllers.WTO
                 //ViewBag.Note = Note;
                 MomBusinessService objAM = new MomBusinessService();
                 return PartialView("~/Views/Partial/MOMSummary.cshtml", objAM.MeetingSummary(Id));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
+
+        //get actions to plan for meeting notification
+        public ActionResult EditNotificationActions(Int64 Id)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                MomBusinessService obj = new MomBusinessService();
+                return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.GetNotificationActions(Id, 0));
             }
             else
                 return PartialView("RedirectToLogin");

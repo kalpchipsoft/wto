@@ -137,7 +137,8 @@ $(document).ready(function () {
                         Alert("Alert", $.trim($('#NotificationNumberId').val()) + " already exists.<br/>", "Ok");
                         ClearNotificationForm();
                         $('#NotificationFile').val('');
-                        $('#NotificationFileName').text('No File Choosen');
+                        $('#NotificationFileName').val('');
+                        $('#DocumentTypeId').val('');
                     }
                     else {
                         if (result.CountryId == null || result.CountryId == '' || result.CountryId < 1) {
@@ -624,15 +625,6 @@ function Validate(CallFor) {
         $('[id$=AgencyResponsibleId]').removeClass("error");
     }
 
-    //Notification under Artical validation
-    //if ($('[id$=NotificationUnderArticleId]').val().trim().length == 0) {
-    //    $('[id$=NotificationUnderArticleId]').addClass("error");
-    //    MSG += "Please enter notification under article.<br/>";
-    //}
-    //else {
-    //    $('[id$=NotificationUnderArticleId]').removeClass("error");
-    //}
-
     //Products Covered Id validation
     if ($('[id$=ProductsCoveredId]').val().trim().length == 0) {
         $('[id$=ProductsCoveredId]').addClass("error");
@@ -687,14 +679,23 @@ function Validate(CallFor) {
 
                 if (!IsLanguageSelected)
                     MSG += "Please select the language of the document.<br/>";
+                //else if ($.trim($('#duedate').val()) == "") {
+                //    MSG += "Please specify the date by when the translator will upload/send translated document.<br/>";
+                //    $("#duedate").addClass('error');
+                //    $("#remainder").addClass('error');
+                //}
+                //else {
+                //    $("#duedate").removeClass('error');
+                //    $("#remainder").removeClass('error');
+                //}
             }
 
-            if ($('#Notifi_Attach_Name').text() != '' && !$('[id$=chkSkipToDiscussion]').is(':checked') && $.trim($("#txtStakeholderResponseDueBy").val()) == '') {
-                MSG += "Please specify the date by when the stakeholders will send response.<br/>";
-                $("#txtStakeholderResponseDueBy").addClass('error');
-            }
-            else
-                $("#txtStakeholderResponseDueBy").removeClass('error');
+            //if ($('#Notifi_Attach_Name').text() != '' && !$('[id$=chkSkipToDiscussion]').is(':checked') && $.trim($("#txtStakeholderResponseDueBy").val()) == '') {
+            //    MSG += "Please specify the date by when the stakeholders will send response.<br/>";
+            //    $("#txtStakeholderResponseDueBy").addClass('error');
+            //}
+            //else
+            //    $("#txtStakeholderResponseDueBy").removeClass('error');
         }
     }
 
@@ -1466,22 +1467,24 @@ function BindRelatedTranslators(ctrl) {
 }
 
 function setReminderDays(CallFor) {
-    var start = $('#remainder').datepicker("getDate");
-    var end = $('#duedate').datepicker("getDate");
+    if ($.trim($('#duedate').val()) != "") {
+        var start = $('#remainder').datepicker("getDate");
+        var end = $('#duedate').datepicker("getDate");
 
-    if (CallFor != null && CallFor != '' && CallFor == 'DueDate') {
-        var newdate = new Date(end);
-        newdate.setDate(newdate.getDate() - 2); // minus the date
-        start = newdate;
-        $("#remainder").val($.datepicker.formatDate('dd M yy', newdate));
+        if (CallFor != null && CallFor != '' && CallFor == 'DueDate') {
+            var newdate = new Date(end);
+            newdate.setDate(newdate.getDate() - 2); // minus the date
+            start = newdate;
+            $("#remainder").val($.datepicker.formatDate('dd M yy', newdate));
+        }
+
+        // end - start returns difference in milliseconds 
+        var diff = new Date(end - start);
+
+        // get days
+        var days = diff / 1000 / 60 / 60 / 24;
+        $('#reminderdaysId').text(days);
     }
-
-    // end - start returns difference in milliseconds 
-    var diff = new Date(end - start);
-
-    // get days
-    var days = diff / 1000 / 60 / 60 / 24;
-    $('#reminderdaysId').text(days);
 }
 
 function SetTranslatorName() {
@@ -1650,13 +1653,12 @@ function SendMailToTranslator() {
                             }
                         });
                     });
-
                     $.each($('#RegulationsBody > tr'), function () {
                         var $row = $(this);
                         var _Filename = $row.find('a[id^=lblRegulation_]').attr('download');
                         $.each(NotificationDoc, function (indx, val) {
                             if (val.FileName == _Filename) {
-                                if ($row.find('.remove-icon').length > 0 && val.IsSelected == "1") {
+                                if (val.IsSelected == "1") {//$row.find('.remove-icon').length > 0 && 
                                     $row.find('.remove-icon').addClass('hidden');
                                     $row.find('input[id^=hdnDocId_]').val(val.DocumentId);
                                     $row.find('a[id^=lblRegulation_]').attr('download', val.DisplayName);
@@ -1670,7 +1672,7 @@ function SendMailToTranslator() {
                                         $row.find('label[id^=lblTranslator_]').text($.trim($('#ddlTranslater option:selected').text()));
                                     }
 
-                                    $('.translateddoc').removeClass('hidden');
+                                     
                                 }
                             }
                         });
@@ -1850,10 +1852,14 @@ function OpenSendMailModel() {
     if ($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked').length == 0) {
         Alert("Alert", "Please select stakeholders to send mail.<br/>", "Ok");
     }
+    else if ($.trim($('#txtStakeholderResponseDueBy').val()) == "") {
+        Alert("Alert", "Please select stakeholder response by date.<br/>", "Ok");
+    }
     else {
         $.each($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked'), function () {
-            if (this.id.toLowerCase() != 'chkselectall')
+            if (this.id.toLowerCase() != 'chkselectall') {
                 stakeholderId.push($(this).val());
+            }
         });
         $("#SelectedStackholdersCount").text(stakeholderId.length);
         $('#txtAttachments').addClass("hidden");
@@ -1861,8 +1867,7 @@ function OpenSendMailModel() {
         MailAttachments = [];
         var obj = {
             TemplateType: "Mail",
-            TemplateFor: "StakeholderMail",
-            StakeHolderResponseDate: $('[id$=txtStakeholderResponseDueBy]').val()
+            TemplateFor: "StakeholderMail"
         }
         $.ajax({
             url: "/api/AddUpdateNotification/GetMailSMSTemplate/" + myWTOAPP.id,
@@ -1871,8 +1876,11 @@ function OpenSendMailModel() {
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                $('[id$=txtSubject]').val(result.Subject);
-                CKEDITOR.instances.txtMessage.setData(result.Message);
+                debugger;
+                var _MailSubject = result.Subject.replace("#StakeholderResponseDueBy#", $.trim($('#txtStakeholderResponseDueBy').val()));
+                $('[id$=txtSubject]').val(_MailSubject);
+                var _MailBody = result.Message.replace("#StakeholderResponseDueBy#", $.trim($('#txtStakeholderResponseDueBy').val()));
+                CKEDITOR.instances.txtMessage.setData(_MailBody);
                 CKEDITOR.instances.txtMessage.focus();
             },
             failure: function (result) {
@@ -2099,7 +2107,7 @@ function SendmailToStakeholders() {
     ShowGlobalLodingPanel();
     var NotificationId = $('[id$=hdnNotificationId]').val();
     var StackHolders = '';
-    $.each($('#notificationlist tbody').find('input[type=checkbox]:checked'), function () {
+    $.each($('#NotificationStakholderslist tbody').find('input[type=checkbox]:checked'), function () {
         if (this.id.toLowerCase() != 'chkselectall')
             StackHolders += $(this).val() + ',';
     });
@@ -2134,7 +2142,8 @@ function SendmailToStakeholders() {
             Stakeholders: StackHolders,
             Attachments: _Attachments,
             Subject: Subject,
-            Message: Message
+            Message: Message,
+            StakeholderResponseDueBy: $('[id$=txtStakeholderResponseDueBy]').val()
         }
         $.ajax({
             url: "/api/AddUpdateNotification/SendMailToStakeholders",

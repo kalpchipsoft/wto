@@ -313,7 +313,7 @@ function CountryValidation() {
         $('[id$=CountryName]').removeClass("error");
     }
 
-    if ($('[id$=CountryStatus]').val().trim()=="") {
+    if ($('[id$=CountryStatus]').val().trim() == "") {
         $('[id$=CountryStatus]').addClass("error");
         msg += "Please select status.<br/>";
     }
@@ -495,7 +495,7 @@ function CheckDuplicateEntryCodeName(Callfor) {
             if (result.length > 0) {
                 if (Callfor == 'Code') {
                     $('[id$=CountryCodeId]').val('');
-                    Alert("Alert",'Country code already exists!',"Ok");
+                    Alert("Alert", 'Country code already exists!', "Ok");
                     $('[id$=CountryCodeId]').focus();
                 }
 
@@ -976,7 +976,7 @@ function DeleteTranslator(id) {
 
 function SendWelcomeMail(_Id) {
     $.ajax({
-        url: "/api/ManageAccess/SendWelcomeMailToTranslator/" + _Id,
+        url: "/api/ManageAccess/SendWelcomeMailToTranslator?id=" + _Id + "&UserId=" + myWTOAPP.UserId,
         async: false,
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -1186,6 +1186,7 @@ function AddTemplatePopup() {
 }
 
 function TemplateValidate() {
+    debugger;
     var msg = "";
 
     if ($.trim($('[id$=ddlTemplateType]').val().toString()) == "") {
@@ -1351,14 +1352,14 @@ function AddFields(ctrlName) {
                 var html = '';
                 $.each(result, function (i, v) {
                     html += '<div class="insertfielddiv">' +
-                                '<div class="checkbox radio-margin" style="margin-top: 2px;float: left;">' +
-                                    '<label>' +
-                                        '<input type="checkbox" onchange="AddRemoveField(this);" value="' + v.Value + '">' +
-                                        '<span class="cr insertcheckbox"><i class="cr-icon glyphicon glyphicon-ok"></i></span>' +
-                                        v.Text +
-                                    '</label>' +
-                                '</div>' +
-                            '</div>';
+                        '<div class="checkbox radio-margin" style="margin-top: 2px;float: left;">' +
+                        '<label>' +
+                        '<input type="checkbox" onchange="AddRemoveField(this);" value="' + v.Value + '">' +
+                        '<span class="cr insertcheckbox"><i class="cr-icon glyphicon glyphicon-ok"></i></span>' +
+                        v.Text +
+                        '</label>' +
+                        '</div>' +
+                        '</div>';
                 });
 
                 $('#divFields').append(html);
@@ -1439,7 +1440,7 @@ function insertAtCaret(areaId, text) {
     var scrollPos = txtarea.scrollTop;
     var strPos = 0;
     var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
-      "ff" : (document.selection ? "ie" : false));
+        "ff" : (document.selection ? "ie" : false));
     if (br == "ie") {
         txtarea.focus();
         var range = document.selection.createRange();
@@ -1561,7 +1562,7 @@ function AddNewInternalStackholder() {
                 if (id > 0)
                     Alert("Alert", "Internal stakeholder has been updated successfully.<br\>", "Ok");
                 else {
-                    Alert("Alert", "Internal stakeholder  has been saved successfully.<br\>", "Ok");               
+                    Alert("Alert", "Internal stakeholder  has been saved successfully.<br\>", "Ok");
                 }
             }
             else
@@ -1818,7 +1819,7 @@ function DeleteRegulatoryBody(id) {
 function ValidateBodyName(evt) {
     var keyCode = (evt.which) ? evt.which : event.keyCode;
     if ((keyCode >= 48 && keyCode <= 57)) {
-        Alert("Alert",'Numbers are not allowed.<br/>',"Ok");
+        Alert("Alert", 'Numbers are not allowed.<br/>', "Ok");
         return false;
     }
 }

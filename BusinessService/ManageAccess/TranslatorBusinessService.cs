@@ -96,11 +96,11 @@ namespace BusinessService.ManageAccess
             return objTDS.DeleteTranslator(Id);
         }
 
-        public TranslatorDetails SendWelcomeMail(Int64 Id)
+        public TranslatorDetails SendWelcomeMail(Int64 Id, Int32 UserId)
         {
             TranslatorDetails obj = new TranslatorDetails();
             CommonHelper objCH = new CommonHelper();
-            DataSet ds = objTDS.SendWelcomeMail(Id);
+            DataSet ds = objTDS.SendWelcomeMail(Id,UserId);
             if (ds != null && ds.Tables.Count > 0)
             {
                 int tblIndx = -1;
@@ -128,8 +128,8 @@ namespace BusinessService.ManageAccess
             StringBuilder strMailbody = new StringBuilder();
             strMailbody.Append("<table>");
             strMailbody.Append("<tr><td>Dear " + obj.TranslatorName + ",</td></tr>");
-            strMailbody.Append("<tr><td><br/>We are pleased to inform you that, you have been registered as translator for " + obj.Languages + " into WTO. <br/><br/>Given below are your user ID and Temporary Password for your use:<br/><br/>User ID : " + obj.Email + "<br/>Temporary Password : " + objCh.DecryptData(obj.Password) + "<br/>Website :  <a href='http://testwto.chipsoftindia.in/translator/Login/'>http://testwto.chipsoftindia.in/</a></td></tr>");
-            strMailbody.Append("<tr><td><br/><br/>When you log-in using this temporary password, you would be asked to reset the password. Once you reset your password using the temporary password provided to you, the password will be stored in encrypted format and will not be visible to any users or will not be sent through email. In case you would like to retrieve your password, then you can request WTO to generate a temporary password for you by sending email at Ashvini.chipsoft@gmail.com. Using this temporary password you can again reset the Password.Please use Internet Explorer version 8 or above as your Internet browser for better results.</td></tr>");
+            strMailbody.Append("<tr><td><br/>We are pleased to inform you that, you have been registered as translator for " + obj.Languages + " for SPS / TBT Notifications Management System of Department of Commerce. <br/><br/>Given below are your user ID and Temporary Password for your use:<br/><br/>User ID : " + obj.Email + "<br/>Temporary Password : " + objCh.DecryptData(obj.Password) + "<br/>Website :  <a href='http://testwto.chipsoftindia.in/translator/Login/'>http://testwto.chipsoftindia.in/</a></td></tr>");
+            strMailbody.Append("<tr><td><br/><br/>When you log-in using this temporary password, you would be asked to reset the password. Once you reset your password using the temporary password provided to you, the password will be stored in encrypted format and will not be visible to any users or will not be sent through email. In case you would like to retrieve your password, then you can request Department of Commerce to generate a temporary password for you by sending email at WTO.chipsoft@gmail.com. Using this temporary password you can again reset the Password.Please use Internet Explorer version 8 or above as your Internet browser for better results.</td></tr>");
             strMailbody.Append("<tr><td><br/><br/> This is a system generated email from testwto.chipsoftindia.in.</td></tr>");
             strMailbody.Append("<tr><td><br/>For any information / clarification please contact mishra.ashvini@chipsoftindia.in. </td></tr>");
             strMailbody.Append("<tr><td><br />Kind Regards,<br />WTO Team</td></tr>");

@@ -461,9 +461,5 @@ namespace BusinessObjects.Notification
         public string FileName { get; set; }
         public string Path { get; set; }
     }
-    public class SaveNote
-    {
-        public int NotificationId { get; set; }
-        public string MeetingNote { get; set; }
-    }
+    
 }
