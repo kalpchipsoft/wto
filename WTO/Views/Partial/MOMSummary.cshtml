@@ -1,0 +1,680 @@
+﻿@model BusinessObjects.MOM.MoMs
+@{
+    Layout = null;
+}
+<input type="hidden" id="hdnCloseMOMSummary" value="" />
+<div class="modal-dialog modal-lg selecthrdialog">
+    <div class="modal-content selecthrcontent">
+        <div class="modal-header selecthrheader">
+            <button type="button" class="close selecthrclose" onclick="return CloseMeetingSummary();">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        <div class="modal-body selecthrbody">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
+                        <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
+                            <div class="padding-bottom-10">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
+                                        <div class="notificationnumber padding-bottom-10">
+                                            <p class="wto-label-bold">
+                                                Minutes of meeting held on  @if (@Model != null && @Model.MoMList.Count > 0)
+                                                {
+                                                    foreach (var item in @Model.MoMList)
+                                                    {
+                                                        @item.MeetingDate
+                                                    }
+                                                }  to discuss the TBT/SPS notifications issued by other WTO Members
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-6 top-offset-10">
+                                        <div class="btngroup">
+                                            <a id="btnSection1" class="btn btn-Section1 Active  ActiveTab" href="#Section1" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">MOM</a>
+                                            <a id="btnSection2" class="btn btn-Section2 ActiveTab" href="#Section2" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">Annexure 1 A</a>
+                                            <a id="btnSection3" class="btn btn-Section3 ActiveTab" href="#Section3" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">Annexure 1 B</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-6 top-offset-10">
+                                        <a class="pull-right" onclick="return printDiv('prntDiv');" id="btnPrint"><img src="~/contents/img/print-icon.png" /></a>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10 tab-content tabs">
+
+                                        @if (Model != null)
+                                        {
+                                            <div class="tab-pane fade in active top-offset-10" id="Section1">
+
+                                                <table class="MOMtable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1. </td>
+                                                            <td><p class="wto-label-normal"> The meeting began with last week’s update on the action to be taken.</p></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2. </td>
+                                                            @if (@Model != null && @Model.MoMList.Count > 0)
+                                                            {
+                                                                foreach (var item in @Model.MoMList)
+                                                                {
+                                                                    <td><p class="wto-label-normal"> A total @item.SPSNotificationCount  of SPS and a total @item.TBTNotificationCount  of TBT notifications were discussed. Details of discussed notifications and the action taken is at Annex-I.</p></td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3. </td>
+                                                            <td><p class="wto-label-normal"> Regulatory briefs for the following were decided :</p></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <p class="wto-label-bold">Regulatory brief</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class='table-responsive notificationlist'>
+                                                                    @if (Model.RegulatoryNotificationList != null && Model.RegulatoryNotificationList.Count > 0)
+                                                                    {
+                                                                        <table class="table" id="tblRegulatory">
+                                                                            <thead class="second-blackbackground">
+                                                                                <tr>
+                                                                                    <th class="col-md-1"><b>S. No.</b></th>
+                                                                                    <th class="col-md-2"><b>Notification Number</b></th>
+                                                                                    <th class="col-md-2"><b>Country</b></th>
+                                                                                    <th class="col-md-5"><b>Description of content</b></th>
+                                                                                    <th class="col-md-2"><b>Regulators</b></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var item in @Model.RegulatoryNotificationList)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td class="col-md-1">@item.ItemNumber</td>
+                                                                                        <td class="col-md-2">@item.NotificationNumber</td>
+                                                                                        @if (@item.Country != "")
+                                                                                        {
+                                                                                            <td class="col-md-2">@item.Country</td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="col-md-2"></td>
+                                                                                        }
+                                                                                        @if (@item.Description != "")
+                                                                                        {
+                                                                                            <td class="col-md-5">@item.Description</td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="col-md-5"></td>
+                                                                                        }
+                                                                                        @if (@item.Regulatory != "")
+                                                                                        {
+                                                                                            <td class="col-md-2">@item.Regulatory</td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="col-md-2"></td>
+                                                                                        }
+                                                                                    </tr>
+                                                                                }
+
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="wto-label-bold">Nill</p>
+                                                                    }
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <p class="wto-label-normal">4.</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="wto-label-normal">Policy brief for the following were decided:</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <p class="wto-label-bold">Policy brief</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class='table-responsive notificationlist'>
+                                                                    @if (Model.PolicyNotificationList != null && Model.PolicyNotificationList.Count > 0)
+                                                                    {
+                                                                        <table class="table" id="tblPolicy">
+                                                                            <thead class="second-blackbackground">
+                                                                                <tr>
+                                                                                    <th class="col-md-1"><b>Sr. No.</b></th>
+                                                                                    <th class="col-md-2"><b>Notification No.</b></th>
+                                                                                    <th class="col-md-2"><b>Country</b></th>
+                                                                                    <th class="col-md-5"><b>Description of content</b></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var item in @Model.PolicyNotificationList)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td class="col-md-1">@item.ItemNumber</td>
+                                                                                        <td class="col-md-2">@item.NotificationNumber</td>
+                                                                                        @if (@item.Country != "")
+                                                                                        {
+                                                                                            <td class="col-md-2">@item.Country</td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="col-md-2"></td>
+                                                                                        }
+                                                                                        @if (@item.Description != "")
+                                                                                        {
+                                                                                            <td class="col-md-5">@item.Description</td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td class="col-md-5"></td>
+                                                                                        }
+                                                                                    </tr>
+                                                                                }
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="wto-label-bold">Nill</p>
+                                                                    }
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                5.
+                                                            </td>
+                                                            <td>
+                                                                <p class="wto-label-normal">Other observations: </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                @if (@Model != null && @Model.MoMList.Count > 0)
+                                                                {
+                                                                    foreach (var item in @Model.MoMList)
+                                                                    {
+                                                                        <p>@item.Observation</p>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+
+                                            </div>
+                                            <div class="tab-pane" id="Section2">
+                                                <p class="wto-label-bold">
+                                                    TBT Notifications (
+                                                    @if (@Model != null && @Model.MoMList.Count > 0)
+                                                    {
+                                                        foreach (var item in @Model.MoMList)
+                                                        {
+                                                            @item.TBTNotificationCount
+                                                        }
+                                                    })
+                                                </p>
+                                                @if (Model.TBTNotificationList != null && Model.TBTNotificationList.Count > 0)
+                                                {
+                                                    foreach (var item in @Model.TBTNotificationList)
+                                                    {
+                                                        <div class='col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow padding-top-bottom' style='border-radius:10px;margin-bottom:20px;'>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Notification no.</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    <p class='wto-label-normal red-color'>@item.NotificationNumber </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Date</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    <p class='wto-label-normal'>@item.DateOfNotification</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Country</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'><p class='wto-label-normal'>@item.Country</p></div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'><p class='wto-label-bold'>Description of content</p></div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'><p class='wto-label-normal'>@item.Description</p></div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'><p class='wto-label-bold'>Action taken</p></div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    @{
+                                                                        string[] ActionArr = item.Action.Split('|');
+                                                                        for (int j = 0; j < ActionArr.Length; j++)
+                                                                        {
+                                                                            <p class='wto-label-normal'>@ActionArr[j]</p>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                            }
+                                                                        }
+                                            </div>
+                                            <div class="tab-pane" id="Section3">
+                                                <p class="wto-label-bold">
+                                                    SPS Notifications ( @if (@Model != null && @Model.MoMList.Count > 0)
+                                                    {
+                                                        foreach (var item in @Model.MoMList)
+                                                        {
+                                                            @item.SPSNotificationCount
+                                                        }
+                                                    } )
+                                                </p>
+                                                @if (Model.SPSNotificationList != null && Model.SPSNotificationList.Count > 0)
+                                                {
+                                                    foreach (var item in @Model.SPSNotificationList)
+                                                    {
+                                                        <div class='col-xs-12 col-sm-12 col-md-12 full-border inner-Aqua-shadow padding-top-bottom' style='border-radius:10px;margin-bottom:20px;'>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Notification no.</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    <p class='wto-label-normal red-color'>@item.NotificationNumber </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Date</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    <p class='wto-label-normal'>@item.DateOfNotification</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'>
+                                                                    <p class='wto-label-bold'>Country</p>
+                                                                </div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'><p class='wto-label-normal'>@item.Country</p></div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'><p class='wto-label-bold'>Description of content</p></div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'><p class='wto-label-normal'>@item.Description</p></div>
+                                                            </div>
+                                                            <div class='row top-offset-10'>
+                                                                <div class='col-xs-12 col-sm-4 col-md-3'><p class='wto-label-bold'>Action taken</p></div>
+                                                                <div class='col-xs-12 col-sm-8 col-md-9'>
+                                                                    @{
+                                                                        string[] ActionArr = item.Action.Split('|');
+                                                                        for (int j = 0; j < ActionArr.Length; j++)
+                                                                        {
+                                                                            <p class='wto-label-normal'>@ActionArr[j]</p>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                            }
+                                                                        }
+                                            </div>
+                                                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="display:none;">
+    <div class="row" id="prntDiv">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="5">
+                            <p style="font-weight:bold;">
+                                Minutes of meeting held on  @if (@Model != null && @Model.MoMList.Count > 0)
+                                {
+                                    foreach (var item in @Model.MoMList)
+                                    {
+                                        @item.MeetingDate
+                                    }
+                                }  to discuss the TBT/SPS notifications issued by other WTO Members
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1. </td>
+                        <td colspan="4"><p>The meeting began with last week’s update on the action to be taken.</p></td>
+                    </tr>
+                    <tr>
+                        <td>2. </td>
+                        <td colspan="4">
+                            @if (@Model != null && @Model.MoMList.Count > 0)
+                            {
+                                foreach (var item in @Model.MoMList)
+                                {
+
+                                    <p class="wto-label-normal"> A total @item.SPSNotificationCount  of SPS and a total @item.TBTNotificationCount  of TBT notifications were discussed. Details of discussed notifications and the action taken is at Annex-I.</p>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3. </td>
+                        <td colspan="4"><p>Regulatory briefs for the following were decided :</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><p style="font-weight:bold;">Regulatory brief</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @if (Model.RegulatoryNotificationList != null && Model.RegulatoryNotificationList.Count > 0)
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding:10px;"><b>S. No.</b></th>
+                                            <th style="padding:10px;"><b>Notification Number</b></th>
+                                            <th style="padding:10px;"><b>Country</b></th>
+                                            <th style="padding:10px;"><b>Description of content</b></th>
+                                            <th style="padding:10px;"><b>Regulators</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in @Model.RegulatoryNotificationList)
+                                        {
+                                            <tr>
+                                                <td style="padding:10px;">@item.ItemNumber</td>
+                                                <td style="padding:10px;">@item.NotificationNumber</td>
+                                                @if (@item.Country != "")
+                                                {
+                                                    <td style="padding:10px;">@item.Country</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (@item.Description != "")
+                                                {
+                                                    <td style="padding:10px;">@item.Description</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (@item.Regulatory != "")
+                                                {
+                                                    <td style="padding:10px;">@item.Regulatory</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p><b>Nill</b></p>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4. </td>
+                        <td colspan="4"><p>Policy brief for the following were decided: </p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><p style="font-weight:bold;">Policy brief</p></td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td colspan="5">
+                            @if (Model.PolicyNotificationList != null && Model.PolicyNotificationList.Count > 0)
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding:10px;"><b>Sr. No.</b></th>
+                                            <th style="padding:10px;"><b>Notification No.</b></th>
+                                            <th style="padding:10px;"><b>Country</b></th>
+                                            <th style="padding:10px;"><b>Description of content</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in @Model.PolicyNotificationList)
+                                        {
+                                            <tr>
+                                                <td style="padding:10px;">@item.ItemNumber</td>
+                                                <td style="padding:10px;">@item.NotificationNumber</td>
+                                                @if (@item.Country != "")
+                                                {
+                                                    <td style="padding:10px;">@item.Country</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (@item.Description != "")
+                                                {
+                                                    <td style="padding:10px;">@item.Description</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p><b>Nill</b></p>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>5. </td>
+                        <td colspan="4"><p style="font-weight:bold;">Other observations:</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <p>
+                                @if (@Model != null && @Model.MoMList.Count > 0)
+                                {
+                                    foreach (var item in @Model.MoMList)
+                                    {
+
+                                        @item.Observation
+
+                                    }
+                                }
+                            </p>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td colspan="5">
+                            TBT Notifications (@if (@Model != null && @Model.MoMList.Count > 0)
+                            {
+                                foreach (var item in @Model.MoMList)
+                                {
+
+                                    @item.TBTNotificationCount
+                                }
+                            } )
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @if (Model.TBTNotificationList != null && Model.TBTNotificationList.Count > 0)
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding:10px;">Notification Number</th>
+                                            <th style="padding:10px;">Date</th>
+                                            <th style="padding:10px;">Country</th>
+                                            <th style="padding:10px;">Description of content</th>
+                                            <th style="padding:10px;">Action Taken</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in @Model.TBTNotificationList)
+                                        {
+                                            <tr>
+                                                <td style="padding:10px;"><p>@item.NotificationNumber</p></td>
+                                                <td style="padding:10px;"><p>@item.DateOfNotification</p></td>
+                                                <td style="padding:10px;"><p>@item.Country</p></td>
+                                                <td style="padding:10px;"><p>@item.Description</p></td>
+                                                <td style="padding:10px;"><p>@item.Action.ToString().Replace("|", ", ")</p></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding:10px;">No Record</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="5">
+                            SPS Notifications (@if (@Model != null && @Model.MoMList.Count > 0)
+                            {
+                                foreach (var item in @Model.MoMList)
+                                {
+
+                                    @item.SPSNotificationCount
+                                }
+                            } )
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @if (Model.SPSNotificationList != null && Model.SPSNotificationList.Count > 0)
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding:10px;">Notification Number</th>
+                                            <th style="padding:10px;">Date</th>
+                                            <th style="padding:10px;">Country</th>
+                                            <th style="padding:10px;">Description of content</th>
+                                            <th style="padding:10px;">Action Taken</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in @Model.SPSNotificationList)
+                                        {
+                                            <tr>
+                                                <td style="padding:10px;"><p>@item.NotificationNumber</p></td>
+                                                <td style="padding:10px;"><p>@item.DateOfNotification</p></td>
+                                                <td style="padding:10px;"><p>@item.Country</p></td>
+                                                <td style="padding:10px;"><p>@item.Description</p></td>
+                                                <td style="padding:10px;"><p>@item.Action.ToString().Replace("|", ", ")</p></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #ddd !important;margin:20px 0 20px 0;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding:10px;">No Record</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@*------------Script--------------*@
+<script>
+    function CloseMeetingSummary() {
+        $("#ModelMeetingSummary").modal('hide');
+        if ($("#hdnCloseMOMSummary").val().toUpperCase() == "EndMeeting".toUpperCase()) {
+            location.href = window.location.origin + "/MoM/Add/0";
+        }
+        return false;
+    }
+    function printDiv(elementId) {
+        debugger;
+        var date = new Date();
+        $("#lblHeaderDate").text(FormatDate(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()));
+        var printContent = document.getElementById(elementId);
+        var windowUrl = '';
+        var uniqueName = new Date();
+        var windowName = '';  // 'Print' + uniqueName.getTime();
+        var printWindow = window.open(windowUrl, windowName, '');
+        printWindow.document.write(printContent.innerHTML);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+        return true;
+    }
+    function FormatDate(val) {
+        debugger;
+        //if (val.length > 10) {
+        var dt1 = val.split('T')[0];
+        var mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var d = dt1.split('-')[2];
+        var m = dt1.split('-')[1];
+        var y = dt1.split('-')[0];
+        var MyDate = d + ' ' + mon[parseInt(m) - 1] + ' ' + y;
+        return MyDate;
+        // }
+    }
+    function checkActiveTab(ctrl) {
+        debugger;
+        $(".ActiveTab").removeClass('Active');
+        $(ctrl.Id).addClass('Active');
+    }
+</script>

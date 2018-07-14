@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!-- body section start -->
+<link href="~/contents/css/MOM.css" rel="stylesheet" />
 <div>
     <div class="container-fluid">
         <div class="row bodybackground">
@@ -60,7 +61,11 @@
                                             {
                                                 <tr>
                                                     <td class="width-15">
-                                                        @obj.MeetingDate
+                                                        <p>   @obj.MeetingDate</p>
+                                                        @if (obj.IsActive == false)
+                                                        {
+                                                            <a id="lnkMeetingSummary_@obj.MoMId" onclick="return MeetingSummary(@obj.MoMId);">Meeting Summary</a>
+                                                        }
                                                     </td>
                                                     <td class="width-12"><a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,CallFor="" })"><div class="span-badge">@obj.NotificationCount</div></a></td>
                                                     @if (obj.PendingCount > 0)
@@ -135,6 +140,11 @@
     </div>
 </div>
 <!-- body section End -->
+
+<div class="modal fade selecthrmodal" id="ModelMeetingSummary" role="dialog" data-backdrop="static" data-keyboard="false">
+    @{ Html.RenderAction("GetMOMSummary", "MoM", new { Id = 6 }); }
+</div>
+
 <script type="text/javascript">
     $(document).ready(function () {
         if ($(window).width() < 700) {
@@ -145,4 +155,9 @@
         }
 
     })
+    function MeetingSummary(MoMId) {
+        $("#ModelMeetingSummary").load('MoM/GetMOMSummary/' + MoMId);
+        $("#ModelMeetingSummary").modal('show');
+        return false;
+    }
 </script>

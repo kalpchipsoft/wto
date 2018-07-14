@@ -208,6 +208,7 @@
     <Content Include="contents\css\css\Translator.css" />
     <Content Include="contents\css\css\wto.css" />
     <Content Include="contents\css\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="contents\css\MOM.css" />
     <Content Include="contents\img\ActionComplete.png" />
     <Content Include="contents\img\ActionPending.png" />
     <Content Include="contents\img\AddMOM.png" />
@@ -253,6 +254,7 @@
     <Content Include="contents\img\notification.png" />
     <Content Include="contents\img\notification1.png" />
     <Content Include="contents\img\password.png" />
+    <Content Include="contents\img\print-icon.png" />
     <Content Include="contents\img\rightArrow.png" />
     <Content Include="contents\img\rightone.png" />
     <Content Include="contents\img\rightshift.png" />
@@ -725,6 +727,8 @@
     <Content Include="Views\WTO\NotificationStakeholderList.cshtml" />
     <Content Include="Views\Shared\RedirectToLogin.cshtml" />
     <Content Include="Views\GlobalError\Index.cshtml" />
+    <Content Include="Views\Partial\Dashboard\MOMSummary.cshtml" />
+    <Content Include="Views\Partial\MOMSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
