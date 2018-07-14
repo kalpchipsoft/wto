@@ -122,7 +122,7 @@ namespace BusinessService.MOM
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.ActionName = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.MailId = Convert.ToString(dr["MailId"]);
+                        objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         ActionList.Add(objNotificationAction);
                     }
@@ -171,6 +171,7 @@ namespace BusinessService.MOM
                         objNotification.NotificationCount = Convert.ToInt32(dr["NotificationCount"]);
                         objNotification.PendingCount = Convert.ToInt32(dr["PendingCount"]);
                         objNotification.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objNotification.IsActive = Convert.ToBoolean(dr["IsActive"]);
                         i++;
                         NotificationList.Add(objNotification);
                     }
@@ -274,7 +275,7 @@ namespace BusinessService.MOM
                         NotificationAction objAction = new NotificationAction();
                         objAction.NotificationId = Convert.ToInt64(dr["NotificationId"]);
                         objAction.ActionId = Convert.ToInt32(dr["ActionId"]);
-                        objAction.MailId = Convert.ToString(dr["MailId"]);
+                        objAction.MailId = Convert.ToInt64(dr["MailId"]);
                         NotificationActionList.Add(objAction);
                     }
                     objE.NotificationActions = NotificationActionList;
@@ -299,7 +300,7 @@ namespace BusinessService.MOM
                     {
                         objE.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objE.Title = Convert.ToString(dr["Title"]);
-                        //objE.Status = Convert.ToString(dr["Stage"]);
+                        objE.Status = Convert.ToString(dr["Stage"]);
                         objE.MeetingNote = Convert.ToString(dr["MeetingNote"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         objE.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
@@ -318,7 +319,7 @@ namespace BusinessService.MOM
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.ActionName = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.MailId = Convert.ToString(dr["MailId"]);
+                        objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         ActionList.Add(objNotificationAction);
                     }
@@ -328,15 +329,15 @@ namespace BusinessService.MOM
                 tblIndex++;
                 if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
                 {
-                    List<PrevioiusMeeting> PrevioiusMeetingList = new List<PrevioiusMeeting>();
+                    List<PreviousMeeting> PrevioiusMeetingList = new List<PreviousMeeting>();
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
-                        PrevioiusMeeting PrevioiusMeeting = new PrevioiusMeeting();
+                        PreviousMeeting PrevioiusMeeting = new PreviousMeeting();
                         PrevioiusMeeting.MeetingId = Convert.ToInt64(dr["MeetingId"]);
                         PrevioiusMeeting.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         PrevioiusMeetingList.Add(PrevioiusMeeting);
                     }
-                    objE.PrevioiusMeetings = PrevioiusMeetingList;
+                    objE.PreviousMeetings = PrevioiusMeetingList;
                 }
 
                 tblIndex++;
@@ -381,10 +382,10 @@ namespace BusinessService.MOM
             }
             return objE;
         }
-        public bool EndMeeting(Int64? Id)
+        public bool EndMeeting(Int64? Id, string Observation)
         {
             MOMDataManager objDM = new MOMDataManager();
-            bool result = objDM.EndMeeting(Id);
+            bool result = objDM.EndMeeting(Id, Observation);
             return result;
         }
         public string ValidateMeetingDate(string date, Nullable<Int64> MoMId)
@@ -397,6 +398,113 @@ namespace BusinessService.MOM
                 result = Convert.ToString(dt.Rows[0]["Message"]);
 
             return result;
+        }
+        public MoMs MeetingSummary(Int64 Id)
+        {
+            MoMs objMoM = new MoMs();
+            MOMDataManager objDM = new MOMDataManager();
+            DataSet ds = objDM.MeetingSummary(Id);
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int tblIndex = -1;
+
+                #region "Total Of MOM Notification"
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<MoM> MOMNotification = new List<MoM>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        MoM objMOMList = new MoM();
+                        objMOMList.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objMOMList.SPSNotificationCount = Convert.ToInt32(dr["SPSNotification"]);
+                        objMOMList.TBTNotificationCount = Convert.ToInt32(dr["TBTNotification"]);
+                        objMOMList.Observation = Convert.ToString(dr["Observation"]);
+                        MOMNotification.Add(objMOMList);
+                    }
+                    objMoM.MoMList = MOMNotification;
+                }
+                #endregion
+
+                #region "TBT Notification"
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<Notification_Mom> MOMNotificationList = new List<Notification_Mom>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Notification_Mom objList = new Notification_Mom();
+                        objList.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objList.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objList.DateOfNotification = Convert.ToString(dr["DateOfNotification"]);
+                        objList.Country = Convert.ToString(dr["Country"]);
+                        objList.Description = Convert.ToString(dr["Description"]);
+                        objList.Action = Convert.ToString(dr["Action"]);
+                        MOMNotificationList.Add(objList);
+                    }
+                    objMoM.TBTNotificationList = MOMNotificationList;
+                }
+                #endregion
+
+                #region "SPS Notification"
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<Notification_Mom> MOMNotificationList = new List<Notification_Mom>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Notification_Mom objList = new Notification_Mom();
+                        objList.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objList.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objList.DateOfNotification = Convert.ToString(dr["DateOfNotification"]);
+                        objList.Country = Convert.ToString(dr["Country"]);
+                        objList.Description = Convert.ToString(dr["Description"]);
+                        objList.Action = Convert.ToString(dr["Action"]);
+                        MOMNotificationList.Add(objList);
+                    }
+                    objMoM.SPSNotificationList = MOMNotificationList;
+                }
+                #endregion
+                #region "Regulatory Notification"
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<Notification_Mom> MOMNotificationList = new List<Notification_Mom>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Notification_Mom objList = new Notification_Mom();
+                        objList.ItemNumber = Convert.ToInt32(dr["RowNumber"]);
+                        objList.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objList.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objList.Country = Convert.ToString(dr["Country"]);
+                        objList.Description = Convert.ToString(dr["Description"]);
+                        objList.Regulatory = Convert.ToString(dr["Regulators"]).Replace("|", ", ");
+                        MOMNotificationList.Add(objList);
+                    }
+                    objMoM.RegulatoryNotificationList = MOMNotificationList;
+                }
+                #endregion
+                #region "Regulatory Notification"
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<Notification_Mom> MOMNotificationList = new List<Notification_Mom>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        Notification_Mom objList = new Notification_Mom();
+                        objList.ItemNumber = Convert.ToInt32(dr["RowNumber"]);
+                        objList.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objList.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objList.Country = Convert.ToString(dr["Country"]);
+                        objList.Description = Convert.ToString(dr["Description"]);
+                        MOMNotificationList.Add(objList);
+                    }
+                    objMoM.PolicyNotificationList = MOMNotificationList;
+                }
+                #endregion
+            }
+
+            return objMoM;
         }
     }
 }

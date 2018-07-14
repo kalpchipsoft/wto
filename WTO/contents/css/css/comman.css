@@ -324,7 +324,9 @@ a, a:hover, a:focus, a:active {
             text-decoration: none;
         }
 
-    .sidebar-nav .list a:hover, .sidebar-nav .list a:focus, .sidebar-nav .list a:active {
+    .sidebar-nav li.list.dropdown:hover, .sidebar-nav li.list.dropdown:focus, .sidebar-nav li.list.dropdown:active,
+    .sidebar-nav li.list.dropdown.open,
+    .sidebar-nav .list a:hover, .sidebar-nav .list a:focus, .sidebar-nav .list a:active, .sidebar-nav .list a.active {
         background-color: #1edec5 !important;
     }
 

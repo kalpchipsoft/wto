@@ -115,42 +115,64 @@ $(document).ready(function () {
             });
         }
     }
+    else
+        $('#toggleOpenClose').click();
 
-    debugger;
     // <!-- Active menu binding start-->
     var _PageName = $.trim($('.topbg').text());
     //_PageName = _PageName.toLocaleLowerCase().replace(/ /g, '')
-    var location = document.location.href;
+    var location = document.location.href.toLocaleLowerCase();
 
-    if (location.indexOf("WTODashboard") >= 1)
+    if (location.indexOf("wtodashboard") >= 1)
         $('.dashboard').addClass("active");
     else
         $('.dashboard').removeClass("active");
 
-    if (location.indexOf("NotificationList") > -1) {
-        $('.notification').addClass("active");
+    if (_PageName.toLocaleLowerCase().indexOf('notification') >= 0) {
+        $('.notification').addClass('open');
+        $('.notification').find('.dropdown-toggle').attr('aria-expanded', true);
+        $('.notification').find('.dropdown-toggle').addClass('active');
+
+        if (location.indexOf("addnotification") >= 0 && _PageName.toLocaleLowerCase().indexOf('add notification') >= 0)
+            $('.addnotification').addClass("active");
+        else
+            $('.addnotification').removeClass("active");
+
+        if (location.indexOf("notificationlist") >= 0 && _PageName.toLocaleLowerCase().indexOf('notification list') >= 0)
+            $('.notificationlist').addClass("active");
+        else
+            $('.notificationlist').removeClass("active");
     }
     else {
-        $('.notification').removeClass("active");
+        $('.notification').removeClass('open');
+        $('.notification').find('.dropdown-toggle').attr('aria-expanded', false);
     }
-    if (location.indexOf("AddNotification") > -1) {
-        $('.Addnotification').addClass("active");
+
+    if (_PageName.toLocaleLowerCase().indexOf('meeting') >= 0) {
+        $('.meeting').addClass('open');
+        $('.meeting').find('.dropdown-toggle').attr('aria-expanded', true);
+        $('.meeting').find('.dropdown-toggle').addClass('active');
+
+        if (location.indexOf("mom/add") >= 0 && _PageName.toLocaleLowerCase().indexOf('schedule meeting') >= 0)
+            $('.addmeeting').addClass("active");
+        else
+            $('.addmeeting').removeClass("active");
+
+        if (location.indexOf("mom/edit/") >= 0 && _PageName.toLocaleLowerCase().indexOf('current meeting') >= 0)
+            $('.currentmeeting').addClass("active");
+        else
+            $('.currentmeeting').removeClass("active");
+
+        if (location.indexOf("/mom") >= 0 && (_PageName.toLocaleLowerCase().indexOf('meeting schedules') >= 0 || _PageName.toLocaleLowerCase().indexOf('plan action') >= 0))
+            $('.meetinglist').addClass("active");
+        else
+            $('.meetinglist').removeClass("active");
     }
     else {
-        $('.Addnotification').removeClass("active");
+        $('.meeting').removeClass('open');
+        $('.meeting').find('.dropdown-toggle').attr('aria-expanded', false);
     }
-    if (location.indexOf("MOMList") > -1) {
-        $('.AddMOMList').addClass("active");
-    }
-    else {
-        $('.AddMOMList').removeClass("active");
-    }
-    if (location.indexOf("AddMOM") > -1) {
-        $('.AddMOM').addClass("active");
-    }
-    else {
-        $('.AddMOM').removeClass("active");
-    }
+
     if (location.indexOf("ManageAccess") > -1) {
         $('.ManageAccess').addClass("active");
     }

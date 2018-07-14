@@ -206,15 +206,20 @@
             // Referencing the new plugin
             extraPlugins: 'CustomPlugin',
             toolbar: [
-                    { name: 'clipboard', items: ['Undo', 'Redo'] },
-                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
-                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                    { name: 'links', items: ['Link', 'Unlink'] },
-                    { name: 'insert', items: ['Table'] },
-                    { name: 'styles', items: ['Format'] },
-                    { name: 'CustomPlugin', items: ['customplugin'] }
+                { name: 'document', items: ['Source', '-'] },
+                { name: 'clipboard', items: ['Undo', 'Redo'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links', items: ['Link', 'Unlink'] },
+                { name: 'insert', items: ['Table'] },
+                { name: 'styles', items: ['Format'] },
+                { name: 'CustomPlugin', items: ['customplugin'] }
             ],
         };
+        //config.extraPlugins = 'autogrow';
+        //config.autoGrow_minHeight = 200;
+        //config.autoGrow_maxHeight = 1000;
+        //config.autoGrow_bottomSpace = 50;
         CKEDITOR.replace(txtMessage, config);
 
 

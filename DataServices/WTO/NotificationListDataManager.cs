@@ -89,7 +89,7 @@ namespace DataServices.WTO
                 sqlCommand.CommandText = Procedures.GetPageLoadCountriesNotificationList;
                 sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
                 sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
-                sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
                 sqlCommand.Parameters.AddWithValue("@FromDate", obj.FromDate);
                 sqlCommand.Parameters.AddWithValue("@ToDate", obj.ToDate);
                 sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);
@@ -104,7 +104,7 @@ namespace DataServices.WTO
                 sqlCommand.CommandText = Procedures.GetCountriesNotificationList;
                 sqlCommand.Parameters.AddWithValue("@PageIndex", obj.PageIndex);
                 sqlCommand.Parameters.AddWithValue("@PageSize", obj.PageSize);
-                sqlCommand.Parameters.AddWithValue("@CountryName", obj.CountryId);
+                sqlCommand.Parameters.AddWithValue("@CountryId", obj.CountryId);
                 sqlCommand.Parameters.AddWithValue("@FromDate", obj.FromDate);
                 sqlCommand.Parameters.AddWithValue("@ToDate", obj.ToDate);
                 sqlCommand.Parameters.AddWithValue("@Hscode", obj.Hscode);

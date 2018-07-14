@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Mail;
@@ -10,7 +11,13 @@ using System.Threading.Tasks;
 
 namespace WTO.Handler
 {
-    public class SendMail
+    public enum MailType
+    {
+        smtp_CII = 1,
+        smtp_Teamup = 2,
+        smtp_WTO = 3
+    }
+    public sealed class SendMail
     {
         /// <summary>
         /// Send mails by choosing mail id predefined in web.config file.
@@ -93,13 +100,13 @@ namespace WTO.Handler
         }
 
         //Send mail async
-        delegate bool SendMailAsyncDelegate(string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments);
+        delegate bool SendMailAsyncDelegate(Enum MailType, string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments);
 
-        public void SendAsyncEMail(string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments)
+        public void SendAsyncEMail(Enum MailType, string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments)
         {
             SendMailAsyncDelegate dc = new SendMailAsyncDelegate(SendMailAsync);
             AsyncCallback cb = new AsyncCallback(GetResultsOnCallback);
-            IAsyncResult ar = dc.BeginInvoke(To, CC, BCC, ReplyTo, DisplayName, Subject, Body, Attachments, cb, null);
+            IAsyncResult ar = dc.BeginInvoke(MailType, To, CC, BCC, ReplyTo, DisplayName, Subject, Body, Attachments, cb, null);
         }
 
         void GetResultsOnCallback(IAsyncResult ar)
@@ -112,7 +119,7 @@ namespace WTO.Handler
             catch (Exception ex) { }
         }
 
-        bool SendMailAsync(string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments)
+        bool SendMailAsync(Enum MailType, string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments)
         {
             try
             {
@@ -127,12 +134,12 @@ namespace WTO.Handler
 
                 MailMessage xmail = new MailMessage();
 
-                SmtpSection smtp = (SmtpSection)ConfigurationManager.GetSection("mailSettings/");
+                SmtpSection smtp = (SmtpSection)ConfigurationManager.GetSection("mailSettings/" + MailType.ToString());
 
                 if (DisplayName.Trim().Length > 0)
-                    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in", DisplayName.Trim());
+                    xmail.From = new System.Net.Mail.MailAddress(smtp.Network.UserName, DisplayName.Trim());
                 else
-                    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in");
+                    xmail.From = new System.Net.Mail.MailAddress(smtp.Network.UserName);
 
                 for (int indx = 0; indx < xToSplit.Length; indx++)
                     if (xToSplit[indx].Trim().Length > 0)
@@ -171,19 +178,99 @@ namespace WTO.Handler
                 xsmtp.Port = smtp.Network.Port;
                 xsmtp.EnableSsl = true;
                 xsmtp.UseDefaultCredentials = smtp.Network.DefaultCredentials;
-                xsmtp.Credentials = new NetworkCredential("sps-tbtcomm@gov.in", "C1%uM2@iY1");
+                xsmtp.Credentials = new NetworkCredential(smtp.Network.UserName, smtp.Network.Password);
                 xsmtp.Timeout = 1500000;
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
                 xsmtp.Send(xmail);
                 return true;
-
-
             }
             catch (Exception ex)
             {
+                File.AppendAllText(Environment.CurrentDirectory + "\\XceptionLog.txt",
+                        String.Format(Environment.NewLine + "[{0}] - {1}, {2}, {3} , {4}",
+                        DateTime.Now.ToString("dd MMM yyyy HH:mm:ss"), "", "", ex.Message, ex.StackTrace));
+
                 return false;
             }
         }
+        //bool SendMailAsync(string To, string CC, string BCC, string ReplyTo, string DisplayName, string Subject, string Body, string[] Attachments)
+        //{
+        //    try
+        //    {
+        //        if (String.IsNullOrEmpty(To))
+        //            throw new ArgumentNullException("To cannot be blank");
+        //        if (String.IsNullOrEmpty(Subject))
+        //            throw new ArgumentNullException("Subject cannot be blank.");
+
+        //        string[] xToSplit = To.Split(';');
+        //        string[] xCCSplit = CC.Split(';');
+        //        string[] xBCCSplit = BCC.Split(';');
+
+        //        MailMessage xmail = new MailMessage();
+
+        //        SmtpSection smtp = (SmtpSection)ConfigurationManager.GetSection("mailSettings/");
+
+        //        //if (DisplayName.Trim().Length > 0)
+        //        //    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in", DisplayName.Trim());
+        //        //else
+        //        //    xmail.From = new System.Net.Mail.MailAddress("sps-tbtcomm@gov.in");
+
+        //        if (DisplayName.Trim().Length > 0)
+        //            xmail.From = new System.Net.Mail.MailAddress("mishra.ashvini@chipsoftindia.com", DisplayName.Trim());
+        //        else
+        //            xmail.From = new System.Net.Mail.MailAddress("mishra.ashvini@chipsoftindia.com");
+
+        //        for (int indx = 0; indx < xToSplit.Length; indx++)
+        //            if (xToSplit[indx].Trim().Length > 0)
+        //                xmail.To.Add(xToSplit[indx]);
+
+        //        for (int indx = 0; indx < xCCSplit.Length; indx++)
+        //            if (xCCSplit[indx].Trim().Length > 0)
+        //                xmail.CC.Add(xCCSplit[indx]);
+
+        //        for (int indx = 0; indx < xBCCSplit.Length; indx++)
+        //            if (xBCCSplit[indx].Trim().Length > 0)
+        //                xmail.Bcc.Add(xBCCSplit[indx]);
+
+        //        if (ReplyTo.Trim().Length > 0)
+        //            xmail.ReplyToList.Add(new System.Net.Mail.MailAddress(ReplyTo.Trim(), ""));
+
+        //        xmail.Subject = Subject;
+        //        xmail.Body = Body;
+        //        xmail.IsBodyHtml = true;
+
+        //        try
+        //        {
+        //            if (Attachments.Length > 0)
+        //            {
+        //                for (int i = 0; i < Attachments.Length; i++)
+        //                {
+        //                    Attachment at = new Attachment(Attachments[i].ToString());
+        //                    xmail.Attachments.Add(at);
+        //                }
+        //            }
+        //        }
+        //        catch { }
+
+        //        SmtpClient xsmtp = new SmtpClient();
+        //        xsmtp.Host = smtp.Network.Host;
+        //        xsmtp.Port = smtp.Network.Port;
+        //        xsmtp.EnableSsl = true;
+        //        xsmtp.UseDefaultCredentials = smtp.Network.DefaultCredentials;
+        //        xsmtp.Credentials = new NetworkCredential("mishra.ashvini@chipsoftindia.com", "Aaditya@21");
+        //        xsmtp.Timeout = 1500000;
+        //        ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+
+        //        xsmtp.Send(xmail);
+        //        return true;
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
     }
 }

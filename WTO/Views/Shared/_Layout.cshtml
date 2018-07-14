@@ -62,41 +62,41 @@
                                     <img src="~/contents/img/drpoNotification.png" /> <span class="submenulist">Notification</span><span class="caret pull-right" style="margin-top:7px;"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="list AddNotification">
+                                    <li class="list addnotification">
                                         <a href="@Url.Action("Edit_Notification", "AddNotification", new { Id = 0 })">
                                             <img src="~/contents/img/Addnotification1.png" alt="Addnotification" /><span class="submenulist">Add Notification</span>
                                         </a>
                                     </li>   
-                                    <li class="list NotificationList">
+                                    <li class="list notificationlist">
                                         <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10 })">
                                             <img src="~/contents/img/notification.png" alt="notification" /><span class="submenulist">Notification List</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="list dropdown">
+                            <li class="list dropdown meeting">
                                 <a class="dropdown-toggle drop" data-toggle="dropdown" href="#">
                                     <img src="~/contents/img/mettings.png" /> <span class="submenulist" style="margin-left:10px;">Meetings</span><span class="caret pull-right" style="margin-top:7px;"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="list AddMOM">
+                                    <li class="list addmeeting">
                                         <a href="@Url.Action("Add", "MoM", new { Id = 0 })">
                                             <img src="~/contents/img/AddMOM.png" alt="Addnotification" /><span class="submenulist">Schedule meeting</span>
                                         </a>
                                     </li>
-                                    <li class="list AddMOM">
+                                    <li class="list currentmeeting">
                                         <a href="@Url.Action("Edit", "MoM", new { Id = 0 })">
                                             <img src="~/contents/img/CurrentMeeting.png" width="28px" alt="Addnotification" /><span class="submenulist">Current Meeting</span>
                                         </a>
                                     </li>
-                                    <li class="list AddMOMList">
+                                    <li class="list meetinglist">
                                         <a href="@Url.Action("Index","MoM")">
                                             <img src="~/contents/img/AddMOMList.png" alt="Addnotification" /><span class="submenulist">Meeting schedules</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="list ManageAccess">
+                            <li class="list manageaccess">
                                 <a href="@Url.Action("Index", "ManageAccess")">
                                     <img src="~/contents/img/manageW.png" alt="Addnotification" /><span class="submenulist">Manage</span>
                                 </a>

@@ -700,16 +700,6 @@ namespace BusinessService.Notification
             return objOutput;
         }
 
-        public string MailbodyForStakeholders(StackholderMail obj)
-        {
-            StringBuilder strMailbody = new StringBuilder();
-            strMailbody.Append("<table style='text-align : left;font-family : Arial; font-size : 10pt;'>");
-            strMailbody.Append("<tr><td>Dear #Name#,<br/><br/></td></tr>");
-            strMailbody.Append("<tr><td>" + obj.Message + ".</td></tr>");
-            strMailbody.Append("<tr><td><br/>Regards,<br/>WTO Team</td></tr></table>");
-            return strMailbody.ToString();
-        }
-
         public StakeHolderConversationPopUp GetConversation(Int64 NotificationId, Int64 StakeholderId)
         {
             StakeHolderConversationPopUp objR = new StakeHolderConversationPopUp();
@@ -3690,10 +3680,10 @@ namespace BusinessService.Notification
                             objT.Message = objT.Message.Replace("#UnderArticle#", Convert.ToString(dr["UnderArticle"]));
                             objT.Message = objT.Message.Replace("#ProductCovered#", Convert.ToString(dr["ProductCovered"]));
                             objT.Message = objT.Message.Replace("#Description#", Convert.ToString(dr["Description"]));
-                            if (obj.StakeHolderResponseDate != string.Empty)
-                                objT.Message = objT.Message.Replace("#StakeholderResponseDueBy#", Convert.ToString(obj.StakeHolderResponseDate));
-                            else
-                                objT.Message = objT.Message.Replace("#StakeholderResponseDueBy#", Convert.ToString(dr["StakeholderResponseDueBy"]));
+                            //if (obj.StakeHolderResponseDate != string.Empty)
+                            //    objT.Message = objT.Message.Replace("#StakeholderResponseDueBy#", Convert.ToString(obj.StakeHolderResponseDate));
+                            //else
+                            //    objT.Message = objT.Message.Replace("#StakeholderResponseDueBy#", Convert.ToString(dr["StakeholderResponseDueBy"]));
                             objT.Message = objT.Message.Replace("#EnquiryEmail#", Convert.ToString(dr["EnquiryEmailId"]));
                             objT.Message = objT.Message.Replace("#CreatedBy#", Convert.ToString(dr["CreatedBy"]));
                             objT.Message = objT.Message.Replace("#CreatedOn#", Convert.ToString(dr["CreatedOn"]));

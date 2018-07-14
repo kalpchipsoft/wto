@@ -52,17 +52,16 @@ namespace WTO.Controllers.API.WTO
         }
 
         [HttpPost]
-        public IHttpActionResult EndMeeting(Int64? Id)
-        {
-            MomBusinessService objAM = new MomBusinessService();
-            return Ok(objAM.EndMeeting(Id));
-        }
-
-        [HttpPost]
         public IHttpActionResult ValidateMeetingdate(string date, Nullable<Int64> MoMId)
         {
             MomBusinessService objAM = new MomBusinessService();
             return Ok(objAM.ValidateMeetingDate(date, MoMId));
+        }
+        [HttpPost]
+        public IHttpActionResult EndMeeting(Int64? Id, string Observation)
+        {
+            MomBusinessService objAM = new MomBusinessService();
+            return Ok(objAM.EndMeeting(Id, Observation));
         }
     }
 }

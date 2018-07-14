@@ -22,7 +22,7 @@ namespace BusinessObjects.MOM
     {
         public int ActionId { get; set; }
         public string ActionName { get; set; }
-        public string MailId { get; set; }
+        public Int64 MailId { get; set; }
     }
 
     public class NotificationAction : Action
@@ -95,6 +95,9 @@ namespace BusinessObjects.MOM
         public Nullable<Int64> RowNum { get; set; }
         public Nullable<Int64> TotalRow { get; set; }
         public string NotificationGroup { get; set; }
+        public string DateOfNotification { get; set; }
+        public string Action { get; set; }
+        public string Regulatory { get; set; }
     }
 
     public class NotificationMOM
@@ -120,6 +123,11 @@ namespace BusinessObjects.MOM
         public List<Action> Actions { get; set; }
         public List<MoM> MoMList { get; set; }
         public List<MoMAction> MoMActionList { get; set; }
+        public List<Notification_Mom> TBTNotificationList { get; set; }
+        public List<Notification_Mom> SPSNotificationList { get; set; }
+        public List<Notification_Mom> RegulatoryNotificationList { get; set; }
+        public List<Notification_Mom> PolicyNotificationList { get; set; }
+
     }
 
     public class MoM
@@ -129,6 +137,10 @@ namespace BusinessObjects.MOM
         public Int32 NotificationCount { get; set; }
         public Int32 PendingCount { get; set; }
         public string MeetingDate { get; set; }
+        public bool IsActive { get; set; }
+        public Int32 SPSNotificationCount { get; set; }
+        public Int32 TBTNotificationCount { get; set; }
+        public string Observation { get; set; }
     }
 
 
@@ -159,7 +171,7 @@ namespace BusinessObjects.MOM
         public List<EditAction> Actions { get; set; }
         public string MeetingDate { get; set; }
         public bool RetainedForNextDiscussion { get; set; }
-        public List<PrevioiusMeeting> PrevioiusMeetings { get; set; }
+        public List<PreviousMeeting> PreviousMeetings { get; set; }
         public List<PrevioiusMeetingAction> PrevioiusMeetingActions { get; set; }
     }
 
@@ -215,7 +227,7 @@ namespace BusinessObjects.MOM
         public string Country { get; set; }
     }
 
-    public class PrevioiusMeeting
+    public class PreviousMeeting
     {
         public Int64 MeetingId { get; set; }
         public string MeetingDate { get; set; }

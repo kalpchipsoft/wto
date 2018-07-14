@@ -800,196 +800,51 @@ function GetMeetingNote(NotificationId) {
     });
 }
 
-function BindNotificationActions() {
-    var takeaction = 0;
-    $.ajax({
-        url: "/api/MoM/EditAction/" + $('#hdnNotificationId').val() + "/?MeetingId=" + $('#hdnMeetingId').val(),
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != null) {
-                $('#lblNotificationNumber').text(result.NotificationNumber);
-                $('#lblNotificationTitle').text(result.Title);
-                $('#lblNotificationStage').text(result.Status);
-                $('#MeetingDateId').val(result.MeetingDate);
-                //$('#lblMeetingDate').text($('#txtmeetingdate').val());
-                $('#txtMeetingNote').val(result.MeetingNote);
-                $('#txtNotificationGroup').val($.trim(result.NotificationGroup));
-                if (result.PrevioiusMeetings != null) {
-                    var _PrevioiusMeetings = '';
-                    $.each(result.PrevioiusMeetings, function (i, v) {
-                        _PrevioiusMeetings += '<tr><td class="col-sm-3" > ' + v.MeetingDate + '</td >';
-                        _PrevioiusMeetings += '<td class="col-sm-6">';
+function EditNotificationActions(ctrl) {
+    if (typeof ctrl != "undefined")
+        $('#hdnNotificationId').val($(ctrl).attr('data-searchfor'));
 
-                        if (result.PrevioiusMeetingActions != null) {
-                            $.each(result.PrevioiusMeetingActions, function (indx, val) {
-                                if (val.MeetingId == v.MeetingId) {
-                                    _PrevioiusMeetings += '<p class="wto-label-normal">' + val.Action + '</p>';
-                                }
-                            });
-                        }
-                        _PrevioiusMeetings += '</td>';
-                        _PrevioiusMeetings += '<td class="col-sm-3">';
-                        if (result.PrevioiusMeetingActions != []) {
-                            $.each(result.PrevioiusMeetingActions, function (indx, val) {
-                                if (val.MeetingId == v.MeetingId) {
-                                    _PrevioiusMeetings += '<p class="wto-label-normal">' + val.ActionStatus + '</p>';
-                                }
-                            });
-                        }
-                        _PrevioiusMeetings += '</td>';
-                        _PrevioiusMeetings += '</tr >';
-                    });
+    var MeetingId = $('#hdnMeetingId').val();
+    var NotificationId = $('#hdnNotificationId').val();
 
-                    $('#divMeetingHistory').removeClass('hidden');
-                    $('#tblMeetingHistory > tbody').empty();
-                    $('#tblMeetingHistory > tbody').append(_PrevioiusMeetings);
-                }
-                else
-                    $('#divMeetingHistory').addClass('hidden');
-
-                $('#divPlanActions').empty();
-                $('#divTakeActionHeader').addClass('hidden');
-                var HTML = '';
-                $.each(result.Actions, function (i, v) {
-                    HTML += ' <tr><td class="col-sm-1 pdright">' +
-                        '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />';
-                    debugger;
-                    if (v.NotificationActionId > 0) {
-                        if (v.UpdatedOn == "") {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                    }
-                    else {
-                        if (result.RetainedForNextDiscussion && v.ActionId == 5) {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else if (result.RetainedForNextDiscussion && v.ActionId == 4) {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                        else {
-                            HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                '<label style="padding-left: 0;">' +
-                                '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                '</span>' +
-                                '</label>' +
-                                '</div>';
-                        }
-                    }
-
-                    HTML += '</div>' +
-                        '<td class="col-sm-5">' + v.ActionName + '</td>';
-
-                    if (v.ActionId < 4) {
-                        HTML += '<td class="col-sm-4">' +
-                            '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                            '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                            '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
-                            '</div>' +
-                            '</td>';
-                        if (v.NotificationActionId != 0 && v.MailId == 0) {
-                            var callfor = "takeaction";
-                            takeaction++;
-                            HTML += "<td class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></td>";
-                        }
-                        else {
-                            HTML += "<td class='col-sm-2'></td>'";
-                        }
-                    }
-                    else {
-                        HTML += '<td class="col-sm-4"></td > ';
-                        HTML += "<td class='col-sm-2'></td>'";
-                    }
-
-                    HTML += '</tr>';
-                    if (takeaction > 0) {
-                        $('#divTakeActionHeader').removeClass('hidden');
-                    }
-                });
-                $('#divPlanActions').append(HTML);
-                $('#ModalAddAction').modal('show');
-
-                //if (result.RetainedForNextDiscussion)
-                //    $("#btnSaveActions").addClass("hidden");
-                //else
-                //    $("#btnSaveActions").removeClass("hidden");
-            }
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            $(".date-picker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'dd M yy'
-            });
-            HideGlobalLodingPanel();
-        }
+    $('#divNotificationPlanTakeAction').load('/MoM/NotificationPlanTakeAction?Id=' + NotificationId + '&MeetingId=' + MeetingId, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success")
+            $('#ModalAddAction').modal('show');
     });
 }
 
-function EditNotificationActions(ctrl) {
-    debugger;
-    ShowGlobalLodingPanel();
-    if (typeof ctrl != "undefined")
-        $('#hdnNotificationId').val($(ctrl).attr('data-searchfor'));
-    BindNotificationActions();
+function CloseMeeting() {
+    Confirm('Close meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'OpenObservationPopUp()');
+    return false;
 }
 
-function EndMeeting() {
-    Confirm('End meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
+function OpenObservationPopUp() {
+    $("#ModelEndMeeting").modal('show');
+    return false;
 }
 
-function SaveEndMeeting() {
+function CloseObservationPopUp() {
+    $("#ModelEndMeeting").modal('hide');
+    return false;
+}
+
+function SaveObservationAndCloseMeeting() {
     var MoMId = 0;
     MoMId = $("#hdnMomId").val();
+    var Observation = $.trim($("#txtObservation").val());
     $.ajax({
-        url: "/api/MoM/EndMeeting/" + MoMId,
+        url: "/api/MoM/EndMeeting?Id=" + MoMId + "&Observation=" + Observation,
         async: false,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result) {
                 Alert("Alert", "Meeting has been successfully closed.<br/>", "Ok");
-                location.href = window.location.origin + "/MoM/Add/0";
+                $("#ModelEndMeeting").modal('hide');
+                //location.href = window.location.origin + "/MoM/Add/0";
+                $("#ModelMeetingSummary").load('MoM/GetMOMSummary/' + MoMId);
+                $("#hdnCloseMOMSummary").val('EndMeeting');
+                $("#ModelMeetingSummary").modal('show');
             }
             else
                 Alert("Alert", "Error occured", "Ok");

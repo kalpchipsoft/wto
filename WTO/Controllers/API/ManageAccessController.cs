@@ -108,19 +108,19 @@ namespace WTO.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult SendWelcomeMailToTranslator(Int32 Id)
+        public IHttpActionResult SendWelcomeMailToTranslator(Int32 Id, Int32 UserId)
         {
             TranslatorBusinessService objTBS = new TranslatorBusinessService();
 
             if (Id > 0)
             {
                 TranslatorDetails objT = new TranslatorDetails();
-                objT = objTBS.SendWelcomeMail(Id);
+                objT = objTBS.SendWelcomeMail(Id, UserId);
                 if (objT != null)
                 {
                     SendMail objMail = new SendMail();
                     string MailBody = objTBS.MailbodyForTranslator(objT);
-                    objMail.SendAsyncEMail("atul.chipsoft@gmail.com", "", "", "", "WTO - World Trade Organization", "Welcome to WTO", MailBody, null);
+                    objMail.SendAsyncEMail(MailType.smtp_WTO, objT.Email, "Atul.chipsoft@gmail.com;Ashvini.chipsoft@gmail.com", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of Commerce", "Welcome to Department of Commerce", MailBody, null);
                 }
             }
 

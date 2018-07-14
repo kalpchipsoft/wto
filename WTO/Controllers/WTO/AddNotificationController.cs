@@ -13,7 +13,6 @@ namespace WTO.Controllers.WTO
         {
             return View();
         }
-
         public ActionResult Edit_Notification(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -25,7 +24,6 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
-
         public ActionResult GetNotificationStakeholders(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -36,7 +34,6 @@ namespace WTO.Controllers.WTO
             else
                 return PartialView("RedirectToLogin");
         }
-
         public ActionResult GetStakeHoldersMaster(string SearchText)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -47,7 +44,6 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
-
         public ActionResult GetStakeholderConversation(Int64 NotificationId, Int64 StakeholderId)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -58,7 +54,6 @@ namespace WTO.Controllers.WTO
             else
                 return PartialView("RedirectToLogin");
         }
-
         public ActionResult GetNotificationActions(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -69,7 +64,6 @@ namespace WTO.Controllers.WTO
             else
                 return RedirectToAction("Index", "Login");
         }
-
         public ActionResult GetNotificationMails(Int64 Id)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
@@ -80,23 +74,12 @@ namespace WTO.Controllers.WTO
             else
                 return PartialView("RedirectToLogin");
         }
-
         public ActionResult GetNotificatioNote(string Note)
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 ViewBag.Note = Note;
                 return PartialView("~/Views/Partial/Notification/NotificationNote.cshtml", Note);
-            }
-            else
-                return PartialView("RedirectToLogin");
-        }
-        public ActionResult GetNotificationPlanTakeAction(Int64 Id)
-        {
-            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
-            {
-                NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.GetNotificationActions(Id, 0));
             }
             else
                 return PartialView("RedirectToLogin");
