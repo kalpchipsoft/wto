@@ -974,22 +974,88 @@ function EditNotificationActions(ctrl) {
     BindNotificationActions();
 }
 
-function EndMeeting() {
-    Confirm('End meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
+//function EndMeeting() {
+//    Confirm('End meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'SaveEndMeeting()');
+//}
+
+//function SaveEndMeeting() {
+//    var MoMId = 0;
+//    MoMId = $("#hdnMomId").val();
+//    $.ajax({
+//        url: "/api/MoM/EndMeeting/" + MoMId,
+//        async: false,
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        success: function (result) {
+//            if (result) {
+//                Alert("Alert", "Meeting has been successfully closed.<br/>", "Ok");
+//                location.href = window.location.origin + "/MoM/Add/0";
+//            }
+//            else
+//                Alert("Alert", "Error occured", "Ok");
+//        },
+//        failure: function (result) {
+//            Alert("Alert", "Something went wrong.<br/>", "Ok");
+//        },
+//        error: function (result) {
+//            Alert("Alert", "Something went wrong.<br/>", "Ok");
+//        }
+//    });
+//    return false;
+//}
+
+//function IsMeetingExists(MoMId) {
+//    if ($('[id$=txtmeetingdate]').val() != null && $('[id$=txtmeetingdate]').val() != '') {
+//        $.ajax({
+//            url: "/api/MoM/ValidateMeetingdate?date=" + $.trim($('[id$=txtmeetingdate]').val()) + "&MoMId=" + MoMId,
+//            async: false,
+//            type: "POST",
+//            contentType: "application/json; charset=utf-8",
+//            success: function (result) {
+//                if (result != "") {
+//                    Alert("Alert", result + "<br/>", "Ok");
+//                    $('[id$=txtmeetingdate]').val('');
+//                }
+//            },
+//            failure: function (result) {
+//                Alert("Alert", "Something went wrong.<br/>", "Ok");
+//            },
+//            error: function (result) {
+//                Alert("Alert", "Something went wrong.<br/>", "Ok");
+//            }
+//        });
+//        return false;
+//    }
+//}
+
+
+
+function OpenEndMeeting() {
+    $("#ModelEndMeeting").modal('show');
+    return false;
+}
+function CloseEndMeeting() {
+    $("#ModelEndMeeting").modal('hide');
+    return false;
 }
 
 function SaveEndMeeting() {
     var MoMId = 0;
     MoMId = $("#hdnMomId").val();
+    var Observation = $.trim($("#txtObservation").val());
     $.ajax({
-        url: "/api/MoM/EndMeeting/" + MoMId,
+        url: "/api/MoM/EndMeeting?Id=" + MoMId + "&Observation=" + Observation,
         async: false,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result) {
                 Alert("Alert", "Meeting has been successfully closed.<br/>", "Ok");
-                location.href = window.location.origin + "/MoM/Add/0";
+                $("#ModelEndMeeting").modal('hide');
+                //location.href = window.location.origin + "/MoM/Add/0";
+                $("#ModelMeetingSummary").load('MoM/GetMOMSummary/' + MoMId);
+                $("#hdnCloseMOMSummary").val('EndMeeting');
+                $("#ModelMeetingSummary").modal('show');
             }
             else
                 Alert("Alert", "Error occured", "Ok");

@@ -39,10 +39,23 @@ $(document).ready(function () {
     });
 
     $('#chkSelectAll_AddStakeholders').change(function () {
-        var IsCheckedAll = this.checked;
-        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
-            this.checked = IsCheckedAll;
-        });
+        if (this.checked) {
+            var stakeholderId = [];
+            $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+                if ($(this).val() != "on") {
+                    stakeholderId.push($(this).val());
+                    this.checked = true;
+                }
+            });
+            $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
+        }
+        else {
+            $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+                this.checked = false;
+            });
+
+            $("#hdnSelectedStakeHolders").val('');
+        }
     });
 
     $('#divStakholder').find('input[type=checkbox]').change(function () {
@@ -1691,6 +1704,7 @@ function clearStakhCheckbox() {
     $("#txtSearchStakeHolder").val('');
     $("#divStakholder").load('/AddNotification/GetStakeHoldersMaster', { SearchText: "" });
     $(".checked").prop("checked", false);
+    $("#chkSelectAll_AddStakeholders").prop("checked", false);
     var stakeholderId = [];
     $.each($('#NotificationStakholderslist > tbody').find('input[type=checkbox]'), function () {
         if ($(this).val() != "on")
@@ -1699,7 +1713,25 @@ function clearStakhCheckbox() {
     $("#hdnSelectedStakeHolders").val('');
     $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
 }
+$('#chkSelectAll_AddStakeholders').change(function () {
+    if (this.checked) {
+        var stakeholderId = [];
+        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+            if ($(this).val() != "on") {
+                stakeholderId.push($(this).val());
+                this.checked = true;
+            }
+        });
+        $("#hdnSelectedStakeHolders").val(stakeholderId.toString());
+    }
+    else {
+        $.each($('#divStakholder').find('input[type=checkbox]'), function () {
+            this.checked = false;
+        });
 
+        $("#hdnSelectedStakeHolders").val('');
+    }
+});
 //Add Stakeholder Popup
 function SaveStakeholder() {
     var Id = $('[id$=hdnNotificationId]').val();

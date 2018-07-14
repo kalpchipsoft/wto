@@ -135,6 +135,7 @@
         
         public const string EndMeeting = "proc_EndCurrentMeeting";
         public const string CheckIfOpenMeetingExists = "proc_CheckIfOpenMeetingExists";
+        public const string MeetingSummary = "proc_MeetingSummary";
         #endregion
 
         #region "Translator"

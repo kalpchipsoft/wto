@@ -1,0 +1,102 @@
+﻿.modal-lg {
+    width: 1024px;
+}
+
+/*.tab{
+        background: #1edec5;
+    padding: 10px;
+    border-radius: 20px;
+}
+.tab button{
+             width: 109px;
+    border: none;
+}*/
+
+.btngroup {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 20px;
+    width:100%;
+    position:absolute;
+}
+
+.btn-light-green {
+    background: #cefdf7;
+    color: #000;
+    border-radius: 20px;
+}
+
+    .btn-light-green:hover,
+    .btn-light-green:focus,
+    .btn-light-green:active {
+        background: #5fdca4;
+        color: #fff;
+        border-radius: 20px;
+        outline: none !important;
+    }
+
+.btngroupactive {
+    background: #5fdca4;
+    color: #fff;
+}
+
+.btn-Section1 {
+    background: #fff;
+    color: #000;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    width: 33.33%;
+    float: left;
+}
+
+.btn-Section2 {
+    background: #fff;
+    color: #000;
+    width: 33.33%;
+    float: left;
+}
+
+.btn-Section3 {
+    background: #fff;
+    color: #000;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: 33.33%;
+    float: left;
+}
+
+.btn-Section1:hover,
+.btn-Section1:focus,
+.btn-Section1:active {
+    background: #1edec5;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    outline: none !important;
+}
+
+.btn-Section2:hover,
+.btn-Section2:focus,
+.btn-Section2:active {
+    background: #1edec5;
+    outline: none !important;
+}
+
+.btn-Section3:hover,
+.btn-Section3:focus,
+.btn-Section3:active {
+    background: #1edec5;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    outline: none !important;
+}
+
+table td {
+    vertical-align: top;
+}
+
+.MOMtable td:nth-child(1) {
+    width: 4%;
+}
+.Active{
+     background: #1edec5;
+}

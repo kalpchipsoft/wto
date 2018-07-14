@@ -95,6 +95,9 @@ namespace BusinessObjects.MOM
         public Nullable<Int64> RowNum { get; set; }
         public Nullable<Int64> TotalRow { get; set; }
         public string NotificationGroup { get; set; }
+        public string DateOfNotification { get; set; }
+        public string Action { get; set; }
+        public string Regulatory { get; set; }
     }
 
     public class NotificationMOM
@@ -120,6 +123,11 @@ namespace BusinessObjects.MOM
         public List<Action> Actions { get; set; }
         public List<MoM> MoMList { get; set; }
         public List<MoMAction> MoMActionList { get; set; }
+        public List<Notification_Mom> TBTNotificationList { get; set; }
+        public List<Notification_Mom> SPSNotificationList { get; set; }
+        public List<Notification_Mom> RegulatoryNotificationList { get; set; }
+        public List<Notification_Mom> PolicyNotificationList { get; set; }
+
     }
 
     public class MoM
@@ -129,6 +137,10 @@ namespace BusinessObjects.MOM
         public Int32 NotificationCount { get; set; }
         public Int32 PendingCount { get; set; }
         public string MeetingDate { get; set; }
+        public bool IsActive { get; set; }
+        public Int32 SPSNotificationCount { get; set; }
+        public Int32 TBTNotificationCount { get; set; }
+        public string Observation { get; set; }
     }
 
 
