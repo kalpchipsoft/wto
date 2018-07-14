@@ -22,12 +22,11 @@ namespace BusinessObjects.MOM
     {
         public int ActionId { get; set; }
         public string ActionName { get; set; }
-        public Int64 MailId { get; set; }
+        public string MailId { get; set; }
     }
 
     public class NotificationAction : Action
     {
-        public Int64 NotificationActionId { get; set; }
         public Int64 NotificationId { get; set; }
         public string RequiredOn { get; set; }
     }
@@ -240,12 +239,6 @@ namespace BusinessObjects.MOM
         public Int64 NotificationActionId { get; set; }
         public string Action { get; set; }
         public string ActionStatus { get; set; }
-    }
-
-    public class SaveNote
-    {
-        public int NotificationId { get; set; }
-        public string MeetingNote { get; set; }
     }
 
 }
