@@ -14,7 +14,8 @@ namespace WTO.Handler
     public enum MailType
     {
         smtp_CII = 1,
-        smtp_Teamup = 11
+        smtp_Teamup = 2,
+        smtp_WTO = 3
     }
     public sealed class SendMail
     {

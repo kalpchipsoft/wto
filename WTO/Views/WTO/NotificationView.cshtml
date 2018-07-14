@@ -355,9 +355,9 @@
                                 </div>
                                 @if (Model.StakeholderResponseDueBy != null && Model.StakeholderResponseDueBy != "")
                                 {
-                                <div class="col-xs-12 col-sm-6 col-md-6">
-                                    <p class="wto-label-bold pull-right"><span>Stakeholder response by </span>&nbsp;&nbsp;&nbsp;<span>@Model.StakeholderResponseDueBy</span></p>
-                                </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <p class="wto-label-bold pull-right"><span>Stakeholder response by </span>&nbsp;&nbsp;&nbsp;<span>@Model.StakeholderResponseDueBy</span></p>
+                                    </div>
                                 }
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class='table-responsive notificationlist'>
@@ -375,14 +375,14 @@
                                             <tbody>
                                                 @for (Int32 i = 0; i < Model.StakeHolders.Count; i++)
                                                 {
-                                                <tr>
-                                                    <td>@(i + 1)</td>
-                                                    <td>@Model.StakeHolders[i].OrgName</td>
-                                                    <td>@Model.StakeHolders[i].Name</td>
-                                                    <td class="text-center">@Model.StakeHolders[i].HSCodes</td>
-                                                    <td class="text-center">@Model.StakeHolders[i].MailsCount</td>
-                                                    <td class="text-center">@Model.StakeHolders[i].ResponseCount</td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.StakeHolders[i].OrgName</td>
+                                                        <td>@Model.StakeHolders[i].Name</td>
+                                                        <td class="text-center">@Model.StakeHolders[i].HSCodes</td>
+                                                        <td class="text-center">@Model.StakeHolders[i].MailsCount</td>
+                                                        <td class="text-center">@Model.StakeHolders[i].ResponseCount</td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>
@@ -392,33 +392,33 @@
 
                             @if (Model.MailSent != null && Model.MailSent.Count > 0)
                             {
-                            <div class="row top-offset-10">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <p class="wto-label-bold">Mail Sent</p>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="table-responsive notificationlist">
-                                        <table class="table">
-                                            <thead class="second-blackbackground">
-                                                <tr>
-                                                    <th class="col-sm-1" style="width:5%;">S.No.</th>
-                                                    <th class="col-sm-2" style="width:10%;">Sent on</th>
-                                                    <th class="col-sm-7">Subject</th>
-                                                    <th class="text-center col-sm-2" style="width:10%;">Stakeholder Count</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @for (Int32 i = 0; i < Model.MailSent.Count; i++)
+                                <div class="row top-offset-10">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <p class="wto-label-bold">Mail Sent</p>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class="table-responsive notificationlist">
+                                            <table class="table">
+                                                <thead class="second-blackbackground">
+                                                    <tr>
+                                                        <th class="col-sm-1" style="width:5%;">S.No.</th>
+                                                        <th class="col-sm-2" style="width:10%;">Sent on</th>
+                                                        <th class="col-sm-7">Subject</th>
+                                                        <th class="text-center col-sm-2" style="width:10%;">Stakeholder Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (Int32 i = 0; i < Model.MailSent.Count; i++)
                                                     {
-                                                <tr>
-                                                    <td>@(i + 1)</td>
-                                                    <td>@Model.MailSent[i].SentOn</td>
-                                                    <td>
-                                                        <div class='wto-label-normal bottom-offset-10'>
-                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.MailSent[i].Subject))
-                                                        </div>
-                                                        <p class="wto-label-normal Attachmentbadge">
-                                                            @if (Model.MailSentAttachment != null && Model.MailSentAttachment.Count > 0)
+                                                        <tr>
+                                                            <td>@(i + 1)</td>
+                                                            <td>@Model.MailSent[i].SentOn</td>
+                                                            <td>
+                                                                <div class='wto-label-normal bottom-offset-10'>
+                                                                    @Html.Raw(HttpUtility.HtmlDecode(Model.MailSent[i].Subject))
+                                                                </div>
+                                                                <p class="wto-label-normal Attachmentbadge">
+                                                                    @if (Model.MailSentAttachment != null && Model.MailSentAttachment.Count > 0)
                                                                     {
                                                                         for (Int32 k = 0; k < Model.MailSentAttachment.Count; k++)
                                                                         {
@@ -426,59 +426,59 @@
                                                                             {
                                                                                 if (Model.MailSentAttachment[k].FileName != "")
                                                                                 {
-                                                            <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b> @Model.MailSentAttachment[k].FileName</b></a>
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b> @Model.MailSentAttachment[k].FileName</b></a>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                            <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b>Attachment</b></a>
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.MailSentAttachment[k].Path','@Model.MailSentAttachment[k].FileName');"><b>Attachment</b></a>
                                                                                 }
                                                                             }
                                                                         }
                                                                     }
-                                                        </p>
-                                                    </td>
-                                                    <td class="text-center">@Model.MailSent[i].StakholdersCount</td>
-                                                </tr>
+                                                                </p>
+                                                            </td>
+                                                            <td class="text-center">@Model.MailSent[i].StakholdersCount</td>
+                                                        </tr>
                                                     }
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
 
                             @if (Model.MailReceived != null && Model.MailReceived.Count > 0)
                             {
-                            <div class="row top-offset-10">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <p class="wto-label-bold">Response received</p>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="table-responsive notificationlist">
-                                        <table class="table">
-                                            <thead class="second-blackbackground">
-                                                <tr>
-                                                    <th class="col-sm-1" style="width:5%;">S.No.</th>
-                                                    <th class="col-sm-2" style="width:10%;">Received on</th>
-                                                    <th class="col-sm-3" style="width:15%;">Organization</th>
-                                                    <th class="col-sm-2" style="width:10%;">Contact</th>
-                                                    <th class="col-sm-4">Message</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @for (Int32 i = 0; i < Model.MailReceived.Count; i++)
+                                <div class="row top-offset-10">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <p class="wto-label-bold">Response received</p>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class="table-responsive notificationlist">
+                                            <table class="table">
+                                                <thead class="second-blackbackground">
+                                                    <tr>
+                                                        <th class="col-sm-1" style="width:5%;">S.No.</th>
+                                                        <th class="col-sm-2" style="width:10%;">Received on</th>
+                                                        <th class="col-sm-3" style="width:15%;">Organization</th>
+                                                        <th class="col-sm-2" style="width:10%;">Contact</th>
+                                                        <th class="col-sm-4">Message</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (Int32 i = 0; i < Model.MailReceived.Count; i++)
                                                     {
-                                                <tr>
-                                                    <td>@(i + 1)</td>
-                                                    <td>@Model.MailReceived[i].SentOn</td>
-                                                    <td>@Model.MailReceived[i].OrgName</td>
-                                                    <td>@Model.MailReceived[i].Name</td>
-                                                    <td>
-                                                        <div class='wto-label-normal bottom-offset-10'>
-                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.MailReceived[i].Subject))
-                                                        </div>
-                                                        <p class="wto-label-normal Attachmentbadge">
-                                                            @if (Model.MailReceivedAttachment != null && Model.MailReceivedAttachment.Count > 0)
+                                                        <tr>
+                                                            <td>@(i + 1)</td>
+                                                            <td>@Model.MailReceived[i].SentOn</td>
+                                                            <td>@Model.MailReceived[i].OrgName</td>
+                                                            <td>@Model.MailReceived[i].Name</td>
+                                                            <td>
+                                                                <div class='wto-label-normal bottom-offset-10'>
+                                                                    @Html.Raw(HttpUtility.HtmlDecode(Model.MailReceived[i].Subject))
+                                                                </div>
+                                                                <p class="wto-label-normal Attachmentbadge">
+                                                                    @if (Model.MailReceivedAttachment != null && Model.MailReceivedAttachment.Count > 0)
                                                                     {
                                                                         for (Int32 k = 0; k < Model.MailReceivedAttachment.Count; k++)
                                                                         {
@@ -486,24 +486,24 @@
                                                                             {
                                                                                 if (@Model.MailReceivedAttachment[k].FileName != "")
                                                                                 {
-                                                            <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> @Model.MailReceivedAttachment[k].FileName</b></a>
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> @Model.MailReceivedAttachment[k].FileName</b></a>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                            <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> Attachment</b></a>
+                                                                                    <a onclick="return OpenAttachementViewer('@Model.MailReceivedAttachment[k].Path','@Model.MailReceivedAttachment[k].FileName');"><b> Attachment</b></a>
                                                                                 }
                                                                             }
                                                                         }
                                                                     }
-                                                        </p>
-                                                    </td>
-                                                </tr>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
                                                     }
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     }
@@ -647,24 +647,29 @@
         @{ Html.RenderAction("GetNotificatioNote", "AddNotification"); }
     </div>
     <!-- Edit Meeting Note Popup End-->
-            <div id="Social-plugin" class="hidden-xs">
-                <input type="hidden" id="hdnRowNum" value="@Model.RowNum" />
-                <input type="hidden" id="hdnTotalRow" value="@Request.Params["Total"]" />
-                <a id="lnlNext" class="btn btn-labeled btn-default right" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='N',Total= Convert.ToInt32(@Request.Params["Total"]) })">
-                    Next<span class="btn-label">
-                        <i class="glyphicon glyphicon-menu-right"></i>
-                    </span>
-                </a>
-            </div>
-            <div id="Social-plugin1" class="hidden-xs">
-                <a id="lnkPrevoius" class="btn btn-labeled btn-default left" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='P',Total= Convert.ToInt32(@Request.Params["Total"]) })">
-                    <span class="btn-label">
-                        <i class="glyphicon glyphicon-menu-left"></i>
-                    </span>Previous
-                </a>
-            </div>
-            }
-@{ Html.RenderAction("GetNotificationPlanTakeAction", "AddNotification", new { Id = Model.NotificationId }); }
+    <div id="Social-plugin" class="hidden-xs">
+        <input type="hidden" id="hdnRowNum" value="@Model.RowNum" />
+        <input type="hidden" id="hdnTotalRow" value="@Request.Params["Total"]" />
+        <a id="lnlNext" class="btn btn-labeled btn-default right" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='N',Total= Convert.ToInt32(@Request.Params["Total"]) })">
+            Next<span class="btn-label">
+                <i class="glyphicon glyphicon-menu-right"></i>
+            </span>
+        </a>
+    </div>
+    <div id="Social-plugin1" class="hidden-xs">
+        <a id="lnkPrevoius" class="btn btn-labeled btn-default left" href="@Url.Action("NotificationSummary", "WTO", new { MOMId = @Model.MomId,CallFor=@Model.CallFor,R=@Model.RowNum,D='P',Total= Convert.ToInt32(@Request.Params["Total"]) })">
+            <span class="btn-label">
+                <i class="glyphicon glyphicon-menu-left"></i>
+            </span>Previous
+        </a>
+    </div>
+}
+
+<!--Plan action Popup start-->
+<div id="divNotificationPlanTakeAction">
+    @{ Html.RenderAction("NotificationPlanTakeAction", "MoM", new { Id = 0, MeetingId = 0 }); }
+</div>
+<!--Plan action Popup End-->
 
 <script>
     myWTOAPP.init('@ViewContext.RouteData.Values["id"]', '@Session["UserId"]', '@Session["UserRole"]');

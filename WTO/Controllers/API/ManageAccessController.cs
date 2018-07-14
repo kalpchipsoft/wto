@@ -120,7 +120,7 @@ namespace WTO.Controllers.API
                 {
                     SendMail objMail = new SendMail();
                     string MailBody = objTBS.MailbodyForTranslator(objT);
-                    objMail.SendAsyncEMail(MailType.smtp_Teamup, objT.Email, "Atul.chipsoft@gmail.com;Ashvini.chipsoft@gmail.com", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of Commerce", "Welcome to Department of Commerce", MailBody, null);
+                    objMail.SendAsyncEMail(MailType.smtp_WTO, objT.Email, "Atul.chipsoft@gmail.com;Ashvini.chipsoft@gmail.com", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of Commerce", "Welcome to Department of Commerce", MailBody, null);
                 }
             }
 

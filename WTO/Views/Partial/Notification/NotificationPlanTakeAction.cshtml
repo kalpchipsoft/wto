@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BusinessObjects.MOM.EditNotificationMeeting
+@{
     Layout = null;
 }
 @Html.Hidden("hdnNotificationActionId", "0")
@@ -28,7 +29,7 @@
                                             <p class="wto-label-bold dark-blue">Notification Number <span class="pull-right hidden-xs">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationNumber"></p>
+                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationNumber">@Model.NotificationNumber</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -36,7 +37,7 @@
                                             <p class="wto-label-bold dark-blue">Notification Title <span class="pull-right hidden-xs">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue top-offset-2 WordWrapText" id="lblNotificationTitle"></p>
+                                            <p class="wto-label-normal dark-blue top-offset-2 WordWrapText" id="lblNotificationTitle">@Model.Title</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -44,51 +45,62 @@
                                             <p class="wto-label-bold dark-blue">Notification Stage <span class="pull-right hidden-xs">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationStage"></p>
+                                            <p class="wto-label-normal dark-blue top-offset-2" id="lblNotificationStage">@Model.Status</p>
                                         </div>
                                     </div>
-                                    <div class="row top-offset-10" id="divMeetingHistory">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <p class="wto-label-bold dark-blue">Meeting History<span class="pull-right hidden-xs">:</span></p>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <div class="table-responsive nopaging notificationlist sentmail">
-                                                <table class="table table-bordered display" id="tblMeetingHistory" cellspacing="0" width="100%">
-                                                    <thead class="second-blackbackground">
-                                                        <tr>
-                                                            <th class="col-sm-3">Meeting Date</th>
-                                                            <th class="col-sm-6">Action(s)</th>
-                                                            <th class="col-sm-3">Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="whitebackground">
-                                                        <tr>
-                                                            <td class="col-sm-3">13 Jul 2018</td>
-                                                            <td class="col-sm-6">
-                                                                <p class="wto-label-normal">Responce to notifying country</p>
-                                                                <p class="wto-label-normal">Brief to regulators</p>
-                                                            </td>
-                                                            <td class="col-sm-3">
-                                                                <p class="wto-label-normal">Pending</p>
-                                                                <p class="wto-label-normal">Completed</p>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-sm-3">13 Jul 2018</td>
-                                                            <td class="col-sm-6">
-                                                                <p class="wto-label-normal">Responce to notifying country</p>
-                                                                <p class="wto-label-normal">Policy brief to DoC</p>
-                                                            </td>
-                                                            <td class="col-sm-3">
-                                                                <p class="wto-label-normal">Pending</p>
-                                                                <p class="wto-label-normal">Completed</p>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                    @if (Model.PreviousMeetings != null)
+                                    {
+                                        <div class="row top-offset-10" id="divMeetingHistory">
+                                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                                <p class="wto-label-bold dark-blue">Meeting History<span class="pull-right hidden-xs">:</span></p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-8 col-md-8">
+                                                <div class="table-responsive nopaging notificationlist sentmail">
+                                                    <table class="table table-bordered display" id="tblMeetingHistory" cellspacing="0" width="100%">
+                                                        <thead class="second-blackbackground">
+                                                            <tr>
+                                                                <th class="col-sm-3">Meeting Date</th>
+                                                                <th class="col-sm-6">Action(s)</th>
+                                                                <th class="col-sm-3">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="whitebackground">
+                                                            @foreach (BusinessObjects.MOM.PreviousMeeting objM in Model.PreviousMeetings)
+                                                            {
+                                                                <tr>
+                                                                    <td class="col-sm-3">@objM.MeetingDate</td>
+                                                                    <td class="col-sm-6">
+                                                                        @if (Model.PrevioiusMeetingActions != null)
+                                                                        {
+                                                                            foreach (BusinessObjects.MOM.PrevioiusMeetingAction objMA in Model.PrevioiusMeetingActions)
+                                                                            {
+                                                                                if (objMA.MeetingId == objM.MeetingId)
+                                                                                {
+                                                                                    <p class="wto-label-normal">@objMA.Action</p>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                    <td class="col-sm-3">
+                                                                        @if (Model.PrevioiusMeetingActions != null)
+                                                                        {
+                                                                            foreach (BusinessObjects.MOM.PrevioiusMeetingAction objMA in Model.PrevioiusMeetingActions)
+                                                                            {
+                                                                                if (objMA.MeetingId == objM.MeetingId)
+                                                                                {
+                                                                                    <p class="wto-label-normal">@objMA.ActionStatus</p>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
                                             <p class="wto-label-bold dark-blue">Current meeting date<sup class="mandetory">*</sup> <span class="pull-right hidden-xs">:</span></p>
@@ -103,7 +115,7 @@
                                             <p class="wto-label-bold dark-blue">Group <span class="pull-right hidden-xs">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-4">
-                                            <input type="text" maxlength="5" class="form-control" id="txtNotificationGroup" />
+                                            <input type="text" maxlength="5" class="form-control" id="txtNotificationGroup" value="@Model.NotificationGroup" />
                                         </div>
                                     </div>
                                     <div class="row top-offset-10" id="divMeetingNote">
@@ -111,7 +123,7 @@
                                             <p class="wto-label-bold dark-blue">Note <span class="pull-right hidden-xs">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <textarea class="form-control AutoHeight" cols="30" rows="2" id="txtMeetingNote">@Model.MeetingNotes</textarea>
+                                            <textarea class="form-control AutoHeight" cols="30" rows="2" id="txtMeetingNote">@Model.MeetingNote</textarea>
                                         </div>
                                     </div>
 
@@ -131,29 +143,57 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="whitebackground" id="divPlanActions">
-                                                    <tr>
-                                                        <td class="col-sm-1 pdright">
-                                                            <input type="hidden" id="hdnNotificationActionId" value="" />
-                                                            <div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">
-                                                                <label style="padding-left: 0;">
-                                                                    <input type="checkbox" value="" onchange="AddRemoveActions(this);" />
-                                                                    <span class="cr insertcheckbox" style="margin-top: 2px;">
-                                                                        <i class="cr-icon glyphicon glyphicon-ok"></i>
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-sm-5">Action</td>
-                                                        <td class="col-sm-4">
-                                                            <div class="form-group has-feedback" style="margin-bottom:0px;">
-                                                                <input type="text" id="RequiredOnId_ActionId" class="form-control date-picker sm-date-picker" onkeydown="return false;" data-SearchFor="ActionId" value="RequiredOn" />
-                                                                <i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-sm-2">
-                                                            <a>Take Action</a>
-                                                        </td>
-                                                    </tr>
+                                                    @if (Model.Actions != null)
+                                                    {
+                                                        foreach (BusinessObjects.MOM.EditAction objA in Model.Actions)
+                                                        {
+                                                            <tr>
+                                                                <td class="col-sm-1 pdright">
+                                                                    <input type="hidden" id="hdnNotificationActionId" value="@objA.NotificationActionId" />
+                                                                    <div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">
+                                                                        <label style="padding-left: 0;">
+                                                                            @if ((objA.NotificationActionId > 0 && objA.UpdatedOn == "") || (Model.RetainedForNextDiscussion && objA.ActionId == 5))
+                                                                            {
+                                                                                <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" checked />
+                                                                            }
+                                                                            else if (objA.NotificationActionId > 0)
+                                                                            {
+                                                                                <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" checked disabled />
+                                                                            }
+                                                                            else if (Model.RetainedForNextDiscussion && objA.ActionId == 4)
+                                                                            {
+                                                                                <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" disabled />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" />
+                                                                            }
+                                                                            <span class="cr insertcheckbox" style="margin-top: 2px;">
+                                                                                <i class="cr-icon glyphicon glyphicon-ok"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="col-sm-5">@objA.ActionName</td>
+                                                                <td class="col-sm-4">
+                                                                    @if (objA.ActionId < 4)
+                                                                    {
+                                                                        <div class="form-group has-feedback" style="margin-bottom:0px;">
+                                                                            <input type="text" id="RequiredOnId_@objA.ActionId" class="form-control date-picker sm-date-picker @(objA.UpdatedOn==""?"":"disabled")" onkeydown="return false;" data-SearchFor="@objA.ActionId" value="@objA.RequiredOn" />
+                                                                            <i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>
+                                                                        </div>
+                                                                    }
+                                                                </td>
+                                                                <td class="col-sm-2">
+                                                                    @if (objA.ActionId < 4 && objA.NotificationActionId > 0 && objA.MailId == 0)
+                                                                    {
+                                                                        <a data-SearchFor='@objA.ActionName' data-callfor='takeaction' onclick='EditAction(@objA.NotificationActionId,this)'>Implement Action</a>
+                                                                        <input type='hidden' id='hdnActionId_@objA.NotificationActionId' value='@objA.ActionId' />
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
@@ -674,12 +714,6 @@
                     this.checked = false;
             });
         }
-        //else if (ctrl.checked && ctrl.value == "5") {
-        //    $.each($('#divPlanActions').find('input[type=checkbox]'), function () {
-        //        if (this.id == '' && this.value != "5")
-        //            this.checked = false;
-        //    });
-        //}
         else if (ctrl.checked && ctrl.value != "4") {
             $.each($('#divPlanActions').find('input[type=checkbox]'), function () {
                 if (this.id == '' && this.value == "4") {
@@ -696,11 +730,6 @@
                 IsAttachmentSelected = true;
         });
 
-        //if (TempActionAttachments.length == 0 || !IsAttachmentSelected) {
-        //    Alert("Alert", "Please choose attachment.<br/>", "Ok");
-        //    return false;
-        //}
-        //else {
         ActionAttachments = [];
         var Files = "";
         var FileCount = 0;
@@ -716,11 +745,9 @@
         $('#txtActionAttachments').removeClass("hidden");
         $('#txtActionAttachmentCount').val(FileCount + ' file(s) selected');
         CloseActionAddAttachment();
-        //}
     }
 
     function CloseActionAddAttachment() {
-        //TempActionAttachments = [];
         $('[id$=divAddActionAttachmentOverlay]').hide();
         $('[id$=divAddActionAttachment]').hide();
     }
@@ -728,7 +755,6 @@
     function AddActionAttachment() {
         var HTML = '';
         $.each(TempActionAttachments, function (i, v) {
-            //TempActionAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path, "IsSelected": v.IsSelected });
             HTML += '<tr>';
             HTML += '<td style="width: 4%; width:50px;">';
             HTML += '<div class="checkbox radio-margin">';

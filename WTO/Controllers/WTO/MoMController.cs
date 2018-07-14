@@ -60,5 +60,15 @@ namespace WTO.Controllers.WTO
                 return PartialView("RedirectToLogin");
         }
 
+        public ActionResult NotificationPlanTakeAction(Int64 Id, Int64 MeetingId)
+        {
+            if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
+            {
+                MomBusinessService obj = new MomBusinessService();
+                return View("~/Views/Partial/Notification/NotificationPlanTakeAction.cshtml", obj.EditMeetingActions(Id, MeetingId));
+            }
+            else
+                return PartialView("RedirectToLogin");
+        }
     }
 }

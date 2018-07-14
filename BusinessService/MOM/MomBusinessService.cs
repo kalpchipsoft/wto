@@ -122,7 +122,7 @@ namespace BusinessService.MOM
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.ActionName = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.MailId = Convert.ToString(dr["MailId"]);
+                        objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         ActionList.Add(objNotificationAction);
                     }
@@ -275,7 +275,7 @@ namespace BusinessService.MOM
                         NotificationAction objAction = new NotificationAction();
                         objAction.NotificationId = Convert.ToInt64(dr["NotificationId"]);
                         objAction.ActionId = Convert.ToInt32(dr["ActionId"]);
-                        objAction.MailId = Convert.ToString(dr["MailId"]);
+                        objAction.MailId = Convert.ToInt64(dr["MailId"]);
                         NotificationActionList.Add(objAction);
                     }
                     objE.NotificationActions = NotificationActionList;
@@ -300,7 +300,7 @@ namespace BusinessService.MOM
                     {
                         objE.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
                         objE.Title = Convert.ToString(dr["Title"]);
-                        //objE.Status = Convert.ToString(dr["Stage"]);
+                        objE.Status = Convert.ToString(dr["Stage"]);
                         objE.MeetingNote = Convert.ToString(dr["MeetingNote"]);
                         objE.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         objE.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
@@ -319,7 +319,7 @@ namespace BusinessService.MOM
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.ActionName = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.MailId = Convert.ToString(dr["MailId"]);
+                        objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         ActionList.Add(objNotificationAction);
                     }
@@ -329,15 +329,15 @@ namespace BusinessService.MOM
                 tblIndex++;
                 if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
                 {
-                    List<PrevioiusMeeting> PrevioiusMeetingList = new List<PrevioiusMeeting>();
+                    List<PreviousMeeting> PrevioiusMeetingList = new List<PreviousMeeting>();
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
-                        PrevioiusMeeting PrevioiusMeeting = new PrevioiusMeeting();
+                        PreviousMeeting PrevioiusMeeting = new PreviousMeeting();
                         PrevioiusMeeting.MeetingId = Convert.ToInt64(dr["MeetingId"]);
                         PrevioiusMeeting.MeetingDate = Convert.ToString(dr["MeetingDate"]);
                         PrevioiusMeetingList.Add(PrevioiusMeeting);
                     }
-                    objE.PrevioiusMeetings = PrevioiusMeetingList;
+                    objE.PreviousMeetings = PrevioiusMeetingList;
                 }
 
                 tblIndex++;

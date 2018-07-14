@@ -96,7 +96,7 @@
                                         }
                                         else
                                         {
-                                            <a onclick="return OpenEndMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>Close meeting</b></a>
+                                            <a onclick="return CloseMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>Close meeting</b></a>
                                         }
                                     }
                                     <button id="btnSaveUpdate" class="btn btn-dark-green pull-right btn-padding addsavenotification hidden" onclick="return Validate();"><img src="/contents/img/save.png"> @(Model.MoMId > 0 ? "Update" : "Save")</button>
@@ -226,7 +226,9 @@
 
 <!-- body section End -->
 <!--Plan action Popup start-->
-@{ Html.RenderAction("GetNotificationPlanTakeAction", "AddNotification", new { Id = 0 }); }
+<div id="divNotificationPlanTakeAction">
+    @{ Html.RenderAction("NotificationPlanTakeAction", "MoM", new { Id = 0, MeetingId = 0 }); }
+</div>
 <!--Plan action Popup End-->
 <!--Meeting Date Popup start-->
 <div class="modal fade selecthrmodal" id="ModelMeetingDate" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -288,7 +290,7 @@
         <!-- Modal content-->
         <div class="modal-content selecthrcontent">
             <div class="modal-header selecthrheader">
-                <button type="button" class="close selecthrclose" onclick="return CloseEndMeeting();">
+                <button type="button" class="close selecthrclose" onclick="return CloseObservationPopUp();">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>
@@ -300,7 +302,7 @@
                                 <div class="padding-bottom-10">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <h4 class="selecthrheading">Other Observation</h4>
+                                            <h4 class="selecthrheading">Other Observations:</h4>
                                             <hr />
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -313,8 +315,8 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 bottom-offset-20">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <a class="btn btn-red pull-right" onclick="return CloseEndMeeting();">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
-                                        <a class="btn btn-dark-green pull-right" style="margin-right:15px;" onclick="return SaveEndMeeting();"><img src="~/contents/img/save.png" />&nbsp;Save & Continue</a>
+                                        <a class="btn btn-red pull-right" onclick="return CloseObservationPopUp();">Close&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                                        <a class="btn btn-dark-green pull-right" style="margin-right:15px;" onclick="return SaveObservationAndCloseMeeting();"><img src="~/contents/img/save.png" />&nbsp;Save & Continue</a>
                                     </div>
                                 </div>
                             </div>

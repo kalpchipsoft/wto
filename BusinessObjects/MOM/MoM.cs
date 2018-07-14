@@ -22,7 +22,7 @@ namespace BusinessObjects.MOM
     {
         public int ActionId { get; set; }
         public string ActionName { get; set; }
-        public string MailId { get; set; }
+        public Int64 MailId { get; set; }
     }
 
     public class NotificationAction : Action
@@ -171,7 +171,7 @@ namespace BusinessObjects.MOM
         public List<EditAction> Actions { get; set; }
         public string MeetingDate { get; set; }
         public bool RetainedForNextDiscussion { get; set; }
-        public List<PrevioiusMeeting> PrevioiusMeetings { get; set; }
+        public List<PreviousMeeting> PreviousMeetings { get; set; }
         public List<PrevioiusMeetingAction> PrevioiusMeetingActions { get; set; }
     }
 
@@ -227,7 +227,7 @@ namespace BusinessObjects.MOM
         public string Country { get; set; }
     }
 
-    public class PrevioiusMeeting
+    public class PreviousMeeting
     {
         public Int64 MeetingId { get; set; }
         public string MeetingDate { get; set; }

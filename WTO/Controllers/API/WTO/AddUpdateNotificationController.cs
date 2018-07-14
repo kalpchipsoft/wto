@@ -665,7 +665,7 @@ namespace WTO.Controllers.API.WTO
             {
                 SendMail objMail = new SendMail();
                 objOutput.MailDetails.Body = objOutput.MailDetails.Body;
-                objMail.SendAsyncEMail(MailType.smtp_Teamup, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.MailDetails.Subject, objOutput.MailDetails.Body, null);
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.MailDetails.Subject, objOutput.MailDetails.Body, null);
             }
 
             return Ok();
@@ -827,7 +827,7 @@ namespace WTO.Controllers.API.WTO
                     }
                 }
 
-                objMail.SendAsyncEMail(MailType.smtp_Teamup, objOutput.TranslaterEmailId, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", obj.MailDetails.Subject, obj.MailDetails.Message, Attachment.ToArray());
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.TranslaterEmailId, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", obj.MailDetails.Subject, obj.MailDetails.Message, Attachment.ToArray());
                 return Ok(objOutput);
             }
             else
@@ -904,7 +904,7 @@ namespace WTO.Controllers.API.WTO
                             else
                                 Attachment.Add(HttpContext.Current.Server.MapPath("/Attachments/MailAttachment/" + objOutput.MailDetails.MailId + "_" + att.FileName));
                         }
-                        objMail.SendAsyncEMail(MailType.smtp_Teamup, s.Email, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", objOutput.MailDetails.Subject, MailBody, Attachment.ToArray());
+                        objMail.SendAsyncEMail(MailType.smtp_WTO, s.Email, "", "Rachika.chipsoft@gmail.com;maheshwari.rachika@chipsoftindia.com;mishra.ashvini@chipsoftindia.com", "", "Department of commerce", objOutput.MailDetails.Subject, MailBody, Attachment.ToArray());
                     }
                 }
             }
@@ -1061,7 +1061,7 @@ namespace WTO.Controllers.API.WTO
                 {
                     Attachment.Add(HttpContext.Current.Server.MapPath(objAttach.Path));
                 }
-                objMail.SendAsyncEMail(MailType.smtp_Teamup, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.Subject, objOutput.Body, Attachment.ToArray());
+                objMail.SendAsyncEMail(MailType.smtp_WTO, objOutput.MailTo, objOutput.CC, objOutput.BCC, objOutput.ReplyTo, objOutput.DisplayName, objOutput.Subject, objOutput.Body, Attachment.ToArray());
             }
 
             return Ok();

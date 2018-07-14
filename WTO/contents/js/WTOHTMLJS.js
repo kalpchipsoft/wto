@@ -118,7 +118,6 @@ $(document).ready(function () {
     else
         $('#toggleOpenClose').click();
 
-    debugger;
     // <!-- Active menu binding start-->
     var _PageName = $.trim($('.topbg').text());
     //_PageName = _PageName.toLocaleLowerCase().replace(/ /g, '')

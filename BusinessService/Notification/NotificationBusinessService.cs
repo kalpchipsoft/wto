@@ -3383,6 +3383,231 @@ namespace BusinessService.Notification
 
         #endregion
 
+        #region "Notification Actions/Meeting"
+        public string GetMeetingNotes(int NotificationId)
+        {
+            NotificationDataManager objDM = new NotificationDataManager();
+            string MeetingNote = "";
+            DataTable dt = objDM.GetMeetingNotes(NotificationId);
+            if (dt != null && dt.Rows.Count > 0)
+                MeetingNote = Convert.ToString(dt.Rows[0]["MeetingNote"]);
+
+            return MeetingNote;
+        }
+        public string UpdateMeetingNote(SaveNote obj)
+        {
+            NotificationDataManager objDM = new NotificationDataManager();
+            string MeetingNote = "";
+            DataTable dt = objDM.UpdateMeetingNote(obj);
+            if (dt != null && dt.Rows.Count > 0)
+                MeetingNote = Convert.ToString(dt.Rows[0]["MeetingNote"]);
+
+            return MeetingNote;
+        }
+        public NotificationActions GetNotificationActions(Int64 Id, int ActionId)
+        {
+            NotificationActions objNA = new NotificationActions();
+            NotificationDataManager objDM = new NotificationDataManager();
+            DataSet ds = objDM.EditActions(Id, ActionId);
+            if (ds != null)
+            {
+                int tblIndex = -1;
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        objNA.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                        objNA.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                        objNA.NotificationTitle = Convert.ToString(dr["Title"]);
+                        objNA.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        objNA.IsUpdate = Convert.ToBoolean(dr["IsUpdate"]);
+                        objNA.MeetingNotes = Convert.ToString(dr["MeetingNote"]);
+                        objNA.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
+                    }
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<NotificationActionDetail> NotificationActionList = new List<NotificationActionDetail>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        NotificationActionDetail objNotificationAction = new NotificationActionDetail();
+                        objNotificationAction.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
+                        objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
+                        objNotificationAction.Action = Convert.ToString(dr["Action"]);
+                        objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
+                        objNotificationAction.EnteredOn = Convert.ToString(dr["EnteredOn"]);
+                        objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
+                        objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
+                        objNotificationAction.MailTo = Convert.ToString(dr["MailTo"]);
+                        NotificationActionList.Add(objNotificationAction);
+                    }
+                    objNA.Actions = NotificationActionList;
+                }
+            }
+
+            return objNA;
+        }
+        public AddNotificationAction_Output EditNotificationAction(Int64 NotificationActionId)
+        {
+            AddNotificationAction_Output objO = new AddNotificationAction_Output();
+            NotificationDataManager objDM = new NotificationDataManager();
+            DataTable dt = objDM.EditNotificationAction(NotificationActionId);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    objO.NotificationId = Convert.ToInt64(dr["NotificationId"]);
+                    objO.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
+                    objO.ActionId = Convert.ToInt32(dr["ActionId"]);
+                    objO.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
+                    objO.DateofNotification = Convert.ToString(dr["DatefNotification"]);
+                    objO.ResponseCount = Convert.ToInt32(dr["ResponseCount"]);
+                    objO.MailCount = Convert.ToInt32(dr["MailCount"]);
+                    objO.MailTo = Convert.ToString(dr["EnquiryEmailId"]);
+                }
+
+                if (objO.ActionId == 1 || objO.ActionId == 2)
+                {
+                    Notification_Template_Search objS = new Notification_Template_Search();
+                    objS.TemplateType = "Mail";
+                    objS.TemplateFor = objO.ActionId == 1 ? "BrieftoRegulators" : "PolicyBrief";
+                    objS.NotificationActionId = objO.NotificationActionId;
+                    objO.MailDetails = GetNotificationSMSMailTemplate(objO.NotificationId, objS);
+                }
+            }
+            return objO;
+        }
+        public SendActionMail_Output SaveAndSendMailforAction(long Id, ActionMailDetails obj)
+        {
+            SendActionMail_Output objOutput = new SendActionMail_Output();
+            NotificationDataManager objDM = new NotificationDataManager();
+            DataSet ds = objDM.SendActionMail(Id, obj);
+            if (ds != null)
+            {
+                int tblIndex = -1;
+
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex)
+                {
+                    using (DataTable dt = ds.Tables[tblIndex])
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            objOutput.Subject = Convert.ToString(dr["Subject"]);
+                            objOutput.Body = Convert.ToString(dr["Message"]);
+
+                            objOutput.MailTo = Convert.ToString(dr["MailTo"]);
+                            objOutput.ReplyTo = Convert.ToString(dr["ReplyTo"]);
+                            objOutput.CC = Convert.ToString(dr["CC"]);
+                            objOutput.BCC = Convert.ToString(dr["BCC"]);
+                            objOutput.DisplayName = Convert.ToString(dr["DisplayName"]);
+                        }
+                        if (obj.Attachments.Count > 0 && obj.Attachments != null)
+                        {
+                            foreach (Attachment objA in obj.Attachments)
+                            {
+                                if (objA.Content != "")
+                                {
+                                    try
+                                    {
+                                        byte[] bytes = null;
+                                        if (objA.Content.IndexOf(',') >= 0)
+                                        {
+                                            var myString = objA.Content.Split(new char[] { ',' });
+                                            bytes = Convert.FromBase64String(myString[1]);
+                                        }
+                                        else
+                                            bytes = Convert.FromBase64String(objA.Content);
+
+                                        if (objA.FileName.Length > 0 && bytes.Length > 0)
+                                        {
+                                            string filePath = HttpContext.Current.Server.MapPath("/Attachments/MailAttachment/" + Convert.ToString(dt.Rows[0]["MailId"]) + "_" + objA.FileName);
+                                            File.WriteAllBytes(filePath, bytes);
+                                        }
+                                    }
+                                    catch (Exception ex) { }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > tblIndex)
+                {
+                    using (DataTable dt = ds.Tables[tblIndex])
+                    {
+                        List<EditAttachment> AttachmentList = new List<EditAttachment>();
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            EditAttachment objA = new EditAttachment();
+                            objA.FileName = Convert.ToString(dr["Attachment"]);
+                            objA.Path = Convert.ToString(dr["DocumentPath"]);
+                            AttachmentList.Add(objA);
+                        }
+                        objOutput.Attachments = AttachmentList;
+                    }
+                }
+
+            }
+            return objOutput;
+        }
+        public NotificationActionDetail ViewAction(long Id)
+        {
+            NotificationActionDetail objNA = new NotificationActionDetail();
+            NotificationDataManager objDM = new NotificationDataManager();
+            DataSet ds = objDM.ViewActions(Id);
+            if (ds != null)
+            {
+                int tblIndex = -1;
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        objNA.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
+                        objNA.ActionId = Convert.ToInt32(dr["ActionId"]);
+                        objNA.Action = Convert.ToString(dr["Action"]);
+                        objNA.RequiredOn = Convert.ToString(dr["RequiredOn"]);
+                        objNA.EnteredOn = Convert.ToString(dr["EnteredOn"]);
+                        objNA.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
+                        objNA.MailId = Convert.ToInt64(dr["MailId"]);
+                        objNA.MailTo = Convert.ToString(dr["MailTo"]);
+
+                        Notification_Template objT = new Notification_Template();
+                        objT.Subject = Convert.ToString(dr["Subject"]);
+                        objT.Message = Convert.ToString(dr["Message"]);
+                        objNA.MailDetails = objT;
+
+                        objNA.ResponseId = Convert.ToInt64(dr["ResponseId"]);
+                    }
+                }
+
+                tblIndex++;
+                if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
+                {
+                    List<EditAttachment> AttachmentList = new List<EditAttachment>();
+                    foreach (DataRow dr in ds.Tables[tblIndex].Rows)
+                    {
+                        EditAttachment objA = new EditAttachment();
+                        objA.FileName = Convert.ToString(dr["FileName"]);
+                        objA.Path = Convert.ToString(dr["FilePath"]);
+                        AttachmentList.Add(objA);
+                    }
+                    objNA.Attachments = AttachmentList;
+                }
+            }
+
+            return objNA;
+        }
+
+        #endregion
+
         #region "Notification Mail"
         public Notification_Template GetNotificationSMSMailTemplate(long Id, Notification_Template_Search obj)
         {
