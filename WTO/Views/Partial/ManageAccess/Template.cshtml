@@ -87,7 +87,7 @@
                                 <h4 class="selecthrheading" id="AddTemplatepopupHead">Add Template</h4>
                                 <hr>
                             </div>
-                            <form class="form-horizontal top-offset-20">
+                            <form class="form-horizontal top-offset-20 defaultdiv">
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Template Type<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
@@ -147,7 +147,7 @@
                                     <div class="col-sm-offset-3 col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="#" id="TemplateSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="TemplateValidate();">Save</a>
+                                                <a href="#" id="TemplateSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10 searchbtndiv" onclick="TemplateValidate();">Save</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
@@ -206,20 +206,15 @@
             // Referencing the new plugin
             extraPlugins: 'CustomPlugin',
             toolbar: [
-                { name: 'document', items: ['Source', '-'] },
-                { name: 'clipboard', items: ['Undo', 'Redo'] },
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                { name: 'links', items: ['Link', 'Unlink'] },
-                { name: 'insert', items: ['Table'] },
-                { name: 'styles', items: ['Format'] },
-                { name: 'CustomPlugin', items: ['customplugin'] }
+                    { name: 'clipboard', items: ['Undo', 'Redo'] },
+                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                    { name: 'links', items: ['Link', 'Unlink'] },
+                    { name: 'insert', items: ['Table'] },
+                    { name: 'styles', items: ['Format'] },
+                    { name: 'CustomPlugin', items: ['customplugin'] }
             ],
         };
-        //config.extraPlugins = 'autogrow';
-        //config.autoGrow_minHeight = 200;
-        //config.autoGrow_maxHeight = 1000;
-        //config.autoGrow_bottomSpace = 50;
         CKEDITOR.replace(txtMessage, config);
 
 
@@ -228,6 +223,13 @@
             $("th").removeClass("col-xs-1 col-xs-2 col-xs-6 table-fixed");
             $("td").removeClass("col-xs-1 col-xs-2 col-xs-6 table-fixed");
         }
+
+        $(".defaultdiv").bind('keydown', function (e) {
+            if (e.which === 13) {
+                $(this).find(".searchbtndiv").click();
+                return false;
+            }
+        });
 
 
     });

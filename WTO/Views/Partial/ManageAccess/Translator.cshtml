@@ -84,7 +84,7 @@
                                 <h4 class="selecthrheading" id="AddTranslatorpopupHead">Add Translator</h4>
                                 <hr>
                             </div>
-                            <form class="form-horizontal top-offset-20" action="/action_page.php">
+                            <form class="form-horizontal top-offset-20 defaultdiv">
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">First Name<sup class="mandetory">*</sup>:</label>
                                     <div class="col-sm-9">
@@ -136,7 +136,7 @@
                                     <div class="col-sm-offset-3 col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="#" id="TranslatorSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="TranslatorValidate();">Save</a>
+                                                <a href="#" id="TranslatorSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10 searchbtndiv" onclick="TranslatorValidate();">Save</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
@@ -164,6 +164,13 @@
             $("th").removeClass("col-sm-1 col-sm-2 table-fixed");
             $("td").removeClass("col-sm-1 col-sm-2 table-fixed");
         }
+        
+        $(".defaultdiv").bind('keydown', function (e) {
+            if (e.which === 13) {
+                $(this).find(".searchbtndiv").click();
+                return false;
+            }
+        });
 
     });
 </script>

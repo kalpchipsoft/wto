@@ -72,7 +72,7 @@
                                 <h4 class="selecthrheading" id="AddStackholderpopupHead">Add Stakeholder</h4>
                                 <hr>
                             </div>
-                            <form class="form-horizontal top-offset-20" action="/action_page.php">
+                            <form class="form-horizontal top-offset-20 defaultdiv">
                                 <div class="form-group">
                                     <label class="control-label col-sm-3">Full Name<sup class="mandetory">*</sup><span class="hidden-xs">:</span></label>
                                     <div class="col-sm-9">
@@ -153,7 +153,7 @@
                                     <div class="col-sm-offset-3 col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="#" id="StakeholderSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="stakeholdervalidate();">Save</a>
+                                                <a href="#" id="StakeholderSaveUpdate" class="btn btn-dark-green btn-block btn-padding bottom-offset-10 searchbtndiv" onclick="stakeholdervalidate();">Save</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
@@ -240,5 +240,16 @@
             $("th").removeClass("col-xs-1 col-xs-3 col-xs-6 table-fixed");
             $("td").removeClass("col-xs-1 col-xs-3 col-xs-6 table-fixed");
         }
+
+
+        $(".defaultdiv").bind('keydown', function (e) {
+            debugger;
+            if (e.which === 13) {
+                $(this).find(".searchbtndiv").click();
+                return false;
+            }
+        });
+
+
     })
 </script>
