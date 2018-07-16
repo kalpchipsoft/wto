@@ -67,7 +67,7 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>
-            <div class="modal-body selecthrbody">
+            <div class="modal-body selecthrbody" >
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
@@ -75,7 +75,7 @@
                                 <h4 class="selecthrheading" id="AddUserpopupHead">Add User</h4>
                                 <hr>
                             </div>
-                            <form class="form-horizontal top-offset-10">
+                            <form class="form-horizontal top-offset-10 defaultdiv" >
                                 <div class="form-group">
                                     <div class="text-center">
                                         <img id="ImgPhotograph" src="~/contents/img/Add-Image.jpg" onerror="setNoImage(this)"
@@ -132,7 +132,7 @@
                                     <div class="col-sm-offset-3 col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a id="UserSaveUpdate" href="#" class="btn btn-dark-green btn-block btn-padding bottom-offset-10" onclick="Uservalidate();">Save</a>
+                                                <a id="UserSaveUpdate" href="#" class="btn btn-dark-green btn-block btn-padding bottom-offset-10 searchbtndiv" name="search" onclick="Uservalidate();">Save</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-red btn-block btn-padding" data-dismiss="modal">Close</a>
@@ -165,6 +165,21 @@
             $("th").removeClass("col-xs-1 col-xs-3 table-fixed");
             $("td").removeClass("col-xs-1 col-xs-3 table-fixed");
         }
-
+        
+        $(".defaultdiv").bind('keydown', function (e) {
+            if (e.which === 13) {
+                $(".doAction").click();
+                $(this).find(".searchbtndiv").click();
+                return false;
+            }
+        });
+        
     })
+    //$(document).bind('keydown', function (e) {
+    //    debugger;
+    //    if (e.which === 13) {
+    //        $(".doAction").click();
+    //    }
+    //});
+  
 </script>
