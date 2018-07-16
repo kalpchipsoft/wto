@@ -407,6 +407,7 @@ function ReadDocumentFile() {
                         $('#FinalDateforCommentsId').val($.datepicker.formatDate("d M yy", _FinalDateOfComments));
                     }
 
+                    debugger;
                     if (!isNaN(new Date($.trim(result.SendResponseBy)).valueOf())) {
                         var _SendResponseBy = new Date($.trim(result.SendResponseBy));
                         $('#SendResponseById').val($.datepicker.formatDate("d M yy", _SendResponseBy));
@@ -842,7 +843,7 @@ function SaveHSCode() {
     var HSCodeId = [];
     var FinalArray = [];
     var row = '';
-    if ($('.jstree-anchor.jstree-clicked').length == 0 && !$('#cbNoHSCode').is(':Checked')) {
+    if ($('#HSCodeTree').jstree(true).get_selected().length == 0 && !$('#cbNoHSCode').is(':Checked')) {
         Alert("Alert", "Please select atleast one HSCode.<br/>", "Ok");
         $("#HSCodesId tbody > tr").remove();
         var rowCount = $('#HSCodesId>tbody>tr').length;
@@ -900,7 +901,7 @@ function SaveHSCode() {
         $("#hdnSelectedHSCodes").val(items);
         $("#HSCodesId tbody").append(row);
     }
-    $(".hs-code-table").removeClass("hidden");
+    $(".adnotificationtable").removeClass("hidden");
     $('#selecthr').modal('hide');
 }
 

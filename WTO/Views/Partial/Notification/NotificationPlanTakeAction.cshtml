@@ -160,7 +160,7 @@
                                                                             {
                                                                                 <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" checked disabled />
                                                                             }
-                                                                            else if (Model.RetainedForNextDiscussion && objA.ActionId == 4)
+                                                                            else if (objA.ActionId == 4 && (Model.Actions.FirstOrDefault(x => x.NotificationActionId > 0 && x.UpdatedOn != "") != null || Model.RetainedForNextDiscussion))
                                                                             {
                                                                                 <input type="checkbox" value="@objA.ActionId" onchange="AddRemoveActions(this);" disabled />
                                                                             }
@@ -380,6 +380,8 @@
         config.autoGrow_maxHeight = 600;
         config.autoGrow_bottomSpace = 50;
 
+        autosize($(".AutoHeight"));
+
         $.each($('.RfpEditor'), function () {
             CKEDITOR.replace(this.id, config);
         });
@@ -541,7 +543,12 @@
             $($('.error')).eq(0).focus();
         }
         else {
-            AddUpdateNotificationAction();
+            $('#ModalAddAction').modal('hide');
+            setTimeout(function () {
+                AddUpdateNotificationAction();
+                // 3000 for 3 seconds
+            }, 200)
+
         }
     }
 
@@ -564,120 +571,22 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != null) {
-                    $('#lblNotificationNumber').text(result.NotificationNumber);
-                    $('#lblNotificationTitle').text(result.Title);
-                    $('#lblNotificationStage').text(result.Status);
-                    $('#MeetingDateId').val(result.MeetingDate);
-                    //$('#lblMeetingDate').text($('#txtmeetingdate').val());
-                    $('#txtMeetingNote').val(result.MeetingNote);
-
                     debugger;
-                    $('#divPlanActions').empty();
-                    $('#divTakeActionHeader').addClass('hidden');
-                    var HTML = '';
-                    $.each(result.Actions, function (i, v) {
-                        HTML += '<tr><td class="col-sm-1 pdright">' +
-                            '<input type="hidden" id="hdnNotificationActionId" value="' + v.NotificationActionId + '" />' +
-                            '<div class="col-sm-1 pdright">';
-
-                        if (v.NotificationActionId > 0) {
-                            if (v.UpdatedOn == "") {
-                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                    '<label style="padding-left: 0;">' +
-                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked"/>' +
-                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                    '</span>' +
-                                    '</label>' +
-                                    '</div>';
-                            }
-                            else {
-                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                    '<label style="padding-left: 0;">' +
-                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                    '</span>' +
-                                    '</label>' +
-                                    '</div>';
-                            }
-                        }
-                        else {
-                            if (result.RetainedForNextDiscussion && v.ActionId == 5) {
-                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                    '<label style="padding-left: 0;">' +
-                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" checked="checked" disabled="disabled"/>' +
-                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                    '</span>' +
-                                    '</label>' +
-                                    '</div>';
-                            }
-                            else if (result.RetainedForNextDiscussion) {
-                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                    '<label style="padding-left: 0;">' +
-                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" disabled="disabled" />' +
-                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                    '</span>' +
-                                    '</label>' +
-                                    '</div>';
-                            }
-                            else {
-                                HTML += '<div class="checkbox radio-margin" style="margin-top: 0;float: left; margin-left:0;">' +
-                                    '<label style="padding-left: 0;">' +
-                                    '<input type="checkbox" value="' + v.ActionId + '" onchange="AddRemoveActions(this);" />' +
-                                    '<span class="cr insertcheckbox" style="margin-top: 2px;">' +
-                                    '<i class="cr-icon glyphicon glyphicon-ok"></i>' +
-                                    '</span>' +
-                                    '</label>' +
-                                    '</div>';
-                            }
-                        }
-
-                        HTML += '</div>' +
-                            '<td class="col-sm-5">' + v.ActionName + '</td>';
-
-                        if (v.ActionId < 4) {
-                            HTML += '<td class="col-sm-4">' +
-                                '<div class="form-group has-feedback" style="margin-bottom:0px;">' +
-                                '<input type="text" id="RequiredOnId_' + v.ActionId + '" class="form-control date-picker ' + (v.UpdatedOn != "" ? "disabled" : "") + '" onkeydown="return false;" data-SearchFor="' + v.ActionId + '" value="' + v.RequiredOn + '" />' +
-                                '<i class="glyphicon glyphicon-calendar form-control-feedback blue-color" style="right: 0;"></i>' +
-                                '</div>' +
-                                '</div>';
-                            if (v.NotificationActionId != 0 && v.MailId == 0) {
-                                var callfor = "takeaction";
-                                takeaction++;
-                                HTML += "<td class='col-sm-2'><a data-SearchFor='" + v.ActionName + "' data-callfor='" + callfor + "' onclick='EditAction(" + v.NotificationActionId + ",this);'>Take Action</a><input type='hidden' id='hdnActionId_" + v.NotificationActionId + "' value='" + v.ActionId + "'/></td>";
-                            }
-                            else
-                                HTML += "<td class='col-sm-2'></td>";
-                        }
-                        else
-                            HTML += "<td class='col-sm-4'><td class='col-sm-2'></td>";
-                        HTML += '</td>';
-                        if (takeaction > 0) {
-                            $('#divTakeActionHeader').removeClass('hidden');
-                        }
-                    });
-                    $('#divPlanActions').append(HTML);
-                    $('#ModalAddAction').modal('show');
-
-                    if (result.RetainedForNextDiscussion)
-                        $("#btnSaveActions").addClass("hidden");
-                    else
-                        $("#btnSaveActions").removeClass("hidden");
-
-                    var _NoResponseNeeded = $.map(result.Actions, function (item, i) {
-                        if (item.NotificationActionId > 0 && item.ActionId == 4)
+                    var _IsNoResponseNeeded = $.map(result.Actions, function (item, i) {
+                        if (item.ActionId == 4 && item.NotificationActionId > 0)
                             return item;
                     });
-                    if (result.RetainedForNextDiscussion || _NoResponseNeeded.length > 0) {
-                        AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", "window.location.reload();");
+                    if (_IsNoResponseNeeded == 0) {
+                        Alert("Alert", "Actions has been saved successfully.<br/>", "Ok");
+                        $('#divNotificationPlanTakeAction').load('/MoM/NotificationPlanTakeAction?Id=' + $('#hdnNotificationId').val() + '&MeetingId=' + $('#hdnMeetingId').val(), function (responseTxt, statusTxt, xhr) {
+                            if (statusTxt == "success") {
+                                $('#ModalAddAction').modal('show');
+                                $('.closeplanAction').attr('data-callfor', 'reload');
+                            }
+                        });
                     }
                     else {
-                        $('.closeplanAction').attr('data-callfor', 'reload');
-                        AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", BindNotificationActions());
+                        AlertwithFunction("Alert", "Actions has been saved successfully.<br/>", "Ok", "location.reload();");
                     }
                 }
             },
@@ -721,6 +630,66 @@
                 }
             });
         }
+    }
+
+    function BindRegulatoryBodies() {
+        $.ajax({
+            url: "/API/Masters/GetRegulatoryBodies",
+            async: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('[Id$=ddlTo]').multiselect('destroy');
+                $('[Id$=ddlTo]').empty();
+                $.each(result, function (i, v) {
+                    $('[Id$=ddlTo]').append('<option value="' + v.RegulatoryBodyId + '"> ' + v.Name + ' </option>');
+                });
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                $('[Id$=ddlTo]').multiselect({
+                    maxHeight: 150,
+                    enableFiltering: true,
+                    numberDisplayed: 1,
+                    nonSelectedText: '--Select Recipients--'
+                });
+            }
+        });
+    }
+
+    function BindInternalStakeholders() {
+        $.ajax({
+            url: "/API/Masters/GetInternalStakeHolder",
+            async: false,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('[Id$=ddlTo]').multiselect('destroy');
+                $('[Id$=ddlTo]').empty();
+                $.each(result, function (i, v) {
+                    $('[Id$=ddlTo]').append('<option value="' + v.InternalStakeHolderId + '"> ' + v.Name + ' </option>');
+                });
+            },
+            failure: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            error: function (result) {
+                Alert("Alert", "Something went wrong.<br/>", "Ok");
+            },
+            complete: function () {
+                $('[Id$=ddlTo]').multiselect({
+                    maxHeight: 150,
+                    enableFiltering: true,
+                    numberDisplayed: 1,
+                    nonSelectedText: '--Select Recipients--'
+                });
+            }
+        });
     }
 
     function AddActionAttachmentOk() {

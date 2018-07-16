@@ -371,7 +371,6 @@ function ExportToExcelNotification() {
     }
 }
 
-
 function CheckNotificationExistMOM(ctrl, NotificationId) {
     debugger;
     var MeetingDate = $(ctrl).attr('data-callfor');
@@ -384,6 +383,7 @@ function CheckNotificationExistMOM(ctrl, NotificationId) {
     }
     return false;
 }
+
 function CloseMeetingDatepopup() {
     $("#ModelNotificationMeeting").modal('hide');
     return false;
