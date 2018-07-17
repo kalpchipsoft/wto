@@ -55,7 +55,7 @@
         public const string Notification_ViewResponseDetails = "proc_NotificationViewResponseDetails";
 
         //Actions
-        public const string Notification_Actions = "proc_GetNotificationActions";
+        public const string Notification_ActionHistory = "proc_GetNotificationActionHistory";
         public const string Notification_EditAction = "proc_EditNotificationAction";
         public const string Notification_SendActionMail = "proc_SendActionMail";
         public const string Notification_ViewActionDetails = "proc_GetNotificationActionDetails";
@@ -131,8 +131,9 @@
         public const string EditMeeting = "Proc_GetEditNotificationMeeting";
         public const string UpdateMeetingDate = "Proc_UpdateMeetingDate";
 
+        public const string Notification_Actions = "proc_GetNotificationActions";
         public const string AddUpdateNotificationAction = "proc_AddRemoveNotificationAction";
-        
+
         public const string EndMeeting = "proc_EndCurrentMeeting";
         public const string CheckIfOpenMeetingExists = "proc_CheckIfOpenMeetingExists";
         public const string MeetingSummary = "proc_MeetingSummary";

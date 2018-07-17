@@ -319,14 +319,13 @@ namespace DataServices.WTO
                 return DAL.GetDataTable(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
-        public DataSet EditActions(Int64 Id, int ActionId)
+        public DataSet EditActions(Int64 Id)
         {
             using (SqlCommand sqlCommand = new SqlCommand())
             {
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = Procedures.Notification_Actions;
+                sqlCommand.CommandText = Procedures.Notification_ActionHistory;
                 sqlCommand.Parameters.AddWithValue("@NotificationId", Id);
-                sqlCommand.Parameters.AddWithValue("@ActionId", ActionId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }

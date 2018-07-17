@@ -1047,16 +1047,32 @@ a:hover, a:focus {
     border-top: none;
 }
 
-/*Integrated by ATul sir content 16 July 2018*/
-.tab .tab-content {
-    color: #6f6f6f;
-}
-
     .tab .tab-content h3 {
         font-size: 24px;
         color: #999898;
         margin-top: 0;
     }
+
+
+	
+
+.padding-right-20
+{
+	padding-right:20px !important;
+	text-align:right;
+}
+.textright
+{
+	text-align:right;
+}
+.padding-left-10
+{
+	padding-left: 15px !important;
+}
+.padding-left-35
+{
+	padding-left:35px !important;
+}
 
 @media only screen and (max-width: 480px) {
     .tab .nav-tabs li {
@@ -1132,7 +1148,6 @@ a:hover, a:focus {
         border-radius: 3px;
         overflow: hidden;
     }
-
     .addstackholderdialog {
         width: 96%;
     }
@@ -1167,8 +1182,8 @@ a:hover, a:focus {
         width: 150px !important;
     }
 
-    .bottom-offset-10-sm {
-        margin-bottom: 10px;
+    .bottom-offset-10-sm{
+        margin-bottom:10px;
     }
 
     element.style {
@@ -1178,6 +1193,36 @@ a:hover, a:focus {
         padding: 1px 3px 0px 4px;
         float: left;
     }
+	.small-sm-btn
+	{
+		display:block;
+		width:100%;
+		margin:0px;
+		margin-bottom:10px !important;
+	}
+	.subjecttext
+	{
+		margin: 0px;
+		padding-top: 10px;
+		display: block;
+	}
+	.padding-right-20
+	{
+		padding-right:0px !important;
+		text-align:left;
+	}
+	.textright
+	{
+		text-align:left;
+	}
+	.padding-left-10
+	{
+		padding-left:0px;
+	}
+	.padding-left-35
+	{
+		padding-left:0px;
+	}
 }
 
 .disabled {
@@ -1367,7 +1412,7 @@ span.note {
         font-size: .8em;
         line-height: 0;
         top: 50%;
-        left: 10%;
+        left: 20%;
     }
 
 .cr-small {
@@ -1609,7 +1654,7 @@ a.fileremove {
     font-weight: 100;
 }
 
-.sidebar-nav .dropdown-menu li a img {
+.sidebar-nav .dropdown-menu li a img{
     margin-left: 30px;
 }
 
@@ -1623,10 +1668,11 @@ table td {
 
 .multiselect-native-select .caret {
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 10px;
 }
 
 .multiselect-container {
     position: relative !important;
 }
+

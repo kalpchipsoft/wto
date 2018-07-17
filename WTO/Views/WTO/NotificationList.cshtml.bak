@@ -105,7 +105,7 @@ else
                     <div class="row" style="box-shadow: 0 0px 0 #fff, 0 1px 6px rgba(0,0,0, 0.1);">
                         <div class="col-xs-12 col-sm-12 col-md-12 top-offset-20">
                             <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 ">
-                                <div class="col-xs-12 col-sm-12 col-md-12 lightgraybg defaultdiv" style="border-radius:10px;">
+                                <div class="col-xs-12 col-sm-12 col-md-12 lightgraybg" style="border-radius:10px;">
                                     <div class="row top-offset-20">
                                         <div class="col-xs-12 col-sm-4 col-md-2">
                                             <div class="form-group">
@@ -307,7 +307,7 @@ else
                                         </div>
                                         <div id="DivBtn" class="bottom-offset-10">
                                             <a class="btn btn-red pull-right left-offset-10 bottom-offset-10" onclick="return Clear();"> <span class="glyphicon glyphicon-remove"></span> Clear</a>
-                                            <a class="btn btn-blue pull-right left-offset-10 bottom-offset-10 searchbtndiv" onclick="return SearchNotification(1);"> <span class="glyphicon glyphicon-search"></span> Search</a>
+                                            <a class="btn btn-blue pull-right left-offset-10 bottom-offset-10" onclick="return SearchNotification(1);"> <span class="glyphicon glyphicon-search"></span> Search</a>
                                             <a class="btn btn-blue pull-right left-offset-10 bottom-offset-10" onclick="return AdvanceSearch();"> <span id="GlySearch" class="glyphicon glyphicon-plus"></span> Advance Search</a>
                                         </div>
                                     </div>
@@ -497,16 +497,6 @@ else
         if ($(window).width() > 700) {
             $("table").fixMe();
         }
-        
-        $(".defaultdiv").bind('keydown', function (e) {
-            if (e.which === 13) {
-                $(".doAction").click();
-                $(this).find(".searchbtndiv").click();
-                return false;
-            }
-        });
-
-
     });
     $(window).scroll(function () {
         if (!$("#toggleOpenClose").hasClass("is-closed")) {
