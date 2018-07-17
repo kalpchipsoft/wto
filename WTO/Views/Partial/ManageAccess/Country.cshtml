@@ -2,6 +2,14 @@
 @{
     Layout = null;
 }
+
+<style type="text/css">
+    .table .whitebackground tr td 
+    {
+        padding-left:10px !important;
+    }
+</style>
+
 <input id="hdnCountryId" type="hidden" value="0" />
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -15,9 +23,9 @@
                         <th class="col-sm-4">Country Name</th>
                         <th class="text-center col-sm-2">SPS Enquiry Point</th>
                         <th class="text-center col-sm-2">TBT Enquiry Point</th>
-                        <th class="col-sm-1">Status</th>
-                        <th class="text-center col-sm-1">Edit</th>
-                        <th class="text-center col-sm-1">Delete</th>
+                        <th class="col-sm-1 padding-right-20">Status</th>
+                        <th class="col-sm-1 padding-right-20">Edit</th>
+                        <th class="col-sm-1 padding-right-20">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -42,14 +50,14 @@
                                 </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td class="col-sm-1">Active</td>
+                                    <td class="col-sm-1 textright">Active</td>
                                 }
                                 else
                                 {
-                                    <td class="col-sm-1">Inactive</td>
+                                    <td class="col-sm-1 textright">Inactive</td>
                                 }
-                                <td class="text-center col-sm-1"><a href="#" onclick="EditCountryData(@item.CountryId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.CountryName ?','Yes', 'No', 'DeleteCountry(@item.CountryId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="textright col-sm-1"><a href="#" onclick="EditCountryData(@item.CountryId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="textright col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.CountryName ?','Yes', 'No', 'DeleteCountry(@item.CountryId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }

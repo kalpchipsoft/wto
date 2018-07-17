@@ -171,7 +171,7 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>
-            <div class="modal-body selecthrbody" onkeydown="return temp.call(this,event);">
+            <div class="modal-body selecthrbody">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 selecthrbodyinner">
                         <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
@@ -200,9 +200,9 @@
                                 </div>
                             </div>
                             <div class='col-xs-12 col-sm-12 col-md-5' style="margin-top:25px;">
-                                <a class="btn btn-red pull-right small-sm-btn" onclick="return ClosePopup();" style="margin-left:15px;">Close</a>
-                                <a class="btn btn-dark-green pull-right small-sm-btn" style="margin-left:15px;" onclick="GetAllNotifications(this);" data-CallFor="All">Save</a>
-                                <a class="btn btn-blue pull-right small-sm-btn searchbtndiv" id="btnSearchPopUp"  onclick="GetFilterNotification(this);" data-CallFor="All|Popup">Search</a>
+                                <a class="btn btn-red pull-right" onclick="return ClosePopup();" style="margin-left:15px;">Close</a>
+                                <a class="btn btn-dark-green pull-right" style="margin-left:15px;" onclick="GetAllNotifications(this);" data-CallFor="All">Save</a>
+                                <a class="btn btn-blue pull-right" id="btnSearchPopUp"  onclick="GetFilterNotification(this);" data-CallFor="All|Popup">Search</a>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 top-offset-10">
@@ -275,17 +275,6 @@
             $(".fixedtable").fixMe();
         }
         autosize($(".AutoHeight"));
-
-        
-        $(".defaultdiv").bind('keydown', function (e) {
-            if (e.which === 13) {
-                $(".doAction").click();
-                $(this).find(".searchbtndiv").click();
-                return false;
-            }
-        });
-
-
     })
 
     $(window).scroll(function () {
@@ -293,17 +282,5 @@
             $("#toggleOpenClose").click();
         }
     });
-
-
-    function temp(e) {
-        debugger;
-        if (e.which === 13) {
-            $(".doAction").click();
-            $(this).find(".searchbtndiv").click();
-            return false;
-        }
-        else
-            return true;
-    }
 </script>
 

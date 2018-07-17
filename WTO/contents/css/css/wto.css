@@ -1053,6 +1053,27 @@ a:hover, a:focus {
         margin-top: 0;
     }
 
+
+	
+
+.padding-right-20
+{
+	padding-right:20px !important;
+	text-align:right;
+}
+.textright
+{
+	text-align:right;
+}
+.padding-left-10
+{
+	padding-left: 15px !important;
+}
+.padding-left-35
+{
+	padding-left:35px !important;
+}
+
 @media only screen and (max-width: 480px) {
     .tab .nav-tabs li {
         width: 100%;
@@ -1172,6 +1193,36 @@ a:hover, a:focus {
         padding: 1px 3px 0px 4px;
         float: left;
     }
+	.small-sm-btn
+	{
+		display:block;
+		width:100%;
+		margin:0px;
+		margin-bottom:10px !important;
+	}
+	.subjecttext
+	{
+		margin: 0px;
+		padding-top: 10px;
+		display: block;
+	}
+	.padding-right-20
+	{
+		padding-right:0px !important;
+		text-align:left;
+	}
+	.textright
+	{
+		text-align:left;
+	}
+	.padding-left-10
+	{
+		padding-left:0px;
+	}
+	.padding-left-35
+	{
+		padding-left:0px;
+	}
 }
 
 .disabled {
@@ -1624,3 +1675,4 @@ table td {
 .multiselect-container {
     position: relative !important;
 }
+

@@ -74,6 +74,12 @@ namespace WTO.Controllers
         {
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
+                if (obj.DateFrom == null)
+                    obj.DateFrom = "";
+                if (obj.DateTo == null)
+                    obj.DateTo = "";
+                ViewBag.FromDate = obj.DateFrom;
+                ViewBag.ToDate = obj.DateTo;
                 DashboardBusinessService objDBS = new DashboardBusinessService();
                 return View("~/Views/Partial/Dashboard/DashboardAction.cshtml", objDBS.GetDashboardAction(obj));
             }

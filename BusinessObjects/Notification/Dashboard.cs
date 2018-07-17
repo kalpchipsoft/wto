@@ -52,7 +52,8 @@ namespace BusinessObjects.Notification
         public Int32 NotificationCount { get; set; }
         public string Country { get; set; }
         public string ColorCode { get; set; }
-        public string CountryCode { get; set; } 
+        public string CountryCode { get; set; }
+        public string CountryId { get; set; }
     }
     public class HSCodeCountry
     {

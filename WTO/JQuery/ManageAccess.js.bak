@@ -199,7 +199,6 @@ function EditUserData(id) {
                 $('[id$=lnkRemoveImage]').hide();
                 UserImage = [];
             }
-            $('.error').removeClass('error');
         },
         failure: function (result) {
             Alert("Alert", "Something went wrong.<br/>", "Ok");
@@ -419,7 +418,6 @@ function AddNewCountry() {
 }
 
 function EditCountryData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddCountry").modal("show");
     $("#AddCountrypopupHead").text('Update Country');
@@ -653,7 +651,6 @@ function AddNewStackholder() {
 }
 
 function EditStakeHolderData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddStakeholder").modal("show");
     $("#AddStackholderpopupHead").text('Update Stakeholder');
@@ -907,7 +904,6 @@ function AddNewTranslator() {
 }
 
 function EditTranslatorData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddTranslator").modal("show");
     $("#AddTranslatorpopupHead").text('Update Translator');
@@ -1278,7 +1274,6 @@ function AddUpdateTemplate() {
 }
 
 function EditTemplate(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddTemplate").modal("show");
     $("#AddTemplatepopupHead").text('Update Template');
@@ -1337,6 +1332,7 @@ function DeleteTemplate(id) {
         },
         complete: function () {
             HideGlobalLodingPanel();
+            $("#Section6").load('ManageAccess/GetTemplateList');
         }
     });
 }
@@ -1592,7 +1588,6 @@ function AddNewInternalStackholder() {
 }
 
 function EditInternalTranslatorData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddInternalStakeholder").modal("show");
     $("#AddInternalStackholderpopupHead").text('Update Internal Stakeholder');
@@ -1765,7 +1760,6 @@ function AddNewRegulatoryBody() {
 }
 
 function EditRegulatoryBodyData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $("#AddRegulatoryBodies").modal("show");
     $("#AddRegulatoryBodiespopupHead").text('Update Regulatory Body');
@@ -1923,7 +1917,6 @@ function AddNewLanguage() {
 }
 
 function EditLanguageData(id) {
-    $('.error').removeClass('error');
     ShowGlobalLodingPanel();
     $('.error').removeClass('error');
     $("#AddLanguage").modal("show");

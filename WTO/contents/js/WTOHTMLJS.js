@@ -115,8 +115,8 @@ $(document).ready(function () {
             });
         }
     }
-    else
-        $('#toggleOpenClose').click();
+    //else
+    //    $('#toggleOpenClose').click();
 
     // <!-- Active menu binding start-->
     var _PageName = $.trim($('.topbg').text());

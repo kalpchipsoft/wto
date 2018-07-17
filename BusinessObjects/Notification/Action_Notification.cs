@@ -17,6 +17,7 @@ namespace BusinessObjects.Notification
     }
     public class NotificationAction : ActionMaster
     {
+        public Int64 MeetingId { get; set; }
         public Int64 NotificationActionId { get; set; }
         public string RequiredOn { get; set; }
     }
@@ -28,76 +29,29 @@ namespace BusinessObjects.Notification
         public string MailTo { get; set; }
         public Notification_Template MailDetails { get; set; }
         public List<EditAttachment> Attachments { get; set; }
-
         public Int64 ResponseId { get; set; }
+
     }
 
     public class NotificationActions
     {
         public Int64 NotificationId { get; set; }
-        public Int64 MeetingId { get; set; }
-        public string NotificationNumber { get; set; }
-        public string NotificationTitle { get; set; }
-        public string MeetingDate { get; set; }
-        public bool IsUpdate { get; set; }
-        public string MeetingNotes { get; set; }
-        public bool RetainedForNextDiscussion { get; set; }
+        public List<NotificationMeeting> Meetings { get; set; }
+        //public string NotificationNumber { get; set; }
+        //public string NotificationTitle { get; set; }
+        //public string MeetingDate { get; set; }
+        //public bool IsUpdate { get; set; }
+        //public string MeetingNotes { get; set; }
+        //public bool RetainedForNextDiscussion { get; set; }
         public List<NotificationActionDetail> Actions { get; set; }
     }
 
-    public class AddNotificationAction
+    public class NotificationMeeting
     {
-        [Required]
-        public DateTime Meetingdate { get; set; }
-
-        [Required]
-        public Int64 NotificationId { get; set; }
-
-        [Required]
-        public List<NotificationAction> Actions { get; set; }
-
-        [Required]
-        public string MeetingNote { get; set; }
-
-        public string NotificationGroup { get; set; }
-        public string ActionXML
-        {
-            get
-            {
-                //Blank Namespace
-                XmlSerializerNamespaces Namespace = new XmlSerializerNamespaces();
-                Namespace.Add(string.Empty, string.Empty);
-
-                //Remove xml declaration
-                XmlWriterSettings xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Encoding = Encoding.UTF8;
-
-                //Stream to hold the serialize xml
-                StringWriter sw = new StringWriter();
-
-                XmlWriter xw = XmlWriter.Create(sw, xws);
-
-                //Create Serializer object for required Class
-                XmlSerializer serializer = new XmlSerializer(typeof(List<NotificationAction>), new XmlRootAttribute("NotificationActions"));
-                serializer.Serialize(xw, Actions, Namespace);
-
-                //Load XML to document
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(sw.ToString());
-                return doc.InnerXml;
-            }
-        }
+        public Int64 MeetingId { get; set; }
+        public string MeetingDate { get; set; }
+        public bool IsActive { get; set; }
     }
-
-    //public class EditNotificationAction
-    //{
-    //    [Required]
-    //    public Int64 NotificationId { get; set; }
-
-    //    [Required]
-    //    public Int64 NotificationActionId { get; set; }
-    //}
 
     public class AddNotificationAction_Output
     {

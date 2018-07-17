@@ -88,7 +88,7 @@
                                                             else if (_Action.ActionId == 4 || _Action.ActionId == 5)
                                                             {
                                                                 <td class="text-center width-12">
-                                                                    <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
+                                                                    <a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,ActionId=item.ActionId })">@_Action.TotalCount</a>
                                                                 </td>
                                                             }
                                                             else
@@ -96,7 +96,7 @@
                                                                 <td class="text-center width-12">
                                                                     @if (_Action.PendingCount > 0)
                                                                     {
-                                                                        <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionStatus=9,ActionId=_Action.ActionId })"><span class="red-color">@_Action.PendingCount</span></a>
+                                                                        <a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,ActionId=item.ActionId,CallFor="Pending" })"><span class="red-color">@_Action.PendingCount</span></a>
                                                                     }
                                                                     else
                                                                     {
@@ -105,7 +105,7 @@
                                                                     /
                                                                     @if (_Action.TotalCount > 0)
                                                                     {
-                                                                        <a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 15, MeetingDate=obj.MeetingDate,ActionId=_Action.ActionId })">@_Action.TotalCount</a>
+                                                                        <a href="@Url.Action("Edit", "MoM", new { Id = obj.MoMId,ActionId=item.ActionId,CallFor="" })">@_Action.TotalCount</a>
                                                                     }
                                                                     else
                                                                     {
@@ -142,7 +142,7 @@
 <!-- body section End -->
 
 <div class="modal fade selecthrmodal" id="ModelMeetingSummary" role="dialog" data-backdrop="static" data-keyboard="false">
-    @{ Html.RenderAction("GetMOMSummary", "MoM", new { Id = 6 }); }
+    @{ Html.RenderAction("GetMOMSummary", "MoM", new { Id = 0 }); }
 </div>
 
 <script type="text/javascript">

@@ -170,66 +170,6 @@ function ValidateActionStatus(Status) {
     }
 }
 
-function BindRegulatoryBodies() {
-    $.ajax({
-        url: "/API/Masters/GetRegulatoryBodies",
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            $('[Id$=ddlTo]').multiselect('destroy');
-            $('[Id$=ddlTo]').empty();
-            $.each(result, function (i, v) {
-                $('[Id$=ddlTo]').append('<option value="' + v.Email + '"> ' + v.Name + ' </option>');
-            });
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            $('[Id$=ddlTo]').multiselect({
-                maxHeight: 150,
-                enableFiltering: true,
-                numberDisplayed: 1,
-                nonSelectedText: '--Select Recipients--'
-            });
-        }
-    });
-}
-
-function BindInternalStakeholders() {
-    $.ajax({
-        url: "/API/Masters/GetInternalStakeHolder",
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            $('[Id$=ddlTo]').multiselect('destroy');
-            $('[Id$=ddlTo]').empty();
-            $.each(result, function (i, v) {
-                $('[Id$=ddlTo]').append('<option value="' + v.Email + '"> ' + v.Name + ' </option>');
-            });
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            $('[Id$=ddlTo]').multiselect({
-                maxHeight: 150,
-                enableFiltering: true,
-                numberDisplayed: 1,
-                nonSelectedText: '--Select Recipients--'
-            });
-        }
-    });
-}
-
 function ViewAction(Id, ctrl) {
     $('[id$=lblMailMessage]').text('');
     $('[id$=lblMailMessage1]').text('');

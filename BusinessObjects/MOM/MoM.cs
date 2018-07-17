@@ -17,6 +17,7 @@ namespace BusinessObjects.MOM
         public string SelectedNotifications { get; set; }
         public string ExistingNotifications { get; set; }
         public string SearchText { get; set; }
+        public int ActionId { get; set; }
     }
     public class Action
     {

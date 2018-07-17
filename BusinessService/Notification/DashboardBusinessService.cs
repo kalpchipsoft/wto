@@ -104,6 +104,7 @@ namespace BusinessService.Notification
                         objD.Country = Convert.ToString(dr["Country"]);
                         objD.ColorCode = Convert.ToString(dr["ColorCode"]);
                         objD.CountryCode = Convert.ToString(dr["CountryCode"]);
+                        objD.CountryId = Convert.ToString(dr["CountryId"]);
                         objHSCodeCountryList.Add(objD);
                     }
                     objHSCodeCountry.objHSCodeCountryData = objHSCodeCountryList;

@@ -55,6 +55,7 @@ namespace DataServices.WTO
                 sqlCommand.Parameters.AddWithValue("@MoMId", Id);
                 sqlCommand.Parameters.AddWithValue("@CallFor", obj.callFor);
                 sqlCommand.Parameters.AddWithValue("@SearchText", obj.SearchText);
+                sqlCommand.Parameters.AddWithValue("@ActionId", obj.ActionId);
                 return DAL.GetDataSet(ConfigurationHelper.connectionString, sqlCommand);
             }
         }
