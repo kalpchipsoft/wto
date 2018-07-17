@@ -13,12 +13,31 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Ionic.Zip;
 using iTextSharp.text.html.simpleparser;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace BusinessService.Notification
 {
     public class NotificationBusinessService
     {
         #region "Add/Edit Notification"
+
+         #region "Google Translate"
+        public string TranslateLanguage(string sourceLang, string strToConvert)
+        {
+            string ResultData = string.Empty;
+
+            string url = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyArABWkFf_3qQRfXBFmY8n2RdwGvG-FFfI";
+            url += "&source=" + sourceLang + "&target=EN";
+            url += "&q=" + strToConvert.Trim();
+            //url += "&q=" + Server.UrlEncode(strToConvert.Trim());
+            WebClient client = new WebClient();
+            string json = client.DownloadString(url);
+            JsonData jsonData = (new JavaScriptSerializer()).Deserialize<JsonData>(json);
+            ResultData = jsonData.Data.Translations[0].TranslatedText;
+            return ResultData;
+        }
+        #endregion "Google Translate"
         public AddNoti_Result InsertUpdateNotification(AddNotification obj)
         {
             AddNoti_Result objR = new AddNoti_Result();
@@ -3404,11 +3423,12 @@ namespace BusinessService.Notification
 
             return MeetingNote;
         }
-        public NotificationActions GetNotificationActions(Int64 Id, int ActionId)
+        public NotificationActions GetNotificationActions(Int64 Id)
         {
             NotificationActions objNA = new NotificationActions();
             NotificationDataManager objDM = new NotificationDataManager();
-            DataSet ds = objDM.EditActions(Id, ActionId);
+            DataSet ds = objDM.EditActions(Id);
+            objNA.NotificationId = Id;
             if (ds != null)
             {
                 int tblIndex = -1;
@@ -3416,16 +3436,16 @@ namespace BusinessService.Notification
                 tblIndex++;
                 if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
                 {
+                    List<NotificationMeeting> MeetingList = new List<NotificationMeeting>();
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
-                        objNA.NotificationId = Convert.ToInt64(dr["NotificationId"]);
-                        objNA.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
-                        objNA.NotificationTitle = Convert.ToString(dr["Title"]);
-                        objNA.MeetingDate = Convert.ToString(dr["MeetingDate"]);
-                        objNA.IsUpdate = Convert.ToBoolean(dr["IsUpdate"]);
-                        objNA.MeetingNotes = Convert.ToString(dr["MeetingNote"]);
-                        objNA.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
+                        NotificationMeeting meeting = new NotificationMeeting();
+                        meeting.MeetingId = Convert.ToInt64(dr["MeetingId"]);
+                        meeting.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        meeting.IsActive = Convert.ToBoolean(dr["IsActive"]);
+                        MeetingList.Add(meeting);
                     }
+                    objNA.Meetings = MeetingList;
                 }
 
                 tblIndex++;
@@ -3435,14 +3455,13 @@ namespace BusinessService.Notification
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
                         NotificationActionDetail objNotificationAction = new NotificationActionDetail();
+                        objNotificationAction.MeetingId = Convert.ToInt64(dr["MeetingId"]);
                         objNotificationAction.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.Action = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.EnteredOn = Convert.ToString(dr["EnteredOn"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
-                        objNotificationAction.MailTo = Convert.ToString(dr["MailTo"]);
                         NotificationActionList.Add(objNotificationAction);
                     }
                     objNA.Actions = NotificationActionList;

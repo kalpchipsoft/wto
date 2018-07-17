@@ -704,23 +704,23 @@ a, a:hover, a:focus, a:active {
 
 /* bottom offset start */
 .bottom-offset-50 {
-    margin-bottom: 50px;
+    margin-bottom: 50px !important;
 }
 
 .bottom-offset-40 {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 
 .bottom-offset-30 {
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
 }
 
 .bottom-offset-20 {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
 
 .bottom-offset-10 {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 
 .Accordian-panel {
@@ -1273,6 +1273,7 @@ a, a:hover, a:focus, a:active {
     background: #016eac;
     padding: 0px 8px 2px 8px;
     color: #fff;
+    height: 22px;
     min-width: 40px;
     max-width: 100px;
     text-align: center;
@@ -1465,4 +1466,8 @@ a, a:hover, a:focus, a:active {
 
 .width-10 {
     width: 10%;
+}
+
+.vertical-middle {
+    vertical-align: middle !important;
 }

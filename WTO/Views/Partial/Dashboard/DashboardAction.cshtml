@@ -37,7 +37,7 @@
                                         </td>
                                         @if (@ac.Total > 0)
                                         {
-                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId })">@ac.Total</a></span></td>  @*class="sky-blue"*@
+                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId,DateofNotification_From=ViewBag.FromDate, DateofNotification_To=ViewBag.ToDate })">@ac.Total</a></span></td>  @*class="sky-blue"*@
                                         }
                                         else
                                         {
@@ -45,7 +45,7 @@
                                         }
                                         @if (@ac.Completed > 0)
                                         {
-                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId, ActionStatus=11 })">@ac.Completed</a></td>
+                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId, ActionStatus=11,DateofNotification_From=ViewBag.FromDate, DateofNotification_To=ViewBag.ToDate })">@ac.Completed</a></td>
                                         }
                                         else
                                         {
@@ -53,7 +53,7 @@
                                         }
                                         @if (@ac.Pending > 0)
                                         {
-                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId,ActionStatus=9 })">@ac.Pending</a></td>
+                                            <td class="text-center"><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10, ActionId = ac.ActionId,ActionStatus=9,DateofNotification_From= ViewBag.FromDate, DateofNotification_To = ViewBag.ToDate })">@ac.Pending</a></td>
                                         }
                                         else
                                         {
@@ -61,7 +61,7 @@
                                         }
                                         @if (@ac.Overdue > 0)
                                         {
-                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10,ActionId = ac.ActionId,ActionStatus=10 })">@ac.Overdue</a></span></td>  @*class="light-golden-yellow"*@
+                                            <td class="text-center"><span><a href="@Url.Action("Index", "NotificationList",new { PageIndex = 1, PageSize = 10,ActionId = ac.ActionId,ActionStatus=10,DateofNotification_From= ViewBag.FromDate, DateofNotification_To = ViewBag.ToDate })">@ac.Overdue</a></span></td>  @*class="light-golden-yellow"*@
                                         }
                                         else
                                         {

@@ -29,13 +29,13 @@
                                 <td class="width-25">@item.Language </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td class="width-25">Active</td>
+                                    <td class="width-25 padding-left-10">Active</td>
                                 }
                                 else
                                 {
-                                    <td class="width-25">Inactive</td>
+                                    <td class="width-25 padding-left-10">Inactive</td>
                                 }
-                                <td class="text-center width-25"><a href="#" onclick="EditLanguageData(@item.LanguageId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="text-center padding-left-35 width-25"><a href="#" onclick="EditLanguageData(@item.LanguageId);"><span class="glyphicon glyphicon-edit"></span></a></td>
                                 @*<td class="text-center"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteInternalTranslator(@item.InternalStakeholdersId)');"><span class="glyphicon glyphicon-trash"></span></a>*@
                                
                             </tr>
@@ -118,6 +118,7 @@
 
         $(".defaultdiv").bind('keydown', function (e) {
             if (e.which === 13) {
+                $(".doAction").click();
                 $(this).find(".searchbtndiv").click();
                 return false;
             }

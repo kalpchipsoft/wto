@@ -19,21 +19,28 @@
                     <div class="col-xs-12 col-sm-6 col-md-4">
                         <div class="col-xs-12 col-sm-12 shadowbox">
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                                <h1 class="totaltext">@(Model.objRequestForFullText.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                               @if (Model.objRequestForFullText.Count > 0)
+                               {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 22,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@Model.objRequestForFullText[0].Count</a><sub class="subtext">Total</sub></h1>
+                               }
+                               else
+                               {
+                                <h1 class="totaltext">0<sub class="subtext">Total</sub></h1>
+                               }
                             </div>
                             <div class="row bottom-border">
                                 <div class="col-xs-12 col-sm-12">
                                     <div class="row top-offset-10">
-                                        @if (Model.objRequestForFullText.Count > 0)
+                                        @if (Model.objRequestForFullText.Count > 1)
                                         {
-                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[0].Text</p></div>
-                                            if (Convert.ToInt32(Model.objRequestForFullText[0].Count) > 0)
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[1].Text</p></div>
+                                            if (Convert.ToInt32(Model.objRequestForFullText[1].Count) > 0)
                                             {
-                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objRequestForFullText[0].Count</a></p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 23,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@Model.objRequestForFullText[1].Count</a></p></div>
                                             }
                                             else
                                             {
-                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[0].Count</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[1].Count</p></div>
                                             }
                                         }
                                         else
@@ -47,16 +54,16 @@
                             <div class="row bottom-border">
                                 <div class="col-xs-12 col-sm-12">
                                     <div class="row top-offset-10">
-                                        @if (Model.objRequestForFullText.Count > 1)
+                                        @if (Model.objRequestForFullText.Count > 2)
                                         {
-                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[1].Text</p></div>
-                                            if (Convert.ToInt32(Model.objRequestForFullText[1].Count) > 0)
+                                            <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForFullText[2].Text</p></div>
+                                            if (Convert.ToInt32(Model.objRequestForFullText[2].Count) > 0)
                                             {
-                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objRequestForFullText[1].Count</a></p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 13,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@Model.objRequestForFullText[2].Count</a></p></div>
                                             }
                                             else
                                             {
-                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[1].Count</p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p>@Model.objRequestForFullText[2].Count</p></div>
                                             }
                                         }
                                         else
@@ -80,7 +87,14 @@
                     <div class="col-xs-12 col-sm-6 col-md-4 sm-top-offset-20">
                         <div class="col-xs-12 col-sm-12 shadowbox">
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                                <h1 class="totaltext">@(Model.objRequestForTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) <sub class="subtext">Total</sub></h1>
+                                @if (Model.objRequestForTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0")) > 0)
+                                {
+                                    <h1 class="totaltext"><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 24,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@(Model.objRequestForTranslation.Sum(x => Int32.Parse(x.Count.Length > 0 ? x.Count : "0"))) </a><sub class="subtext">Total</sub></h1>
+                                }
+                                else
+                                {
+                                    <h1 class="totaltext">0<sub class="subtext">Total</sub></h1>
+                                }
                             </div>
                             <div class="row bottom-border">
                                 <div class="col-xs-12 col-sm-12">
@@ -90,7 +104,7 @@
                                             <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForTranslation[0].Text</p></div>
                                             if (Convert.ToInt32(Model.objRequestForTranslation[0].Count) > 0)
                                             {
-                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objRequestForTranslation[0].Count</a></p></div>
+                                                <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 25,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@Model.objRequestForTranslation[0].Count</a></p></div>
                                             }
                                             else
                                             {
@@ -113,7 +127,7 @@
                                             <div class="col-xs-8 col-sm-8"><p>@Model.objRequestForTranslation[1].Text</p></div>
                                             if (Convert.ToInt32(Model.objRequestForTranslation[1].Count) > 0)
                                             {
-                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 1 })">@Model.objRequestForTranslation[1].Count</a></p></div>
+                                            <div class="col-xs-4 col-sm-4 text-right processingcount"><p><a href="@Url.Action("Index", "NotificationList", new { PageIndex = 1, PageSize = 10, StatusId = 15,DateofNotification_From=ViewBag.FromDate,DateofNotification_To=ViewBag.ToDate })">@Model.objRequestForTranslation[1].Count</a></p></div>
                                             }
                                             else
                                             {

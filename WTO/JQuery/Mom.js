@@ -703,68 +703,6 @@ function closeModalAddAction(ctrl) {
     }
 }
 
-function BindRegulatoryBodies() {
-    $.ajax({
-        url: "/API/Masters/GetRegulatoryBodies",
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            // $('[Id$=ddlTo]').multiselect('destroy');
-            //$('[Id$=ddlTo]').multiselect('refresh');
-            $('[Id$=ddlTo]').empty();
-            $.each(result, function (i, v) {
-                $('[Id$=ddlTo]').append('<option value="' + v.Email + '"> ' + v.Name + ' </option>');
-            });
-        },
-        complete: function () {
-            $('[Id$=ddlTo]').multiselect({
-                maxHeight: 150,
-                enableFiltering: true,
-                numberDisplayed: 1,
-                nonSelectedText: '--Select Recipients--'
-            });
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        }
-
-    });
-}
-
-function BindInternalStakeholders() {
-    $.ajax({
-        url: "/API/Masters/GetInternalStakeHolder",
-        async: false,
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            $('[Id$=ddlTo]').multiselect('destroy');
-            $('[Id$=ddlTo]').empty();
-            $.each(result, function (i, v) {
-                $('[Id$=ddlTo]').append('<option value="' + v.Email + '"> ' + v.Name + ' </option>');
-            });
-        },
-        failure: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        error: function (result) {
-            Alert("Alert", "Something went wrong.<br/>", "Ok");
-        },
-        complete: function () {
-            $('[Id$=ddlTo]').multiselect({
-                maxHeight: 150,
-                enableFiltering: true,
-                numberDisplayed: 1,
-                nonSelectedText: '--Select Recipients--'
-            });
-        }
-    });
-}
-
 function OpenAddNote(NotificationId) {
     $("#AddNote").modal('show');
     GetMeetingNote(NotificationId);
@@ -814,7 +752,7 @@ function EditNotificationActions(ctrl) {
 }
 
 function CloseMeeting() {
-    Confirm('Close meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action ?', 'Yes', 'No', 'OpenObservationPopUp()');
+    Confirm('Close meeting', 'Do you want to close current meeting and retain notifications of this meeting for next meeting, if pending for action?', 'Yes', 'No', 'OpenObservationPopUp()');
     return false;
 }
 
@@ -841,10 +779,12 @@ function SaveObservationAndCloseMeeting() {
             if (result) {
                 Alert("Alert", "Meeting has been successfully closed.<br/>", "Ok");
                 $("#ModelEndMeeting").modal('hide');
-                //location.href = window.location.origin + "/MoM/Add/0";
-                $("#ModelMeetingSummary").load('MoM/GetMOMSummary/' + MoMId);
-                $("#hdnCloseMOMSummary").val('EndMeeting');
-                $("#ModelMeetingSummary").modal('show');
+                $('#ModelMeetingSummary').load('/MoM/GetMOMSummary/' + MoMId, function (responseTxt, statusTxt, xhr) {
+                    if (statusTxt == "success") {
+                        $("#hdnCloseMOMSummary").val('EndMeeting');
+                        $("#ModelMeetingSummary").modal('show');
+                    }
+                });
             }
             else
                 Alert("Alert", "Error occured", "Ok");

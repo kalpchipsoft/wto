@@ -16,9 +16,9 @@
                         <th class="text-center col-sm-2">Email</th>
                         <th class="text-center col-sm-2">Address</th>
                         <th class="text-center col-sm-2">Contact</th>
-                        <th class="col-sm-1">Status</th>
-                        <th class="text-center col-sm-1">Edit</th>
-                        <th class="text-center col-sm-1">Delete</th>
+                        <th class="col-sm-1 padding-right-20">Status</th>
+                        <th class="padding-right-20 col-sm-1">Edit</th>
+                        <th class="padding-right-20 col-sm-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -40,14 +40,14 @@
                                 </td>
                                 @if (@item.Status == 1)
                                 {
-                                    <td class="col-sm-1">Active</td>
+                                    <td class="col-sm-1 textright">Active</td>
                                 }
                                 else
                                 {
-                                    <td class="col-sm-1">Inactive</td>
+                                    <td class="col-sm-1 textright">Inactive</td>
                                 }
-                                <td class="text-center col-sm-1"><a href="#" onclick="EditRegulatoryBodyData(@item.RegulatoryBodyId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteRegulatoryBody(@item.RegulatoryBodyId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="textright col-sm-1"><a href="#" onclick="EditRegulatoryBodyData(@item.RegulatoryBodyId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="textright col-sm-1"><a href="#" class='@(@item.IsInUse? "hidden":"")' onclick="Confirm('Delete','Do you want to delete the @item.Name ?','Yes', 'No', 'DeleteRegulatoryBody(@item.RegulatoryBodyId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -146,6 +146,7 @@
 
         $(".defaultdiv").bind('keydown', function (e) {
             if (e.which === 13) {
+                $(".doAction").click();
                 $(this).find(".searchbtndiv").click();
                 return false;
             }

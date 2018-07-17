@@ -78,7 +78,7 @@
                     <div class="row top-offset-20">
                         @if (@Model.MeetingDate != null)
                         {
-                            <div class="col-xs-12 col-sm-5 col-md-2">
+                            <div class="col-xs-6 col-sm-5 col-md-2">
                                 <label>Meeting Date </label><span class="pull-right hidden-xs">:</span>
                             </div>
                             <div class="form-group has-feedback ">
@@ -87,19 +87,19 @@
                                     <input type="hidden" value="@Model.MoMId" id="hdnMomId" />
                                     <a onclick="return OpenMeetingDatePopup();" style="margin-left:2%; font-size:10px;">Edit</a>
                                 </div>
-                                <div class="col-md-7 col-sm-12">
+                                <div class="col-xs-12 col-md-7 col-sm-12">
                                     @{
                                         var id = Request.Url.Segments[3];
                                         if (Convert.ToInt32(id) > 0)
                                         {
-                                            <a class="btn btn-blue pull-right btn-padding addsavenotification " hidden"" style="margin-left:4%" href="@Url.Action("Index", "MoM")"><img src="/contents/img/back-16.png"> Back </a>
+                                            <a class="btn btn-blue pull-right btn-padding addsavenotification" href="@Url.Action("Index", "MoM")" style="margin-left:2%;"><img src="/contents/img/back-16.png"> Back </a>
                                         }
-                                        else
+
+                                        if (Model.IsActive)
                                         {
-                                            <a onclick="return CloseMeeting();" class="btn btn-blue pull-right" style="margin-right:4%"><b>Close meeting</b></a>
+                                            <a onclick="return CloseMeeting();" class="btn btn-blue pull-right"><b>Close meeting</b></a>
                                         }
                                     }
-                                    <button id="btnSaveUpdate" class="btn btn-dark-green pull-right btn-padding addsavenotification hidden" onclick="return Validate();"><img src="/contents/img/save.png"> @(Model.MoMId > 0 ? "Update" : "Save")</button>
                                 </div>
                             </div>
                         }

@@ -621,6 +621,7 @@
     <Content Include="contents\css\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="contents\css\fonts\Lato-Regular.ttf" />
     <Content Include="contents\css\fonts\Verdana.ttf" />
+    <Content Include="scripts\chosen.jquery.min.js" />
     <Content Include="Views\MoM\Edit.cshtml" />
     <Content Include="Views\WTO\WTODashboard.cshtml" />
     <Content Include="XceptionLog.txt" />

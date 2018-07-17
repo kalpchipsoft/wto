@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-6 top-offset-10">
                                         <div class="btngroup">
-                                            <a id="btnSection1" class="btn btn-Section1 Active  ActiveTab" href="#Section1" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">MOM</a>
+                                            <a id="btnSection1" class="btn btn-Section1 Active  ActiveTab" href="#Section1" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">MoM</a>
                                             <a id="btnSection2" class="btn btn-Section2 ActiveTab" href="#Section2" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">Annexure 1 A</a>
                                             <a id="btnSection3" class="btn btn-Section3 ActiveTab" href="#Section3" role="tab" data-toggle="tab" onclick="checkActiveTab(this);">Annexure 1 B</a>
                                         </div>
@@ -218,14 +218,7 @@
                                             </div>
                                             <div class="tab-pane" id="Section2">
                                                 <p class="wto-label-bold">
-                                                    TBT Notifications (
-                                                    @if (@Model != null && @Model.MoMList.Count > 0)
-                                                    {
-                                                        foreach (var item in @Model.MoMList)
-                                                        {
-                                                            @item.TBTNotificationCount
-                                                        }
-                                                    })
+                                                    TBT Notifications (@((Model != null && @Model.MoMList.Count > 0) ? Model.MoMList.FirstOrDefault().TBTNotificationCount : 0))
                                                 </p>
                                                 @if (Model.TBTNotificationList != null && Model.TBTNotificationList.Count > 0)
                                                 {
@@ -271,18 +264,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                                            }
-                                                                        }
+                                                    }
+                                                }
                                             </div>
                                             <div class="tab-pane" id="Section3">
                                                 <p class="wto-label-bold">
-                                                    SPS Notifications ( @if (@Model != null && @Model.MoMList.Count > 0)
-                                                    {
-                                                        foreach (var item in @Model.MoMList)
-                                                        {
-                                                            @item.SPSNotificationCount
-                                                        }
-                                                    } )
+                                                    SPS Notifications (@((Model != null && @Model.MoMList.Count > 0) ? Model.MoMList.FirstOrDefault().SPSNotificationCount : 0))
                                                 </p>
                                                 @if (Model.SPSNotificationList != null && Model.SPSNotificationList.Count > 0)
                                                 {
@@ -328,10 +315,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                                            }
-                                                                        }
+                                                    }
+                                                }
                                             </div>
-                                                                        }
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -531,7 +518,7 @@
 
                                     @item.TBTNotificationCount
                                 }
-                            } )
+                            })
                         </td>
                     </tr>
                     <tr>

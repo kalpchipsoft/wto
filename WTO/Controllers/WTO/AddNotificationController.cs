@@ -42,7 +42,7 @@ namespace WTO.Controllers.WTO
                 return View("~/Views/Partial/StakeHolderList.cshtml", obj.GetStakeHoldersMaster(SearchText));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetStakeholderConversation(Int64 NotificationId, Int64 StakeholderId)
         {
@@ -59,10 +59,10 @@ namespace WTO.Controllers.WTO
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id, 0));
+                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id));
             }
             else
-                return RedirectToAction("Index", "Login");
+                return PartialView("RedirectToLogin");
         }
         public ActionResult GetNotificationMails(Int64 Id)
         {
