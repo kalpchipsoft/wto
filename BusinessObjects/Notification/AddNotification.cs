@@ -467,4 +467,19 @@ namespace BusinessObjects.Notification
         public int NotificationId { get; set; }
         public string MeetingNote { get; set; }
     }
+
+    #region "Google Translate"
+    public sealed class JsonData
+    {
+        public Data Data { get; set; }
+    }
+    public sealed class Data
+    {
+        public List<Translation> Translations { get; set; }
+    }
+    public sealed class Translation
+    {
+        public string TranslatedText { get; set; }
+    }
+    #endregion "Google Translate"
 }

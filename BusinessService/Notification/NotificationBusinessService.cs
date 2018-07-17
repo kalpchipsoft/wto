@@ -13,12 +13,31 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Ionic.Zip;
 using iTextSharp.text.html.simpleparser;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace BusinessService.Notification
 {
     public class NotificationBusinessService
     {
         #region "Add/Edit Notification"
+
+         #region "Google Translate"
+        public string TranslateLanguage(string sourceLang, string strToConvert)
+        {
+            string ResultData = string.Empty;
+
+            string url = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyArABWkFf_3qQRfXBFmY8n2RdwGvG-FFfI";
+            url += "&source=" + sourceLang + "&target=EN";
+            url += "&q=" + strToConvert.Trim();
+            //url += "&q=" + Server.UrlEncode(strToConvert.Trim());
+            WebClient client = new WebClient();
+            string json = client.DownloadString(url);
+            JsonData jsonData = (new JavaScriptSerializer()).Deserialize<JsonData>(json);
+            ResultData = jsonData.Data.Translations[0].TranslatedText;
+            return ResultData;
+        }
+        #endregion "Google Translate"
         public AddNoti_Result InsertUpdateNotification(AddNotification obj)
         {
             AddNoti_Result objR = new AddNoti_Result();

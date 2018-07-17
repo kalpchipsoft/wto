@@ -1047,6 +1047,11 @@ a:hover, a:focus {
     border-top: none;
 }
 
+/*Integrated by ATul sir content 16 July 2018*/
+.tab .tab-content {
+    color: #6f6f6f;
+}
+
     .tab .tab-content h3 {
         font-size: 24px;
         color: #999898;
@@ -1127,6 +1132,7 @@ a:hover, a:focus {
         border-radius: 3px;
         overflow: hidden;
     }
+
     .addstackholderdialog {
         width: 96%;
     }
@@ -1161,8 +1167,8 @@ a:hover, a:focus {
         width: 150px !important;
     }
 
-    .bottom-offset-10-sm{
-        margin-bottom:10px;
+    .bottom-offset-10-sm {
+        margin-bottom: 10px;
     }
 
     element.style {
@@ -1361,7 +1367,7 @@ span.note {
         font-size: .8em;
         line-height: 0;
         top: 50%;
-        left: 20%;
+        left: 10%;
     }
 
 .cr-small {
@@ -1603,7 +1609,7 @@ a.fileremove {
     font-weight: 100;
 }
 
-.sidebar-nav .dropdown-menu li a img{
+.sidebar-nav .dropdown-menu li a img {
     margin-left: 30px;
 }
 
@@ -1617,7 +1623,7 @@ table td {
 
 .multiselect-native-select .caret {
     position: absolute;
-    top: 10px;
+    top: 0;
     right: 10px;
 }
 

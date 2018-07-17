@@ -10,18 +10,26 @@
 <script>
     var arrayHScode = [];
     var colors=[];
+    var arrayCountryCode=[];
     arrayHScode.push(['Task', 'HSCode',{ role: "style"}]);
+    arrayCountryCode.push(['CountryCode','CountryId']);
     function BindArray(Task,HSCode,ColorCode)
     {   
         arrayHScode.push([Task, HSCode,ColorCode]);
         colors.push([Task,ColorCode]);
     }
+    function BindArrayCountryCode(CountryCode,CountryId)
+    {
+        arrayCountryCode.push([CountryCode,CountryId]);
+    }
+
 </script>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="hscodecount">
                 <p>For HS Code  @Model.HSCode</p>
+                <input type="hidden"  id="hdnHscode" value="@Model.HSCode"/>
                 <p>Notifications &nbsp;&nbsp;&nbsp; @(Model.objHSCodeCountryData.Sum(x => x.NotificationCount)) &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp; @Model.CountryCount &nbsp;&nbsp;&nbsp; Countries  </p>
             </div>
             <div id="piechart" style="width:100%;height:400px;"></div>
@@ -31,7 +39,8 @@
                     @foreach (BusinessObjects.Notification.HSCodeCountryData ac in Model.objHSCodeCountryData)
                     {
                             <script>
-                            BindArray('@ac.Country',@ac.NotificationCount,'@ac.ColorCode');
+                                BindArray('@ac.Country',@ac.NotificationCount,'@ac.ColorCode');
+                                BindArrayCountryCode('@ac.Country','@ac.CountryId');
                             </script>
                     <div class="col-xs-6 col-sm-4">
                         <div class="legend" style="background:@ac.ColorCode"></div>

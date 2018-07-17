@@ -1324,8 +1324,6 @@ function DeleteTemplate(id) {
             }
             else
                 Alert("Alert", "Something went wrong. Please try again.<br\>", "Ok");
-
-            $("#Section4").load('ManageAccess/GetTemplateList');
         },
         failure: function (result) {
             Alert("Alert", "Something went wrong.<br\>", "Ok");
@@ -1335,6 +1333,9 @@ function DeleteTemplate(id) {
         },
         complete: function () {
             HideGlobalLodingPanel();
+            setTimeout(function () {
+                $("#Section6").load('ManageAccess/GetTemplateList');
+            }, 300);
         }
     });
 }
@@ -1477,10 +1478,12 @@ function ShowHideSubject(ctrl) {
         $('[id$=divSubject]').removeClass('hidden');
 }
 /******************************Translator Section End****************/
+
 /****************************** Internal StackHolder Section Start ****************/
 function InternalStackHolderTabClick() {
     $("#Section7").load('ManageAccess/GetInternalStackHolderList');
 }
+
 function AddInternalStackHolderPopup() {
     $("#InternalStakeholderSaveUpdate").text('Save');
     $("#AddInternalStackholderpopupHead").text('Add Internal Stakeholder');
@@ -1492,6 +1495,7 @@ function AddInternalStackHolderPopup() {
     $('[id$=hdnInternalStackHolderId]').val('0');
     $('.error').removeClass('error');
 }
+
 function internalstakeholdervalidate() {
     var msg = "";
     if ($('[id$=internalstakeholderName]').val().trim().length == 0) {
@@ -1540,6 +1544,7 @@ function internalstakeholdervalidate() {
     else
         AddNewInternalStackholder();
 }
+
 function AddNewInternalStackholder() {
     ShowGlobalLodingPanel();
     var id = $('[id$=hdnInternalStackHolderId]').val();
