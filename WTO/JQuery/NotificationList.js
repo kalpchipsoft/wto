@@ -36,6 +36,29 @@ $(document).ready(function () {
         }
     })
 
+    // from and to date notification cross button
+    $("#txtNotificationfromdate").change(function () {
+        if ($("#txtfromdate").val == "") {
+            $("#fromdatenoticlender").removeClass("hidden");
+            $("#fromdatenoticross").addClass("hidden");
+        }
+        else {
+            $("#fromdatenoticlender").addClass("hidden");
+            $("#fromdatenoticross").removeClass("hidden");
+        }
+    })
+
+    $("#txtNotificationtodate").change(function () {
+        if ($("#txtNotificationtodate").val == "") {
+            $("#todatenoticlender").removeClass("hidden");
+            $("#todatenoticross").addClass("hidden");
+        }
+        else {
+            $("#todatenoticlender").addClass("hidden");
+            $("#todatenoticross").removeClass("hidden");
+        }
+    });
+
     //If Redirect from dashboard with search parameters then open advance search panel
     var ActionId = GetParameterValues1('ActionId');
     var ActionStatus = GetParameterValues1('ActionStatus');
@@ -454,5 +477,19 @@ function SaveMeetingAndNotification() {
     else {
         AddNotiMeeting(MeetingDate);
     }
+    return false;
+}
+
+function txttodatenotiClear() {
+    $('[id$=txtNotificationtodate]').val('');
+    $("#todatenoticlender").removeClass("hidden");
+    $("#todatenoticross").addClass("hidden");
+    return false;
+}
+
+function txtfromdatenotiClear() {
+    $('[id$=txtNotificationfromdate]').val('');
+    $("#fromdatenoticlender").removeClass("hidden");
+    $("#fromdatenoticross").addClass("hidden");
     return false;
 }

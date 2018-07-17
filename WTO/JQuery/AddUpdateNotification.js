@@ -473,6 +473,7 @@ function ReadDocumentFile() {
                     evt.initEvent('autosize:update', true, false);
                     this.dispatchEvent(evt);
                 });
+                FinalDateOfCommentsChanged();
                 HideGlobalLodingPanel();
             }
         });
@@ -983,7 +984,7 @@ function clearSearchtxt() {
     $('#searchhscodebtn').click();
 }
 
-function FinalDateOfCommentsChanged() {//
+function FinalDateOfCommentsChanged() {
     var _DateOfNotification = $('#DateofNotificationId').val();
     var _FinalDateOfComments = $('[id$=FinalDateforCommentsId]').val();
 
@@ -1023,6 +1024,10 @@ function FinalDateOfCommentsChanged() {//
     if (DateOfNotification >= FinalDateOfComments) {
         $('#FinalDateforCommentsError').removeClass('hidden');
         $('#SendResponseError').removeClass('hidden');
+    }
+    else {
+        $('#FinalDateforCommentsError').addClass('hidden');
+        $('#SendResponseError').addClass('hidden');
     }
 }
 //-------------------------------------Basic Details End---------------------------------------

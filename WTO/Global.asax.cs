@@ -37,9 +37,6 @@ namespace WTO
             objGlobalError.Error(excepMsg, source);
             Server.ClearError();
 
-            //HttpContext.Current.Response.Redirect("~/Views/Shared/Error");
-            //Debug.WriteLine("");
-            //Response.Redirect("~/Views/_ViewStart.cshtml");
             Application_GlobalError();
 
         }

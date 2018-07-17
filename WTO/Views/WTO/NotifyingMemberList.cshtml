@@ -21,14 +21,34 @@
         /* IE 6 doesn't support max-height
         * we use height instead, but this forces the menu to always be this tall
         */
-        * html .ui-autocomplete {
+        * html .ui-autocomplete {   
             height: 200px;
         }
+         /*.chosen-drop {
+                overflow: hidden;
+                height: 140px;
+                overflow-y: scroll;
+                z-index: 1010;
+            }*/
+
+    .chosen-container {
+    height:34px !important;
+    }
+    .chosen-container-multi .chosen-choices {
+        z-index:1;
+height: 36px !important;
+    overflow-y: auto !important;
+    }
+    .chosen-container {
+        width:250px !important;
+    }
 </style>
 <link href="~/contents/css/css/jquery-ui.css" rel="stylesheet" />
 <script src="~/contents/js/jquery-ui.js"></script>
-<link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
-<script src="~/contents/js/bootstrap-combobox.js"></script>
+<link href="~/contents/css/css/chosen.min.css" rel="stylesheet" />
+<script src="~/scripts/chosen.jquery.min.js"></script>
+@*<link href="~/contents/css/css/bootstrap-combobox.css" rel="stylesheet" />
+<script src="~/contents/js/bootstrap-combobox.js"></script>*@
 <div class="container-fluid">
     <div class="row bodybackground">
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -68,7 +88,7 @@
                                             <label>Country Name</label>
                                             @if (@Model.CountryList != null)
                                             {
-                                                @Html.DropDownListFor(m => Model.CountryList, new SelectList(Model.CountryList, "CountryId", "Name"), "All", new { Id = "ddlCountry", Class = "form-control textboxcontrol" })
+                                                @Html.DropDownListFor(m => Model.CountryList, new SelectList(Model.CountryList, "CountryId", "Name"), new { Id = "ddlCountry", Class = "form-control textboxcontrol",multiple="multiple" })
                                             }
                                             else
                                             {
@@ -157,8 +177,11 @@ else
     @Html.Hidden("hdnMaxPageIndex", Convert.ToInt64(Model.TotalCount.Length > 0 ? Model.TotalCount : "0") / (Request["PageSize"] == null ? 10 : Convert.ToInt32(Request["PageSize"])))
 }
 <script>
+    var Countries;
     $(function () {
-        $('#ddlCountry').combobox();
+        Countries=  '@Convert.ToString(Request["CountryId"])';
+        $('#ddlCountry').val(Countries.split(","));
+        $('#ddlCountry').chosen();
     })
     var IsScrollingOnce = true;
     function Search(PageIndx) {
@@ -175,9 +198,14 @@ else
                 return false;
             }
         }
+        var CountryId="";
+        for (var i = 0; i < $('[id$=ddlCountry]').val().length; i++)
+        {
+            CountryId += $('[id$=ddlCountry]').val()[i] + ",";
+        }
         var obj = {
             Hscode: $('#hdnHsCode').val().trim(),
-            CountryId: $('[id$=ddlCountry]').val(),
+            CountryId:CountryId, //$('[id$=ddlCountry]').val(),
             FromDate: $('#txtfromdate').val().trim(),
             ToDate: $('#txttodate').val().trim(),
             PageIndex: PageIndx,
@@ -248,11 +276,11 @@ else
         $('#txtHscode').val('');
         $('#hdnHsCode').val('');
         $('[id$=ddlCountry]').val('');
+        $('#ddlCountry').chosen('trigger:updated');
         $('.combobox-container').find('.glyphicon-remove').click();
         $('#txtfromdate').val('@ViewBag.FromDate');
         $('#txttodate').val('@ViewBag.ToDate');
         Search(1);
-       
     }
     $(window).on("scroll", function (e) {
         var $o = $(e.currentTarget);

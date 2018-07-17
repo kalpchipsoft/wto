@@ -23,8 +23,8 @@ $(function () {
         startDate: start,
         endDate: end,
         ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            // 'Today': [moment(), moment()],
+            //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
             'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -103,19 +103,17 @@ function BindHsCode(startdate, enddate, HSCodes) {
 
 function drawChart() {
     var data = google.visualization.arrayToDataTable(arrayNotificationGraph);
+
     var options = {
-        chartArea: { left: 50, top: 20, width: "100%", height: "65%" },
+        chartArea: { width: "93%", height: "60%", top: '12%' },
         colors: ['#666766', '#f9c851', '#599bff', '#0b9a41'],
-        //legend: {position: 'top', alignment: 'end', maxLines: 3, textStyle: {color: 'black', fontSize: 16 } },
         legend: 'none',
         isStacked: true,
         hAxis: {
             direction: 1,
             slantedText: true,
-            slantedTextAngle: 70 // here you can even use 180 
+            slantedTextAngle: 45 // here you can even use 180 
         },
-        // Displays tooltip on selection.
-        // tooltip: { trigger: 'selection' },
     };
     var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
     function GotoNotificationList() {
@@ -125,24 +123,24 @@ function drawChart() {
             var FromDate = arrayNotificationGraphDate[selectedItem.row + 1][1];
 
             var date = new Date(FromDate);
-            var month = monthNames[date.getMonth() - 1];
+            var month = monthNames[date.getMonth()];
             var year = date.getFullYear();
             FromDate = (date.getDate() > 10 ? date.getDate() : '0' + date.getDate()) + ' ' + month + ' ' + year;
 
             var ToDate = arrayNotificationGraphDate[selectedItem.row + 1][2];
 
             var date = new Date(ToDate);
-            var month = monthNames[date.getMonth() - 1];
+            var month = monthNames[date.getMonth()];
             var year = date.getFullYear();
             ToDate = date.getDate() + ' ' + month + ' ' + year;
             if (selectedItem.column == 1)
-                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=20';
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&StatusId=20';
             if (selectedItem.column == 2)
-                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=8';
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&StatusId=8';
             if (selectedItem.column == 3)
-                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=5';
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&StatusId=5';
             if (selectedItem.column == 4)
-                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&ActionStatus=7';
+                window.location.href = '/NotificationList?PageIndex=1&PageSize=10&DateofNotification_From=' + FromDate + '&DateofNotification_To=' + ToDate + '&StatusId=7';
         }
     }
     function AddHandlerCursor() {
@@ -172,6 +170,30 @@ function drawPieChart() {
         colors: colorpie,
     };
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    // The select handler. Call the chart's getSelection() method
+    function selectHandler() {
+        debugger;
+        var selectedItem = chart.getSelection()[0];
+        if (selectedItem) {
+            var selectedvalue = data.getValue(selectedItem.row, 0);
+            $(arrayCountryCode).each(function (index, value) {
+                if ($(value)[0] == selectedvalue)
+                    window.location.href = "/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=" + $('[id$=hdnHscode]').val() + "&FromDate=" + DateFrom + "&ToDate=" + DateTo + "&CountryId=" + value[1];
+            })
+        }
+    }
+    function AddHandlerCursor() {
+        $('#chart_div').css('cursor', 'pointer')
+    }
+    function RemoveHandlerCursor() {
+        $('#chart_div').css('cursor', 'default')
+    }
+
+    // Listen for the 'select' event, and call my function selectHandler() when
+    // the user selects something on the chart.
+    google.visualization.events.addListener(chart, 'select', selectHandler);
+    google.visualization.events.addListener(chart, 'onmouseover', AddHandlerCursor);
+    google.visualization.events.addListener(chart, 'onmouseout', RemoveHandlerCursor);
     chart.draw(data, options);
     $('#piechart').fadeIn();
 }
@@ -248,10 +270,13 @@ function BindPieChart(HSCode, DateFrom, DateTo) {
             hscodelegend += '<div class="row">';
             arrayHScode = [];
             colors = [];
+            arrayCountryCode = [];
+            arrayCountryCode.push(['CountryCode', 'CountryId']);
             arrayHScode.push(['Task', 'HSCode', { role: "style" }]);
             $(result.objHSCodeCountryData).each(function (index, value) {
                 if (value.NotificationCount > 0) {
                     BindArray(value.Country, value.NotificationCount, value.ColorCode);
+                    BindArrayCountryCode(value.Country, value.CountryId);
                     hscodelegend += '<div class="col-xs-6 col-sm-4">';
                     hscodelegend += '<div class="legend" style="background:' + value.ColorCode + '"></div>';
                     hscodelegend += '<div class="countryName">';
@@ -261,7 +286,7 @@ function BindPieChart(HSCode, DateFrom, DateTo) {
                 }
             })
             hscodelegend + ' </div></div>';
-            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; ' + TotalNotificationCount + ' &nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp;<a href="/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&FromDate=' + DateFrom + '&ToDate=' + DateTo + '"> ' + result.CountryCount + '</a> &nbsp;&nbsp;&nbsp; Countries  </p>';
+            var divhscode = '<p>For HS Code ' + result.HSCode + '</p><p>Notifications &nbsp;&nbsp;&nbsp; <a href="/NotificationList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&DateofNotification_From=' + DateFrom + '&DateofNotification_To=' + DateTo + '">' + TotalNotificationCount + '</a>&nbsp;&nbsp;&nbsp; from &nbsp;&nbsp;&nbsp;<a href="/WTO/NotifyingMemberList?PageIndex=1&PageSize=10&&Hscode=' + result.HSCode + '&FromDate=' + DateFrom + '&ToDate=' + DateTo + '"> ' + result.CountryCount + '</a> &nbsp;&nbsp;&nbsp; Countries  </p>  <input type="hidden"  id="hdnHscode" value="' + result.HSCode + '"/>';
             $('.hscodecount').html(divhscode);
             $('.hscodelegend').html(hscodelegend);
 

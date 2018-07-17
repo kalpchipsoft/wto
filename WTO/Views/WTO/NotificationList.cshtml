@@ -141,8 +141,8 @@ else
                                                         {
                                                             <input id="txtNotificationfromdate" type="text" class="form-control date-picker textboxcontrol" placeholder="From date" />
                                                         }
-                                                        <i id="fromdateclender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                        <a href="#" class="crosstofromdate"><i id="fromdatecross" class='glyphicon glyphicon-remove blue-color hidden' onclick="return txtfromdateClear();"></i></a>
+                                                        <i id="fromdatenoticlender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                        <a href="#" class="crosstofromdate"><i id="fromdatenoticross" class='glyphicon glyphicon-remove blue-color hidden' onclick="return txtfromdatenotiClear();"></i></a>
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
@@ -155,12 +155,14 @@ else
                                                         {
                                                             <input id="txtNotificationtodate" type="text" class="form-control date-picker textboxcontrol" placeholder="To date" />
                                                         }
-                                                        <i id="todateclender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
-                                                        <a href="#" class="crosstofromdate"><i id="todatecross" class='glyphicon glyphicon-remove blue-color hidden' onclick="return txttodateClear();"></i></a>
+                                                        <i id="todatenoticlender" class="glyphicon glyphicon-calendar form-control-feedback blue-color"></i>
+                                                        <a href="#" class="crosstofromdate"><i id="todatenoticross" class='glyphicon glyphicon-remove blue-color hidden' onclick="return txttodatenotiClear();"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <div class="col-xs-12 col-sm-4 col-md-4 SearchAdvnc">
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -285,14 +287,21 @@ else
                                                     </select>
                                                 }
                                             </div>
-
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-2 SearchAdvnc">
                                             <div class="form-group">
                                                 <label>HS Code</label>
                                                 <div class="form-group has-feedback ">
-                                                    <input type="text" class="form-control textboxcontrol" id="txtHscode" placeholder="Hscode" value="@ViewBag.Hscode">
-                                                    <input type="hidden" id="hdnHsCode" value="@ViewBag.Hscode" />
+                                                    @if (Request["Hscode"] != null)
+                                                    {
+                                                        <input type="text" class="form-control textboxcontrol" id="txtHscode" placeholder="Hscode" value="@Convert.ToString(Request["Hscode"])">
+                                                        <input type="hidden" id="hdnHsCode" value="@Convert.ToString(Request["Hscode"])" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control textboxcontrol" id="txtHscode" placeholder="Hscode">
+                                                        <input type="hidden" id="hdnHsCode" value="" />
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

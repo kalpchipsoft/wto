@@ -319,7 +319,7 @@
             </div>
 
             <div id="divAddActionAttachmentOverlay" class="attachment-modal overlay ">
-                <div id="divAddActionAttachment" class="attachment-modal body">
+                <div id="divAddActionAttachment" class="attachment-modal body" style="top:10%;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="creatediv1">
@@ -333,7 +333,7 @@
                                                 <table>
                                                     <tr class="filters"></tr>
                                                 </table>
-                                                <div class="bg tablescroll">
+                                                <div class="bg tablescroll" style="height:200px;">
                                                     <table class="table no-margin-bottom margin-15" id="tblActionAttachments"></table>
                                                 </div>
                                             </table>
@@ -421,7 +421,7 @@
                                 Alert("Alert", "An attachment with same name has been already added.<br/>", "Ok")
                             }
                             else {
-                                TempActionAttachments.push({ "FileName": value.name, "Content": e.target.result, "Selected": true, "Path": "", "IsSelected": true });
+                                TempActionAttachments.push({ "FileName": value.name, "Content": e.target.result, "Path": "", "IsSelected": true });
                                 var HTML = '';
                                 HTML += '<tr>';
                                 HTML += '<td style="width: 4%; width:50px;">';
@@ -432,7 +432,7 @@
                                 HTML += '</label>';
                                 HTML += '</div>';
                                 HTML += '</td>';
-                                HTML += '<td style="width: 96%">' + value.name + '</td>';
+                                HTML += '<td class="vertical-middle" style="width: 96%">' + value.name + '</td>';
                                 HTML += '</tr>';
                                 $('[id$=tblActionAttachments]').append(HTML);
                             }
@@ -703,8 +703,8 @@
         var Files = "";
         var FileCount = 0;
         $.each(TempActionAttachments, function (i, v) {
+            ActionAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
             if (v.IsSelected) {
-                ActionAttachments.push({ "FileName": v.FileName, "Content": v.Content, "Path": v.Path, IsSelected: v.IsSelected });
                 Files += '<p class="Attachmentfilename">' + v.FileName + '<a href="#" onclick="RemoveActionMailAttachments(this);" class="fileremove"><span class="glyphicon glyphicon-remove"></span></a></p>';
                 FileCount++;
             }
@@ -723,7 +723,9 @@
 
     function AddActionAttachment() {
         var HTML = '';
-        $.each(TempActionAttachments, function (i, v) {
+        TempActionAttachments = [];
+        $.each(ActionAttachments, function (i, v) {
+            TempActionAttachments.push(v);
             HTML += '<tr>';
             HTML += '<td style="width: 4%; width:50px;">';
             HTML += '<div class="checkbox radio-margin">';
@@ -736,7 +738,7 @@
             HTML += '</label>';
             HTML += '</div>';
             HTML += '</td>';
-            HTML += '<td style="width: 96%">' + v.FileName + '</td>';
+            HTML += '<td class="vertical-middle" style="width: 96%">' + v.FileName + '</td>';
             HTML += '</tr>';
         });
         $('[id$=tblActionAttachments]').empty();
@@ -758,9 +760,9 @@
             });
             if (!IsChanged) {
                 if (FileContent == "")
-                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": "", IsSelected: true });
+                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Path": "", IsSelected: true });
                 else
-                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Selected": true, "Path": FileContent, IsSelected: true });
+                    TempActionAttachments.push({ "FileName": FileName, "Content": "", "Path": FileContent, IsSelected: true });
             }
         }
         else {
@@ -781,7 +783,7 @@
         var _MailTo = '';
 
         if ($('[id$=hdnActionId]').val() == "1" || $('[id$=hdnActionId]').val() == "2")
-            _MailTo = $('#ddlTo').val().toString() == "" ? "" : $('#ddlTo').val().toString().replace(/,/g, ';');
+            _MailTo = $('#ddlTo').val().toString() == "" ? "" : $('#ddlTo').val().toString().replace(/,/g, '|');
         else
             _MailTo = $('#txtTo').val();
 
@@ -804,10 +806,6 @@
             $.each(ActionAttachments, function (i, v) {
                 if (v.IsSelected) {
                     _Attachments.push({ DisplayName: "", FileName: v.FileName, Content: v.Content, Path: v.Path });
-                    //AttachXML += "<row>";
-                    //AttachXML += "<FileName>" + v.FileName + "</FileName>";
-                    //AttachXML += "<Path>" + v.Path + "</Path>";
-                    //AttachXML += "</row>";
                 }
             });
 

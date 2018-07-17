@@ -43,7 +43,7 @@ namespace DataServices.ManageAccess
                 sqlCommand.Parameters.AddWithValue("@IsActive", obj.Status);
                 sqlCommand.Parameters.AddWithValue("@OrgName", obj.OrgName);
                 sqlCommand.Parameters.AddWithValue("@HSCodes", obj.HSCodes);
-                sqlCommand.Parameters.AddWithValue("@@Designation", obj.Designation);
+                sqlCommand.Parameters.AddWithValue("@Designation", obj.Designation);
                 return Convert.ToBoolean(DAL.ExecuteNonQuery(ConfigurationHelper.connectionString, sqlCommand));
             }
         }

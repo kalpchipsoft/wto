@@ -218,12 +218,17 @@ namespace WTO.Controllers.API.WTO
                                 ref missing, ref missing, ref missing, ref missing,
                                 ref missing, ref missing, ref missing);
 
+                        NotificationBusinessService objAN = new NotificationBusinessService();
                         try
                         {
                             String read = string.Empty;
+                            string NotificationData = string.Empty;
+                            string strLanguageType = string.Empty;
                             List<string> data = new List<string>();
                             List<string> headers = new List<string>();
                             bool IsMultipleNotificationNumber = false;
+                            int loopCount = 0;
+
                             #region "Read File Header"
                             foreach (Microsoft.Office.Interop.Word.Section aSection in word.ActiveDocument.Sections)
                             {
@@ -233,12 +238,13 @@ namespace WTO.Controllers.API.WTO
                                     string Header = aHeader.Range.Text;
                                     Header = Regex.Replace(Header, @"[^\w\s.,!/@#$%^&*()=+~`-]", "");
                                     Header = Regex.Replace(Header, @"\r\r+", ",");
+                                    loopCount++;
                                     if (Header.Split(',').Length > 1)
                                     {
+
                                         foreach (string hdrstr in Header.Split(','))
                                         {
                                             string Ctext = hdrstr;
-
                                             if (Ctext.Contains("G/TBT/N/"))
                                             {
                                                 objE.NotificationNumber = Ctext;
@@ -250,14 +256,36 @@ namespace WTO.Controllers.API.WTO
                                                 objE.NotificationType = "1";
                                             }
 
-                                            DateTime Temp;
-                                            if (DateTime.TryParse(Ctext, out Temp) == true)
-                                                objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
+                                            if (loopCount == 2)
+                                            {
+                                                NotificationData = Header.Split(',')[3];
+                                                loopCount++;
+                                            }
+
+                                            //DateTime Temp;
+                                            //if (strLanguageType == "ES")
+                                            //{
+                                            //    Ctext = TranslateLanguage("ES", Ctext);
+                                            //    if (DateTime.TryParse(Ctext, out Temp) == true)
+                                            //        objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
+                                            //}
+                                            //else if (strLanguageType == "FR")
+                                            //{
+                                            //    Ctext = TranslateLanguage("FR", Ctext);
+                                            //    if (DateTime.TryParse(Ctext, out Temp) == true)
+                                            //        objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
+                                            //}
+                                            //else
+                                            //{
+                                            //if (DateTime.TryParse(Ctext, out Temp) == true)
+                                            //    objE.DateofNotification = Convert.ToDateTime(Ctext.Trim()).ToString("dd MMM yyyy");
+                                            //}
+
                                         }
                                     }
                                 }
                             }
-                            #endregion
+                            #endregion "Read File Header"
 
                             #region "File Body"
                             if (objE.NotificationType == "1")
@@ -278,9 +306,12 @@ namespace WTO.Controllers.API.WTO
                                 Rows rows = t.Rows;
                                 foreach (Row tablerow in rows)
                                 {
+                                    //String str = TranslateLanguage("FR", tablerow.Range.Text);
                                     String str = tablerow.Range.Text;
+
                                     if (str.Contains("Notifying Member"))
                                     {
+                                        strLanguageType = "EN";
                                         foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                         {
                                             if (s.Contains("Notifying Member"))
@@ -289,18 +320,20 @@ namespace WTO.Controllers.API.WTO
                                     }
                                     else if (str.Contains("Miembro que notifica"))//Spanish Document
                                     {
+                                        strLanguageType = "ES";
                                         foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                         {
                                             if (s.Contains("Miembro que notifica"))
-                                                objE.Country = s.Replace("Miembro que notifica", "").Trim();
+                                                objE.Country = objAN.TranslateLanguage("ES", s.Replace("Miembro que notifica", "").Trim());
                                         }
                                     }
                                     else if (str.Contains("Membre notifiant"))//French Document
                                     {
+                                        strLanguageType = "FR";
                                         foreach (string s in Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                         {
                                             if (s.Contains("Membre notifiant"))
-                                                objE.Country = s.Replace("Membre notifiant", "").Trim();
+                                                objE.Country = objAN.TranslateLanguage("FR", s.Replace("Membre notifiant", "").Trim());
                                         }
                                     }
 
@@ -312,12 +345,12 @@ namespace WTO.Controllers.API.WTO
                                     else if (str.Contains("Organismo responsable"))
                                     {
                                         string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                                        objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
+                                        objE.ResponsibleAgency = objAN.TranslateLanguage("ES", _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1));
                                     }
                                     else if (str.Contains("Organisme responsable"))
                                     {
                                         string _ResponsibleAgency = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
-                                        objE.ResponsibleAgency = _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1);
+                                        objE.ResponsibleAgency = objAN.TranslateLanguage("FR", _ResponsibleAgency.Substring(_ResponsibleAgency.IndexOf(":", 0) + 1));
                                     }
 
                                     if (str.Contains("Products covered"))
@@ -353,7 +386,7 @@ namespace WTO.Controllers.API.WTO
                                         if (startIndex >= 0)
                                         {
                                             _Products = _Products.Substring(startIndex + 1);
-                                            objE.ProductsCovered = _Products;
+                                            objE.ProductsCovered = objAN.TranslateLanguage("ES", _Products);
 
                                             string hs = "";
                                             if (_Products.Contains("(SA "))
@@ -379,7 +412,7 @@ namespace WTO.Controllers.API.WTO
                                         if (startIndex >= 0)
                                         {
                                             _Products = _Products.Substring(startIndex + 1);
-                                            objE.ProductsCovered = _Products;
+                                            objE.ProductsCovered = objAN.TranslateLanguage("FR", _Products);
 
                                             string hs = "";
                                             if (_Products.Contains("(SH "))
@@ -414,9 +447,9 @@ namespace WTO.Controllers.API.WTO
                                     {
                                         string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Título del documento notificado:"))
-                                            objE.Title = _Title.Replace("Título del documento notificado:", "").Trim();
+                                            objE.Title = objAN.TranslateLanguage("ES", _Title.Replace("Título del documento notificado:", "").Trim());
                                         else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Título, número de páginas e idioma(s) del documento notificado:"))
-                                            objE.Title = _Title.Replace("Título, número de páginas e idioma(s) del documento notificado:", "").Trim();
+                                            objE.Title = objAN.TranslateLanguage("ES", _Title.Replace("Título, número de páginas e idioma(s) del documento notificado:", "").Trim());
 
                                         objE.Title = objE.Title.Replace("5.", "");
                                     }
@@ -424,9 +457,9 @@ namespace WTO.Controllers.API.WTO
                                     {
                                         string _Title = Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         if (objE.NotificationNumber.Contains("/SPS/") && _Title.Contains("Intitulé du texte notifié:"))
-                                            objE.Title = _Title.Replace("Intitulé du texte notifié:", "").Trim();
+                                            objE.Title = objAN.TranslateLanguage("FR", _Title.Replace("Intitulé du texte notifié:", "").Trim());
                                         else if (objE.NotificationNumber.Contains("/TBT/") && _Title.Contains("Intitulé, nombre de pages et langue(s) du textenotifié:"))
-                                            objE.Title = _Title.Replace("Intitulé, nombre de pages et langue(s) du textenotifié:", "").Trim();
+                                            objE.Title = objAN.TranslateLanguage("FR", _Title.Replace("Intitulé, nombre de pages et langue(s) du textenotifié:", "").Trim());
 
                                         objE.Title = objE.Title.Replace("5.", "");
                                     }
@@ -451,7 +484,7 @@ namespace WTO.Controllers.API.WTO
                                         }
                                         var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         objE.Description = _Desc.Replace("Descripción del contenido", "").Trim();
-                                        objE.Description = objE.Description.Replace("6.", "");
+                                        objE.Description = objAN.TranslateLanguage("ES", objE.Description.Replace("6.", ""));
                                     }
                                     else if (str.Contains("Teneur"))
                                     {
@@ -462,22 +495,83 @@ namespace WTO.Controllers.API.WTO
                                         }
                                         var _Desc = Regex.Replace(str, @"[^\w\s.,!@#$%^&*()=+~`-]", "").Trim();
                                         objE.Description = _Desc.Replace("Teneur", "").Trim();
-                                        objE.Description = objE.Description.Replace("6.", "");
+                                        objE.Description = objAN.TranslateLanguage("FR", objE.Description.Replace("6.", ""));
                                     }
 
                                     if (str.Contains("Final date for comments"))
                                     {
-                                        foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                        if (str.Contains("Agency or authority designated to handle comments"))
                                         {
-                                            if (s.Contains("Final date for comments"))
+                                            string DataForm = ((str.Replace("Agency or authority designated to handle comments", "#")).Split('#')[0]).Split('\r')[2];
+                                            DateTime Temp;
+                                            if (DateTime.TryParse(DataForm, out Temp) == true)
+                                                objE.FinalDateOfComments = DataForm.Trim();
+                                        }
+                                        else
+                                        {
+                                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
                                             {
-                                                string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
-                                                DateTime Temp;
-                                                if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
-                                                    objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                                if (s.Contains("Final date for comments"))
+                                                {
+                                                    string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
+                                                    DateTime Temp;
+                                                    if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
+                                                        objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                                }
                                             }
                                         }
                                     }
+                                    if (str.Contains("Fecha límite para la presentación de observaciones")) // Spainish
+                                    {
+                                        if (str.Contains("Organismo o autoridad encargado de tramitar las observaciones"))
+                                        {
+                                            string DataForm = ((str.Replace("Organismo o autoridad encargado de tramitar las observaciones", "#")).Split('#')[0]).Split('\r')[2];
+                                            DateTime Temp;
+                                            DataForm = objAN.TranslateLanguage("ES", DataForm);
+                                            if (DateTime.TryParse(DataForm, out Temp) == true)
+                                                objE.FinalDateOfComments = DataForm.Trim();
+                                        }
+                                        else
+                                        {
+                                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                            {
+                                                if (s.Contains("Fecha límite para la presentación de observaciones"))
+                                                {
+                                                    string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
+                                                    DateTime Temp;
+                                                    FinalDateForComments = objAN.TranslateLanguage("ES", FinalDateForComments);
+                                                    if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
+                                                        objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (str.Contains("Date limite pour la présentation des observations")) // french
+                                    {
+                                        if (str.Contains("Organisme ou autorité désigné pour traiter les observations"))
+                                        {
+                                            string DataForm = ((str.Replace("Organisme ou autorité désigné pour traiter les observations", "#")).Split('#')[0]).Split('\r')[2];
+                                            DateTime Temp;
+                                            DataForm = objAN.TranslateLanguage("FR", DataForm);
+                                            if (DateTime.TryParse(DataForm, out Temp) == true)
+                                                objE.FinalDateOfComments = DataForm.Trim();
+                                        }
+                                        else
+                                        {
+                                            foreach (string s in Regex.Replace(str, @"[^:\w\s.,!@#$%^&*()=+~`-]", "").Trim().Split('\r'))
+                                            {
+                                                if (s.Contains("Date limite pour la présentation des observations"))
+                                                {
+                                                    string FinalDateForComments = s.Split(':')[s.Split(':').Length - 1].Trim();
+                                                    DateTime Temp;
+                                                    FinalDateForComments = objAN.TranslateLanguage("FR", FinalDateForComments);
+                                                    if (DateTime.TryParse(FinalDateForComments, out Temp) == true)
+                                                        objE.FinalDateOfComments = FinalDateForComments.Trim();
+                                                }
+                                            }
+                                        }
+                                    }
+
 
                                     if (str.Contains("Notified under Article"))
                                     {
@@ -502,7 +596,7 @@ namespace WTO.Controllers.API.WTO
                                                 foreach (string ar in s.Replace("Notificación hecha en virtud del artículo", "").Split(','))
                                                 {
                                                     if (ar.Contains("X"))
-                                                        objE.Articles += ar.Replace("X", "").Trim() + ",";
+                                                        objE.Articles += objAN.TranslateLanguage("ES", ar.Replace("X", "").Trim() + ",");
                                                 }
                                             }
                                         }
@@ -516,7 +610,7 @@ namespace WTO.Controllers.API.WTO
                                                 foreach (string ar in s.Replace("Notification au titre de larticle", "").Split(','))
                                                 {
                                                     if (ar.Contains("X"))
-                                                        objE.Articles += ar.Replace("X", "").Trim() + ",";
+                                                        objE.Articles += objAN.TranslateLanguage("ES", ar.Replace("X", "").Trim() + ",");
                                                 }
                                             }
                                         }
@@ -542,7 +636,7 @@ namespace WTO.Controllers.API.WTO
                                                     var _EnquiryEmailId = "";
                                                     foreach (string e in email.Split(','))
                                                     {
-                                                        if (Regex.IsMatch(e, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                                                        if (Regex.IsMatch(e, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)) 
                                                             _EnquiryEmailId += e + ";";
                                                     }
                                                     objE.EnquiryEmailId = _EnquiryEmailId.TrimEnd(';');
@@ -563,7 +657,7 @@ namespace WTO.Controllers.API.WTO
                                             {
                                                 string email = s.Replace("Correo electrónico", "").Replace(":", "").Trim();
                                                 if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-                                                    objE.EnquiryEmailId = email;
+                                                    objE.EnquiryEmailId = objAN.TranslateLanguage("ES", email);
                                             }
                                         }
                                     }
@@ -575,7 +669,7 @@ namespace WTO.Controllers.API.WTO
                                             {
                                                 string email = s.Replace("Courrier électronique", "").Replace(":", "").Trim();
                                                 if (Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-                                                    objE.EnquiryEmailId = email;
+                                                    objE.EnquiryEmailId = objAN.TranslateLanguage("FR", email);
                                             }
                                         }
                                     }
@@ -592,6 +686,31 @@ namespace WTO.Controllers.API.WTO
                             if (IsMultipleNotificationNumber)
                                 objE.NotificationNumber = "";
                             #endregion
+
+                            //-- auto calculate dates for notification
+                            if (NotificationData != "")
+                            {
+                                DateTime Temp;
+                                if (strLanguageType == "ES")
+                                {
+                                    NotificationData = objAN.TranslateLanguage("ES", NotificationData);
+                                    if (DateTime.TryParse(NotificationData, out Temp) == true)
+                                        objE.DateofNotification = Convert.ToDateTime(NotificationData.Trim()).ToString("dd MMM yyyy");
+                                }
+                                else if (strLanguageType == "FR")
+                                {
+                                    NotificationData = objAN.TranslateLanguage("FR", NotificationData);
+                                    if (DateTime.TryParse(NotificationData, out Temp) == true)
+                                        objE.DateofNotification = Convert.ToDateTime(NotificationData.Trim()).ToString("dd MMM yyyy");
+                                }
+                                else
+                                {
+                                    if (DateTime.TryParse(NotificationData, out Temp) == true)
+                                        objE.DateofNotification = Convert.ToDateTime(NotificationData.Trim()).ToString("dd MMM yyyy");
+                                }
+                            }
+                            //--= ENd Notification date    
+
                         }
                         catch (Exception ex)
                         {
