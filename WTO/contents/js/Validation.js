@@ -134,7 +134,7 @@ function validateEmail(email) {
 //Ailpha numeric validation
 function IsAlphaNumber(evt) {
     var keyCode = (evt.which) ? evt.which : event.keyCode;
-    if (!((keyCode >= 65 && keyCode <= 90) || (keyCode == 8) || (keyCode == 9) || (keyCode >= 97 && keyCode <= 122) || (keyCode == 32) || (keyCode == 45) || (keyCode >= 48 && keyCode <= 57))) {
+    if (!((keyCode >= 65 && keyCode <= 90) || (keyCode == 8) || (keyCode == 9) || (keyCode >= 97 && keyCode <= 122) || (keyCode == 32) || (keyCode == 45) || (keyCode >= 48 && keyCode <= 57) || keyCode == 13)) {
         Alert("", "Only alphabets and numbers are allowed.<br/>", "Ok");
         return false;
     }

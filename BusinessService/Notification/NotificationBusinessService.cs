@@ -3423,11 +3423,12 @@ namespace BusinessService.Notification
 
             return MeetingNote;
         }
-        public NotificationActions GetNotificationActions(Int64 Id, int ActionId)
+        public NotificationActions GetNotificationActions(Int64 Id)
         {
             NotificationActions objNA = new NotificationActions();
             NotificationDataManager objDM = new NotificationDataManager();
-            DataSet ds = objDM.EditActions(Id, ActionId);
+            DataSet ds = objDM.EditActions(Id);
+            objNA.NotificationId = Id;
             if (ds != null)
             {
                 int tblIndex = -1;
@@ -3435,16 +3436,16 @@ namespace BusinessService.Notification
                 tblIndex++;
                 if (ds.Tables.Count > 0 && ds.Tables[tblIndex].Rows.Count > 0)
                 {
+                    List<NotificationMeeting> MeetingList = new List<NotificationMeeting>();
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
-                        objNA.NotificationId = Convert.ToInt64(dr["NotificationId"]);
-                        objNA.NotificationNumber = Convert.ToString(dr["NotificationNumber"]);
-                        objNA.NotificationTitle = Convert.ToString(dr["Title"]);
-                        objNA.MeetingDate = Convert.ToString(dr["MeetingDate"]);
-                        objNA.IsUpdate = Convert.ToBoolean(dr["IsUpdate"]);
-                        objNA.MeetingNotes = Convert.ToString(dr["MeetingNote"]);
-                        objNA.RetainedForNextDiscussion = Convert.ToBoolean(dr["RetainedForNextDiscussion"]);
+                        NotificationMeeting meeting = new NotificationMeeting();
+                        meeting.MeetingId = Convert.ToInt64(dr["MeetingId"]);
+                        meeting.MeetingDate = Convert.ToString(dr["MeetingDate"]);
+                        meeting.IsActive = Convert.ToBoolean(dr["IsActive"]);
+                        MeetingList.Add(meeting);
                     }
+                    objNA.Meetings = MeetingList;
                 }
 
                 tblIndex++;
@@ -3454,14 +3455,13 @@ namespace BusinessService.Notification
                     foreach (DataRow dr in ds.Tables[tblIndex].Rows)
                     {
                         NotificationActionDetail objNotificationAction = new NotificationActionDetail();
+                        objNotificationAction.MeetingId = Convert.ToInt64(dr["MeetingId"]);
                         objNotificationAction.NotificationActionId = Convert.ToInt64(dr["NotificationActionId"]);
                         objNotificationAction.ActionId = Convert.ToInt32(dr["ActionId"]);
                         objNotificationAction.Action = Convert.ToString(dr["Action"]);
                         objNotificationAction.RequiredOn = Convert.ToString(dr["RequiredOn"]);
-                        objNotificationAction.EnteredOn = Convert.ToString(dr["EnteredOn"]);
                         objNotificationAction.UpdatedOn = Convert.ToString(dr["UpdatedOn"]);
                         objNotificationAction.MailId = Convert.ToInt64(dr["MailId"]);
-                        objNotificationAction.MailTo = Convert.ToString(dr["MailTo"]);
                         NotificationActionList.Add(objNotificationAction);
                     }
                     objNA.Actions = NotificationActionList;

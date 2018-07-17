@@ -59,7 +59,7 @@ namespace WTO.Controllers.WTO
             if (Convert.ToString(Session["UserId"]).Trim().Length > 0)
             {
                 NotificationBusinessService obj = new NotificationBusinessService();
-                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id, 0));
+                return View("~/Views/Partial/Notification/NotificationActions.cshtml", obj.GetNotificationActions(Id));
             }
             else
                 return PartialView("RedirectToLogin");

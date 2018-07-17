@@ -4,7 +4,7 @@
 }
 <script src="~/JQuery/Notification_PartialPages.js?v=7"></script>
 
-<div class="panel-heading @(Model.MeetingDate==""?"hidden":"")" role="tab" id="headingfive">
+<div class="panel-heading" role="tab" id="headingfive">
     <h4 class="panel-title Accordian-panel-title">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
             <i class="more-less glyphicon glyphicon-chevron-down"></i>
@@ -12,81 +12,19 @@
         </a>
     </h4>
 </div>
-<div id="collapsefive" class="panel-collapse collapse in @(Model.MeetingDate==""?"hidden":"")" role="tabpanel" aria-labelledby="headingfive">
+<div id="collapsefive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfive">
     <div class="panel-body Accordian-body">
         <div>
             <div class="col-xs-12 col-sm-12 col-md-12 whitebackground padding-bottom-10 full-border">
                 <div class="row top-offset-30">
-                    <div class="col-xs-12 col-sm-8 col-md-8">
-                        <p class="wto-label-normal top-offset-10 @(Model.MeetingDate==""?"hidden":"")">
-                            Discussed in Meeting on <span class="wto-label-bold" id="lblDiscussedOn">@Model.MeetingDate</span>
-                            @if (Model.RetainedForNextDiscussion)
-                            {
-                                @("and retained for next meeting")
-                            }
-                        </p>
-                    </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.Meetings != null && Model.Meetings.FirstOrDefault(x => x.IsActive == true) == null)
                     {
                         <div class="col-xs-12 col-sm-4 col-md-4 hidden">
-                            <a class="btn btn-dark-green pull-right @((Model.Actions != null && Model.Actions.FirstOrDefault(x => ((x.ActionId <4 && x.MailId <=0) || (x.ActionId==4 && x.UpdatedOn!=""))) != null) ? "" : "hidden")" data-SearchFor="@Model.NotificationId" style="margin-right:15px;" id="btnplanAction" onclick="return EditNotificationActions(this);">Plan action</a>
+                            <a class="btn btn-dark-green pull-right" data-SearchFor="@Model.NotificationId" style="margin-right:15px;" id="btnplanAction" onclick="return EditNotificationActions(this);">Plan action</a>
                         </div>
                     }
                 </div>
                 <div class="row top-offset-20">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="table-responsive nopaging notificationlist sentmail">
-                            @if (Model.Actions != null && Model.Actions.Sum(x => x.NotificationActionId) > 0)
-                            {
-                                <table class="table table-bordered display" id="notificationlist" cellspacing="0" width="100%">
-                                    <thead class="second-blackbackground">
-                                        <tr>
-                                            <th>Action</th>
-                                            <th class="text-center @(Model.Actions.FirstOrDefault(x => (x.ActionId==4 && x.UpdatedOn!=""))!=null?"hidden":"")">Required by</th>
-                                            <th class="text-center">Completed on</th>
-                                            <th>&nbsp;</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="whitebackground">
-                                        @foreach (BusinessObjects.Notification.NotificationActionDetail ac in Model.Actions)
-                                        {
-                                            if (@ac.NotificationActionId > 0)
-                                            {
-                                                <tr>
-                                                    <td>@ac.Action</td>
-                                                    <td class="text-center @(Model.Actions.FirstOrDefault(x => (x.ActionId==4 && x.UpdatedOn!=""))!=null?"hidden":"")" id="tdRequiredOn_@ac.NotificationActionId">@ac.RequiredOn</td>
-                                                    <td class="text-center">@((ac.MailId > 0 || ac.ActionId == 4) ? ac.UpdatedOn : "")</td>
-                                                    @if (ac.MailId == 0)
-                                                    {
-                                                        <td>
-                                                            @if (ac.ActionId != 4)
-                                                            {
-                                                                <span><a data-toggle="modal" data-SearchFor="@ac.Action" data-callfor="editaction" onclick="EditAction(@ac.NotificationActionId,this);"><img src="~/contents/img/bedit.png" alt="edit" /></a></span>
-                                                            }
-                                                            <input type="hidden" id="hdnActionId_@ac.NotificationActionId" value="@ac.ActionId" />
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            @if (ac.ActionId != 4)
-                                                            {
-                                                                <span><a data-SearchId="@ac.ActionId" data-SearchFor="@ac.Action" onclick="ViewAction(@ac.NotificationActionId,this);"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></a></span>
-                                                            }
-                                                            <input type="hidden" id="hdnActionId_@ac.NotificationActionId" value="@ac.ActionId" />
-                                                        </td>
-                                                    }
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row top-offset-20 hidden">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="table-responsive nopaging notificationlist sentmail">
                             <table class="table table-bordered display">
@@ -100,27 +38,60 @@
                                     </tr>
                                 </thead>
                                 <tbody class="whitebackground">
-                                    <tr>
-                                        <td><p class="wto-label-normal">09 Jul 2018</p></td>
-                                        <td>
-                                            <p class="wto-label-normal">Responce to notifying country</p>
-                                            <p class="wto-label-normal">
-                                                <span style="color:#006558;"><b>Responses:</b></span>Lorem Ipsum is simply dummy text of the
-                                                printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                                            </p>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    @if (Model.Meetings != null && Model.Meetings.Count > 0)
+                                    {
+                                        foreach (BusinessObjects.Notification.NotificationMeeting nm in Model.Meetings)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <p class="wto-label-normal">@nm.MeetingDate</p>
+                                                    <input type="hidden" id="hdnMeetingId_@nm.MeetingId" value="@nm.MeetingId" />
+                                                </td>
+                                                @if (Model.Actions != null && Model.Actions.Count > 0)
+                                                {
+                                                    if (Model.Actions.Select(x => x.MeetingId == nm.MeetingId) != null)
+                                                    {
+                                                        foreach (BusinessObjects.Notification.NotificationActionDetail na in Model.Actions)
+                                                        {
+                                                            if (na.MeetingId == nm.MeetingId)
+                                                            {
+                                                                <td>
+                                                                    <p class="wto-label-normal">@na.Action</p>
+                                                                    <p class="wto-label-normal hidden">
+                                                                        <span style="color:#006558;"><b>Responses:</b></span>Lorem Ipsum is simply dummy text of the
+                                                                        printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                                                                    </p>
+                                                                </td>
+                                                                <td>@na.RequiredOn</td>
+                                                                <td>@(na.ActionId < 4 ? na.UpdatedOn : "")</td>
+                                                                <td>
+                                                                    @if (na.ActionId < 4)
+                                                                    {
+                                                                        if (na.MailId > 0)
+                                                                        {
+                                                                            <span><a data-SearchId="@na.ActionId" data-SearchFor="@na.Action" onclick="ViewAction(@na.NotificationActionId,this);"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></a></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span><a data-toggle="modal" data-SearchFor="@na.Action" data-callfor="editaction" onclick="EditAction(@na.NotificationActionId,this);"><img src="~/contents/img/bedit.png" alt="edit" /></a></span>
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    }
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    @if (Model.MeetingDate != "")
+            </div>
+            <div class="row">
+                @*@if (Model.MeetingDate != "")
                     {
                         <div class="col-xs-12 col-sm-4 col-md-2">
                             <p class="wto-label-bold"><a onclick="OpenAddNote()">Note</a></p>
@@ -128,12 +99,12 @@
                         <div class="col-xs-12 col-sm-8 col-md-10">
                             <p class="wto-label-normal" id="MeetingNoteId">@(Model.MeetingNotes.Length > 40 ? Model.MeetingNotes.Substring(0, 39) + ".." : Model.MeetingNotes)</p>
                         </div>
-                    }
-                </div>
+                    }*@
             </div>
         </div>
     </div>
 </div>
+            </div>
 
 <!--Plan action Popup start-->
 <div id="divNotificationPlanTakeAction">
@@ -168,7 +139,7 @@
                                             <p class="wto-label-normal"><b>Notification Number</b> <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal">@Model.NotificationNumber</p>
+                                            <p class="wto-label-normal"></p>
                                         </div>
                                     </div>
                                     <div class="row top-offset-10">
@@ -176,7 +147,7 @@
                                             <p class="wto-label-normal"><b>Title</b> <span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal WordWrapText">@Model.NotificationTitle</p>
+                                            <p class="wto-label-normal WordWrapText"></p>
                                         </div>
                                     </div>
                                     <div class="row top-offset-10">
@@ -184,7 +155,7 @@
                                             <p class="wto-label-normal"><b>Meeting Date</b><span class="pull-right">:</span></p>
                                         </div>
                                         <div class="col-xs-12 col-sm-8 col-md-8">
-                                            <p class="wto-label-normal" id="txtMeetingDate">@Model.MeetingDate</p>
+                                            <p class="wto-label-normal" id="txtMeetingDate"></p>
                                         </div>
                                     </div>
                                     <div class="row top-offset-10">
@@ -257,15 +228,15 @@
                                         <tbody>
                                             <tr>
                                                 <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b> Notification Number</b></td>
-                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;">@Model.NotificationNumber</td>
+                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;"></td>
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Title</b></td>
-                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;">@Model.NotificationTitle</td>
+                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;"></td>
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Meeting Date</b></td>
-                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;"><span id="txtMeetingDate1">@Model.MeetingDate</span></td>
+                                                <td style="padding:5px;border-color:#ddd;word-break: break-all;"><span id="txtMeetingDate1"></span></td>
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px;border-color:#ddd;vertical-align:top;width:160px;display:inline-block;"><b>Action Due on</b></td>

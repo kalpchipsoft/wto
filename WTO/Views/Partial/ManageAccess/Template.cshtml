@@ -16,10 +16,10 @@
                         <th class="col-xs-1">S.No</th>
                         <th class="col-xs-2">Template Type</th>
                         <th class="col-xs-4">Template For</th>
-                        <th class="col-xs-2">Notification Type</th>
-                        <th class="col-xs-1">Status</th>
-                        <th class="text-center col-xs-1">Edit</th>
-                        <th class="text-center col-xs-1">Delete</th>
+                        <th class="col-xs-2 text-center">Notification Type</th>
+                        <th class="col-xs-1 padding-right-20">Status</th>
+                        <th class="padding-right-20 col-xs-1">Edit</th>
+                        <th class="padding-right-20 col-xs-1">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="whitebackground">
@@ -34,26 +34,26 @@
                                 <td class="col-xs-4">@item.TemplateFor</td>
                                 @if (item.NotificationType == "1")
                                 {
-                                    <td class="col-xs-2">SPS</td>
+                                    <td class="col-xs-2 text-center">SPS</td>
                                 }
                                 else if (item.NotificationType == "2")
                                 {
-                                    <td class="col-xs-2">TBT</td>
+                                    <td class="col-xs-2 text-center">TBT</td>
                                 }
                                 else
                                 {
-                                    <td class="col-xs-2"></td>
+                                    <td class="col-xs-2 text-center"></td>
                                 }
                                 @if (@item.TemplateStatus)
                                 {
-                                    <td class="col-xs-1">Active</td>
+                                    <td class="col-xs-1 textright">Active</td>
                                 }
                                 else
                                 {
-                                    <td class="col-xs-1">Inactive</td>
+                                    <td class="col-xs-1 textright">Inactive</td>
                                 }
-                                <td class="text-center col-xs-1"><a href="#" onclick="EditTemplate(@item.TemplateId);"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <td class="text-center col-xs-1"><a href="#" onclick="Confirm('Delete','Do you want to delete the template?','Yes', 'No', 'DeleteTemplate(@item.TemplateId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td class="textright col-xs-1"><a href="#" onclick="EditTemplate(@item.TemplateId);"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td class="textright col-xs-1"><a href="#" onclick="Confirm('Delete','Do you want to delete the template?','Yes', 'No', 'DeleteTemplate(@item.TemplateId)');"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         }
                     }
@@ -217,6 +217,7 @@
         };
         CKEDITOR.replace(txtMessage, config);
 
+
         if ($(window).width() < 700) {
             $(".table").removeClass("table-fixed");
             $("th").removeClass("col-xs-1 col-xs-2 col-xs-6 table-fixed");
@@ -225,6 +226,7 @@
 
         $(".defaultdiv").bind('keydown', function (e) {
             if (e.which === 13) {
+                $(".doAction").click();
                 $(this).find(".searchbtndiv").click();
                 return false;
             }

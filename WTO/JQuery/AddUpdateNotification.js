@@ -2022,6 +2022,7 @@ function RemoveStakeholdersMailAttachments(ctrl) {
 //Open popup of add other attachments in Stakholders mail popup
 function AddAttachment() {
     var HTML = '';
+    TempMailAttachments = [];
     $.each(MailAttachments, function (i, v) {
         TempMailAttachments.push({ "FileName": v.FileName, "Content": v.FileContent, "Selected": true, "Path": v.Path, "IsSelected": v.IsSelected });
         HTML += '<tr>';
